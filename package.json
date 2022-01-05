@@ -8,10 +8,25 @@
     "dev:build": "tsc -w",
     "dev:start": "nodemon dist/index.js"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/raouldeheer/Heroes-and-Generals-decode.git"
+  },
   "author": "Raoul de Heer",
   "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/raouldeheer/Heroes-and-Generals-decode/issues"
+  },
+  "homepage": "https://github.com/raouldeheer/Heroes-and-Generals-decode#readme",
   "devDependencies": {
     "@types/node": "^17.0.5",
     "nodemon": "^2.0.15"
+  },
+  "engines": {
+    "node": ">=12.0.0"
+  },
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/raouldeheer"
   }
 }

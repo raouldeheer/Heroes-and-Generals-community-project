@@ -1,3 +1,3 @@
-# Heroes & Generals decode
+# Heroes And Generals Decode
 
-Heroes & Generals decode is a repo where I try to decode the H&G network protocol.
+Heroes And Generals Decode is a repo where I try to decode the H&G network protocol.

@@ -22,3 +22,34 @@ export function parseGroups(source: Buffer | BufferCursor): Buffer[] {
     } while (len > buf.tell());
     return groups.map(v => v.buffer);
 }
+
+export function splitOnMultipleOf8(source: Buffer | BufferCursor) {
+    const buf = source instanceof BufferCursor ? source : new BufferCursor(source);
+
+    let multiple = 8, multiple2 = 16, start: number = NaN, stop: number = NaN;
+    const arr = [];
+
+    for (let i = 0; i < buf.length; i++) {
+        const value = buf.readUInt8();
+        if (value === multiple || value === multiple2) {
+            const pos = buf.tell();
+            multiple += 8;
+            multiple2 += 8;
+            if (start && stop) {
+                buf.seek(start);
+                arr.push(buf.slice(stop - start));
+                stop = NaN;
+            }
+            start = pos;
+            buf.seek(pos);
+        } else {
+            stop = buf.tell();
+        }
+    }
+    if (start && stop) {
+        buf.seek(start);
+        arr.push(buf.slice(stop - start));
+        stop = NaN;
+    }
+    return arr;
+}

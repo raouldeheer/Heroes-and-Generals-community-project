@@ -1,5 +1,5 @@
 import BufferCursor from "./buffercursor";
-import { bytesToString, parseGroups } from "./utils";
+import { bytesToString, parseGroups, splitOnMultipleOf8 } from "./utils";
 
 enum KeyValueOp {
     set = "set",
@@ -74,13 +74,16 @@ export class KeyValueChangeSet {
                             break;
                         case KeyValueChangeKey.armyresource:
                             // TODO do better parsing
-                            returnStr += setPrefix + KeyValueChangeSet.parseSetArmyResource(value);
+                            returnStr += setPrefix + KeyValueChangeSet.parseToHexGroups(KeyValueChangeKey.armyresource, value);
                             break;
                         case KeyValueChangeKey.faction:
                             // TODO do better parsing
-                            returnStr += setPrefix + KeyValueChangeSet.parseToHex(KeyValueChangeKey.faction, value);
+                            returnStr += setPrefix + KeyValueChangeSet.parseToHexGroups(KeyValueChangeKey.faction, value);
                             break;
                         case KeyValueChangeKey.CommandNodeWarInstance:
+                            // TODO do better parsing
+                            returnStr += setPrefix + KeyValueChangeSet.parseToHexGroups(KeyValueChangeKey.CommandNodeWarInstance, value);
+                            break;
                         case KeyValueChangeKey.PlayerPartnerInfo:
                         case KeyValueChangeKey.player:
                         case KeyValueChangeKey.ShopWarBondItemCounter:
@@ -108,9 +111,11 @@ export class KeyValueChangeSet {
                     const value = groups[i + 1];
                     switch (bytesToString(groups[i])) {
                         case KeyValueChangeKey.battle:
+                            // TODO do better naming
                             returnStr += deletePrefix + KeyValueChangeSet.parseToHex(KeyValueChangeKey.battle, value);
                             break;
                         case KeyValueChangeKey.BattleInfo:
+                            // TODO do better naming
                             returnStr += deletePrefix + KeyValueChangeSet.parseToHex(KeyValueChangeKey.BattleInfo, value);
                             break;
                         default:
@@ -130,6 +135,12 @@ export class KeyValueChangeSet {
         return type.toString() + ` - ` + value.toString("hex");
     }
 
+    private static parseToHexGroups(type: KeyValueChangeKey, value: Buffer) {
+        return type.toString() + ` - ` + splitOnMultipleOf8(value)
+            .map(v => v.buffer.toString("hex"))
+            .join(` - `);
+    }
+
     private static parseSetBattlefieldStatus(value: Buffer) {
         return KeyValueChangeKey.battlefieldstatus.toString() +
             ` - ${value.readUInt8(25) == 32
@@ -145,23 +156,6 @@ export class KeyValueChangeSet {
             ` - ${value.readUInt8(10) == 21
                 ? value.slice(11).toString("hex")
                 : "Unknown"}`;
-    }
-
-    private static parseSetArmyResource(value: Buffer) {
-        let result = KeyValueChangeKey.armyresource.toString() +
-            ` - ${value.readUInt8() == 8
-                ? value.slice(1, 10).toString("hex")
-                : "Unknown"}` +
-            ` - ${value.readUInt8(10) == 16
-                ? value.slice(11, 20).toString("hex")
-                : "Unknown"}`;
-        const offset = (value.readUInt8(25) == 40)
-            ? 25
-            : (value.readUInt8(24) == 40) ? 24 : 26;
-        result += ` - ${value.readUInt8(offset) == 40
-            ? value.slice(offset + 1, offset + 10).toString("hex")
-            : "Unknown"}`;
-        return result;
     }
 
     private static parseSetBattle(value: Buffer) {

@@ -1,4 +1,5 @@
-import { parseGroups, bytesToString } from "./classes";
+import BufferCursor from "./buffercursor";
+import { bytesToString, parseGroups } from "./utils";
 
 enum KeyValueOp {
     set = "set",
@@ -33,13 +34,13 @@ enum KeyValueChangeKey {
 
 export class KeyValueChangeSet {
     constructor() { }
-    static parse(buf: Buffer) {
+    static parse(buf: BufferCursor) {
         const prefix = `\n${" ".repeat(12)}`;
         const groups = parseGroups(buf);
         let returnStr = "";
         switch (bytesToString(groups[0])) {
             case KeyValueOp.set:
-                const setPrefix = prefix+"Set ";
+                const setPrefix = prefix + "Set ";
                 groups.shift();
                 for (let i = 0; i < groups.length; i += 2) {
                     const value = groups[i + 1];
@@ -92,7 +93,7 @@ export class KeyValueChangeSet {
                         case KeyValueChangeKey.air_transport:
                         case KeyValueChangeKey.air_commandnode_base:
                         case KeyValueChangeKey.ViewHandlerPulse:
-                            returnStr += setPrefix +`${bytesToString(groups[i])} - Not parsed`;
+                            returnStr += setPrefix + `${bytesToString(groups[i])} - Not parsed`;
                             break;
                         default:
                             returnStr += prefix + `${bytesToString(groups[i])} - New set key`;
@@ -101,7 +102,7 @@ export class KeyValueChangeSet {
                 }
                 break;
             case KeyValueOp.delete:
-                const deletePrefix = prefix+"Delete ";
+                const deletePrefix = prefix + "Delete ";
                 groups.shift();
                 for (let i = 0; i < groups.length; i += 2) {
                     const value = groups[i + 1];

@@ -2,15 +2,11 @@ import * as all from "./classes";
 import * as login from "./LoginClasses";
 import * as subs from "./SubscribtionClasses";
 import { KeyValueChangeSet } from "./KeyValueChangeSet";
-
-export interface packetBundle {
-    buf: Buffer;
-    bytes: number[];
-}
+import BufferCursor from "./buffercursor";
 
 export interface packetClassParser {
     new(): any;
-    parse: (buf: Buffer) => string | void;
+    parse: (buf: BufferCursor) => string | void;
 }
 
 const keys = new Map<String, packetClassParser>([

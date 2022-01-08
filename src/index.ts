@@ -6,6 +6,11 @@ import { bytesToString } from "./utils";
 const data = fs.readFileSync("./captures/capturetext2.txt", "utf-8");
 const packets = data.split("No.     Time           Source                Destination           Protocol Length Info").map(e => e.split("Data")[1]);
 
+/**
+ * regex for finding client to server packets:
+ * `Transmission Control Protocol, Src Port: 51702, Dst Port: 15110, Seq: \w+, Ack: \w+, Len: [^0]\w*`
+ */
+
 const dataLines = packets
     .filter(e => e)
     .map(e => e.match(/[\d\w]{4}\s{2}(([\d\w]{2}\s)+)\s+.+/g))
@@ -15,7 +20,7 @@ const dataLines = packets
 
 const arr = [];
 
-for (let i = 0; i < 300; i++) {
+for (let i = 0; i < 60; i++) {
     arr.push(dataLines[i]);
 }
 

@@ -37,7 +37,7 @@ export class KeyValueChangeSet {
     static parse(buf: BufferCursor) {
         const prefix = `\n${" ".repeat(12)}`;
         const groups = parseGroups(buf);
-        let returnStr = "";
+        let returnStr = "🔽";
         switch (bytesToString(groups[0])) {
             case KeyValueOp.set:
                 const setPrefix = prefix + "Set ";
@@ -71,6 +71,7 @@ export class KeyValueChangeSet {
                             break;
                         case KeyValueChangeKey.BattleInfo:
                             returnStr += setPrefix + KeyValueChangeSet.parseSetBattleInfo(value);
+                            // returnStr += setPrefix + KeyValueChangeSet.parseToHexGroups(KeyValueChangeKey.BattleInfo, value);
                             break;
                         case KeyValueChangeKey.armyresource:
                             // TODO do better parsing
@@ -149,7 +150,7 @@ export class KeyValueChangeSet {
     }
 
     private static parseSetBattleInfo(value: Buffer) {
-        return KeyValueChangeKey.battle.toString() +
+        return KeyValueChangeKey.BattleInfo.toString() +
             ` - ${value.readUInt8() == 8
                 ? value.slice(1, 10).toString("hex")
                 : "Unknown"}` +

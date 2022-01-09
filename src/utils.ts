@@ -53,3 +53,19 @@ export function splitOnMultipleOf8(source: Buffer | BufferCursor) {
     }
     return arr;
 }
+
+export function splitOnChar(buf: BufferCursor, char: string | number): BufferCursor | undefined {
+    const charInt = typeof char == "string" ? char.charCodeAt(0) : char;
+    const start = buf.tell();
+
+    for (let i = 0; i < buf.length; i++) {
+        const value = buf.readUInt8();
+        if (value === charInt) {
+            const stop = buf.tell();
+            buf.seek(start);
+            const resultBuf = buf.slice(stop - start - 1);
+            buf.seek(stop);
+            return resultBuf;
+        }
+    }
+}

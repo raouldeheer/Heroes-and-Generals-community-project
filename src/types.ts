@@ -5,7 +5,6 @@ import { KeyValueChangeSet } from "./KeyValueChangeSet";
 import BufferCursor from "./buffercursor";
 
 export interface packetClassParser {
-    new(): any;
     parse: (buf: BufferCursor) => string | void;
 }
 

@@ -33,7 +33,6 @@ enum KeyValueChangeKey {
 }
 
 export class KeyValueChangeSet {
-    constructor() { }
     static parse(buf: BufferCursor) {
         const prefix = `\n${" ".repeat(12)}`;
         const groups = parseGroups(buf);
@@ -229,17 +228,21 @@ export class KeyValueChangeSet {
     private static parseSetCommandNodeDefinition(value: Buffer) {
         let result = KeyValueChangeKey.CommandNodeDefinition.toString();
         let cursor = value.readUInt8() + 2;
-        if (value.readInt8(cursor) == 18) {
-            const ownerNameLen = value.readUInt8(++cursor);
-            result += ` - ${bytesToString(value.slice(++cursor, cursor += ownerNameLen))}`;
-            if (value.readInt8(cursor) == 26) {
-                const atName = value.readUInt8(++cursor);
-                result += ` - ${bytesToString(value.slice(++cursor, cursor += atName))}`;
+        try {
+            if (value.readInt8(cursor) == 18) {
+                const ownerNameLen = value.readUInt8(++cursor);
+                result += ` - ${bytesToString(value.slice(++cursor, cursor += ownerNameLen))}`;
+                if (value.readInt8(cursor) == 26) {
+                    const atName = value.readUInt8(++cursor);
+                    result += ` - ${bytesToString(value.slice(++cursor, cursor += atName))}`;
+                } else {
+                    result += ` - Unknown`;
+                }
             } else {
                 result += ` - Unknown`;
             }
-        } else {
-            result += ` - Unknown`;
+        } catch (error) {
+            return result + " - Error";
         }
         return result;
     }

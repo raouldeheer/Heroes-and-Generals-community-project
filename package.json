@@ -28,5 +28,8 @@
   "funding": {
     "type": "github",
     "url": "https://github.com/sponsors/raouldeheer"
+  },
+  "dependencies": {
+    "jsbi": "^4.1.0"
   }
 }

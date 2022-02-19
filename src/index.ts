@@ -2,10 +2,10 @@ import fs from "fs";
 import BufferCursor from "./buffercursor";
 import { keys } from "./types";
 import { bytesToString } from "./utils";
-
-const data = fs.readFileSync("./captures/capturetext2.txt", "utf-8");
+ 
+const data = fs.readFileSync("./captures/capturetext4.txt", "utf-8");
 const packets = data.split("No.     Time           Source                Destination           Protocol Length Info").map(e => e.split("Data")[1]);
-
+ 
 /**
  * regex for finding client to server packets:
  * `Transmission Control Protocol, Src Port: 51702, Dst Port: 15110, Seq: \w+, Ack: \w+, Len: [^0]\w*`
@@ -13,16 +13,24 @@ const packets = data.split("No.     Time           Source                Destina
 
 const dataLines = packets
     .filter(e => e)
-    .map(e => e.match(/[\d\w]{4}\s{2}(([\d\w]{2}\s)+)\s+.+/g))
+    .map(e => e.match(/\w{4}\s{2}(\w{2}\s)+\s+.+/g))
     .filter(e => e)
     .map(e => dataLinesToBuffer(e!))
     .filter(v => v.length > 0);
 
 const arr = [];
 
-for (let i = 0; i < 60; i++) {
+for (let i = 0; i < dataLines.length; i++) {
     arr.push(dataLines[i]);
 }
+
+/**
+ * 
+ * # Google Protobuf
+ * [decoder](https://protobuf-decoder.netlify.app/)
+ * 
+ */
+
 
 let loseEnd = "";
 const bufs = [];
@@ -66,7 +74,7 @@ bufs.forEach(element => {
      *                  |     8  |    33                        *
      *                  |       41                              *
      *                  45                                      *
-     * Total 45 bytes                                           *
+     * Total 45 bytes          OR 20 + Header + Data            *
      ************************************************************/
 
     const plen = element.readUInt32LE().toString().padEnd(5);

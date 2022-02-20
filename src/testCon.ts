@@ -1,7 +1,7 @@
 import BufferCursor from "./buffercursor";
 import { keys } from "./types";
 import { bytesToString } from "./utils";
-import { Client, exampleToTotalPacket, makeLoginPacket } from "./client";
+import { Client } from "./client";
 import { ip, port } from "./env";
 
 const cl = new Client(ip, port);
@@ -28,19 +28,19 @@ cl.on("message", (data: Buffer) => {
     if (keys.has(typeText)) {
         switch (typeText) {
             case "QueryServerInfoResponse":
-                cl.con.write(exampleToTotalPacket("StartLogin"));
-                // cl.con.write(exampleToTotalPacket("QueryBannedMachineRequest"));
+                cl.sendExamplePacket("StartLogin");
+                // cl.sendExamplePacket("QueryBannedMachineRequest");
                 break;
             case "QueryBannedMachineResponse":
-                cl.con.write(exampleToTotalPacket("StartLogin"));
+                cl.sendExamplePacket("StartLogin");
                 break;
             case "LoginQueueUpdate":
                 if (Number(id) == 0) {
-                    cl.con.write(exampleToTotalPacket("login2_begin"));
+                    cl.sendExamplePacket("login2_begin");
                 }
                 break;
             case "login2_result":
-                cl.con.write(exampleToTotalPacket("subscribecommandnodeview"));
+                cl.sendExamplePacket("subscribecommandnodeview");
                 break;
         }
         // Find class to parse packet with.
@@ -50,13 +50,11 @@ cl.on("message", (data: Buffer) => {
             const resultdata = result as string;
             const datas = resultdata.split(" - ");
 
-            const loginPacket = makeLoginPacket({
+            cl.sendLogin({
                 salt: datas[0],
                 tempSessionid: datas[1],
                 encryptedSessionkey: datas[2],
             });
-
-            cl.con.write(loginPacket);
         }
     } else {
         console.log(typeText);

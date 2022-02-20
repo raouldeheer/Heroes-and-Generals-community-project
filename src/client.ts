@@ -7,9 +7,11 @@ import { password } from "./env";
 
 export class Client extends EventEmitter {
     con: net.Socket;
+    private idNumber;
     private rest: Buffer | undefined;
     constructor(host: string, port: number) {
         super();
+        this.idNumber = 0;
         this.con = net.createConnection({ host, port });
 
         this.con.on("close", err => {
@@ -38,86 +40,92 @@ export class Client extends EventEmitter {
 
         this.con.on("connect", () => {
             // connected
-            this.con.write(exampleToTotalPacket("QueryServerInfo"));
+            this.sendExamplePacket("QueryServerInfo");
         });
     }
-}
 
-let idNumber = 0;
-function packer(className: string, data: Buffer) {
-    const totalLength = data.byteLength + className.length;
-    const result = new BufferCursor(Buffer.allocUnsafe(20 + totalLength));
-    result.writeUInt32LE(20 + totalLength);
-    result.writeUInt32LE(8);
-    result.writeUInt32LE(++idNumber);
-    result.writeUInt32LE(8 + totalLength);
-    result.writeUInt32LE(4 + className.length);
-    result.write(className, className.length, "ascii");
-    result.writeBuff(data, data.byteLength);
-    return result.buffer;
-}
-
-export const exampleToTotalPacket = (className: string) =>
-    packer(className, keys.get(className)!.example);
-
-export function makeLoginPacket(
-    param: {
-        salt: string,
-        tempSessionid: string,
-        encryptedSessionkey: string,
+    public packer(className: string, data: Buffer) {
+        const totalLength = data.byteLength + className.length;
+        const result = new BufferCursor(Buffer.allocUnsafe(20 + totalLength));
+        result.writeUInt32LE(20 + totalLength);
+        result.writeUInt32LE(8);
+        result.writeUInt32LE(++this.idNumber);
+        result.writeUInt32LE(8 + totalLength);
+        result.writeUInt32LE(4 + className.length);
+        result.write(className, className.length, "ascii");
+        result.writeBuff(data, data.byteLength);
+        return result.buffer;
     }
-) {
-    const { digest, tempSessionid } = login(password, param);
 
-    const digestBuff = Buffer.from(digest, "ascii");
-    const tempSessionidBuff = Buffer.from(tempSessionid, "ascii");
-    const length = digestBuff.byteLength +
-        tempSessionidBuff.byteLength + 12;
-    const loginData = new BufferCursor(Buffer.allocUnsafe(length));
-    loginData.writeUInt32LE(length);
-    loginData.writeUInt32LE(length - 4);
-    loginData.writeUInt8(0x12);
-    loginData.writeUInt8(digestBuff.byteLength);
-    loginData.writeBuff(digestBuff, digestBuff.length);
-    loginData.writeUInt8(0x0a);
-    loginData.writeUInt8(tempSessionidBuff.byteLength);
-    loginData.writeBuff(tempSessionidBuff, tempSessionidBuff.length);
-
-    return packer("login2_response", loginData.buffer);
-}
-
-function login(
-    password: string,
-    {
-        salt,
-        tempSessionid,
-        encryptedSessionkey,
-    }: {
-        salt: string,
-        tempSessionid: string,
-        encryptedSessionkey: string,
+    /**
+     * sendExamplePacket
+     */
+    public sendExamplePacket(className: string) {
+        const example = keys.get(className)?.example;
+        if (!example) return false;
+        this.con.write(this.packer(className, example));
+        return true;
     }
-) {
-    const sessionid = Buffer.from(tempSessionid, "base64");
 
-    const sha1concat = (d1: Buffer, d2: Buffer) =>
-        crypto.createHash('sha1').update(Buffer.concat([d1, d2])).digest();
+    private login(
+        password: string,
+        {
+            salt,
+            tempSessionid,
+            encryptedSessionkey,
+        }: {
+            salt: string,
+            tempSessionid: string,
+            encryptedSessionkey: string,
+        }
+    ) {
+        const sessionid = Buffer.from(tempSessionid, "base64");
 
-    const loginkeyhash = sha1concat(sha1concat(
-        Buffer.from(password, "latin1"),
-        Buffer.from(salt, "base64")
-    ), sessionid);
+        const sha1concat = (d1: Buffer, d2: Buffer) =>
+            crypto.createHash('sha1').update(Buffer.concat([d1, d2])).digest();
 
-    const computeHMAC = (key: crypto.BinaryLike, data: crypto.BinaryLike) =>
-        crypto.createHmac('sha1', key).update(data).digest("base64");
+        const loginkeyhash = sha1concat(sha1concat(
+            Buffer.from(password, "latin1"),
+            Buffer.from(salt, "base64")
+        ), sessionid);
 
-    const digest = computeHMAC(
-        Buffer.from(encryptedSessionkey, "base64")
-            .map((value, i) => value ^ loginkeyhash[i % loginkeyhash.length]),
-        sessionid);
+        const computeHMAC = (key: crypto.BinaryLike, data: crypto.BinaryLike) =>
+            crypto.createHmac('sha1', key).update(data).digest("base64");
 
-    return {
-        digest,
-        tempSessionid,
-    };
+        const digest = computeHMAC(
+            Buffer.from(encryptedSessionkey, "base64")
+                .map((value, i) => value ^ loginkeyhash[i % loginkeyhash.length]),
+            sessionid);
+
+        return {
+            digest,
+            tempSessionid,
+        };
+    }
+
+    public sendLogin(
+        param: {
+            salt: string,
+            tempSessionid: string,
+            encryptedSessionkey: string,
+        }
+    ) {
+        const { digest, tempSessionid } = this.login(password, param);
+
+        const digestBuff = Buffer.from(digest, "ascii");
+        const tempSessionidBuff = Buffer.from(tempSessionid, "ascii");
+        const length = digestBuff.byteLength +
+            tempSessionidBuff.byteLength + 12;
+        const loginData = new BufferCursor(Buffer.allocUnsafe(length));
+        loginData.writeUInt32LE(length);
+        loginData.writeUInt32LE(length - 4);
+        loginData.writeUInt8(0x12);
+        loginData.writeUInt8(digestBuff.byteLength);
+        loginData.writeBuff(digestBuff, digestBuff.length);
+        loginData.writeUInt8(0x0a);
+        loginData.writeUInt8(tempSessionidBuff.byteLength);
+        loginData.writeBuff(tempSessionidBuff, tempSessionidBuff.length);
+
+        this.con.write(this.packer("login2_response", loginData.buffer));
+    }
 }

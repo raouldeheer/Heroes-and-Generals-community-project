@@ -78,3 +78,4 @@ typings/
 dist
 captures
 total.txt
+src/env.ts

@@ -1,3 +1,4 @@
+import BufferCursor from "./buffercursor";
 import { decodeProto } from "./protobuf-decoder/src/protobufDecoder";
 import { SortedArray } from "./protoparsers/protoTypes";
 
@@ -37,7 +38,12 @@ export const BufToDecodedProto = (proto: protobuf.Type, buf: Buffer) =>
 export function ProtoToBuf(proto: protobuf.Type, payload: any): Buffer {
     const errMsg = proto.verify(payload);
     if (errMsg) throw Error(errMsg);
-    return proto.encode(
+    const encoded = proto.encode(
         proto.create(payload)
     ).finish() as Buffer;
+    const result = new BufferCursor(Buffer.allocUnsafe(encoded.byteLength + 8));
+    result.writeUInt32LE(encoded.byteLength + 8);
+    result.writeUInt32LE(encoded.byteLength + 4);
+    result.writeBuff(encoded, encoded.length);
+    return result.buffer;
 };

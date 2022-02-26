@@ -192,9 +192,12 @@ export class GetMissionDetailsRequest {
 }
 
 export class GetMissionDetailsResponse {
+    static proto = MissionDetailsPackage.lookupType("MissionDetails.GetMissionDetailsResponse");
     static example = dummyBuffer;
     static parse(buf: BufferCursor) {
-        // TODO do parsing here.
+        const object = BufToDecodedProto(this.proto, buf.buffer.slice(8));
+        const str = ProtoToString(object);
+        return str;
     }
 }
 

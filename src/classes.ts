@@ -2,23 +2,32 @@ import BufferCursor from "./buffercursor";
 import { uuid } from "./env";
 import { BufToDecodedProto, ProtoToBuf, ProtoToString } from "./proto";
 import protobuf from "protobufjs";
-import long from "long";
 
 export const dummyBuffer = Buffer.from("0a000000060000000800", "hex");
 export const emptyBuffer = Buffer.from("0800000004000000", "hex");
 
+const ServerInfoPackage = protobuf.loadSync("./src/protos/ServerInfo.proto");
+
 export class QueryServerInfo {
+    static proto = ServerInfoPackage.lookupType("ServerInfo.QueryServerInfo");
     static example = dummyBuffer;
     static parse(buf: BufferCursor): string {
-        return this.example.equals(buf.buffer) ? "🔼 Request" : "Error";
+        const object = BufToDecodedProto(this.proto, buf.buffer.slice(8));
+        const str = ProtoToString(object);
+        return str;
     }
+    static toBuffer = (payload: {
+        dummy: number,
+    } = { dummy: 0 }): Buffer => ProtoToBuf(this.proto, payload);
 }
 
 export class QueryServerInfoResponse {
+    static proto = ServerInfoPackage.lookupType("ServerInfo.QueryServerInfoResponse");
     static example = dummyBuffer;
     static parse(buf: BufferCursor): string {
-        return "🔽 Response";
-        // TODO do QueryServerInfoResponse parsing here.
+        const object = BufToDecodedProto(this.proto, buf.buffer.slice(8));
+        const str = ProtoToString(object);
+        return str;
     }
 }
 

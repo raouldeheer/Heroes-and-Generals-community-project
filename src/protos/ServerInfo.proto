@@ -1,0 +1,16 @@
+package ServerInfo;
+syntax = "proto3";
+
+message QueryServerInfo {
+    optional int32 dummy = 1;
+}
+
+message QueryServerInfoResponse {
+    required string servertime = 1;
+    required int32 playersInWar = 2;
+    required int32 onlineplayers = 3;
+    required string version = 4;
+    optional string metricsUrl = 5;
+    optional string redShiftUrl = 6;
+    optional string engageUrl = 7;
+}

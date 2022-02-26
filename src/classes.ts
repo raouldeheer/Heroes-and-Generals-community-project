@@ -1,7 +1,8 @@
 import BufferCursor from "./buffercursor";
 import { uuid } from "./env";
-import { BufToDecodedProto, ProtoToString } from "./proto";
+import { BufToDecodedProto, ProtoToBuf, ProtoToString } from "./proto";
 import protobuf from "protobufjs";
+import long from "long";
 
 export const dummyBuffer = Buffer.from("0a000000060000000800", "hex");
 export const emptyBuffer = Buffer.from("0800000004000000", "hex");
@@ -189,6 +190,10 @@ export class GetMissionDetailsRequest {
         const str = ProtoToString(object);
         return str;
     }
+    static toBuffer = (payload: {
+        missionId: Long,
+        battleId: Long,
+    }): Buffer => ProtoToBuf(this.proto, payload);
 }
 
 export class GetMissionDetailsResponse {

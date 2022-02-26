@@ -33,3 +33,11 @@ export const BufToDecodedProto = (proto: protobuf.Type, buf: Buffer) =>
         enums: Number,
         bytes: String,
     });
+
+export function ProtoToBuf(proto: protobuf.Type, payload: any): Buffer {
+    const errMsg = proto.verify(payload);
+    if (errMsg) throw Error(errMsg);
+    return proto.encode(
+        proto.create(payload)
+    ).finish() as Buffer;
+};

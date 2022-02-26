@@ -1,5 +1,7 @@
 import BufferCursor from "./buffercursor";
 import { uuid } from "./env";
+import { BufToDecodedProto, ProtoToString } from "./proto";
+import protobuf from "protobufjs";
 
 export const dummyBuffer = Buffer.from("0a000000060000000800", "hex");
 export const emptyBuffer = Buffer.from("0800000004000000", "hex");
@@ -177,11 +179,15 @@ export class QueryActiveSurveyResponse {
         return this.example.equals(buf.buffer) ? "🔽 Response" : "Error";
     }
 }
+const MissionDetailsPackage = protobuf.loadSync("./src/protos/MissionDetails.proto");
 
 export class GetMissionDetailsRequest {
+    static proto = MissionDetailsPackage.lookupType("MissionDetails.GetMissionDetailsRequest");
     static example = dummyBuffer;
     static parse(buf: BufferCursor) {
-        // TODO do parsing here.
+        const object = BufToDecodedProto(this.proto, buf.buffer.slice(8));
+        const str = ProtoToString(object);
+        return str;
     }
 }
 

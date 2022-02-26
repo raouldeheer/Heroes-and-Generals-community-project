@@ -10,12 +10,9 @@ const ServerInfoPackage = protobuf.loadSync("./src/protos/ServerInfo.proto");
 
 export class QueryServerInfo {
     static proto = ServerInfoPackage.lookupType("ServerInfo.QueryServerInfo");
-    static example = dummyBuffer;
-    static parse(buf: BufferCursor): string {
-        const object = BufToDecodedProto(this.proto, buf.buffer.slice(8));
-        const str = ProtoToString(object);
-        return str;
-    }
+    static example = dummyBuffer; // TODO remove
+    static parse = (buf: BufferCursor) =>
+        BufToDecodedProto(this.proto, buf.buffer.slice(8));
     static toBuffer = (payload: {
         dummy: number,
     } = { dummy: 0 }): Buffer => ProtoToBuf(this.proto, payload);
@@ -23,12 +20,9 @@ export class QueryServerInfo {
 
 export class QueryServerInfoResponse {
     static proto = ServerInfoPackage.lookupType("ServerInfo.QueryServerInfoResponse");
-    static example = dummyBuffer;
-    static parse(buf: BufferCursor): string {
-        const object = BufToDecodedProto(this.proto, buf.buffer.slice(8));
-        const str = ProtoToString(object);
-        return str;
-    }
+    static example = dummyBuffer; // TODO remove
+    static parse = (buf: BufferCursor) =>
+        BufToDecodedProto(this.proto, buf.buffer.slice(8));
 }
 
 const BannedMachinePackage = protobuf.loadSync("./src/protos/BannedMachine.proto");
@@ -41,12 +35,9 @@ export class QueryBannedMachineRequest {
         "1224" + QueryBannedMachineRequest.uuid +
         "0a24" + QueryBannedMachineRequest.uuid,
         "hex"
-    );
-    static parse(buf: BufferCursor): string {
-        const object = BufToDecodedProto(this.proto, buf.buffer.slice(8));
-        const str = ProtoToString(object);
-        return str;
-    }
+    ); // TODO remove
+    static parse = (buf: BufferCursor) =>
+        BufToDecodedProto(this.proto, buf.buffer.slice(8));
     static toBuffer = (payload: {
         machineIdentifier: string,
         machineIdentifierOld: string,
@@ -62,12 +53,9 @@ export class QueryBannedMachineResponse {
         0x0c, 0x00, 0x00, 0x00,
         0x08, 0x00, 0x00, 0x00,
         0x08, 0x00, 0x12, 0x00
-    ]);
-    static parse(buf: BufferCursor): string {
-        const object = BufToDecodedProto(this.proto, buf.buffer.slice(8));
-        const str = ProtoToString(object);
-        return str;
-    }
+    ]); // TODO remove
+    static parse = (buf: BufferCursor) =>
+        BufToDecodedProto(this.proto, buf.buffer.slice(8));
 }
 
 export class zipchunk {

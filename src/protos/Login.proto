@@ -1,0 +1,119 @@
+package Login;
+syntax = "proto3";
+
+enum Response {
+    ZERO = 0;
+    ONE = 1;
+}
+
+enum Result {
+    ZERO = 0;
+    ONE = 1;
+    TWO = 2;
+    THREE = 3;
+}
+
+message StartLogin {
+    optional int32 dummy = 1;
+}
+
+message LoginQueueUpdate {
+    required int32 positionInQueue = 1;
+    required bool mayProceed = 2;
+    required int32 originalId = 3;
+    required Result result = 4;
+}
+
+message login2_begin {
+    required string username = 1; 
+    optional string deviceid = 2; 
+    required bool acceptingPrivacyPolicy = 3; 
+    required bool acceptingBattlEyePolicy = 4;
+}
+
+message login2_challenge {
+    required string salt = 1;
+    required string tempSessionid = 2;
+    required string encryptedSessionkey = 3;
+    optional string gamertag = 4;
+    optional string redirectSrv = 6;
+    required Response responseCode = 7;
+    optional string countryCode = 8;
+}
+
+message login2_response {
+    required string tempSessionid = 1;
+    required string digest = 2;
+}
+
+message player {
+    required int64 id = 1;
+    required string gamertag = 2;
+    required uint32 invertmouse = 3;
+    required uint32 invertmouseairplane = 4;
+    required float mousesensitivity = 5;
+    required string administrator = 6;
+    required uint32 mousecontrolledcars = 7;
+    required uint32 showcrosshair = 8;
+    required uint32 showcrosshairVehicles = 9;
+    required int64 war = 10;
+    required int64 factionid = 11;
+    required string subscribedupto = 12;
+    required int64 goldBought = 13;
+    required int64 goldEarned = 14;
+    required int64 goldUsed = 15;
+    required int64 creditsBought = 16;
+    required int64 creditsEarned = 17;
+    required int64 creditsUsed = 18;
+    required string firstActionGameDate = 19;
+    required int32 numloginsFlash = 20;
+    required int32 numloginsMobile = 21;
+    required string language = 22;
+    required int64 warfundsBought = 23;
+    required int64 warfundsEarned = 24;
+    required int64 warfundsUsed = 25;
+    optional string metricsUid = 26;
+    required int32 yellowGriefPoints = 27;
+    required int32 redGriefPoints = 28;
+    required string latestRedGriefPointTimestamp = 29;
+    required int32 tier = 30;
+    required string lastLogin = 31;
+    required int32 tutorialsCompleted = 32;
+    required int64 goldBoughtSteam = 33;
+    required float skillLevel = 34;
+    required uint32 invertmouseturret = 35;
+    required int64 totalScore = 36;
+    repeated bool unlockBits = 37;
+    required int32 level = 38;
+    repeated bool achievementsBits = 39;
+    required bool isDeleted = 40;
+    required string currencyCode = 41;
+    required string currencyRegion = 42;
+}
+
+message login2_result {
+    required string username = 1;
+    required string time = 2;
+    required Response response = 3;
+    optional string banExpires = 4;
+    optional string banReason = 5;
+    required player currentplayer = 6;
+}
+
+message keyValue {
+    optional string key = 1;
+    optional string value = 2;
+}
+
+message login2_postlogin {
+    required string tempSessionid = 1;
+    required string partnerId = 2;
+    repeated keyValue additionalArgs = 3;
+}
+
+message login2_postlogin_result {
+    required int64 sessionid = 1;
+    required string platform = 2;
+    optional string deleteDate = 3;
+    required Result result = 4;
+}

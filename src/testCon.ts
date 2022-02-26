@@ -32,11 +32,11 @@ cl.on("message", (data: Buffer) => {
                 cl.sendPacketToBuffer("QueryBannedMachineRequest");
                 break;
             case "QueryBannedMachineResponse":
-                cl.sendExamplePacket("StartLogin");
+                cl.sendPacketToBuffer("StartLogin");
                 break;
             case "LoginQueueUpdate":
                 if (Number(id) == 0) {
-                    cl.sendExamplePacket("login2_begin");
+                    cl.sendPacketToBuffer("login2_begin");
                 }
                 break;
             case "login2_result":

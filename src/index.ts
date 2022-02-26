@@ -1,5 +1,6 @@
 import fs from "fs";
 import BufferCursor from "./buffercursor";
+import { ProtoToString } from "./proto";
 import { keys } from "./types";
 import { bytesToString } from "./utils";
  
@@ -98,6 +99,9 @@ bufs.forEach(element => {
         // Find class to parse packet with.
         const klas = keys.get(typeText)!;
         result = klas.parse(DataBuf);
+        if (typeof result == "object") {
+            result = ProtoToString(result);
+        }
     } else {
         console.log(typeText);
     }

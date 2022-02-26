@@ -1,11 +1,11 @@
 import BufferCursor from "./buffercursor";
 import { dummyBuffer } from "./classes";
-import { decodeProto } from "./protobuf-decoder/src/protobufDecoder";
+import { ProtoToStringWithName, decode } from "./proto";
 import { SetProtoPlayerParsers } from "./protoparsers/playerParsers";
-import { ProtoParser, KeyValueChangeKey, SortedArray, KeyValueOp } from "./protoparsers/protoTypes";
+import { ProtoParser, KeyValueChangeKey, KeyValueOp } from "./protoparsers/protoTypes";
 import { SetProtoServerParsers } from "./protoparsers/serverParsers";
 import { SetProtoWarParsers } from "./protoparsers/warParsers";
-import { bytesToString, parseGroups, splitOnMultipleOf8 } from "./utils";
+import { bytesToString, parseGroups } from "./utils";
 
 const SetProtoParsers = new Map<String, ProtoParser>([
     ...SetProtoPlayerParsers,
@@ -28,8 +28,8 @@ export class KeyValueChangeSet {
                     const value = groups[i + 1];
                     if (SetProtoParsers.has(key)) {
                         const parser = SetProtoParsers.get(key)!;
-                        const decoded = parser(KeyValueChangeSet.decode(value));
-                        const str = KeyValueChangeSet.ProtoToString(key as KeyValueChangeKey, decoded);
+                        const decoded = parser(decode(value));
+                        const str = ProtoToStringWithName(key as KeyValueChangeKey, decoded);
                         returnStr += setPrefix + str;
                     } else {
                         returnStr += prefix + `${key} - New set key`;
@@ -61,28 +61,8 @@ export class KeyValueChangeSet {
         return returnStr;
     }
 
-    private static decode(value: Buffer): SortedArray {
-        const sorted: SortedArray = [];
-        decodeProto(value).parts.forEach(element => {
-            sorted[element.index] = element.value;
-        });
-        return sorted;
-    }
-
     private static parseToHex(type: KeyValueChangeKey, value: Buffer) {
         return type.toString() + ` - ` + value.toString("hex");
     }
 
-    private static parseToHexGroups(type: KeyValueChangeKey, value: Buffer) {
-        return type.toString() + ` - ` + splitOnMultipleOf8(value)
-            .map(v => v.buffer.toString("hex"))
-            .join(` - `);
-    }
-
-    private static ProtoToString(type: KeyValueChangeKey, result: any) {
-        const prefix = `\n${" ".repeat(16)}`;
-        return type.toString() + prefix +
-            Object.entries(result).reduce((prev, curr, i, { length }) => prev + curr[0] + ": " +
-                String(curr[1]) + ((i == length - 1) ? "" : prefix), "");
-    }
 }

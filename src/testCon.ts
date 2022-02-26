@@ -28,8 +28,8 @@ cl.on("message", (data: Buffer) => {
     if (keys.has(typeText)) {
         switch (typeText) {
             case "QueryServerInfoResponse":
-                cl.sendExamplePacket("StartLogin");
-                // cl.sendExamplePacket("QueryBannedMachineRequest");
+                // cl.sendExamplePacket("StartLogin");
+                cl.sendPacketToBuffer("QueryBannedMachineRequest");
                 break;
             case "QueryBannedMachineResponse":
                 cl.sendExamplePacket("StartLogin");

@@ -1,0 +1,12 @@
+package BannedMachine;
+syntax = "proto3";
+
+message QueryBannedMachineRequest {
+    required string machineIdentifier = 1;
+    required string machineIdentifierOld = 2;
+}
+
+message QueryBannedMachineResponse {
+    required bool isBanned = 1;
+    required string banReason = 2;
+}

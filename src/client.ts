@@ -66,6 +66,17 @@ export class Client extends EventEmitter {
         this.con.write(this.packer(className, example));
         return true;
     }
+    
+    /**
+     * sendPacketToBuffer
+     */
+     public sendPacketToBuffer(className: string, payload?: any) {
+        // @ts-ignore
+        const example = keys.get(className)?.toBuffer?.(payload);
+        if (!example) return false;
+        this.con.write(this.packer(className, example));
+        return true;
+    }
 
     private login(
         password: string,

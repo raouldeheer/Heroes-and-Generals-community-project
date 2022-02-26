@@ -53,6 +53,10 @@ export class login2_response {
     static example = dummyBuffer; // TODO remove
     static parse = (buf: BufferCursor) =>
         BufToDecodedProto(this.proto, buf.buffer.slice(8));
+    static toBuffer = (payload: {
+        tempSessionid: string,
+        digest: string,
+    }): Buffer => ProtoToBuf(this.proto, payload);
 }
 
 export class login2_result {
@@ -77,7 +81,7 @@ export class login2_postlogin_result {
 }
 
 export class RedeemDailyLoginRewardRequest {
-    static example = dummyBuffer; 
+    static example = dummyBuffer;
     static parse(_buf: BufferCursor): string {
         return "🔼 Request";
         // TODO find out what these bytes do.

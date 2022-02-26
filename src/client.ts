@@ -2,8 +2,9 @@ import { EventEmitter } from "events";
 import net from "net";
 import crypto from 'crypto';
 import BufferCursor from "./buffercursor";
-import { keys } from "./types";
+import { keys, packetClassParserX } from "./types";
 import { password } from "./env";
+import { ProtoToString } from "./proto";
 
 export class Client extends EventEmitter {
     con: net.Socket;
@@ -32,19 +33,26 @@ export class Client extends EventEmitter {
             while (this.rest && this.rest.length > 4) {
                 const len = this.rest.readUInt32LE(0);
                 if (this.rest.length >= len) {
-                    this.emit('message', this.rest.slice(0, len));
+                    this.handleMessage(this.rest.slice(0, len));
                     this.rest = this.rest.slice(len);
                 } else break;
             }
         });
 
         this.con.on("connect", () => {
-            // connected
-            this.sendExamplePacket("QueryServerInfo");
+            // connected to server with tcp
+            this.sendPacketToBuffer("QueryServerInfo");
         });
     }
 
-    public packer(className: string, data: Buffer) {
+    public close() {
+        try {
+            this.con.end();
+            this.con.destroy();
+        } catch (_) { }
+    }
+
+    private packer(className: string, data: Buffer) {
         const totalLength = data.byteLength + className.length;
         const result = new BufferCursor(Buffer.allocUnsafe(20 + totalLength));
         result.writeUInt32LE(20 + totalLength);
@@ -57,24 +65,17 @@ export class Client extends EventEmitter {
         return result.buffer;
     }
 
-    /**
-     * sendExamplePacket
-     */
     public sendExamplePacket(className: string) {
         const example = keys.get(className)?.example;
         if (!example) return false;
         this.con.write(this.packer(className, example));
         return true;
     }
-    
-    /**
-     * sendPacketToBuffer
-     */
-     public sendPacketToBuffer(className: string, payload?: any) {
-        // @ts-ignore
-        const example = keys.get(className)?.toBuffer?.(payload);
-        if (!example) return false;
-        this.con.write(this.packer(className, example));
+
+    public sendPacketToBuffer(className: string, payload?: any) {
+        const buffer = (keys.get(className) as packetClassParserX)?.toBuffer?.(payload);
+        if (!buffer) return false;
+        this.con.write(this.packer(className, buffer));
         return true;
     }
 
@@ -114,29 +115,70 @@ export class Client extends EventEmitter {
         };
     }
 
-    public sendLogin(
-        param: {
-            salt: string,
-            tempSessionid: string,
-            encryptedSessionkey: string,
+    private handleMessage(data: Buffer) {
+        const element = new BufferCursor(data);
+        const plen = element.readUInt32LE().toString().padEnd(5);
+        element.move(4);
+        const id = element.readUInt32LE().toString().padEnd(5);
+
+        const size = element.readUInt32LE() - 4;
+        const typeLength = element.readUInt32LE() - 4;
+        const typeText = element.slice(typeLength).toString();
+        if (size - typeLength == 4) return;
+
+        const DataBuf = element.slice();
+        const DataLen = DataBuf.readUInt32LE() - 4;
+        DataBuf.seek(0);
+
+        let result;
+        if (keys.has(typeText)) {
+            // Find class to parse packet with.
+            const klas = keys.get(typeText)!;
+            result = klas.parse(DataBuf);
+            switch (typeText) {
+                case "QueryServerInfoResponse":
+                    this.sendPacketToBuffer("QueryBannedMachineRequest");
+                    break;
+                case "QueryBannedMachineResponse":
+                    if (result.isBanned) {
+                        this.close();
+                        console.error("Player banned");
+                    } else {
+                        this.sendPacketToBuffer("StartLogin");
+                    }
+                    break;
+                case "LoginQueueUpdate":
+                    console.info(`Queue: ${result.positionInQueue}`);
+                    if (result.mayProceed) {
+                        this.sendPacketToBuffer("login2_begin");
+                    }
+                    break;
+                case "login2_challenge":
+                    this.sendPacketToBuffer("login2_response", this.login(password, result));
+                    break;
+                case "login2_result":
+                    // Logged in
+                    this.emit("loggedin");
+                    break;
+                default:
+                    this.emit(typeText, result);
+                    this.emit("message", typeText, result);
+                    break;
+            }
+
+            if (typeof result == "object") {
+                result = ProtoToString(result);
+            }
+        } else {
+            console.log(`unsupported message: ${typeText}`);
         }
-    ) {
-        const { digest, tempSessionid } = this.login(password, param);
 
-        const digestBuff = Buffer.from(digest, "ascii");
-        const tempSessionidBuff = Buffer.from(tempSessionid, "ascii");
-        const length = digestBuff.byteLength +
-            tempSessionidBuff.byteLength + 12;
-        const loginData = new BufferCursor(Buffer.allocUnsafe(length));
-        loginData.writeUInt32LE(length);
-        loginData.writeUInt32LE(length - 4);
-        loginData.writeUInt8(0x12);
-        loginData.writeUInt8(digestBuff.byteLength);
-        loginData.writeBuff(digestBuff, digestBuff.length);
-        loginData.writeUInt8(0x0a);
-        loginData.writeUInt8(tempSessionidBuff.byteLength);
-        loginData.writeBuff(tempSessionidBuff, tempSessionidBuff.length);
-
-        this.con.write(this.packer("login2_response", loginData.buffer));
+        const startString = `${plen} ${id} ${typeText.padEnd(35)}`;
+        const midString = `${DataLen.toString().padEnd(5)}`;
+        const outputStr = `${startString} ${result
+            ? result // Print bytes when class didn't give any results.
+            : midString
+            }`;
+        console.log(outputStr);
     }
 }

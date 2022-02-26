@@ -6,10 +6,13 @@ import BufferCursor from "./buffercursor";
 
 export interface packetClassParser {
     example: Buffer;
-    parse: (buf: BufferCursor) => string | void;
+    parse: (buf: BufferCursor) => string | void | any;
+} 
+export interface packetClassParserX extends packetClassParser {
+    toBuffer(payload?: any): Buffer;
 }
 
-const keys = new Map<String, packetClassParser>([
+const keys = new Map<String, packetClassParser | packetClassParserX>([
     ["StartLogin", login.StartLogin],
     ["zipchunk", all.zipchunk],
     ["login2_begin", login.login2_begin],

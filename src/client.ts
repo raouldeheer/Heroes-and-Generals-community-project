@@ -65,13 +65,6 @@ export class Client extends EventEmitter {
         return result.buffer;
     }
 
-    public sendExamplePacket(className: string) {
-        const example = keys.get(className)?.example;
-        if (!example) return false;
-        this.con.write(this.packer(className, example));
-        return true;
-    }
-
     public sendPacketToBuffer(className: string, payload?: any) {
         const buffer = keys.get(className)?.toBuffer?.(payload);
         if (!buffer) return false;

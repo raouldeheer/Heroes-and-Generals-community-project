@@ -1,5 +1,4 @@
 import BufferCursor from "./buffercursor";
-import { dummyBuffer } from "./classes";
 import { ProtoToStringWithName, decode } from "./proto";
 import { SetProtoPlayerParsers } from "./protoparsers/playerParsers";
 import { ProtoParser, KeyValueChangeKey, KeyValueOp } from "./protoparsers/protoTypes";
@@ -14,7 +13,6 @@ const SetProtoParsers = new Map<String, ProtoParser>([
 ]);
 
 export class KeyValueChangeSet {
-    static example = dummyBuffer;
     static parse(buf: BufferCursor) {
         const prefix = `\n${" ".repeat(12)}`;
         const groups = parseGroups(buf);

@@ -96,11 +96,15 @@ bufs.forEach(element => {
 
     let result;
     if (keys.has(typeText)) {
-        // Find class to parse packet with.
-        const klas = keys.get(typeText)!;
-        result = klas.parse(DataBuf);
-        if (typeof result == "object") {
-            result = ProtoToString(result);
+        try {
+            // Find class to parse packet with.
+            const klas = keys.get(typeText)!;
+            result = klas.parse(DataBuf);
+            if (typeof result == "object") {
+                result = ProtoToString(result);
+            }
+        } catch (error) {
+            console.error(error);
         }
     } else {
         console.log(typeText);

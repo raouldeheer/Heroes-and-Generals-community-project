@@ -81,16 +81,15 @@ export class login2_postlogin_result {
 }
 
 export class RedeemDailyLoginRewardRequest {
-    static example = dummyBuffer;
-    static parse(_buf: BufferCursor): string {
-        return "🔼 Request";
-        // TODO find out what these bytes do.
-    }
+    static proto = LoginPackage.lookupType("Login.RedeemDailyLoginRewardRequest");
+    static example = dummyBuffer; // TODO remove
+    static parse = (buf: BufferCursor) =>
+        BufToDecodedProto(this.proto, buf.buffer.slice(8));
 }
 
 export class RedeemDailyLoginRewardResponse {
-    static example = dummyBuffer;
-    static parse(buf: BufferCursor): string {
-        return this.example.equals(buf.buffer) ? "🔽 Response" : "Error";
-    }
+    static proto = LoginPackage.lookupType("Login.RedeemDailyLoginRewardResponse");
+    static example = dummyBuffer; // TODO remove
+    static parse = (buf: BufferCursor) =>
+        BufToDecodedProto(this.proto, buf.buffer.slice(8));
 }

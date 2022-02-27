@@ -157,7 +157,6 @@ export class Client extends EventEmitter {
                     this.sendPacketToBuffer("login2_response", this.login(password, result));
                     break;
                 case "login2_result":
-                    // Logged in
                     this.emit("loggedin");
                     break;
                 default:

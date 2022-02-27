@@ -117,3 +117,31 @@ message login2_postlogin_result {
     optional string deleteDate = 3;
     required Result result = 4;
 }
+
+message RedeemDailyLoginRewardRequest {
+    required int64 playerId = 1;
+}
+
+message RedeemDailyLoginRewardResponse {
+    required Response response = 1;
+    repeated VoucherPackInfo infos = 2;
+}
+
+message VoucherPackInfo {
+    required string identifier = 1;
+    required int64 factionTemplateId = 2;
+    required Response status = 3;
+    repeated VoucherPackName names = 4;
+    repeated VoucherPackItem items = 5;
+}
+
+message VoucherPackName {
+    required string language = 1;
+    required string name = 2;
+}
+
+message VoucherPackItem {
+    required string objectType = 1;
+    required int64 objectId = 2;
+    optional string info = 3;
+}

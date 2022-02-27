@@ -7,9 +7,11 @@ export const dummyBuffer = Buffer.from("0a000000060000000800", "hex");
 export const emptyBuffer = Buffer.from("0800000004000000", "hex");
 
 const ServerInfoPackage = protobuf.loadSync("./src/protos/ServerInfo.proto");
+const CommonPackage = protobuf.loadSync("./src/protos/Common.proto");
+const DummyProto = CommonPackage.lookupType("Common.Dummy");
 
 export class QueryServerInfo {
-    static proto = ServerInfoPackage.lookupType("ServerInfo.QueryServerInfo");
+    static proto = DummyProto;
     static example = dummyBuffer; // TODO remove
     static parse = (buf: BufferCursor) =>
         BufToDecodedProto(this.proto, buf.buffer.slice(8));

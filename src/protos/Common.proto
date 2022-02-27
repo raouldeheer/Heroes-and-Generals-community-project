@@ -1,0 +1,6 @@
+package Common;
+syntax = "proto3";
+
+message Dummy {
+    optional int32 dummy = 1;
+}

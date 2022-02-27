@@ -1,10 +1,6 @@
 package ServerInfo;
 syntax = "proto3";
 
-message QueryServerInfo {
-    optional int32 dummy = 1;
-}
-
 message QueryServerInfoResponse {
     required string servertime = 1;
     required int32 playersInWar = 2;

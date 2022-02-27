@@ -1,0 +1,27 @@
+package Player;
+syntax = "proto3";
+
+message QueryShopWarBondItemsResponse {
+    repeated ShopWarBondItem warBonds = 2;
+}
+
+message ShopWarBondItem {
+    required int64 id = 1;
+    required int64 templateId = 2;
+    required uint32 serialNumber = 3;
+    required int64 playerId = 4;
+    required string aquiredDate = 5;
+    required string lastInterestDate = 6;
+    required bool isExpired = 7;
+}
+
+message GetChatChannelsSubscribedResponse {
+    repeated ChatChannelSubscribed channelsSubscribed = 1;
+}
+
+message ChatChannelSubscribed {
+    required int64 id = 1;
+    required string channelName = 2;
+    required string displayName = 3;
+    required string channelTab = 4;
+}

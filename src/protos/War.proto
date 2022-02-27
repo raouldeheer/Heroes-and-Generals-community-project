@@ -1,0 +1,52 @@
+package War;
+syntax = "proto3";
+
+message query_war_catalogue_request {
+    optional int64 includeWarId = 1;
+}
+
+message query_war_catalogue_response {
+    repeated war_catalogue warcataloguedata = 1;
+    required int64 bonusId = 2;
+}
+
+message war_catalogue {
+    required int64 id = 1;
+    required string name = 2;
+    required string wartime = 3;
+    required int32 pointsNeededForVictory = 4;
+    required int64 winningFactionId = 5;
+    required int32 battlefieldCount = 6;
+    required int32 assaultTeamCount = 7;
+    required int32 playerCount = 8;
+    required int32 generalCount = 9;
+    required uint32 infantryCount = 10;
+    required uint32 tankCount = 11;
+    required uint32 planeCount = 12;
+    required uint32 vehicleCount = 13;
+    required int64 sequelWarId = 14;
+    repeated war_catalogue_faction warCatalogueFactions = 15;
+}
+
+message war_catalogue_faction {
+    required int64 factionId = 1;
+    required int64 factionTemplateId = 2;
+    required string factionTag = 3;
+    required int32 factionVictoryPoints = 4;
+    required int32 factionPlayerCount = 5;
+    required int32 factionMinPlayerCount = 6;
+    required int32 factionMaxPlayerCount = 7;
+    required int32 factionPlayerOnlineCount = 8;
+    required int32 factionBonus = 9;
+    required int32 factionDeployedCommandPointsInfantry = 10;
+    required int32 factionDeployedCommandPointsArmor = 11;
+    required int32 factionDeployedCommandPointsAir = 12;
+    required int32 factionControlledBattlefields = 13;
+    required uint32 battlesWon = 14;
+    required uint32 battlesLost = 15;
+    required uint32 infantryLost = 16;
+    required uint32 vehiclesLost = 17;
+    required uint32 tanksLost = 18;
+    required uint32 planesLost = 19;
+    repeated int64 ownedMajorCities = 20;
+}

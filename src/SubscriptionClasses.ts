@@ -1,12 +1,12 @@
 import protobuf from "protobufjs";
 import BufferCursor from "./buffercursor";
-import { dummyBuffer, emptyBuffer } from "./classes";
+import { dummyBuffer } from "./classes";
 import { BufToDecodedProto, ProtoToBuf } from "./proto";
 
 const CommonPackage = protobuf.loadSync("./src/protos/Common.proto");
 const DummyProto = CommonPackage.lookupType("Common.Dummy");
 
-export class subscribe {
+export class DummyClass {
     static proto = DummyProto;
     static example = dummyBuffer; // TODO remove
     static parse = (buf: BufferCursor) =>

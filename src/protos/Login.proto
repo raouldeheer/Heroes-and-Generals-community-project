@@ -1,20 +1,13 @@
 package Login;
 syntax = "proto3";
 
-enum Response {
-    ZERO = 0;
-    ONE = 1;
-}
+import "Common.proto";
 
 enum Result {
     ZERO = 0;
     ONE = 1;
     TWO = 2;
     THREE = 3;
-}
-
-message StartLogin {
-    optional int32 dummy = 1;
 }
 
 message LoginQueueUpdate {
@@ -37,7 +30,7 @@ message login2_challenge {
     required string encryptedSessionkey = 3;
     optional string gamertag = 4;
     optional string redirectSrv = 6;
-    required Response responseCode = 7;
+    required Common.Response responseCode = 7;
     optional string countryCode = 8;
 }
 
@@ -94,7 +87,7 @@ message player {
 message login2_result {
     required string username = 1;
     required string time = 2;
-    required Response response = 3;
+    required Common.Response response = 3;
     optional string banExpires = 4;
     optional string banReason = 5;
     required player currentplayer = 6;
@@ -123,14 +116,14 @@ message RedeemDailyLoginRewardRequest {
 }
 
 message RedeemDailyLoginRewardResponse {
-    required Response response = 1;
+    required Common.Response response = 1;
     repeated VoucherPackInfo infos = 2;
 }
 
 message VoucherPackInfo {
     required string identifier = 1;
     required int64 factionTemplateId = 2;
-    required Response status = 3;
+    required Common.Response status = 3;
     repeated VoucherPackName names = 4;
     repeated VoucherPackItem items = 5;
 }
@@ -144,4 +137,14 @@ message VoucherPackItem {
     required string objectType = 1;
     required int64 objectId = 2;
     optional string info = 3;
+}
+
+message QueryBannedMachineRequest {
+    required string machineIdentifier = 1;
+    required string machineIdentifierOld = 2;
+}
+
+message QueryBannedMachineResponse {
+    required bool isBanned = 1;
+    required string banReason = 2;
 }

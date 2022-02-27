@@ -1,5 +1,4 @@
 import BufferCursor from "./buffercursor";
-import { uuid } from "./env";
 import { BufToDecodedProto, ProtoToBuf, ProtoToString } from "./proto";
 import protobuf from "protobufjs";
 
@@ -7,55 +6,12 @@ export const dummyBuffer = Buffer.from("0a000000060000000800", "hex");
 export const emptyBuffer = Buffer.from("0800000004000000", "hex");
 
 const ServerInfoPackage = protobuf.loadSync("./src/protos/ServerInfo.proto");
-const CommonPackage = protobuf.loadSync("./src/protos/Common.proto");
-const DummyProto = CommonPackage.lookupType("Common.Dummy");
-
-export class QueryServerInfo {
-    static proto = DummyProto;
-    static example = dummyBuffer; // TODO remove
-    static parse = (buf: BufferCursor) =>
-        BufToDecodedProto(this.proto, buf.buffer.slice(8));
-    static toBuffer = (payload: {
-        dummy: number,
-    } = { dummy: 0 }): Buffer => ProtoToBuf(this.proto, payload);
-}
+const WarPackage = protobuf.loadSync("./src/protos/War.proto");
+const PlayerPackage = protobuf.loadSync("./src/protos/Player.proto");
 
 export class QueryServerInfoResponse {
     static proto = ServerInfoPackage.lookupType("ServerInfo.QueryServerInfoResponse");
     static example = dummyBuffer; // TODO remove
-    static parse = (buf: BufferCursor) =>
-        BufToDecodedProto(this.proto, buf.buffer.slice(8));
-}
-
-const BannedMachinePackage = protobuf.loadSync("./src/protos/BannedMachine.proto");
-
-export class QueryBannedMachineRequest {
-    static proto = BannedMachinePackage.lookupType("BannedMachine.QueryBannedMachineRequest");
-    static uuid = Buffer.from(uuid, "utf8").toString("hex");
-    static example = Buffer.from(
-        "5400000050000000" +
-        "1224" + QueryBannedMachineRequest.uuid +
-        "0a24" + QueryBannedMachineRequest.uuid,
-        "hex"
-    ); // TODO remove
-    static parse = (buf: BufferCursor) =>
-        BufToDecodedProto(this.proto, buf.buffer.slice(8));
-    static toBuffer = (payload: {
-        machineIdentifier: string,
-        machineIdentifierOld: string,
-    } = {
-        machineIdentifier: QueryBannedMachineRequest.uuid,
-        machineIdentifierOld: QueryBannedMachineRequest.uuid,
-    }): Buffer => ProtoToBuf(this.proto, payload);
-}
-
-export class QueryBannedMachineResponse {
-    static proto = BannedMachinePackage.lookupType("BannedMachine.QueryBannedMachineResponse");
-    static example = Buffer.from([
-        0x0c, 0x00, 0x00, 0x00,
-        0x08, 0x00, 0x00, 0x00,
-        0x08, 0x00, 0x12, 0x00
-    ]); // TODO remove
     static parse = (buf: BufferCursor) =>
         BufToDecodedProto(this.proto, buf.buffer.slice(8));
 }
@@ -68,52 +24,40 @@ export class zipchunk {
 }
 
 export class query_war_catalogue_request {
-    static example = dummyBuffer;
-    static parse(buf: BufferCursor): string {
-        return this.example.equals(buf.buffer) ? "🔼 Request" : "Error";
-    }
+    static proto = WarPackage.lookupType("War.query_war_catalogue_request");
+    static example = dummyBuffer; // TODO remove
+    static parse = (buf: BufferCursor) =>
+        BufToDecodedProto(this.proto, buf.buffer.slice(8));
+    static toBuffer = (payload: {
+        includeWarId?: Long,
+    }): Buffer => ProtoToBuf(this.proto, payload);
 }
 
 export class query_war_catalogue_response {
-    static example = dummyBuffer;
-    static parse(buf: BufferCursor): string {
-        return "🔽 War data";
-        // TODO do query_war_catalogue_response parsing here.
-    }
-}
-
-export class QueryShopWarBondItemsRequest {
-    static example = dummyBuffer;
-    static parse(buf: BufferCursor): string {
-        return this.example.equals(buf.buffer) ? "🔼 Request" : "Error";
-    }
+    static proto = WarPackage.lookupType("War.query_war_catalogue_response");
+    static example = dummyBuffer; // TODO remove
+    static parse = (buf: BufferCursor) =>
+        BufToDecodedProto(this.proto, buf.buffer.slice(8));
 }
 
 export class QueryShopWarBondItemsResponse {
+    static proto = PlayerPackage.lookupType("Player.QueryShopWarBondItemsResponse");
     static example = Buffer.from([
         0x08, 0x00, 0x00, 0x00,
         0x04, 0x00, 0x00, 0x00
-    ]);
-    static parse(buf: BufferCursor): string {
-        return this.example.equals(buf.buffer) ? "🔽 Response" : "Error";
-    }
-}
-
-export class GetChatChannelsSubscribedRequest {
-    static example = dummyBuffer;
-    static parse(buf: BufferCursor): string {
-        return this.example.equals(buf.buffer) ? "🔼 Request" : "Error";
-    }
+    ]); // TODO remove
+    static parse = (buf: BufferCursor) =>
+        BufToDecodedProto(this.proto, buf.buffer.slice(8));
 }
 
 export class GetChatChannelsSubscribedResponse {
+    static proto = PlayerPackage.lookupType("Player.GetChatChannelsSubscribedResponse");
     static example = Buffer.from([
         0x08, 0x00, 0x00, 0x00,
         0x04, 0x00, 0x00, 0x00
-    ]);
-    static parse(buf: BufferCursor): string {
-        return this.example.equals(buf.buffer) ? "🔽 Response" : "Error";
-    }
+    ]); // TODO remove
+    static parse = (buf: BufferCursor) =>
+        BufToDecodedProto(this.proto, buf.buffer.slice(8));
 }
 
 export class RequestReadCharacterStats {

@@ -1,17 +1,15 @@
 package MissionDetails;
 syntax = "proto3";
 
+import "Common.proto";
+
 message GetMissionDetailsRequest {
     required int64 missionId = 1;
     required int64 battleId = 2;
 }
 
-message GetMissionDetailsResponse {   
-    enum Response {
-        ZERO = 0;
-        ONE = 1;
-    }
-    required Response response = 1;     
+message GetMissionDetailsResponse {
+    required Common.Response response = 1;     
     required MissionInfo info = 2; 
     repeated MissionDetailsFaction factions = 3; 
     repeated MissionDetailsAssaultTeam assaultTeams = 4; 

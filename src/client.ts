@@ -2,7 +2,7 @@ import { EventEmitter } from "events";
 import net from "net";
 import crypto from 'crypto';
 import BufferCursor from "./buffercursor";
-import { keys, packetClassParserX } from "./types";
+import { keys } from "./types";
 import { password } from "./env";
 import { ProtoToString } from "./proto";
 
@@ -73,7 +73,7 @@ export class Client extends EventEmitter {
     }
 
     public sendPacketToBuffer(className: string, payload?: any) {
-        const buffer = (keys.get(className) as packetClassParserX)?.toBuffer?.(payload);
+        const buffer = keys.get(className)?.toBuffer?.(payload);
         if (!buffer) return false;
         this.con.write(this.packer(className, buffer));
         return true;

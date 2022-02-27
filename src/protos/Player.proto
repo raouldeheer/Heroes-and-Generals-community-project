@@ -1,6 +1,8 @@
 package Player;
 syntax = "proto3";
 
+import "Common.proto";
+
 message QueryShopWarBondItemsResponse {
     repeated ShopWarBondItem warBonds = 2;
 }
@@ -24,4 +26,58 @@ message ChatChannelSubscribed {
     required string channelName = 2;
     required string displayName = 3;
     required string channelTab = 4;
+}
+
+message RequestReadCharacterStats {
+    repeated uint64 characterids = 1;
+    optional bool ignoreSessionId = 2;
+}
+
+message QueryVoucherPacksRequest {
+    required int64 characterId = 1;
+}
+
+message QueryVoucherPacksResponse {
+    required Common.Response response = 1; 
+    repeated VoucherPackInfo infos = 2;
+    optional string validFactionTemplateIds = 3;
+    optional string validCharacterTemplateIds = 4;
+}
+
+message VoucherPackInfo {
+    required string identifier = 1;
+    required int64 factionTemplateId = 2;
+    required Common.Response status = 3;
+    repeated VoucherPackName names = 4;
+    repeated VoucherPackItem items = 5;
+}
+
+message VoucherPackName {
+    required string language = 1;
+    required string name = 2;
+}
+
+message VoucherPackItem {
+    required string objectType = 1;
+    required int64 objectId = 2;
+    optional string info = 3;
+}
+
+message SteamQueryBundlesRequest {
+    required int64 characterId = 1;
+}
+
+message SteamQueryBundlesResponse {
+    required Common.Response response = 1;
+    required int32 steamResponseCode = 2;
+    repeated VoucherPackInfo infos = 3;
+    optional string validFactionTemplateIds = 4;
+    optional string validCharacterTemplateIds = 5;
+}
+
+message QueryActiveSurveyRequest {}
+
+message QueryActiveSurveyResponse {
+    required string queryURL = 1;
+    required string imageURL = 2;
 }

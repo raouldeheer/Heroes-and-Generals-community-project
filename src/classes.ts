@@ -8,6 +8,7 @@ export const emptyBuffer = Buffer.from("0800000004000000", "hex");
 const ServerInfoPackage = protobuf.loadSync("./src/protos/ServerInfo.proto");
 const WarPackage = protobuf.loadSync("./src/protos/War.proto");
 const PlayerPackage = protobuf.loadSync("./src/protos/Player.proto");
+const MissionDetailsPackage = protobuf.loadSync("./src/protos/MissionDetails.proto");
 
 export class QueryServerInfoResponse {
     static proto = ServerInfoPackage.lookupType("ServerInfo.QueryServerInfoResponse");
@@ -61,92 +62,100 @@ export class GetChatChannelsSubscribedResponse {
 }
 
 export class RequestReadCharacterStats {
-    static example = dummyBuffer;
-    static parse(buf: BufferCursor) {
-        // TODO do parsing here.
-    }
+    static proto = PlayerPackage.lookupType("Player.RequestReadCharacterStats");
+    static example = dummyBuffer; // TODO remove
+    static parse = (buf: BufferCursor) =>
+        BufToDecodedProto(this.proto, buf.buffer.slice(8));
+    // TODO implement toBuffer
 }
 
 export class GetAssaultTeamStatsRequest {
-    static example = dummyBuffer;
-    static parse(buf: BufferCursor) {
-        // TODO do parsing here.
-    }
+    static proto = WarPackage.lookupType("War.GetAssaultTeamStatsRequest");
+    static example = dummyBuffer; // TODO remove
+    static parse = (buf: BufferCursor) =>
+        BufToDecodedProto(this.proto, buf.buffer.slice(8));
+    static toBuffer = (payload: {
+        commandNodeDefinitionIds?: Long,
+    }): Buffer => ProtoToBuf(this.proto, payload);
 }
 
 export class GetAssaultTeamStatsResponse {
-    static example = dummyBuffer;
-    static parse(buf: BufferCursor) {
-        // TODO do parsing here.
-    }
+    static proto = WarPackage.lookupType("War.GetAssaultTeamStatsResponse");
+    static example = dummyBuffer; // TODO remove
+    static parse = (buf: BufferCursor) =>
+        BufToDecodedProto(this.proto, buf.buffer.slice(8));
 }
 
 export class QueryVoucherPacksRequest {
-    static example = dummyBuffer;
-    static parse(buf: BufferCursor): string {
-        return this.example.equals(buf.buffer) ? "🔼 Request" : "Error";
-    }
+    static proto = PlayerPackage.lookupType("Player.QueryVoucherPacksRequest");
+    static example = dummyBuffer; // TODO remove
+    static parse = (buf: BufferCursor) =>
+        BufToDecodedProto(this.proto, buf.buffer.slice(8));
+    static toBuffer = (payload: {
+        characterId: Long,
+    }): Buffer => ProtoToBuf(this.proto, payload);
 }
 
 export class QueryVoucherPacksResponse {
+    static proto = PlayerPackage.lookupType("Player.QueryVoucherPacksResponse");
     static example = Buffer.from([
         0x0a, 0x00, 0x00, 0x00,
         0x06, 0x00, 0x00, 0x00,
         0x08, 0x01
-    ]);
-    static parse(buf: BufferCursor): string {
-        return this.example.equals(buf.buffer) ? "🔽 Response" : "Error";
-    }
+    ]); // TODO remove
+    static parse = (buf: BufferCursor) =>
+        BufToDecodedProto(this.proto, buf.buffer.slice(8));
 }
 
 export class SteamQueryBundlesRequest {
-    static example = dummyBuffer;
-    static parse(buf: BufferCursor): string {
-        return this.example.equals(buf.buffer) ? "🔼 Request" : "Error";
-    }
+    static proto = PlayerPackage.lookupType("Player.SteamQueryBundlesRequest");
+    static example = dummyBuffer; // TODO remove
+    static parse = (buf: BufferCursor) =>
+        BufToDecodedProto(this.proto, buf.buffer.slice(8));
+    static toBuffer = (payload: {
+        characterId: Long,
+    }): Buffer => ProtoToBuf(this.proto, payload);
 }
 
 export class SteamQueryBundlesResponse {
+    static proto = PlayerPackage.lookupType("Player.SteamQueryBundlesResponse");
     static example = Buffer.from([
         0x0c, 0x00, 0x00, 0x00,
         0x08, 0x00, 0x00, 0x00,
         0x08, 0x01, 0x10, 0x01
-    ]);
-    static parse(buf: BufferCursor): string {
-        return this.example.equals(buf.buffer) ? "🔽 Response" : "Error";
-    }
+    ]); // TODO remove
+    static parse = (buf: BufferCursor) =>
+        BufToDecodedProto(this.proto, buf.buffer.slice(8));
 }
 
 export class QueryActiveSurveyRequest {
+    static proto = PlayerPackage.lookupType("Player.QueryActiveSurveyRequest");
     static example = Buffer.from([
         0x08, 0x00, 0x00, 0x00,
         0x04, 0x00, 0x00, 0x00
-    ]);
-    static parse(buf: BufferCursor): string {
-        return this.example.equals(buf.buffer) ? "🔼 Request" : "Error";
-    }
+    ]); // TODO remove
+    static parse = (buf: BufferCursor) =>
+        BufToDecodedProto(this.proto, buf.buffer.slice(8));
+    static toBuffer = (): Buffer =>
+        ProtoToBuf(this.proto, {});
 }
 
 export class QueryActiveSurveyResponse {
+    static proto = PlayerPackage.lookupType("Player.QueryActiveSurveyResponse");
     static example = Buffer.from([
         0x0c, 0x00, 0x00, 0x00,
         0x08, 0x00, 0x00, 0x00,
         0x0a, 0x00, 0x12, 0x00
-    ]);
-    static parse(buf: BufferCursor): string {
-        return this.example.equals(buf.buffer) ? "🔽 Response" : "Error";
-    }
+    ]); // TODO remove
+    static parse = (buf: BufferCursor) =>
+        BufToDecodedProto(this.proto, buf.buffer.slice(8));
 }
-const MissionDetailsPackage = protobuf.loadSync("./src/protos/MissionDetails.proto");
 
 export class GetMissionDetailsRequest {
     static proto = MissionDetailsPackage.lookupType("MissionDetails.GetMissionDetailsRequest");
-    static example = dummyBuffer;
-    static parse(buf: BufferCursor) {
-        const object = BufToDecodedProto(this.proto, buf.buffer.slice(8));
-        const str = ProtoToString(object);
-        return str;
-    }
+    static example = dummyBuffer; // TODO remove
+    static parse = (buf: BufferCursor) =>
+        BufToDecodedProto(this.proto, buf.buffer.slice(8));
     static toBuffer = (payload: {
         missionId: Long,
         battleId: Long,
@@ -155,26 +164,23 @@ export class GetMissionDetailsRequest {
 
 export class GetMissionDetailsResponse {
     static proto = MissionDetailsPackage.lookupType("MissionDetails.GetMissionDetailsResponse");
-    static example = dummyBuffer;
-    static parse(buf: BufferCursor) {
-        const object = BufToDecodedProto(this.proto, buf.buffer.slice(8));
-        const str = ProtoToString(object);
-        return str;
-    }
+    static example = dummyBuffer; // TODO remove
+    static parse = (buf: BufferCursor) =>
+        BufToDecodedProto(this.proto, buf.buffer.slice(8));
 }
 
 export class transport_commandnode {
-    static example = dummyBuffer;
-    static parse(buf: BufferCursor) {
-        // TODO do parsing here.
-    }
+    static proto = WarPackage.lookupType("War.transport_commandnode");
+    static example = dummyBuffer; // TODO remove
+    static parse = (buf: BufferCursor) =>
+        BufToDecodedProto(this.proto, buf.buffer.slice(8));
 }
 
 export class transport_commandnode_response {
-    static example = dummyBuffer;
-    static parse(buf: BufferCursor) {
-        // TODO do parsing here.
-    }
+    static proto = WarPackage.lookupType("War.transport_commandnode_response");
+    static example = dummyBuffer; // TODO remove
+    static parse = (buf: BufferCursor) =>
+        BufToDecodedProto(this.proto, buf.buffer.slice(8));
 }
 
 export class keepaliverequest {

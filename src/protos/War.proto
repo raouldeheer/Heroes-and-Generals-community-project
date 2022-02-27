@@ -1,6 +1,8 @@
 package War;
 syntax = "proto3";
 
+import "Common.proto";
+
 message query_war_catalogue_request {
     optional int64 includeWarId = 1;
 }
@@ -49,4 +51,45 @@ message war_catalogue_faction {
     required uint32 tanksLost = 18;
     required uint32 planesLost = 19;
     repeated int64 ownedMajorCities = 20;
+}
+
+message GetAssaultTeamStatsRequest {
+    repeated int64 commandNodeDefinitionIds = 1;
+}
+
+message GetAssaultTeamStatsResponse {
+    repeated GetAssaultTeamStatsRecord records = 1;
+}
+
+message GetAssaultTeamStatsRecord {
+    required Common.Response result = 1;
+    required int32 rank = 2;
+    required int32 xp = 3;
+    required int32 nextLevelUpXp = 4;
+    required int32 battles = 5;
+    required int32 battlesWon = 6;
+    required int64 commandNodeDefinitionId = 7;
+}
+
+message transport_commandnode {
+    required int64 commandNodeWarInstanceId = 1;
+    required int64 targetId = 2;
+    required string targetType = 3;
+    optional int64 overrideTargetAccesspointId = 4;
+    optional bool overrideMove = 5;
+    repeated transport_commandnode_request_segment path = 6;
+}
+
+message transport_commandnode_request_segment {
+    required int64 mapEntityId = 1;
+    required int64 mapEntityType = 2;
+}
+
+message transport_commandnode_response {
+    enum Msg {
+        aMsg = 1;
+    }
+    required int64 commandNodeWarInstanceId = 1;
+    required int64 battlefieldId = 2;
+    required Msg msg = 3;
 }

@@ -85,6 +85,9 @@ export class RedeemDailyLoginRewardRequest {
     static example = dummyBuffer; // TODO remove
     static parse = (buf: BufferCursor) =>
         BufToDecodedProto(this.proto, buf.buffer.slice(8));
+    static toBuffer = (payload: {
+        playerId: number,
+    }): Buffer => ProtoToBuf(this.proto, payload);
 }
 
 export class RedeemDailyLoginRewardResponse {

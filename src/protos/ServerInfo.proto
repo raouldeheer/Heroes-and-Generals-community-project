@@ -10,3 +10,15 @@ message QueryServerInfoResponse {
     optional string redShiftUrl = 6;
     optional string engageUrl = 7;
 }
+
+message keepaliverequest {
+    required int32 value = 1;
+}
+
+message keepalive {
+    required int32 value = 1;
+}
+
+message keepaliveresponse {
+    required int32 value = 1;
+}

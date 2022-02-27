@@ -184,17 +184,24 @@ export class transport_commandnode_response {
 }
 
 export class keepaliverequest {
-    static example = dummyBuffer;
-    static parse(buf: BufferCursor) {
-        // TODO do parsing here.
-    }
+    static proto = ServerInfoPackage.lookupType("ServerInfo.keepaliverequest");
+    static example = dummyBuffer; // TODO remove
+    static parse = (buf: BufferCursor) =>
+        BufToDecodedProto(this.proto, buf.buffer.slice(8));
+}
+
+export class keepaliveresponse {
+    static proto = ServerInfoPackage.lookupType("ServerInfo.keepaliveresponse");
+    static example = dummyBuffer; // TODO remove
+    static parse = (buf: BufferCursor) =>
+        BufToDecodedProto(this.proto, buf.buffer.slice(8));
 }
 
 export class keepalive {
-    static example = dummyBuffer;
-    static parse(buf: BufferCursor) {
-        // TODO do parsing here.
-    }
+    static proto = ServerInfoPackage.lookupType("ServerInfo.keepalive");
+    static example = dummyBuffer; // TODO remove
+    static parse = (buf: BufferCursor) =>
+        BufToDecodedProto(this.proto, buf.buffer.slice(8));
 }
 
 export class query_commandnode_owner {

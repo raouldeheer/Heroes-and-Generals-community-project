@@ -65,6 +65,7 @@ const keys = new Map<String, packetClassParser>([
     ["transport_commandnode_response", all.transport_commandnode_response],
     ["keepaliverequest", all.keepaliverequest],
     ["keepalive", all.keepalive],
+    ["keepaliveresponse", all.keepaliveresponse],
     ["query_commandnode_owner", all.query_commandnode_owner],
     ["query_commandnode_owner_response", all.query_commandnode_owner_response],
     ["GetGoldPricesRequest", all.GetGoldPricesRequest],

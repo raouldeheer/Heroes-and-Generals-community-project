@@ -4,3 +4,7 @@ syntax = "proto3";
 message Dummy {
     optional int32 dummy = 1;
 }
+
+message unsubscriberesponse {
+    required string reply = 1;
+}

@@ -1,121 +1,27 @@
+import protobuf from "protobufjs";
 import BufferCursor from "./buffercursor";
 import { dummyBuffer, emptyBuffer } from "./classes";
+import { BufToDecodedProto, ProtoToBuf } from "./proto";
 
-export class subscribeplayerview {
-    static example = dummyBuffer;
-    static parse(buf: BufferCursor): string {
-        return this.example.equals(buf.buffer) ? "🔼 Request" : "Error";
-    }
-}
+const CommonPackage = protobuf.loadSync("./src/protos/Common.proto");
+const DummyProto = CommonPackage.lookupType("Common.Dummy");
 
-export class subscriberesponse {
-    static example = emptyBuffer;
-    static parse(buf: BufferCursor): string {
-        return this.example.equals(buf.buffer) ? "🔽 Response" : "Error";
-    }
-}
-
-export class subscribesoldierview {
-    static example = dummyBuffer;
-    static parse(buf: BufferCursor): string {
-        return this.example.equals(buf.buffer) ? "🔼 Request" : "Error";
-    }
-}
-
-export class SubscribePlayerMissionViewRequest {
-    static example = dummyBuffer;
-    static parse(buf: BufferCursor): string {
-        return this.example.equals(buf.buffer) ? "🔼 Request" : "Error";
-    }
-}
-
-export class subscribecommandnodeview {
-    static example = dummyBuffer;
-    static parse(buf: BufferCursor): string {
-        return this.example.equals(buf.buffer) ? "🔼 Request" : "Error";
-    }
-}
-
-export class SubscribeHostingCenterInfoView {
-    static example = dummyBuffer;
-    static parse(buf: BufferCursor): string {
-        return this.example.equals(buf.buffer) ? "🔼 Request" : "Error";
-    }
-}
-
-export class subscribefriendview {
-    static example = dummyBuffer;
-    static parse(buf: BufferCursor): string {
-        return this.example.equals(buf.buffer) ? "🔼 Request" : "Error";
-    }
-}
-
-export class SubscribeShopView {
-    static example = dummyBuffer;
-    static parse(buf: BufferCursor): string {
-        return this.example.equals(buf.buffer) ? "🔼 Request" : "Error";
-    }
-}
-
-export class subscribeignoredplayerview {
-    static example = dummyBuffer;
-    static parse(buf: BufferCursor): string {
-        return this.example.equals(buf.buffer) ? "🔼 Request" : "Error";
-    }
-}
-
-export class SubscribeMessageView {
-    static example = dummyBuffer;
-    static parse(buf: BufferCursor): string {
-        return this.example.equals(buf.buffer) ? "🔼 Request" : "Error";
-    }
-}
-
-export class subscribewarmaplightview {
-    static example = dummyBuffer;
-    static parse(buf: BufferCursor): string {
-        return this.example.equals(buf.buffer) ? "🔼 Request" : "Error";
-    }
-}
-
-export class subscribebattlesview {
-    static example = dummyBuffer;
-    static parse(buf: BufferCursor): string {
-        return this.example.equals(buf.buffer) ? "🔼 Request" : "Error";
-    }
-}
-
-export class subscriberesourceview {
-    static example = dummyBuffer;
-    static parse(buf: BufferCursor): string {
-        return this.example.equals(buf.buffer) ? "🔼 Request" : "Error";
-    }
-}
-
-export class unsubscribecommandnodeview {
-    static example = dummyBuffer;
-    static parse(buf: BufferCursor): string {
-        return this.example.equals(buf.buffer) ? "🔼 Request" : "Error";
-    }
-}
-
-export class unsubscribewarmaplightview {
-    static example = dummyBuffer;
-    static parse(buf: BufferCursor): string {
-        return this.example.equals(buf.buffer) ? "🔼 Request" : "Error";
-    }
+export class subscribe {
+    static proto = DummyProto;
+    static example = dummyBuffer; // TODO remove
+    static parse = (buf: BufferCursor) =>
+        BufToDecodedProto(this.proto, buf.buffer.slice(8));
+    static toBuffer = (payload: {
+        dummy: number,
+    } = { dummy: 0 }): Buffer => ProtoToBuf(this.proto, payload);
 }
 
 export class unsubscriberesponse {
-    static example = Buffer.from("0c000000080000000a026f6b", "hex");
-    static parse(buf: BufferCursor): string {
-        return this.example.equals(buf.buffer) ? "🔽 Response" : "Error";
-    }
-}
-
-export class subscribewarmapview {
-    static example = dummyBuffer;
-    static parse(buf: BufferCursor): string {
-        return this.example.equals(buf.buffer) ? "🔼 Request" : "Error";
-    }
+    static proto = CommonPackage.lookupType("Common.unsubscriberesponse");
+    static example = Buffer.from("0c000000080000000a026f6b", "hex"); // TODO remove
+    static parse = (buf: BufferCursor) =>
+        BufToDecodedProto(this.proto, buf.buffer.slice(8));
+    static toBuffer = (payload: {
+        reply: string,
+    } = { reply: "ok" }): Buffer => ProtoToBuf(this.proto, payload);
 }

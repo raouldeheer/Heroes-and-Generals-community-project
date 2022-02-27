@@ -81,3 +81,25 @@ message QueryActiveSurveyResponse {
     required string queryURL = 1;
     required string imageURL = 2;
 }
+
+message GetGoldPricesRequest {
+    required string currencyWanted = 1;
+}
+
+message GetGoldPricesResponse {
+    repeated Price prices = 1;
+    required string currencyCode = 2;
+    required Common.Response response = 3;
+}
+
+message Price {
+    required int32 coins = 1;
+    required bool isStarterPackItem = 2;
+    required double price = 3;
+    required int32 discountPercentage = 4;
+    required string discountStart = 5;
+    required string discountEnd = 6;
+    required int32 addedCoinsDiscount = 7;
+    required int32 addedValue = 8;
+    required int32 addedCoinsOffer = 9;
+}

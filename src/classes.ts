@@ -205,29 +205,29 @@ export class keepalive {
 }
 
 export class query_commandnode_owner {
-    static example = dummyBuffer;
-    static parse(buf: BufferCursor) {
-        // TODO do parsing here.
-    }
+    static proto = WarPackage.lookupType("War.query_commandnode_owner");
+    static example = dummyBuffer; // TODO remove
+    static parse = (buf: BufferCursor) =>
+        BufToDecodedProto(this.proto, buf.buffer.slice(8));
 }
 
 export class query_commandnode_owner_response {
-    static example = dummyBuffer;
-    static parse(buf: BufferCursor) {
-        // TODO do parsing here.
-    }
+    static proto = WarPackage.lookupType("War.query_commandnode_owner_response");
+    static example = dummyBuffer; // TODO remove
+    static parse = (buf: BufferCursor) =>
+        BufToDecodedProto(this.proto, buf.buffer.slice(8));
 }
 
 export class GetGoldPricesRequest {
+    static proto = PlayerPackage.lookupType("Player.GetGoldPricesRequest");
     static example = dummyBuffer;
-    static parse(buf: BufferCursor) {
-        // TODO do parsing here.
-    }
+    static parse = (buf: BufferCursor) =>
+        BufToDecodedProto(this.proto, buf.buffer.slice(8));
 }
 
 export class GetGoldPricesResponse {
+    static proto = PlayerPackage.lookupType("Player.GetGoldPricesResponse");
     static example = dummyBuffer;
-    static parse(buf: BufferCursor) {
-        // TODO do parsing here.
-    }
+    static parse = (buf: BufferCursor) =>
+        BufToDecodedProto(this.proto, buf.buffer.slice(8));
 }

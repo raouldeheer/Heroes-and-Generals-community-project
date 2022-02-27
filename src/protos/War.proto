@@ -93,3 +93,11 @@ message transport_commandnode_response {
     required int64 battlefieldId = 2;
     required Msg msg = 3;
 }
+
+message query_commandnode_owner {
+    required int64 commandNodeWarInstanceId = 1;
+}
+
+message query_commandnode_owner_response {
+    required string name = 1;
+}

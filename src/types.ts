@@ -1,6 +1,6 @@
 import * as all from "./classes";
 import * as login from "./LoginClasses";
-import * as subs from "./SubscribtionClasses";
+import * as subs from "./SubscriptionClasses";
 import { KeyValueChangeSet } from "./KeyValueChangeSet";
 import BufferCursor from "./buffercursor";
 

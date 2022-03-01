@@ -1,8 +1,4 @@
 import BufferCursor from "./buffercursor";
-import { KeyValueChangeKey } from "./protoparsers/protoTypes";
-
-export const ProtoToStringWithName = (type: KeyValueChangeKey, result: object) =>
-    type.toString() + ProtoToString(result);
 
 export function ProtoToString(result: object, prefix = `${" ".repeat(16)}`): string {
     return "\n" +
@@ -22,7 +18,7 @@ export const BufToDecodedProto = (proto: protobuf.Type, buf: Buffer) =>
         bytes: Buffer,
     });
 
-export function ProtoToBuf(proto: protobuf.Type, payload: any): Buffer {
+export function ProtoToBuf(proto: protobuf.Type, payload: object): Buffer {
     const errMsg = proto.verify(payload);
     if (errMsg) throw Error(errMsg);
     const encoded = proto.encode(

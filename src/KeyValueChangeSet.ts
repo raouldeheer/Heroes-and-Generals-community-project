@@ -1,16 +1,7 @@
 import BufferCursor from "./buffercursor";
-import { ProtoToStringWithName, decode } from "./proto";
-import { SetProtoPlayerParsers } from "./protoparsers/playerParsers";
-import { ProtoParser, KeyValueChangeKey, KeyValueOp } from "./protoparsers/protoTypes";
-import { SetProtoServerParsers } from "./protoparsers/serverParsers";
-import { SetProtoWarParsers } from "./protoparsers/warParsers";
+import { ProtoToStringWithName, BufToDecodedProto } from "./proto";
+import { KeyValueChangeKey, KeyValueOp, SetProtoParsers } from "./protoparsers/protoTypes";
 import { bytesToString, parseGroups } from "./utils";
-
-const SetProtoParsers = new Map<String, ProtoParser>([
-    ...SetProtoPlayerParsers,
-    ...SetProtoServerParsers,
-    ...SetProtoWarParsers,
-]);
 
 export class KeyValueChangeSet {
     static parse(buf: BufferCursor) {
@@ -25,8 +16,8 @@ export class KeyValueChangeSet {
                     const key = bytesToString(groups[i]);
                     const value = groups[i + 1];
                     if (SetProtoParsers.has(key)) {
-                        const parser = SetProtoParsers.get(key)!;
-                        const decoded = parser(decode(value));
+                        const proto = SetProtoParsers.get(key)!;
+                        const decoded = BufToDecodedProto(proto, value);
                         const str = ProtoToStringWithName(key as KeyValueChangeKey, decoded);
                         returnStr += setPrefix + str;
                     } else {

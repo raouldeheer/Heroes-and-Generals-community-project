@@ -101,3 +101,145 @@ message query_commandnode_owner {
 message query_commandnode_owner_response {
     required string name = 1;
 }
+
+
+message BattleInfo {
+    required int64 id = 1;
+    required float posX = 2;
+    required float posY = 3;
+}
+
+message battlefieldstatus {
+    required sfixed64 id = 1;
+    required int64 warid = 2;
+    required int64 battlefieldid = 3;
+    required int64 factionid = 4;
+    optional int64 defencesetupid = 6;
+}
+
+message FactionResourceQueue {
+    required int64 id = 1;
+    required int64 factionId = 2;
+    required int64 warId = 3;
+    required int32 supplyQueueHead = 4;
+    required int32 supplyQueueTail = 5;
+}
+
+message FactionResourceProduction {
+    required int64 id = 1;
+    required int64 factionId = 2;
+    required int64 warId = 3;
+    required int64 factionHQCommandNodeWarInstanceId = 4;
+    required int64 armyResourceCategoryId = 5;
+    required int64 armyResourceProductionTemplateId = 6;
+    required string nextRunTimeStamp = 7;
+    required int32 nextProductionValue = 8;
+    required int32 warStartValue = 9;
+}
+
+message FactionResourceConsumption {
+    required int64 id = 1;
+    required int64 factionId = 2;
+    required int64 warId = 3;
+    required int64 factionHQCommandNodeWarInstanceId = 4;
+    required int64 armyResourceCategoryId = 5;
+    required string previousConsumptionTimeStamp = 6;
+    required int32 previousConsumptionValue = 7;
+    required int32 supplyQueueHead = 8;
+    required int32 supplyQueueTail = 9;
+}
+
+message armyresource {
+    required int64 id = 1;
+    required int64 commandNodeWarInstanceId = 2;
+    required int64 armyResourceCategoryId = 3;
+    required uint32 count = 4;
+    required int64 warid = 5;
+}
+
+message battle {
+    required sfixed64 id = 1;
+    required int64 warid = 2;
+    required int64 mapEntityId = 3;
+    required int64 mapEntityTypeId = 4;
+    required string start = 5;
+    required uint32 factioncount = 9;
+    required int64 excludedFactionId = 10;
+    required float position = 11;
+    required string activationTimeStamp = 12;
+}
+
+message CommandNodeDefinition {
+    required int64 id = 1;
+    required string name = 2;
+    required string abbreviation = 3;
+    required int64 ownerPlayerId = 4;
+    required int64 factionTemplateId = 5;
+    required int64 commandNodeTemplateId = 6;
+    required int32 rank = 7;
+    optional int64 supplyResourceCategoryId = 8;
+    required int64 generalCharacterId = 9;
+    required int64 statUpdateTimeStamp = 10;
+    required bool suppliedOnCreation = 11;
+}
+
+message CommandNodeWarInstance {
+    required int64 id = 1;
+    required int64 commandNodeDefinitionId = 2;
+    required int64 parentCommandNodeInstanceId = 3;
+    required int64 factionId = 4;
+    required int64 mapEntityId = 5;
+    required int64 mapEntityTypeId = 6;
+    required int64 warId = 7;
+    required uint32 morale = 8;
+    required int64 lastReset = 9;
+    required uint32 isDeployed = 10;
+    required bool hasGottenSoldierResourcesForFree = 11;
+    required bool hasGottenVehicleResourcesForFree = 12;
+    required uint32 maxMorale = 13;
+    required float moraleGainModifier = 14;
+}
+
+message faction {
+    required int64 id = 1;
+    required int64 factiontemplateid = 2;
+    required int64 supremecommand = 4;
+    required int64 war = 5;
+    required float underdogBonusXpMultiplier = 6;
+    required float underdogBonusWarfundsMultiplier = 7;
+}
+
+message accesspointstatus {
+    required sfixed64 id = 1;
+    required int64 warid = 2;
+    required int64 accesspointid = 3;
+    required int64 factionid = 4;
+}
+
+message supplylinestatus {
+    required sfixed64 id = 1;
+    required int64 warid = 2;
+    required int64 factionid = 3;
+    required int64 supplylineid = 4;
+}
+
+message air_commandnode_base {
+    required int64 id = 1;
+    required int64 commandNodeWarInstanceId = 2;
+    required int64 battlefieldid = 3;
+    required int64 targetentityid = 4;
+    required string targetentitytype = 5;
+    required int64 warid = 6;
+}
+
+message air_transport {
+    required int64 id = 1;
+    required int64 commandNodeWarInstanceId = 2;
+    required int64 fromentityid = 3;
+    required int32 fromentitytype = 4;
+    required int64 toentityid = 5;
+    required int32 toentitytype = 6;
+    required int64 begintime = 7;
+    required int64 endtime = 8;
+    required int64 warid = 9;
+}

@@ -2,6 +2,7 @@ package Login;
 syntax = "proto3";
 
 import "Common.proto";
+import "Player.proto";
 
 enum Result {
     ZERO = 0;
@@ -39,58 +40,13 @@ message login2_response {
     required string digest = 2;
 }
 
-message player {
-    required int64 id = 1;
-    required string gamertag = 2;
-    required uint32 invertmouse = 3;
-    required uint32 invertmouseairplane = 4;
-    required float mousesensitivity = 5;
-    required string administrator = 6;
-    required uint32 mousecontrolledcars = 7;
-    required uint32 showcrosshair = 8;
-    required uint32 showcrosshairVehicles = 9;
-    required int64 war = 10;
-    required int64 factionid = 11;
-    required string subscribedupto = 12;
-    required int64 goldBought = 13;
-    required int64 goldEarned = 14;
-    required int64 goldUsed = 15;
-    required int64 creditsBought = 16;
-    required int64 creditsEarned = 17;
-    required int64 creditsUsed = 18;
-    required string firstActionGameDate = 19;
-    required int32 numloginsFlash = 20;
-    required int32 numloginsMobile = 21;
-    required string language = 22;
-    required int64 warfundsBought = 23;
-    required int64 warfundsEarned = 24;
-    required int64 warfundsUsed = 25;
-    optional string metricsUid = 26;
-    required int32 yellowGriefPoints = 27;
-    required int32 redGriefPoints = 28;
-    required string latestRedGriefPointTimestamp = 29;
-    required int32 tier = 30;
-    required string lastLogin = 31;
-    required int32 tutorialsCompleted = 32;
-    required int64 goldBoughtSteam = 33;
-    required float skillLevel = 34;
-    required uint32 invertmouseturret = 35;
-    required int64 totalScore = 36;
-    repeated bool unlockBits = 37;
-    required int32 level = 38;
-    repeated bool achievementsBits = 39;
-    required bool isDeleted = 40;
-    required string currencyCode = 41;
-    required string currencyRegion = 42;
-}
-
 message login2_result {
     required string username = 1;
     required string time = 2;
     required Common.Response response = 3;
     optional string banExpires = 4;
     optional string banReason = 5;
-    required player currentplayer = 6;
+    required Player.player currentplayer = 6;
 }
 
 message keyValue {

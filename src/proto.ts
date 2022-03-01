@@ -1,6 +1,7 @@
 import BufferCursor from "./buffercursor";
+import { KeyValueChangeKey } from "./protoparsers/protoTypes";
 
-export function ProtoToStringWithName(type: any, result: any) {
+export function ProtoToStringWithName(type: KeyValueChangeKey, result: object) {
     const prefix = `\n${" ".repeat(16)}`;
     return type.toString() + prefix + ProtoToString(result);
 }

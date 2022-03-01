@@ -5,6 +5,7 @@ import BufferCursor from "./buffercursor";
 import { keys } from "./types";
 import { password } from "./env";
 import { ProtoToString } from "./proto";
+import { gunzipSync } from "zlib";
 
 export class Client extends EventEmitter {
     con: net.Socket;
@@ -129,6 +130,12 @@ export class Client extends EventEmitter {
             const klas = keys.get(typeText)!;
             result = klas.parse(DataBuf);
             switch (typeText) {
+                case "zipchunk":
+                    if (typeof result == "function") {
+                        this.handleMessage(gunzipSync(result().data));
+                        return;
+                    }
+                break;
                 case "QueryServerInfoResponse":
                     this.sendPacketToBuffer("QueryBannedMachineRequest");
                     break;

@@ -5,6 +5,7 @@ import { keys } from "./types";
 import { bytesToString } from "./utils";
  
 const data = fs.readFileSync("./captures/capturetext4.txt", "utf-8");
+import { gunzipSync } from "zlib";
 const packets = data.split("No.     Time           Source                Destination           Protocol Length Info").map(e => e.split("Data")[1]);
  
 /**
@@ -63,7 +64,7 @@ console.log(`====================================================`);
 
 let totalString = "";
 
-bufs.forEach(element => {
+const parse = (element: BufferCursor) => {
     const text = bytesToString(element);
 
     /************************************************************
@@ -100,6 +101,12 @@ bufs.forEach(element => {
             // Find class to parse packet with.
             const klas = keys.get(typeText)!;
             result = klas.parse(DataBuf);
+            if (typeof result == "function" && typeText == "zipchunk") {
+                // @ts-ignore
+                const gunzipped = new BufferCursor(gunzipSync(result().data));
+                parse(gunzipped);
+                return;
+            }
             if (typeof result == "object") {
                 result = ProtoToString(result);
             }
@@ -126,7 +133,9 @@ bufs.forEach(element => {
     if (Number(plen) !== element.length) {
         console.log(`${Number(plen)} === ${element.length}`);
     }
-});
+};
+
+bufs.forEach(parse);
 console.log(loseEnd);
 fs.writeFileSync("total.txt", totalString, "utf-8");
 

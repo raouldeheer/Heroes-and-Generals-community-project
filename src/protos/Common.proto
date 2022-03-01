@@ -9,6 +9,10 @@ message unsubscriberesponse {
     required string reply = 1;
 }
 
+message zipchunk {
+    required bytes data = 1;
+}
+
 enum Response {
     fail = 0;
     ok = 1;

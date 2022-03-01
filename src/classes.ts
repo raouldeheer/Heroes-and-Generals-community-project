@@ -6,6 +6,7 @@ const ServerInfoPackage = protobuf.loadSync("./src/protos/ServerInfo.proto");
 const WarPackage = protobuf.loadSync("./src/protos/War.proto");
 const PlayerPackage = protobuf.loadSync("./src/protos/Player.proto");
 const MissionDetailsPackage = protobuf.loadSync("./src/protos/MissionDetails.proto");
+const CommonPackage = protobuf.loadSync("./src/protos/Common.proto");
 
 export class QueryServerInfoResponse {
     static proto = ServerInfoPackage.lookupType("ServerInfo.QueryServerInfoResponse");
@@ -14,9 +15,9 @@ export class QueryServerInfoResponse {
 }
 
 export class zipchunk {
-    static parse(buf: BufferCursor): string {
-        return "🔽 Zipped data";
-    }
+    static proto = CommonPackage.lookupType("Common.zipchunk");
+    static parse = (buf: BufferCursor) =>
+        (() => BufToDecodedProto(this.proto, buf.buffer.slice(8)));
 }
 
 export class query_war_catalogue_request {

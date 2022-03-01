@@ -17,7 +17,7 @@ export function ProtoToStringWithName(type: any, result: any) {
             String(curr[1]) + ((i == length - 1) ? "" : prefix), "");
 }
 
-export function ProtoToString(result: any, prefix = `${" ".repeat(16)}`): string {
+export function ProtoToString(result: object, prefix = `${" ".repeat(16)}`): string {
     return "\n" +
         Object.entries(result)
             .reduce((prev, curr, i, { length }) =>
@@ -32,7 +32,7 @@ export const BufToDecodedProto = (proto: protobuf.Type, buf: Buffer) =>
     proto.toObject(proto.decode(buf), {
         longs: String,
         enums: Number,
-        bytes: String,
+        bytes: Buffer,
     });
 
 export function ProtoToBuf(proto: protobuf.Type, payload: any): Buffer {

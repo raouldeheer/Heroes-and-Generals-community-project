@@ -1,3 +1,0 @@
-[submodule "src/protobuf-decoder"]
-	path = src/protobuf-decoder
-	url = https://github.com/pawitp/protobuf-decoder

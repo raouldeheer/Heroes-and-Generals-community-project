@@ -12,6 +12,38 @@ message query_war_catalogue_response {
     required int64 bonusId = 2;
 }
 
+message war {
+    required int64 id = 1;
+    required string name = 2;
+    required string begintime = 3;
+    required string endtime = 4;
+    required string web = 5;
+    required string friendlyfire = 6;
+    required int64 winningfactionid = 7;
+    required int32 pointsNeededForVictory = 8;
+    required uint32 automissionnormal = 9;
+    required uint32 automissionskirmish = 10;
+    required uint32 automissionsupply = 11;
+    required float strategytimescale = 12;
+    required float daycycletimescale = 13;
+    required uint32 disablestrategy = 14;
+    required int32 maxPlayerPerFaction = 15;
+    required int64 sequelwarid = 16;
+    required int64 mapid = 17;
+    required int32 cleanupStatus = 18;
+    required int32 fowGridSize = 19;
+    required int32 fowGridOriginX = 20;
+    required int32 fowGridOriginY = 21;
+    required bool queueReinforcements = 22;
+    required bool firstResourceFree = 23;
+    required uint32 moraleMinValue = 24;
+    required uint32 moraleMaxValue = 25;
+    required uint32 moraleLostPerBattle = 26;
+    required uint32 moraleGainedPerWin = 27;
+    required float moraleGainedPerMinute = 28;
+    required uint32 moraleSurrenderLimit = 29;
+}
+
 message war_catalogue {
     required int64 id = 1;
     required string name = 2;

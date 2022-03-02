@@ -29,6 +29,7 @@ export const enum KeyValueChangeKey {
     battle = "battle",
     ViewHandlerPulse = "ViewHandlerPulse",
     faction = "faction",
+    war = "war",
     battlefieldstatus = "battlefieldstatus",
 }
 
@@ -58,5 +59,6 @@ export const SetProtoParsers = new Map<string, protobuf.Type>([
     [KeyValueChangeKey.battle, Protos.lookupType("War.battle")],
     [KeyValueChangeKey.ViewHandlerPulse, Protos.lookupType("ServerInfo.ViewHandlerPulse")],
     [KeyValueChangeKey.faction, Protos.lookupType("War.faction")],
+    [KeyValueChangeKey.war, Protos.lookupType("War.war")],
     [KeyValueChangeKey.battlefieldstatus, Protos.lookupType("War.battlefieldstatus")],
 ]);

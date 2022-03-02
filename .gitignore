@@ -78,4 +78,5 @@ typings/
 dist
 captures
 total.txt
+total.jsonc
 src/env.ts

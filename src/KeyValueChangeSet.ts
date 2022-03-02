@@ -3,10 +3,16 @@ import { BufToDecodedProto } from "./proto";
 import { KeyValueChangeKey, KeyValueOp, SetProtoParsers } from "./protoparsers/protoTypes";
 import { bytesToString, parseGroups } from "./utils";
 
+export type KeyValue = { key: string, value: any; };
+export interface IKeyValueChangeSetResult {
+    set?: KeyValue[],
+    delete?: KeyValue[],
+}
+
 export class KeyValueChangeSet {
     static parse(buf: BufferCursor) {
         const groups = parseGroups(buf);
-        const returnObj: {set?: any[], delete?: any[]} = {};
+        const returnObj: IKeyValueChangeSetResult = {};
         switch (bytesToString(groups[0])) {
             case KeyValueOp.set:
                 if (!returnObj.set) returnObj.set = [];

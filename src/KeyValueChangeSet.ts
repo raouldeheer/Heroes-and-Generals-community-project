@@ -6,10 +6,10 @@ import { bytesToString, parseGroups } from "./utils";
 export class KeyValueChangeSet {
     static parse(buf: BufferCursor) {
         const groups = parseGroups(buf);
-        const returnObj: any = {};
+        const returnObj: {set?: any[], delete?: any[]} = {};
         switch (bytesToString(groups[0])) {
             case KeyValueOp.set:
-                if (!returnObj.set) returnObj.set = {};
+                if (!returnObj.set) returnObj.set = [];
                 groups.shift();
                 for (let i = 0; i < groups.length; i += 2) {
                     const key = bytesToString(groups[i]);
@@ -17,14 +17,20 @@ export class KeyValueChangeSet {
                     if (SetProtoParsers.has(key)) {
                         const proto = SetProtoParsers.get(key)!;
                         const decoded = BufToDecodedProto(proto, value);
-                        returnObj.set[key] = decoded;
+                        returnObj.set.push({
+                            key,
+                            value: decoded,
+                        });
                     } else {
-                        returnObj.set[key] = "New set key";
+                        returnObj.set.push({
+                            key,
+                            value: "New set key",
+                        });
                     }
                 }
                 break;
             case KeyValueOp.delete:
-                if (!returnObj.delete) returnObj.delete = {};
+                if (!returnObj.delete) returnObj.delete = [];
                 groups.shift();
                 for (let i = 0; i < groups.length; i += 2) {
                     const key = bytesToString(groups[i]);
@@ -33,10 +39,16 @@ export class KeyValueChangeSet {
                         case KeyValueChangeKey.battle:
                         case KeyValueChangeKey.BattleInfo:
                             // TODO do better naming
-                            returnObj.delete[key] = KeyValueChangeSet.parseToHex(key, value);
+                            returnObj.delete.push({
+                                key,
+                                value: KeyValueChangeSet.parseToHex(key, value),
+                            });
                             break;
                         default:
-                            returnObj.delete[key] = "New delete key";
+                            returnObj.delete.push({
+                                key,
+                                value: "New delete key",
+                            });
                             break;
                     }
                 }

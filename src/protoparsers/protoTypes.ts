@@ -70,5 +70,5 @@ export const SetProtoParsers = new Map<string, protobuf.Type>([
     [KeyValueChangeKey.war, Protos.lookupType("War.war")],
     [KeyValueChangeKey.battlefieldstatus, Protos.lookupType("War.battlefieldstatus")],
     [KeyValueChangeKey.battle_pass, Protos.lookupType("Player.battle_pass")],
-    [KeyValueChangeKey.missionresource, Protos.lookupType("MissionDetails.missionresource")],
+    [KeyValueChangeKey.missionresource, Protos.lookupType("War.missionresource")],
 ]);

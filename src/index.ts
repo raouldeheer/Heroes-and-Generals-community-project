@@ -6,6 +6,7 @@ import { bytesToString } from "./utils";
  
 const data = fs.readFileSync("./captures/capturetext4.txt", "utf-8");
 import { gunzipSync } from "zlib";
+import { DataStore } from "./datastore";
 const packets = data.split("No.     Time           Source                Destination           Protocol Length Info").map(e => e.split("Data")[1]);
  
 /**
@@ -63,6 +64,7 @@ console.log(`PLen  ID    Header                              Data`);
 console.log(`====================================================`);
 
 let totalString = "";
+const dataStore = new DataStore;
 
 const parse = (element: BufferCursor) => {
     const text = bytesToString(element);
@@ -108,6 +110,7 @@ const parse = (element: BufferCursor) => {
                 return;
             }
             if (typeof result == "object") {
+                if (typeText == "KeyValueChangeSet") dataStore.SaveData(result);
                 result = ProtoToString(result);
             }
         } catch (error) {
@@ -138,6 +141,8 @@ const parse = (element: BufferCursor) => {
 bufs.forEach(parse);
 console.log(loseEnd);
 fs.writeFileSync("total.txt", totalString, "utf-8");
+fs.writeFileSync("total.jsonc", dataStore.ToString(), "utf-8");
+console.log(dataStore.GetData("PlayerPartnerInfo", "1181427495443169983"));
 
 function dataLinesToBuffer(dataLines: RegExpMatchArray): Buffer {
     return Buffer.from(

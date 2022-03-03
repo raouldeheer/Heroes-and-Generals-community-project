@@ -39,6 +39,7 @@ export const enum KeyValueChangeKey {
     Squad = "Squad",
     missionresource = "missionresource",
     RibbonBooster = "RibbonBooster",
+    NotificationData = "NotificationData",
 }
 
 const Protos = protobuf.loadSync("./src/protos/All.proto");
@@ -77,4 +78,5 @@ export const SetProtoParsers = new Map<string, protobuf.Type>([
     [KeyValueChangeKey.Squad, Protos.lookupType("Player.Squad")],
     [KeyValueChangeKey.missionresource, Protos.lookupType("War.missionresource")],
     [KeyValueChangeKey.RibbonBooster, Protos.lookupType("Player.RibbonBooster")],
+    [KeyValueChangeKey.NotificationData, Protos.lookupType("Player.NotificationData")],
 ]);

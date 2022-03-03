@@ -280,3 +280,14 @@ message VehicleAmmo {
     required float condition = 8;
     required int32 autoRepair = 9;
 }
+
+message VehicleUpgrade {
+    required int64 id = 1;
+    required int64 vehicleUpgradeTemplateId = 2;
+    required int64 vehicleId = 3;
+    required int64 equippedVehicleUpgradeSlotId = 4;
+    required int64 playerId = 5;
+    required int64 characterId = 6;
+    required float condition = 7;
+    required int32 autoRepair = 8;
+}

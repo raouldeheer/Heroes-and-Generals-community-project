@@ -258,3 +258,13 @@ message NotificationData {
     required string key = 3;
     required int64 value = 4;
 }
+
+message Notification {
+    required int64 id = 1;
+    required int64 playerId = 2;
+    required int32 type = 3;
+    required int64 typeId = 4;
+    required int32 readStatus = 5;
+    required string timestamp = 6;
+    required string expires = 7;
+}

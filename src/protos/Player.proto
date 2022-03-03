@@ -231,3 +231,15 @@ message DailyBonus {
     required int64 dailyBonusTemplateId = 4;
     required string lastReceived = 5;
 }
+
+message Squad {
+    required int64 id = 1;
+    required int64 playerId = 2;
+    required int64 characterId = 3;
+    required string name = 4;
+    required int64 supportSlotTemplateId1 = 5;
+    required int64 supportSlotTemplateId2 = 6;
+    required int64 supportSlotTemplateId3 = 7;
+    required bool matchMakeWarMissionFlag = 9;
+    repeated int64 matchMakeStagedMissionPresetList = 10;
+}

@@ -268,3 +268,15 @@ message Notification {
     required string timestamp = 6;
     required string expires = 7;
 }
+
+message VehicleAmmo {
+    required int64 id = 1;
+    required int64 ammoTemplateId = 2;
+    required int64 vehicleId = 3;
+    required int64 equippedVehicleAmmoStorageId = 4;
+    required int32 equippedAmmoSlotIndex = 5;
+    required int64 playerId = 6;
+    required int64 characterId = 7;
+    required float condition = 8;
+    required int32 autoRepair = 9;
+}

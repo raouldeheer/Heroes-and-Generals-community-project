@@ -223,3 +223,11 @@ message battle_pass {
     required string pendingRewardBattlePassTemplateIds = 8;
     required string receivedRewardBattlePassTemplateIds = 9;
 }
+
+message DailyBonus {
+    required int64 id = 1;
+    required int64 playerId = 2;
+    required int64 characterId = 3;
+    required int64 dailyBonusTemplateId = 4;
+    required string lastReceived = 5;
+}

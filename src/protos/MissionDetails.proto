@@ -72,3 +72,16 @@ message MissionDetailsCapturepointStatus {
     required int64 capturepointTemplateId = 1;
     required int64 ownerFactionId = 2;
 }
+
+message missionresource {
+    required int64 id = 1;
+    required int64 missionid = 2;
+    required int64 warid = 3;
+    required int64 factionId = 4;
+    required int64 commandNodeWarInstanceId = 5;
+    required int64 commandNodeTemplateId = 6;
+    required int64 accesspointTemplateId = 7;
+    required uint32 locked = 8;
+    required bool allowedToLobby = 9;
+    required bool spawnInAir = 10;
+}

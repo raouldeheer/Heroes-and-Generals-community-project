@@ -128,7 +128,7 @@ export class Client extends EventEmitter {
         if (keys.has(typeText)) {
             // Find class to parse packet with.
             const klas = keys.get(typeText)!;
-            result = klas.parse(DataBuf);
+            result = klas.parse(DataBuf) as any;
             switch (typeText) {
                 case "zipchunk":
                     if (typeof result == "function") {

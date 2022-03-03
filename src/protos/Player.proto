@@ -179,3 +179,16 @@ message ignoredplayerwithname {
     required int64 ignoredid = 3;
     required string ignoredname = 4;
 }
+
+message PlayerOfferMetrics {
+    required int64 id = 1;
+    required int64 playerId = 2;
+    required int32 matchesPlayed = 3;
+    required int32 goldOffersCount = 4;
+    required int32 dailyRewardCount = 5;
+    required int32 dailyRewardRedeemedCount = 6;
+    required string unredeemedConsecutiveDayRewards = 7;
+    required int32 consecutiveDayCount = 8;
+    required string lastFirstBattleDate = 9;
+    optional string lastUpdatedConsecutiveDayCountDate = 10;
+}

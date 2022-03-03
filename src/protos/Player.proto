@@ -291,3 +291,11 @@ message VehicleUpgrade {
     required float condition = 7;
     required int32 autoRepair = 8;
 }
+
+message UniformPart {
+    required int64 id = 1;
+    required int64 playerId = 2;
+    required int64 characterId = 3;
+    required int64 uniformPartTemplateId = 4;
+    required int32 uniformPartType = 5;
+}

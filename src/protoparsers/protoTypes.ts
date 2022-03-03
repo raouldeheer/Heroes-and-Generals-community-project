@@ -43,6 +43,7 @@ export const enum KeyValueChangeKey {
     Notification = "Notification",
     VehicleAmmo = "VehicleAmmo",
     VehicleUpgrade = "VehicleUpgrade",
+    UniformPart = "UniformPart",
 }
 
 const Protos = protobuf.loadSync("./src/protos/All.proto");
@@ -85,4 +86,5 @@ export const SetProtoParsers = new Map<string, protobuf.Type>([
     [KeyValueChangeKey.Notification, Protos.lookupType("Player.Notification")],
     [KeyValueChangeKey.VehicleAmmo, Protos.lookupType("Player.VehicleAmmo")],
     [KeyValueChangeKey.VehicleUpgrade, Protos.lookupType("Player.VehicleUpgrade")],
+    [KeyValueChangeKey.UniformPart, Protos.lookupType("Player.UniformPart")],
 ]);

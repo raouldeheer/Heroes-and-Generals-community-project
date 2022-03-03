@@ -309,3 +309,11 @@ message WeaponModifier {
     required float condition = 6;
     required int32 autoRepair = 7;
 }
+
+message WeaponVariant {
+    required int64 id = 1;
+    required int64 playerId = 2;
+    required int64 characterId = 3;
+    required int64 weaponId = 4;
+    required int64 weaponVariantTemplateId = 5;
+}

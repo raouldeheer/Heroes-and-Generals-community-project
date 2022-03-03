@@ -288,3 +288,15 @@ message missionresource {
     required bool allowedToLobby = 9;
     required bool spawnInAir = 10;
 }
+
+message transport_commandnode_segment {
+    required int64 id = 1;
+    required int64 commandNodeWarInstanceId = 2;
+    required int64 supplylineid = 3;
+    required int64 fromAccesspoint = 4;
+    required int64 toAccesspoint = 5;
+    required string begintime = 6;
+    required string endtime = 7;
+    required int64 warid = 8;
+    optional int32 approachingSkirmish = 9;
+}

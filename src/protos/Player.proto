@@ -192,3 +192,12 @@ message PlayerOfferMetrics {
     required string lastFirstBattleDate = 9;
     optional string lastUpdatedConsecutiveDayCountDate = 10;
 }
+
+message StoreDiscount {
+    required int64 id = 1;
+    required string objectType = 2;
+    required int64 objectId = 3;
+    required int32 virtualCurrencyType = 4;
+    required float discountValue = 5;
+    required int64 campaignId = 6;
+}

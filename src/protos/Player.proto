@@ -201,3 +201,13 @@ message StoreDiscount {
     required float discountValue = 5;
     required int64 campaignId = 6;
 }
+
+message StoreCampaign {
+    required int64 id = 1;
+    required int32 type = 2;
+    required string assetIdentifier = 3;
+    required string callToAction = 4;
+    required string iconType = 5;
+    required string activeFromTime = 6;
+    required string activeToTime = 7;
+}

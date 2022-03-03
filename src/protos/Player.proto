@@ -243,3 +243,11 @@ message Squad {
     required bool matchMakeWarMissionFlag = 9;
     repeated int64 matchMakeStagedMissionPresetList = 10;
 }
+
+message RibbonBooster {
+    required int64 id = 1;
+    required int64 playerId = 2;
+    required int64 ribbonBoosterTemplateId = 3;
+    required uint32 itemsAccumulated = 4;
+    required string expirationTime = 5;
+}

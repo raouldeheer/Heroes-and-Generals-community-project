@@ -211,3 +211,15 @@ message StoreCampaign {
     required string activeFromTime = 6;
     required string activeToTime = 7;
 }
+
+message battle_pass {
+    required int64 id = 1;
+    required int32 tier = 2;
+    required int32 level = 3;
+    required int64 playerId = 4;
+    required int64 battlePassSeasonTemplateId = 5;
+    required int32 score = 6;
+    required bool isPurchased = 7;
+    required string pendingRewardBattlePassTemplateIds = 8;
+    required string receivedRewardBattlePassTemplateIds = 9;
+}

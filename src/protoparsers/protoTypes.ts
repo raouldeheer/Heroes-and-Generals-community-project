@@ -34,6 +34,7 @@ export const enum KeyValueChangeKey {
     faction = "faction",
     war = "war",
     battlefieldstatus = "battlefieldstatus",
+    battle_pass = "battle_pass",
 }
 
 const Protos = protobuf.loadSync("./src/protos/All.proto");
@@ -67,4 +68,5 @@ export const SetProtoParsers = new Map<string, protobuf.Type>([
     [KeyValueChangeKey.faction, Protos.lookupType("War.faction")],
     [KeyValueChangeKey.war, Protos.lookupType("War.war")],
     [KeyValueChangeKey.battlefieldstatus, Protos.lookupType("War.battlefieldstatus")],
+    [KeyValueChangeKey.battle_pass, Protos.lookupType("Player.battle_pass")],
 ]);

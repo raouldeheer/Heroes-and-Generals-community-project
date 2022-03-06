@@ -48,6 +48,7 @@ export const enum KeyValueChangeKey {
     WeaponVariant = "WeaponVariant",
     WeaponAmmo = "WeaponAmmo",
     character = "character",
+    weapon = "weapon",
 }
 
 const Protos = protobuf.loadSync("./src/protos/All.proto");

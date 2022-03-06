@@ -350,3 +350,21 @@ message character {
     required int32 eHeadSwapType = 23;
     required bool isOnLeave = 24;
 }
+
+message weapon {
+    required int64 id = 1;
+    required string name = 2;
+    required int64 weapontemplateid = 3;
+    required int64 playerid = 4;
+    required int64 characterId = 5;
+    required int32 posx = 6;
+    required int32 posy = 7;
+    required string decals = 8;
+    required string containerType = 9;
+    required int64 containerId = 10;
+    required int32 containerSlot = 11;
+    required float condition = 12;
+    required int32 autoRepair = 13;
+    required int32 clipCount = 14;
+    required int64 equippedWeaponVariantId = 15;
+}

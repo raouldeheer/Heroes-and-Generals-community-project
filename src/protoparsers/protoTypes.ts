@@ -26,7 +26,6 @@ export const enum KeyValueChangeKey {
     supplylinestatus = "supplylinestatus",
     accesspointstatus = "accesspointstatus",
     transport_commandnode_segment = "transport_commandnode_segment",
-    transport_commandnode_destination = "transport_commandnode_destination",
     air_transport = "air_transport",
     air_commandnode_base = "air_commandnode_base",
     battle = "battle",
@@ -49,6 +48,7 @@ export const enum KeyValueChangeKey {
     WeaponAmmo = "WeaponAmmo",
     character = "character",
     weapon = "weapon",
+    Vehicle = "Vehicle",
 }
 
 const Protos = protobuf.loadSync("./src/protos/All.proto");
@@ -74,7 +74,6 @@ export const SetProtoParsers = new Map<string, protobuf.Type>([
     [KeyValueChangeKey.supplylinestatus, Protos.lookupType("War.supplylinestatus")],
     [KeyValueChangeKey.accesspointstatus, Protos.lookupType("War.accesspointstatus")],
     [KeyValueChangeKey.transport_commandnode_segment, Protos.lookupType("War.transport_commandnode_segment")],
-    // [KeyValueChangeKey.transport_commandnode_destination, Protos.lookupType("War.transport_commandnode_destination")],
     [KeyValueChangeKey.air_transport, Protos.lookupType("War.air_transport")],
     [KeyValueChangeKey.air_commandnode_base, Protos.lookupType("War.air_commandnode_base")],
     [KeyValueChangeKey.battle, Protos.lookupType("War.battle")],
@@ -96,4 +95,6 @@ export const SetProtoParsers = new Map<string, protobuf.Type>([
     [KeyValueChangeKey.WeaponVariant, Protos.lookupType("Player.WeaponVariant")],
     [KeyValueChangeKey.WeaponAmmo, Protos.lookupType("Player.WeaponAmmo")],
     [KeyValueChangeKey.character, Protos.lookupType("Player.character")],
+    [KeyValueChangeKey.weapon, Protos.lookupType("Player.weapon")],
+    [KeyValueChangeKey.Vehicle, Protos.lookupType("Player.Vehicle")],
 ]);

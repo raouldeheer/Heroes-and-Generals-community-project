@@ -368,3 +368,14 @@ message weapon {
     required int32 clipCount = 14;
     required int64 equippedWeaponVariantId = 15;
 }
+
+message Vehicle {
+    required int64 id = 1;
+    required int64 vehicleVariantTemplateId = 3;
+    required int64 playerId = 4;
+    required int64 characterId = 5;
+    required int64 equippedInSlot = 6;
+    required float condition = 7;
+    required int32 autoRepair = 8;
+    required int64 equippedVehicleVariantId = 9;
+}

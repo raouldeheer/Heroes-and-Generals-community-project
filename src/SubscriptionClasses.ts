@@ -2,11 +2,10 @@ import protobuf from "protobufjs";
 import BufferCursor from "./buffercursor";
 import { BufToDecodedProto, ProtoToBuf } from "./proto";
 
-const CommonPackage = protobuf.loadSync("./src/protos/Common.proto");
-const DummyProto = CommonPackage.lookupType("Common.Dummy");
+const Protos = protobuf.loadSync("./src/protos/All.proto");
 
 export class DummyClass {
-    static proto = DummyProto;
+    static proto = Protos.lookupType("Common.Dummy");
     static parse = (buf: BufferCursor) =>
         BufToDecodedProto(this.proto, buf.buffer.slice(8));
     static toBuffer = (payload: {
@@ -15,7 +14,7 @@ export class DummyClass {
 }
 
 export class unsubscriberesponse {
-    static proto = CommonPackage.lookupType("Common.unsubscriberesponse");
+    static proto = Protos.lookupType("Common.unsubscriberesponse");
     static parse = (buf: BufferCursor) =>
         BufToDecodedProto(this.proto, buf.buffer.slice(8));
     static toBuffer = (payload: {

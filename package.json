@@ -30,7 +30,6 @@
     "url": "https://github.com/sponsors/raouldeheer"
   },
   "dependencies": {
-    "jsbi": "^4.1.0",
     "protobufjs": "^6.11.2"
   }
 }

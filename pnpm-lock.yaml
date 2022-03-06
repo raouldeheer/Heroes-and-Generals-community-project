@@ -2,12 +2,10 @@ lockfileVersion: 5.3
 
 specifiers:
   '@types/node': ^17.0.5
-  jsbi: ^4.1.0
   nodemon: ^2.0.15
   protobufjs: ^6.11.2
 
 dependencies:
-  jsbi: 4.1.0
   protobufjs: 6.11.2
 
 devDependencies:
@@ -453,10 +451,6 @@ packages:
   /is-yarn-global/0.3.0:
     resolution: {integrity: sha512-VjSeb/lHmkoyd8ryPVIKvOCn4D1koMqY+vqyjjUfc3xyKtP4dYOxM44sZrnqQSzSds3xyOrUTLTC9LVCVgLngw==}
     dev: true
-
-  /jsbi/4.1.0:
-    resolution: {integrity: sha512-384Z4keIsJtYpnVggsxaB255MZctILbxv+ihtwoWPF7KNOlYHn1LFpRnUw5qsAspUAA2+I7qzjVJxVYtHVjxNw==}
-    dev: false
 
   /json-buffer/3.0.0:
     resolution: {integrity: sha1-Wx85evx11ne96Lz8Dkfh+aPZqJg=}

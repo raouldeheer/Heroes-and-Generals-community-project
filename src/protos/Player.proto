@@ -328,3 +328,25 @@ message WeaponVariant {
     required int64 weaponId = 4;
     required int64 weaponVariantTemplateId = 5;
 }
+
+message character {
+    required int64 id = 1;
+    required string name = 2;
+    required int64 playerid = 3;
+    required int64 charactertemplateid = 4;
+    required int64 factiontemplateid = 5;
+    required int64 combatbadgeslot0 = 10;
+    required int64 combatbadgeslot1 = 11;
+    required int32 rank = 13;
+    required bool markedDeleted = 14;
+    required int32 firstBloodStatus = 15;
+    required bool specialCharacterFlag = 16;
+    required int64 uniformVariantId = 17;
+    required int64 headgearId = 18;
+    required int64 previousCharacterTemplateId = 19;
+    optional int64 statUpdateTimeStamp = 20;
+    repeated bool unlockBits = 21;
+    required int64 headId = 22;
+    required int32 eHeadSwapType = 23;
+    required bool isOnLeave = 24;
+}

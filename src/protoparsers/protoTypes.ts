@@ -47,6 +47,7 @@ export const enum KeyValueChangeKey {
     WeaponModifier = "WeaponModifier",
     WeaponVariant = "WeaponVariant",
     WeaponAmmo = "WeaponAmmo",
+    character = "character",
 }
 
 const Protos = protobuf.loadSync("./src/protos/All.proto");
@@ -93,4 +94,5 @@ export const SetProtoParsers = new Map<string, protobuf.Type>([
     [KeyValueChangeKey.WeaponModifier, Protos.lookupType("Player.WeaponModifier")],
     [KeyValueChangeKey.WeaponVariant, Protos.lookupType("Player.WeaponVariant")],
     [KeyValueChangeKey.WeaponAmmo, Protos.lookupType("Player.WeaponAmmo")],
+    [KeyValueChangeKey.character, Protos.lookupType("Player.character")],
 ]);

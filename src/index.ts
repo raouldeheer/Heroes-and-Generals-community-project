@@ -129,7 +129,7 @@ const parse = (element: BufferCursor) => {
         ? result // Print bytes when class didn't give any results.
         : `${midString} ${endString}`
         }`;
-    console.log(outputStr);
+    // console.log(outputStr);
     totalString += `${outputStr}\n`;
 
     // When packet doesn't match packet size print sizes.
@@ -153,3 +153,46 @@ function dataLinesToBuffer(dataLines: RegExpMatchArray): Buffer {
             .map(e => Number.parseInt(e, 16))
     );
 }
+interface InfoT {
+    id: string;
+    posX: number;
+    posY: number;
+}
+const BattleInfo: { [key: string]: InfoT; } = dataStore.ToObject().BattleInfo;
+const infos: InfoT[] = [];
+
+for (const infokey in BattleInfo)
+    if (Object.prototype.hasOwnProperty.call(BattleInfo, infokey))
+        infos.push(BattleInfo[infokey]);
+
+fs.writeFileSync("infos.jsonc", JSON.stringify(infos), "utf-8");
+
+let xMax: number, xMin: number, yMax: number, yMin: number;
+infos.forEach(e => {
+    if (!xMax || e.posX > xMax) xMax = e.posX;
+    if (!xMin || e.posX < xMin) xMin = e.posX;
+    if (!yMax || e.posY > yMax) yMax = e.posY;
+    if (!yMin || e.posY < yMin) yMin = e.posY;
+});
+
+console.log(xMax!);
+console.log(xMin!);
+console.log(yMax!);
+console.log(yMin!);
+
+import { createCanvas } from 'canvas';
+
+const width = 15000;
+const height = 15000;
+
+const canvas = createCanvas(width, height);
+const context = canvas.getContext('2d');
+
+context.fillStyle = '#000';
+context.fillRect(0, 0, width, height);
+
+
+context.fillStyle = '#fff';
+infos.forEach(e => context.fillRect(e.posX, e.posY, 50, 50));
+
+fs.writeFileSync('./warmap.png', canvas.toBuffer('image/png'));

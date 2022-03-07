@@ -30,6 +30,7 @@
     "url": "https://github.com/sponsors/raouldeheer"
   },
   "dependencies": {
+    "canvas": "^2.9.0",
     "protobufjs": "^6.11.2"
   }
 }

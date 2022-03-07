@@ -79,4 +79,6 @@ dist
 captures
 total.txt
 total.jsonc
+infos.jsonc
 src/env.ts
+warmap.png

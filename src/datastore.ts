@@ -28,12 +28,16 @@ export class DataStore {
     public GetData = (itemStoreName: string, id: string) =>
         this.mainStore.get(itemStoreName)?.get?.(id);
 
-    public ToString() {
+    public ToObject() {
         const obj: any = {};
         for (const [k1, v1] of this.mainStore) {
             obj[k1] = {};
             for (const [k2, v2] of v1) obj[k1][k2] = v2;
         }
-        return JSON.stringify(obj);
+        return obj;
+    }
+
+    public ToString() {
+        return JSON.stringify(this.ToObject());
     }
 }

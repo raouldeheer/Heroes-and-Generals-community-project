@@ -22,8 +22,8 @@ cl.once("loggedin", async () => {
 });
 cl.on("message", (typetext, data) => {
     if(typetext == "KeyValueChangeSet") {
-        dataStore.SaveData(data)
+        dataStore.SaveData(data);
+        fs.writeFileSync("total.jsonc", dataStore.ToString(), "utf-8");
     }
-    fs.writeFileSync("total.jsonc", dataStore.ToString(), "utf-8");
 
 });

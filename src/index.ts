@@ -2,12 +2,12 @@ import fs from "fs";
 import BufferCursor from "./buffercursor";
 import { ProtoToString } from "./proto";
 import { keys } from "./types";
-import { bytesToString } from "./utils";
- 
-const data = fs.readFileSync("./captures/capturetext4.txt", "utf-8");
 import { bytesToString, toCanvas } from "./utils";
 import { gunzipSync } from "zlib";
 import { DataStore } from "./datastore";
+
+const data = fs.readFileSync("./captures/capturetext9.txt", "utf-8");
+
 const packets = data.split("No.     Time           Source                Destination           Protocol Length Info").map(e => e.split("Data")[1]);
  
 /**

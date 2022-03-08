@@ -1,4 +1,7 @@
 import BufferCursor from "./buffercursor";
+import { createCanvas, loadImage } from 'canvas';
+import fs from "fs";
+import { DataStore } from "./datastore";
 
 export function bytesToString(source: Buffer | BufferCursor): string {
     const buf = source instanceof BufferCursor ? source.buffer : source;
@@ -23,49 +26,51 @@ export function parseGroups(source: Buffer | BufferCursor): Buffer[] {
     return groups.map(v => v.buffer);
 }
 
-export function splitOnMultipleOf8(source: Buffer | BufferCursor) {
-    const buf = source instanceof BufferCursor ? source : new BufferCursor(source);
-
-    let multiple = 8, multiple2 = 16, start: number = NaN, stop: number = NaN;
-    const arr = [];
-
-    for (let i = 0; i < buf.length; i++) {
-        const value = buf.readUInt8();
-        if (value === multiple || value === multiple2) {
-            const pos = buf.tell();
-            multiple += 8;
-            multiple2 += 8;
-            if (start && stop) {
-                buf.seek(start);
-                arr.push(buf.slice(stop - start));
-                stop = NaN;
-            }
-            start = pos;
-            buf.seek(pos);
-        } else {
-            stop = buf.tell();
-        }
+export function toCanvas(dataStore: DataStore) {
+    interface InfoT {
+        id: string;
+        posX: number;
+        posY: number;
     }
-    if (start && stop) {
-        buf.seek(start);
-        arr.push(buf.slice(stop - start));
-        stop = NaN;
-    }
-    return arr;
-}
+    const BattleInfo: { [key: string]: InfoT; } = dataStore.ToObject().BattleInfo;
+    const infos: InfoT[] = [];
 
-export function splitOnChar(buf: BufferCursor, char: string | number): BufferCursor | undefined {
-    const charInt = typeof char == "string" ? char.charCodeAt(0) : char;
-    const start = buf.tell();
+    for (const infokey in BattleInfo)
+        if (Object.prototype.hasOwnProperty.call(BattleInfo, infokey))
+            infos.push(BattleInfo[infokey]);
 
-    for (let i = 0; i < buf.length; i++) {
-        const value = buf.readUInt8();
-        if (value === charInt) {
-            const stop = buf.tell();
-            buf.seek(start);
-            const resultBuf = buf.slice(stop - start - 1);
-            buf.seek(stop);
-            return resultBuf;
-        }
-    }
+    fs.writeFileSync("infos.jsonc", JSON.stringify(infos), "utf-8");
+
+    let xMax: number, xMin: number, yMax: number, yMin: number;
+    infos.forEach(e => {
+        if (!xMax || e.posX > xMax) xMax = e.posX;
+        if (!xMin || e.posX < xMin) xMin = e.posX;
+        if (!yMax || e.posY > yMax) yMax = e.posY;
+        if (!yMin || e.posY < yMin) yMin = e.posY;
+    });
+
+    console.log(xMax!);
+    console.log(xMin!);
+    console.log(yMax!);
+    console.log(yMin!);
+
+
+    const width = 2048;
+    const height = 1440;
+
+    const canvas = createCanvas(width, height);
+    const context = canvas.getContext('2d');
+
+    loadImage('./background.png').then(image => {
+        // Draw background
+        context.drawImage(image, 0, 0, image.width, image.height);
+
+        // Draw battles
+        context.fillStyle = '#fff';
+        infos.forEach(e => context.fillRect(e.posX / 8, e.posY / 8, 10, 10));
+
+        // Save output to file
+        fs.writeFileSync('./warmap.png', canvas.toBuffer('image/png'));
+    });
+
 }

@@ -2,7 +2,6 @@ import { Client } from "./client";
 import { DataStore } from "./datastore";
 import { ip, port } from "./env";
 import fs from "fs";
-import { createCanvas, loadImage } from 'canvas';
 import { toCanvas } from "./utils";
 
 

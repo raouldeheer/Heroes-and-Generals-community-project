@@ -180,19 +180,22 @@ console.log(xMin!);
 console.log(yMax!);
 console.log(yMin!);
 
-import { createCanvas } from 'canvas';
+import { createCanvas, loadImage } from 'canvas';
 
-const width = 15000;
-const height = 15000;
+const width = 2048;
+const height = 1440;
 
 const canvas = createCanvas(width, height);
 const context = canvas.getContext('2d');
 
-context.fillStyle = '#000';
-context.fillRect(0, 0, width, height);
+loadImage('./background.png').then(image => {
+    // Draw background
+    context.drawImage(image, 0, 0, image.width, image.height);
 
-
-context.fillStyle = '#fff';
-infos.forEach(e => context.fillRect(e.posX, e.posY, 50, 50));
-
-fs.writeFileSync('./warmap.png', canvas.toBuffer('image/png'));
+    // Draw battles
+    context.fillStyle = '#fff';
+    infos.forEach(e => context.fillRect(e.posX/8, e.posY/8, 10, 10));
+    
+    // Save output to file
+    fs.writeFileSync('./warmap.png', canvas.toBuffer('image/png'));
+});

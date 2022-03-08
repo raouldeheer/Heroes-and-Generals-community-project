@@ -5,6 +5,7 @@ import { keys } from "./types";
 import { bytesToString } from "./utils";
  
 const data = fs.readFileSync("./captures/capturetext4.txt", "utf-8");
+import { bytesToString, toCanvas } from "./utils";
 import { gunzipSync } from "zlib";
 import { DataStore } from "./datastore";
 const packets = data.split("No.     Time           Source                Destination           Protocol Length Info").map(e => e.split("Data")[1]);

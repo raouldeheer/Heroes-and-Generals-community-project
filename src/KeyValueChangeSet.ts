@@ -44,13 +44,13 @@ export class KeyValueChangeSet {
                     switch (key) {
                         case KeyValueChangeKey.battle:
                         case KeyValueChangeKey.BattleInfo:
-                            // TODO do better naming
                             returnObj.delete.push({
                                 key,
-                                value: KeyValueChangeSet.parseToHex(key, value),
+                                value: value.readBigUint64LE().toString(),
                             });
                             break;
                         default:
+                            console.log(`New delete key: ${key}`);
                             returnObj.delete.push({
                                 key,
                                 value: "New delete key",

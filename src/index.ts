@@ -22,11 +22,7 @@ const dataLines = packets
     .map(e => dataLinesToBuffer(e!))
     .filter(v => v.length > 0);
 
-const arr = [];
-
-for (let i = 0; i < dataLines.length; i++) {
-    arr.push(dataLines[i]);
-}
+const arr = dataLines.filter((_, i) => i < dataLines.length);
 
 /**
  * 

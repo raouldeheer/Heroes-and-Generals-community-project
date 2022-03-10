@@ -269,6 +269,18 @@ message Notification {
     required string expires = 7;
 }
 
+message UnlockNotification {
+    required int64 id = 1;
+    required int64 playerId = 2;
+    required int64 characterId = 3;
+    required int64 progressionUnlockId = 4;
+    required int64 ribbonTemplateId = 5;
+    required int64 ribbonLevel = 6;
+    required string unlockTimestamp = 7;
+    required int32 notificationResponse = 8;
+    required bool markedForDelete = 9;
+}
+
 message VehicleAmmo {
     required int64 id = 1;
     required int64 ammoTemplateId = 2;

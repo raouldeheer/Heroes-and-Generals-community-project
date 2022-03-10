@@ -185,3 +185,9 @@ export class JoinMatchMakingRequest {
     static parse = (buf: BufferCursor) =>
         BufToDecodedProto(this.proto, buf.buffer.slice(8));
 }
+
+export class JoinMatchMakingResponse {
+    static proto = Protos.lookupType("MissionDetails.JoinMatchMakingResponse");
+    static parse = (buf: BufferCursor) =>
+        BufToDecodedProto(this.proto, buf.buffer.slice(8));
+}

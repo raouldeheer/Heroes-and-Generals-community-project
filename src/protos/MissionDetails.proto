@@ -84,3 +84,7 @@ message JoinMatchMakingRequest {
     required int64 gamemodeId = 7;
     required bool quickplay = 8;
 }
+
+message JoinMatchMakingResponse {
+    required Common.Response response = 1;
+}

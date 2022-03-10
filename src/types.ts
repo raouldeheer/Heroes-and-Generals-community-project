@@ -73,6 +73,7 @@ const keys = new Map<String, packetClassParser>([
     ["JoinMatchMakingResponse", all.JoinMatchMakingResponse],
     ["CancelJoinMatchMakingRequest", all.CancelJoinMatchMakingRequest],
     ["CancelJoinMatchMakingResponse", all.CancelJoinMatchMakingResponse],
+    ["ResponseReadCharacterStats", all.ResponseReadCharacterStats],
 ]);
 
 export { keys };

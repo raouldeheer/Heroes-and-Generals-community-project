@@ -203,3 +203,9 @@ export class CancelJoinMatchMakingResponse {
     static parse = (buf: BufferCursor) =>
         BufToDecodedProto(this.proto, buf.buffer.slice(8));
 }
+
+export class ResponseReadCharacterStats {
+    static proto = Protos.lookupType("Stats.ResponseReadCharacterStats");
+    static parse = (buf: BufferCursor) =>
+        BufToDecodedProto(this.proto, buf.buffer.slice(8));
+}

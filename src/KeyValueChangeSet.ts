@@ -28,6 +28,7 @@ export class KeyValueChangeSet {
                             value: decoded,
                         });
                     } else {
+                        console.log(`New set key: ${key}`);
                         returnObj.set.push({
                             key,
                             value: "New set key",

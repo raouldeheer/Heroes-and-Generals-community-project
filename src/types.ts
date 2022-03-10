@@ -71,6 +71,7 @@ const keys = new Map<String, packetClassParser>([
     ["GetGoldPricesResponse", all.GetGoldPricesResponse],
     ["JoinMatchMakingRequest", all.JoinMatchMakingRequest],
     ["JoinMatchMakingResponse", all.JoinMatchMakingResponse],
+    ["CancelJoinMatchMakingRequest", all.CancelJoinMatchMakingRequest],
 ]);
 
 export { keys };

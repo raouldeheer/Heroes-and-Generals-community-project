@@ -176,3 +176,7 @@ message QuickplayMatchmakingInfo {
     repeated int64 equippedVehicleArmyResourceCategoryIds = 4;
     required bool war = 5;
 }
+
+message CancelJoinMatchMakingRequest {
+    required int64 characterId = 1;
+}

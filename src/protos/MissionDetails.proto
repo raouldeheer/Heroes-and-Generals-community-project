@@ -140,3 +140,39 @@ message SquadMemberSession {
     required bool isQuickplay = 19;
     required bool isQuickplaySelectedFaction = 20;
 }
+
+message PlayerMatchMaking {
+    required int64 id = 1;
+    required int64 squadSessionId = 2;
+    repeated HostingCenterPing hostingCenterPings = 3;
+    required string timeEntered = 4;
+    required string metricsUserId = 5;
+    required int64 metricsSessionId = 6;
+    required string metricsDeviceId = 7;
+    required int64 missionId = 8;
+    repeated int64 missionPresetId = 9;
+    required bool isMatchmaking = 10;
+    required int64 warId = 11;
+    required int64 factionId = 12;
+    required int32 missionTypeMask = 13;
+    required bool forceStart = 14;
+    required int32 tier = 15;
+    required float skillLevel = 16;
+    required bool playerVsBots = 17;
+    required int32 playersInQueueLocal = 18;
+    required int32 playersInQueueTotal = 19;
+    required int32 playersInGameLocal = 20;
+    required int32 playersInGameTotal = 21;
+    required int32 missionsMatchingPopulating = 22;
+    required int32 missionsMatchingRunning = 23;
+    repeated QuickplayMatchmakingInfo quickplayInfo = 24;
+    required int64 missionCategoryId = 25;
+}
+
+message QuickplayMatchmakingInfo {
+    required int64 factionTemplateId = 1;
+    required int64 characterTemplateId = 2;
+    repeated int64 missionPresetId = 3;
+    repeated int64 equippedVehicleArmyResourceCategoryIds = 4;
+    required bool war = 5;
+}

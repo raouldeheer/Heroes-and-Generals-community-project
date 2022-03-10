@@ -179,3 +179,9 @@ export class GetGoldPricesResponse {
     static parse = (buf: BufferCursor) =>
         BufToDecodedProto(this.proto, buf.buffer.slice(8));
 }
+
+export class JoinMatchMakingRequest {
+    static proto = Protos.lookupType("MissionDetails.JoinMatchMakingRequest");
+    static parse = (buf: BufferCursor) =>
+        BufToDecodedProto(this.proto, buf.buffer.slice(8));
+}

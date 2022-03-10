@@ -48,3 +48,8 @@ message ViewHandlerPulse {
     required int64 lastTickTime = 2;
     required int64 serverTime = 3;
 }
+
+message HostingCenterPing {
+    required int64 hostingCenterId = 1;
+    required int32 ping = 2;
+}

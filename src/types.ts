@@ -69,6 +69,7 @@ const keys = new Map<String, packetClassParser>([
     ["query_commandnode_owner_response", all.query_commandnode_owner_response],
     ["GetGoldPricesRequest", all.GetGoldPricesRequest],
     ["GetGoldPricesResponse", all.GetGoldPricesResponse],
+    ["JoinMatchMakingRequest", all.JoinMatchMakingRequest],
 ]);
 
 export { keys };

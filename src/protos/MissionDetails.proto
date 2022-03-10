@@ -2,6 +2,7 @@ package MissionDetails;
 syntax = "proto3";
 
 import "Common.proto";
+import "ServerInfo.proto";
 
 message GetMissionDetailsRequest {
     required int64 missionId = 1;
@@ -73,3 +74,13 @@ message MissionDetailsCapturepointStatus {
     required int64 ownerFactionId = 2;
 }
 
+message JoinMatchMakingRequest {
+    required int64 characterId = 1;
+    required int64 missionId = 2;
+    repeated HostingCenterPing hostingCenters = 3;
+    required bool warMissionFlag = 4;
+    repeated int64 stagedMissionPresetList = 5;
+    repeated int64 squadVehicleFilterArmyResourceTemplateIds = 6;
+    required int64 gamemodeId = 7;
+    required bool quickplay = 8;
+}

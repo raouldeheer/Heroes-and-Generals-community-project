@@ -117,3 +117,26 @@ message SquadResourceState {
     required int64 armyResourceCategoryId = 1;
     required int32 count = 2;
 }
+
+message SquadMemberSession {
+    required int64 id = 1;
+    required int64 squadSessionId = 2;
+    required int64 squadPlayerSlotTemplateId = 3;
+    required int64 playerId = 4;
+    required string gamerTag = 5;
+    required int64 playerFactionTemplateId = 6;
+    required int64 characterId = 7;
+    required int64 uniformVariantTemplateId = 8;
+    required int64 weaponVariantTemplateId = 9;
+    required int32 characterRank = 10;
+    required int64 shopMembershipItemId = 11;
+    required int32 squadMemberSessionStatus = 12;
+    repeated int64 verifiedSquadResourceTemplates = 13;
+    required string characterName = 14;
+    required int64 playerSessionId = 15;
+    required int32 playerTier = 16;
+    required int32 squadCustomizationPoints = 17;
+    required bool wasInvited = 18;
+    required bool isQuickplay = 19;
+    required bool isQuickplaySelectedFaction = 20;
+}

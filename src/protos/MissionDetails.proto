@@ -88,3 +88,32 @@ message JoinMatchMakingRequest {
 message JoinMatchMakingResponse {
     required Common.Response response = 1;
 }
+
+message SquadSession {
+    required int64 id = 1;
+    required int64 ownerPlayerId = 2;
+    required int64 characterTemplateId = 3;
+    required int64 factionTemplateId = 4;
+    required int64 supportSlotTemplateId1 = 5;
+    required int64 supportSlotTemplateId2 = 6;
+    required int64 supportSlotTemplateId3 = 7;
+    required int32 totalCustomizationPoints = 8;
+    required int32 usedCustomizationPoints = 9;
+    required string name = 10;
+    required bool matchMakeWarMissionFlag = 12;
+    repeated int64 matchMakeStagedMissionPresetList = 13;
+    repeated int64 matchMakeSquadVehicleFilterArmyResourceTemplateIds = 14;
+    repeated SquadResourceState squadResourceList = 15;
+    repeated int64 ignorePlayerIdList = 16;
+    required int64 missionId = 17;
+    required int64 squadId = 18;
+    required int32 actionGamesEntered = 19;
+    required bool isLockedForMembers = 20;
+    required bool isLockedForCustomization = 21;
+    required bool forceReady = 22;
+}
+
+message SquadResourceState {
+    required int64 armyResourceCategoryId = 1;
+    required int32 count = 2;
+}

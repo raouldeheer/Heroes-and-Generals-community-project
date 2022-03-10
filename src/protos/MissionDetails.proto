@@ -180,3 +180,7 @@ message QuickplayMatchmakingInfo {
 message CancelJoinMatchMakingRequest {
     required int64 characterId = 1;
 }
+
+message CancelJoinMatchMakingResponse {
+    required Common.Response response = 1;
+}

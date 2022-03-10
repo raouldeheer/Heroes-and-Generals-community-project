@@ -197,3 +197,9 @@ export class CancelJoinMatchMakingRequest {
     static parse = (buf: BufferCursor) =>
         BufToDecodedProto(this.proto, buf.buffer.slice(8));
 }
+
+export class CancelJoinMatchMakingResponse {
+    static proto = Protos.lookupType("MissionDetails.CancelJoinMatchMakingResponse");
+    static parse = (buf: BufferCursor) =>
+        BufToDecodedProto(this.proto, buf.buffer.slice(8));
+}

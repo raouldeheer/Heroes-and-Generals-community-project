@@ -379,3 +379,10 @@ message Vehicle {
     required int32 autoRepair = 8;
     required int64 equippedVehicleVariantId = 9;
 }
+
+message PlayerGoldOffer {
+    required int64 id = 1;
+    required int64 playerId = 2;
+    required int32 goldAdded = 3;
+    required string expireDate = 4;
+}

@@ -52,6 +52,7 @@ export const enum KeyValueChangeKey {
     SquadSession = "SquadSession",
     SquadMemberSession = "SquadMemberSession",
     PlayerMatchMaking = "PlayerMatchMaking",
+    PlayerGoldOffer = "PlayerGoldOffer",
 }
 
 const Protos = protobuf.loadSync("./src/protos/All.proto");
@@ -103,4 +104,5 @@ export const SetProtoParsers = new Map<string, protobuf.Type>([
     [KeyValueChangeKey.SquadSession, Protos.lookupType("MissionDetails.SquadSession")],
     [KeyValueChangeKey.SquadMemberSession, Protos.lookupType("MissionDetails.SquadMemberSession")],
     [KeyValueChangeKey.PlayerMatchMaking, Protos.lookupType("MissionDetails.PlayerMatchMaking")],
+    [KeyValueChangeKey.PlayerGoldOffer, Protos.lookupType("Player.PlayerGoldOffer")],
 ]);

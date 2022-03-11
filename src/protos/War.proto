@@ -149,6 +149,17 @@ message battlefieldstatus {
     optional int64 defencesetupid = 6;
 }
 
+message battlefield {
+    required int64 id = 1;
+    required int64 mapid = 2;
+    required string bftitle = 3;
+    required string sector = 4;
+    required float posx = 5;
+    required float posy = 6;
+    required int64 gamemap = 7;
+    optional float rotation = 8;
+}
+
 message FactionResourceQueue {
     required int64 id = 1;
     required int64 factionId = 2;
@@ -246,6 +257,15 @@ message accesspointstatus {
     required int64 warid = 2;
     required int64 accesspointid = 3;
     required int64 factionid = 4;
+}
+
+message accesspointtemplate {
+    required int64 id = 1;
+    required int64 gamemap = 2;
+    required float posx = 3;
+    required float posy = 4;
+    required string abbr = 5;
+    required uint32 actionid = 6;
 }
 
 message supplylinestatus {

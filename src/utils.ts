@@ -39,22 +39,6 @@ export function toCanvas(dataStore: DataStore) {
         if (Object.prototype.hasOwnProperty.call(BattleInfo, infokey))
             infos.push(BattleInfo[infokey]);
 
-    fs.writeFileSync("infos.jsonc", JSON.stringify(infos), "utf-8");
-
-    let xMax: number, xMin: number, yMax: number, yMin: number;
-    infos.forEach(e => {
-        if (!xMax || e.posX > xMax) xMax = e.posX;
-        if (!xMin || e.posX < xMin) xMin = e.posX;
-        if (!yMax || e.posY > yMax) yMax = e.posY;
-        if (!yMin || e.posY < yMin) yMin = e.posY;
-    });
-
-    console.log(xMax!);
-    console.log(xMin!);
-    console.log(yMax!);
-    console.log(yMin!);
-
-
     const width = 2048;
     const height = 1440;
 
@@ -73,4 +57,55 @@ export function toCanvas(dataStore: DataStore) {
         fs.writeFileSync('./warmap.png', canvas.toBuffer('image/png'));
     });
 
+}
+
+
+export function toCanvasColored(dataStore: DataStore) {
+    interface battlefieldstatusT {
+        id: string;
+        warid: string;
+        battlefieldid: string;
+        factionid: string;
+    }
+    const dbObj = dataStore.ToObject();
+    const battlefieldstatus: { [key: string]: battlefieldstatusT; } = dbObj.battlefieldstatus;
+    const battlefieldstatuses: battlefieldstatusT[] = [];
+
+    for (const infokey in battlefieldstatus)
+        if (Object.prototype.hasOwnProperty.call(battlefieldstatus, infokey))
+            battlefieldstatuses.push(battlefieldstatus[infokey]);
+
+    const width = 2048;
+    const height = 1440;
+
+    const canvas = createCanvas(width, height);
+    const context = canvas.getContext('2d');
+
+    loadImage('./background.png').then(image => {
+        // Draw background
+        context.drawImage(image, 0, 0, image.width, image.height);
+
+        // Draw battles
+        battlefieldstatuses.forEach(e => {
+            switch (e.factionid) {
+                case "1453450728017739468":
+                    context.fillStyle = '#f00';
+                    break;
+                case "4479088871115797170":
+                    context.fillStyle = '#0f0';
+                    break;
+                case "2459942554710019316":
+                    context.fillStyle = '#00f';
+                    break;
+                default:
+                    context.fillStyle = '#fff';
+                    break;
+            }
+            const battlefield = dataStore.GetData("battlefield", e.battlefieldid);
+            context.fillRect(battlefield.posx / 8, battlefield.posy / 8, 10, 10)
+        });
+
+        // Save output to file
+        fs.writeFileSync('./warmap.png', canvas.toBuffer('image/png'));
+    });
 }

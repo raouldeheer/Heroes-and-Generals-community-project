@@ -2,7 +2,7 @@ import fs from "fs";
 import BufferCursor from "./buffercursor";
 import { ProtoToString } from "./proto";
 import { keys } from "./types";
-import { bytesToString, toCanvas } from "./utils";
+import { toCanvasColored, bytesToString, toCanvas } from "./utils";
 import { gunzipSync } from "zlib";
 import { DataStore } from "./datastore";
 
@@ -64,8 +64,6 @@ let totalString = "";
 const dataStore = new DataStore;
 
 const parse = (element: BufferCursor) => {
-    const text = bytesToString(element);
-
     /************************************************************
      * Name :   TotalLen|IDLen|ID|Size|Hlen|Header  |Data       *
      * Bytes:   4       |4    |4 |4   |4   |Variable|Variable   *
@@ -84,12 +82,11 @@ const parse = (element: BufferCursor) => {
 
     const size = element.readUInt32LE() - 4;
     const typeLength = element.readUInt32LE() - 4;
-    const typeText = text.substr(20, typeLength);
+    const typeText = element.slice(typeLength).toString("ascii");
 
     if (size - typeLength == 4) {
         return;
     }
-    element.move(typeLength);
     const DataBuf = element.slice();
     const DataLen = DataBuf.readUInt32LE() - 4;
     DataBuf.seek(0);
@@ -117,14 +114,10 @@ const parse = (element: BufferCursor) => {
         console.log(typeText);
     }
 
-    const startString = `${plen} ${id} ${typeText.padEnd(35)}`;
-    const midString = `${DataLen.toString().padEnd(5)}`;
-    const endString = `${text.substr(20 + typeLength, 50)}`;
-
     // Make output string.
-    const outputStr = `${startString} ${result
+    const outputStr = `${plen} ${id} ${typeText.padEnd(35)} ${result
         ? result // Print bytes when class didn't give any results.
-        : `${midString} ${endString}`
+        : `${DataLen.toString().padEnd(5)} ${bytesToString(element).substr(20 + typeLength, 50)}`
         }`;
     // console.log(outputStr);
     totalString += `${outputStr}\n`;
@@ -151,4 +144,51 @@ function dataLinesToBuffer(dataLines: RegExpMatchArray): Buffer {
     );
 }
 
-toCanvas(dataStore);
+(() => {
+    // let totalString = "";
+    const tempFile = fs.readFileSync("./captures/battlefield");
+    
+    const element = new BufferCursor(tempFile);
+    
+    const size = element.readUInt32LE() - 4;
+    const typeLength = element.readUInt32LE() - 4;
+    const typeText = element.slice(typeLength).toString("ascii");
+    
+    const DataBuf = element.slice();
+    const DataLen = DataBuf.readUInt32LE() - 4;
+    DataBuf.seek(0);
+    
+    let result;
+    if (keys.has(typeText)) {
+        try {
+            // Find class to parse packet with.
+            const klas = keys.get(typeText)!;
+            result = klas.parse(DataBuf);
+            if (typeof result == "function" && typeText == "zipchunk") {
+                // @ts-ignore
+                const gunzipped = new BufferCursor(gunzipSync(result().data));
+                parse(gunzipped);
+            } else if (typeof result == "object") {
+                if (typeText == "KeyValueChangeSet") dataStore.SaveData(result);
+                result = ProtoToString(result);
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    } else {
+        console.log(typeText);
+    }
+    
+    // Make output string.
+    // const outputStr = `${typeText.padEnd(35)} ${result
+    //     ? result // Print bytes when class didn't give any results.
+    //     : `${DataLen.toString().padEnd(5)} ${bytesToString(element).substr(20 + typeLength, 50)}`
+    // }`;
+    // console.log(outputStr);
+    // totalString += `${outputStr}\n`;
+    // fs.writeFileSync("totaltemplate.txt", totalString, "utf-8");
+    // fs.writeFileSync("totaltemplate.jsonc", dataStore.ToString(), "utf-8");
+    // accesspointtemplatetoCanvas(dataStore);
+})();
+
+toCanvasColored(dataStore);

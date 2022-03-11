@@ -8,33 +8,29 @@ import { DataStore } from "./datastore";
 
 const data = fs.readFileSync("./captures/capturetext9.txt", "utf-8");
 
-const packets = data.split("No.     Time           Source                Destination           Protocol Length Info").map(e => e.split("Data")[1]);
- 
 /**
  * regex for finding client to server packets:
  * `Transmission Control Protocol, Src Port: 51702, Dst Port: 15110, Seq: \w+, Ack: \w+, Len: [^0]\w*`
  */
 
-const dataLines = packets
-    .filter(e => e)
-    .map(e => e.match(/\w{4}\s{2}(\w{2}\s)+\s+.+/g))
-    .filter(e => e)
-    .map(e => dataLinesToBuffer(e!))
-    .filter(v => v.length > 0);
-
-const arr = dataLines.filter((_, i) => i < dataLines.length);
-
-/**
- * 
- * # Google Protobuf
- * [decoder](https://protobuf-decoder.netlify.app/)
- * 
- */
+const dataLines = data
+    .split("No.     Time           Source                Destination           Protocol Length Info")
+    .map(e => e.split("Data")[1])                       // select dataLines in tcp packet
+    .filter(e => e)                                     // filter only lines with data
+    .map(e => e.match(/\w{4}\s{2}(\w{2}\s)+\s+.+/g))    // Match dataLine format
+    .filter(e => e)                                     // filter only dataLines
+    .map(e => Buffer.from(e!                            // parse dataLine to buffer
+        .map(v => v.substr(6, 50).trim())               // select only byte chars
+        .join(" ")                                      // join lines with space
+        .split(" ")                                     // split bytes on space
+        .map(e => Number.parseInt(e, 16))))             // parse int from byte char
+    .filter(v => v.length > 0)                          // filter only chunks with data
+    .filter((_, i, arr) => i < arr.length);             // Take limited amount of chunks
 
 
 let loseEnd = "";
 const bufs = [];
-const bigBufferCursor = new BufferCursor(Buffer.concat(arr));
+const bigBufferCursor = new BufferCursor(Buffer.concat(dataLines));
 console.log(bigBufferCursor.length);
 
 do {
@@ -84,9 +80,8 @@ const parse = (element: BufferCursor) => {
     const typeLength = element.readUInt32LE() - 4;
     const typeText = element.slice(typeLength).toString("ascii");
 
-    if (size - typeLength == 4) {
-        return;
-    }
+    if (size - typeLength == 4) return;
+
     const DataBuf = element.slice();
     const DataLen = DataBuf.readUInt32LE() - 4;
     DataBuf.seek(0);
@@ -134,30 +129,20 @@ fs.writeFileSync("total.txt", totalString, "utf-8");
 fs.writeFileSync("total.jsonc", dataStore.ToString(), "utf-8");
 console.log(dataStore.GetData("PlayerPartnerInfo", "1181427495443169983"));
 
-function dataLinesToBuffer(dataLines: RegExpMatchArray): Buffer {
-    return Buffer.from(
-        dataLines
-            .map(v => v.substr(6, 50).trim())
-            .join(" ")
-            .split(" ")
-            .map(e => Number.parseInt(e, 16))
-    );
-}
-
 (() => {
     // let totalString = "";
     const tempFile = fs.readFileSync("./captures/battlefield");
-    
+
     const element = new BufferCursor(tempFile);
-    
+
     const size = element.readUInt32LE() - 4;
     const typeLength = element.readUInt32LE() - 4;
     const typeText = element.slice(typeLength).toString("ascii");
-    
+
     const DataBuf = element.slice();
     const DataLen = DataBuf.readUInt32LE() - 4;
     DataBuf.seek(0);
-    
+
     let result;
     if (keys.has(typeText)) {
         try {
@@ -178,7 +163,7 @@ function dataLinesToBuffer(dataLines: RegExpMatchArray): Buffer {
     } else {
         console.log(typeText);
     }
-    
+
     // Make output string.
     // const outputStr = `${typeText.padEnd(35)} ${result
     //     ? result // Print bytes when class didn't give any results.

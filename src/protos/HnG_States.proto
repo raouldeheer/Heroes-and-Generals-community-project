@@ -1,0 +1,4988 @@
+package HnG_States;
+syntax = "proto3";
+
+message AbandonMissionResponse {
+required enum response = 1;
+}
+
+message accesspoint {
+required int64 id = 1;
+required int64 mapid = 2;
+required int64 template = 3;
+required int64 battlefield = 4;
+}
+
+message AccesspointFactionInfo {
+required int64 accesspointID = 1;
+required int64 factionID = 2;
+}
+
+message accesspointinfo {
+required int64 accesspointowner = 1;
+required int64 accesspointid = 2;
+required uint32 accesspointtemplate = 3;
+required int64 accesspointbattlefieldid = 4;
+}
+
+message accesspointstatus {
+required sfixed64 id = 1;
+required int64 warid = 2;
+required int64 accesspointid = 3;
+required int64 factionid = 4;
+}
+
+message accesspointtemplate {
+required int64 id = 1;
+required int64 gamemap = 2;
+required float posx = 3;
+required float posy = 4;
+required string abbr = 5;
+required uint32 actionid = 6;
+}
+
+message AchievementTemplate {
+required int64 id = 1;
+required string name = 2;
+required bool available = 3;
+required bool allowClientCompletion = 4;
+required int32 eType = 5;
+required int32 sortingIndex = 6;
+required int64 characterTemplateIdFilter = 7;
+required int32 eDriverType = 8;
+required string driverValue = 9;
+required int32 eRewardType = 10;
+required int32 rewardValue = 11;
+required bool showReminderHint = 12;
+required bool hidden = 13;
+}
+
+message ActionGameArmyResourceDefinition {
+required int64 factionTemplateId = 1;
+required int64 accesspointtemplate = 2;
+required int64 resourceCategoryId = 3;
+required bool spawnInAir = 4;
+required uint32 count = 5;
+}
+
+message ActionGameDedicatedResource {
+required int64 resourceCategoryId = 1;
+required int32 count = 2;
+}
+
+message ActionGameSquadDefinition {
+required int64 missionSquadId = 1;
+required int64 squadTemplateId = 2;
+required int64 factionTemplateId = 3;
+required string name = 4;
+repeated ActionGameSquadSlotDefinition playerSlots = 5;
+repeated ActionGameSquadSlotDefinition supportSlots = 6;
+repeated ActionGameDedicatedResource resources = 7;
+required int64 ownerCharacterId = 8;
+required int64 squadleaderCharacterId = 9;
+}
+
+message ActionGameSquadSlotDefinition {
+required int64 slotTemplateId = 1;
+required int32 index = 2;
+}
+
+message ActivateBoosterRequest {
+required int64 boosterId = 1;
+}
+
+message ActivateBoosterResponse {
+required enum response = 1;
+}
+
+message ActivateVariousBoosterRequest {
+required int64 boosterId = 1;
+}
+
+message ActivateVariousBoosterResponse {
+required enum response = 1;
+}
+
+message ActiveMissionAssaultTeam {
+required int64 assaultTeamId = 1;
+required int64 ownerPlayerId = 2;
+required string ownerGamertag = 3;
+required int64 factionId = 4;
+required int64 commandNodeTemplateId = 5;
+required int64 mapEntityId = 6;
+required int64 mapEntityTypeId = 7;
+required bool inTransit = 8;
+required int64 supplylineId = 9;
+required int64 fromAccessPoint = 10;
+required int64 toAccessPoint = 11;
+required string travelBeginTime = 12;
+required string travelEndTime = 13;
+required bool inActiveMission = 14;
+required int64 accesspointTemplateId = 15;
+}
+
+message ActiveMissionRequestEventList {
+required int64 missionId = 1;
+repeated int64 desiredBattlefieldStatus = 2;
+repeated int64 desiredSupplyLineStatus = 3;
+}
+
+message ActiveMissionRequestEventListAccessPointStatus {
+required uint32 template = 1;
+required uint32 team = 2;
+}
+
+message ActiveMissionRequestEventListResponse {
+required string msg = 1;
+repeated ActionGameArmyResourceDefinition armyResourceList = 2;
+repeated ActiveMissionRequestEventListAccessPointStatus accesspointstatuslist = 3;
+repeated ServerSystemEvent serverSystemEvents = 4;
+repeated ActiveMissionAssaultTeam assaultTeams = 5;
+repeated battlefieldstatus battlefieldStatuses = 6;
+repeated accesspointstatus accessPointStatuses = 7;
+repeated supplylinestatus supplylineStatuses = 8;
+}
+
+message AddAssaultTeamStatisticsRequest {
+required int64 commandNodeDefinitionId = 1;
+required int32 addCombatXP = 2;
+}
+
+message AddAssaultTeamStatisticsResponse {
+required enum response = 1;
+}
+
+message AddBoosterRequest {
+required int64 characterId = 1;
+required bool isBundle = 2;
+required int64 boosterId = 3;
+required bool activateNow = 4;
+required int64 pricingId = 5;
+required int64 discountId = 6;
+required enum paymentCurrency = 7;
+}
+
+message AddBoosterResponse {
+required enum response = 1;
+}
+
+message AddCharacterStatisticsRequest {
+required int64 characterId = 1;
+required int32 addCharacterXP = 2;
+required int64 ribbonTemplateId = 3;
+required int32 addRibbonValue = 4;
+required int32 addCharacterScoreValue = 5;
+}
+
+message AddCharacterStatisticsResponse {
+required enum response = 1;
+required int64 characterId = 2;
+required int32 characterXP = 3;
+required int64 ribbonTemplateId = 5;
+required int32 ribbonValue = 6;
+required int32 ribbonLevel = 7;
+}
+
+message AddFirstGoldOfferRequest {
+optional int32 dummy = 1;
+}
+
+message AddFirstGoldOfferResponse {
+required enum response = 1;
+}
+
+message AddMembershipRequest {
+required int64 membershipTemplateId = 1;
+required int64 pricingId = 2;
+required int64 discountId = 3;
+optional string promoName = 4;
+required enum paymentCurrency = 5;
+}
+
+message AddMembershipResponse {
+required enum response = 1;
+}
+
+message AddPlayerReportRequest {
+required int64 reportedplayer = 5;
+required enum category = 6;
+optional int64 actiongamesession = 7;
+optional string chatlogs = 8;
+optional int64 reporter = 9;
+}
+
+message AddPlayerReportResponse {
+required enum response = 1;
+}
+
+message AddRibbonLevelRequest {
+required int64 ribbonLevelUpgradeTemplateId = 1;
+required int64 characterId = 2;
+required int64 pricingId = 3;
+required int64 discountId = 4;
+required enum paymentCurrency = 5;
+}
+
+message AddRibbonLevelResponse {
+required enum result = 1;
+}
+
+message AddToFriendsListRequest {
+required int64 playerId = 2;
+}
+
+message AddToFriendsListResponse {
+required enum response = 2;
+}
+
+message AddVariousBoosterRequest {
+required int64 boosterTemplateId = 1;
+required int32 eBoosterType = 2;
+required bool activateNow = 3;
+required int64 pricingId = 4;
+required int64 discountId = 5;
+required enum paymentCurrency = 6;
+}
+
+message AddVariousBoosterResponse {
+required enum response = 1;
+}
+
+message AddWarBondRequest {
+required int64 warBondTemplateId = 1;
+required int64 pricingId = 2;
+required int64 discountId = 3;
+required enum paymentCurrency = 4;
+}
+
+message AddWarBondResponse {
+required enum result = 1;
+}
+
+message add_chatchannel_request {
+required uint32 createNewChannel = 1;
+required int64 channelId = 2;
+required string channelName = 3;
+required string channelTab = 4;
+}
+
+message add_chatchannel_response {
+required enum response = 1;
+}
+
+message AdminToolAction {
+required string identifier = 1;
+required string name = 2;
+repeated AdminToolActionParameter parameters = 3;
+}
+
+message AdminToolActionParameter {
+required string identifier = 1;
+required string name = 2;
+required string value = 3;
+}
+
+message AdminToolExecuteSqlRequest {
+required string query = 1;
+}
+
+message AdminToolExecuteSqlResponse {
+required enum result = 1;
+required string executeResult = 2;
+}
+
+message AdminToolGetDbInfoResponse {
+required enum result = 1;
+repeated DbGroup groups = 2;
+repeated AdminToolAction actions = 3;
+}
+
+message AdminToolModifyRibbonLevelRequest {
+required int64 characterId = 1;
+required int64 ribbonTemplateId = 2;
+required int32 deltaXP = 3;
+}
+
+message AdminToolModifyRibbonLevelResponse {
+required enum result = 1;
+}
+
+message AdminToolPerformActionRequest {
+required AdminToolAction action = 1;
+}
+
+message AdminToolPerformActionResponse {
+required enum result = 1;
+required string performActionResult = 2;
+}
+
+message AdminToolPlayerStatRequest {
+required int64 playerId = 1;
+}
+
+message AdminToolPlayerStatResponse {
+required enum result = 1;
+repeated CharacterStatElement characterStats = 2;
+}
+
+message AdminToolQueryFastRequest {
+required string tableName = 1;
+required string query = 2;
+repeated string parameters = 3;
+}
+
+message AdminToolQueryRequest {
+required string tableName = 1;
+repeated QuerySet querySets = 2;
+}
+
+message AdminToolQueryResponse {
+required enum result = 1;
+repeated DbObject objects = 2;
+}
+
+message AdminToolStatQueryRequest {
+required int64 characterId = 1;
+optional int32 startStatType = 2;
+optional int32 endStatType = 3;
+optional int32 startRibbonStatType = 4;
+optional int32 endRibbonStatType = 5;
+}
+
+message AdminToolStatQueryResponse {
+required enum result = 1;
+required int64 characterId = 2;
+repeated StatElement characterStats = 3;
+}
+
+message AdminToolTestMatchmakerHostingCenter {
+required int32 id = 1;
+required int32 ping = 2;
+}
+
+message AdminToolTestMatchmakerMission {
+required string category = 1;
+required string preset = 2;
+required string hostingCenter = 3;
+required string state = 4;
+repeated AdminToolTestMatchmakerSquads squads = 5;
+}
+
+message AdminToolTestMatchmakerRequest {
+required int64 warId = 1;
+repeated AdminToolTestMatchmakerSquads squads = 2;
+}
+
+message AdminToolTestMatchmakerResponse {
+required enum result = 1;
+required string log = 2;
+repeated AdminToolTestMatchmakerMission missions = 3;
+}
+
+message AdminToolTestMatchmakerSquads {
+required string randomId = 1;
+required int32 count = 2;
+required int32 faction = 3;
+required int32 character = 4;
+required int32 players = 5;
+required int32 seconds = 6;
+required float skill = 7;
+repeated int32 vehicles = 8;
+repeated AdminToolTestMatchmakerHostingCenter hostingCenters = 9;
+repeated int32 gamemodes = 10;
+required string parentId = 11;
+}
+
+message AdminToolUpdateRequest {
+required string tableName = 1;
+repeated int64 objectIds = 2;
+repeated DbUpdate updates = 3;
+required bool updateIfModified = 4;
+required bool deleteObjects = 5;
+}
+
+message AdminToolUpdateResponse {
+required enum result = 1;
+required enum updateResult = 2;
+required int64 createdId = 3;
+}
+
+message AICharacterProfile {
+required int64 id = 1;
+required string name = 2;
+required float attackHuntTarget = 3;
+required float flyByDanger = 4;
+required float flyByDist = 5;
+required float hitDanger = 6;
+required float dangerDissipate = 7;
+required float attackMoveInc = 8;
+}
+
+message AIProfileMapping {
+required int64 id = 1;
+required string name = 2;
+required int64 aiCharacterProfileId = 3;
+required int64 aiWeaponProfileId1 = 4;
+required int64 aiWeaponProfileId2 = 5;
+}
+
+message air_commandnode_base {
+required int64 id = 1;
+required int64 commandNodeWarInstanceId = 2;
+required int64 battlefieldid = 3;
+required int64 targetentityid = 4;
+required string targetentitytype = 5;
+required int64 warid = 6;
+}
+
+message air_transport {
+required int64 id = 1;
+required int64 commandNodeWarInstanceId = 2;
+required int64 fromentityid = 3;
+required int32 fromentitytype = 4;
+required int64 toentityid = 5;
+required int32 toentitytype = 6;
+required int64 begintime = 7;
+required int64 endtime = 8;
+required int64 warid = 9;
+}
+
+message AIWeaponProfile {
+required int64 id = 1;
+required string name = 2;
+required float fireInterval = 10;
+required float fireIntervalSpread = 11;
+required float triggerInterval = 12;
+required float triggerIntervalSpread = 13;
+required float aimPatternSizeMeters = 14;
+required float aimPatternCycleTime = 15;
+required float maxAttaxkDistance = 16;
+required float hipFireMaxDist = 17;
+required float ironSightMinDist = 18;
+required float reactionTime = 19;
+required float reactionTimeSpread = 20;
+required float aimTrackSpeed = 21;
+required float aimPatternMinDist = 22;
+required float aimPatternMaxDist = 23;
+}
+
+message ammotemplate {
+required int64 id = 1;
+required int32 type = 2;
+required string name = 3;
+required float speed = 4;
+required float rangemax = 5;
+required float propulsiontime = 6;
+required float damage = 7;
+required float damagefar = 8;
+required float rangenear = 9;
+required float rangefar = 10;
+required float explosiondamage = 11;
+required float explosionradius = 12;
+required float explosiontimer = 13;
+required float weightthreshold = 14;
+required float proximitydist = 15;
+required float triggerdelay = 16;
+required float timeout = 17;
+required float armorPenetrationAngle = 18;
+required float armorPenetrationAngleFalloff = 19;
+required float armorMinDamage = 20;
+required float armorMaxDamage = 21;
+required float armorCorrectionAngle = 22;
+required float armorPenetrationTriggerMinThickness = 23;
+required float armorMinPenetration = 24;
+required float armorMaxPenetration = 25;
+required float ricochetAngle = 26;
+required float armorExplosionMinPenetration = 27;
+required float armorExplosionMaxPenetration = 28;
+required float armorPenetrationNearRange = 29;
+required float armorPenetrationFarRange = 30;
+required float armorPenetrationFarPercent = 31;
+required float armorExplosionMinDamage = 32;
+required float armorExplosionMaxDamage = 33;
+required float maxCondition = 34;
+required float wearPerShot = 35;
+required float wearPerBattle = 36;
+required int32 forSale = 37;
+required int32 projectileType = 38;
+required float coneModifier = 39;
+required float recoilModifier = 40;
+required int32 cartridgeTypeID = 41;
+required string masterName = 42;
+required int32 consumableEffect = 43;
+required int32 deployPoolCost = 44;
+required float armorDamageFarPercent = 45;
+}
+
+message armyresource {
+required int64 id = 1;
+required int64 commandNodeWarInstanceId = 2;
+required int64 armyResourceCategoryId = 3;
+required uint32 count = 4;
+required int64 warid = 5;
+}
+
+message armyresourcecategory {
+required int64 id = 1;
+required string name = 2;
+required uint32 actionid = 3;
+required float avgSize = 4;
+required uint32 categoryBitfieldIndex = 5;
+required float speed = 6;
+required uint32 maxDedicatedResources = 7;
+required float captureTransferMultiplierWar = 8;
+required float captureTransferMultiplierStaged = 9;
+}
+
+message ArmyResourceProductionTemplate {
+required int64 id = 1;
+required int64 factionTemplateId = 2;
+required int64 armyResourceCategoryId = 3;
+required int64 runEveryTimeInSeconds = 4;
+required int32 produceEveryRun = 5;
+required int32 warStartValue = 6;
+}
+
+message AssaultTeamLevel {
+required int64 id = 1;
+required int32 level = 2;
+required int32 xp = 3;
+}
+
+message battle {
+required sfixed64 id = 1;
+required int64 warid = 2;
+required int64 mapEntityId = 3;
+required int64 mapEntityTypeId = 4;
+required string start = 5;
+required uint32 factioncount = 9;
+required int64 excludedFactionId = 10;
+required float position = 11;
+required string activationTimeStamp = 12;
+}
+
+message battlefield {
+required int64 id = 1;
+required int64 mapid = 2;
+required string bftitle = 3;
+required string sector = 4;
+required float posx = 5;
+required float posy = 6;
+required int64 gamemap = 7;
+optional float rotation = 8;
+}
+
+message BattlefieldSettingsFaction {
+required int64 factionId = 1;
+required int64 factionTemplateId = 2;
+required float underdogBonusXpMultiplier = 3;
+required float underdogBonusWarfundsMultiplier = 4;
+}
+
+message battlefieldstatus {
+required sfixed64 id = 1;
+required int64 warid = 2;
+required int64 battlefieldid = 3;
+required int64 factionid = 4;
+optional int64 defencesetupid = 6;
+}
+
+message BattleInfo {
+required int64 id = 1;
+required float posX = 2;
+required float posY = 3;
+}
+
+message BattlePassSeasonTemplate {
+required int64 id = 1;
+required string name = 2;
+required string localizationPath = 3;
+required string activeFrom = 4;
+required string activeTo = 5;
+required bool isActive = 6;
+}
+
+message BattlePassTemplate {
+required int64 id = 1;
+required int32 tier = 2;
+required int32 level = 3;
+required string localizationPath = 4;
+required string image = 5;
+required string reward = 6;
+required int64 battlePassSeasonTemplateId = 7;
+required int32 requiredScore = 8;
+}
+
+message BattleReward {
+required int64 id = 1;
+required int64 missionId = 2;
+required int64 battleId = 3;
+required int64 warId = 4;
+required int64 commandNodeWarInstanceId = 5;
+required int64 armyResourceCategoryId = 6;
+required int32 killCount = 7;
+}
+
+message battle_pass {
+required int64 id = 1;
+required int32 tier = 2;
+required int32 level = 3;
+required int64 playerId = 4;
+required int64 battlePassSeasonTemplateId = 5;
+required int32 score = 6;
+required bool isPurchased = 7;
+required string pendingRewardBattlePassTemplateIds = 8;
+required string receivedRewardBattlePassTemplateIds = 9;
+}
+
+message battle_pass_season_template {
+required int64 id = 1;
+required string name = 2;
+required string localizationPath = 3;
+required string activeFrom = 4;
+required string activeTo = 5;
+required int32 startingTier = 6;
+required int32 startingLevel = 7;
+required int32 startingScore = 8;
+}
+
+message battle_pass_template {
+required int64 id = 1;
+required int32 tier = 2;
+required int32 level = 3;
+required string localizationPath = 4;
+required string image = 5;
+required string reward = 6;
+required int64 battlePassSeasonTemplateId = 7;
+required int32 requiredScore = 8;
+}
+
+message Booster {
+required int64 id = 1;
+required int64 playerId = 2;
+required int64 boosterTemplateId = 3;
+required uint32 itemsAccumulated = 4;
+required string expirationTime = 5;
+}
+
+message BoosterTemplate {
+required int64 id = 1;
+required int32 type = 2;
+required uint32 durationInMinutes = 3;
+required float multiplier = 4;
+required bool forSale = 5;
+required int32 sortingIndex = 6;
+}
+
+message BuyStoreBundleRequest {
+required int64 storeBundleId = 1;
+required int64 pricingId = 2;
+required int64 storeDiscountId = 3;
+required int64 characterId = 4;
+required enum paymentCurrency = 5;
+}
+
+message BuyStoreBundleResponse {
+required enum result = 1;
+}
+
+message CameraKickGroupTemplate {
+required int64 id = 1;
+required string name = 2;
+required float easeIn = 3;
+required float easeOut = 4;
+required float rollX = 5;
+required float rollY = 6;
+required float rollZ = 7;
+required float kickBack = 8;
+required float precisionScale = 9;
+}
+
+message CancelJoinMatchMakingRequest {
+required int64 characterId = 1;
+}
+
+message CancelJoinMatchMakingResponse {
+required enum response = 1;
+}
+
+message CancelJoinMissionRequest {
+required string DELETEME = 1;
+}
+
+message CancelJoinMissionResponse {
+required enum response = 2;
+}
+
+message CanJoinMissionRequest {
+required int64 missionId = 1;
+required int64 characterId = 2;
+}
+
+message CanJoinMissionResponse {
+required enum response = 1;
+}
+
+message capital {
+required int64 id = 1;
+required int64 battlefieldId = 2;
+required int64 defaultFactionTemplateId = 3;
+required int32 victoryPoints = 4;
+}
+
+message CapturePointConnectionTemplate {
+required int64 id = 1;
+required int64 gamemap = 2;
+required int64 capturePoint1TemplateId = 3;
+required int64 capturePoint2TemplateId = 4;
+}
+
+message CapturepointTemplate {
+required int64 id = 1;
+required int64 gamemap = 2;
+required int64 accesspointTemplateId = 3;
+required int64 objectiveId = 4;
+required string connection = 5;
+required int32 posx = 6;
+required int32 posy = 7;
+required string name = 8;
+}
+
+message ChangeCharacterTemplateRequest {
+required int64 characterId = 1;
+required int64 pricingId = 2;
+required enum paymentCurrency = 3;
+required int64 discountId = 4;
+}
+
+message ChangeCharacterTemplateResponse {
+required enum result = 1;
+}
+
+message ChangeTierRequest {
+required int64 dummy = 1;
+}
+
+message ChangeTierResponse {
+required enum result = 1;
+}
+
+message character {
+required int64 id = 1;
+required string name = 2;
+required int64 playerid = 3;
+required int64 charactertemplateid = 4;
+required int64 factiontemplateid = 5;
+required int64 combatbadgeslot0 = 10;
+required int64 combatbadgeslot1 = 11;
+required int32 rank = 13;
+required bool markedDeleted = 14;
+required int32 firstBloodStatus = 15;
+required bool specialCharacterFlag = 16;
+required int64 uniformVariantId = 17;
+required int64 headgearId = 18;
+required int64 previousCharacterTemplateId = 19;
+optional int64 statUpdateTimeStamp = 20;
+repeated bool unlockBits = 21;
+required int64 headId = 22;
+required int32 eHeadSwapType = 23;
+required bool isOnLeave = 24;
+}
+
+message CharacterCareerLayoutTemplate {
+required int64 id = 1;
+required int64 characterCareerTemplateId = 2;
+required int64 factionTemplateId = 3;
+required int32 level = 4;
+required int32 templateType = 5;
+}
+
+message CharacterCareerRequirementTemplate {
+required int64 id = 1;
+required int64 characterCareerTemplateId = 2;
+required int64 factionTemplateId = 3;
+required int32 level = 4;
+required int32 type = 5;
+required int64 typeId = 6;
+required int32 layoutIndex = 7;
+}
+
+message CharacterCareerTemplate {
+required int64 id = 1;
+required string name = 2;
+required int64 characterTemplateId = 3;
+}
+
+message CharacterNameTemplate {
+required int64 id = 1;
+required string firstNames = 2;
+required string lastNames = 3;
+required int64 factionTemplateId = 4;
+}
+
+message CharacterStatElement {
+required int64 characterId = 1;
+repeated StatElement characterStats = 2;
+}
+
+message charactertemplate {
+required int64 id = 1;
+required string name = 2;
+required uint32 cost = 3;
+required uint32 actionid = 4;
+required int64 gEDefaultUniformTemplateId = 5;
+required int64 uSDefaultUniformTemplateId = 6;
+required int64 rUDefaultUniformTemplateId = 7;
+required uint32 equipmentPoints = 8;
+required uint32 deployPoolCost = 9;
+required uint32 deployPoolSwitchCost = 10;
+required uint32 deployPoolOffClassCost = 11;
+}
+
+message CharacterTemplateSwitchItem {
+required int64 id = 1;
+required int64 fromCharacterTemplateId = 2;
+required int64 toCharacterTemplateId = 3;
+}
+
+message CharacterUnlockTemplate {
+required int64 id = 1;
+required int64 characterTemplateId = 2;
+required int64 factionTemplateId = 3;
+required string unlockSequence = 4;
+}
+
+message chatchannel {
+required int64 id = 1;
+required string channelname = 2;
+required string displayname = 3;
+required string hidden = 4;
+required string passwordRequired = 5;
+required string password = 6;
+required string invitationOnly = 7;
+required int64 owner = 8;
+}
+
+message chatchannelmember {
+required int64 id = 1;
+required int64 player = 2;
+required int64 channel = 3;
+required string channelTab = 4;
+}
+
+message ChatChannelSubscribed {
+required int64 id = 1;
+required string channelName = 2;
+required string displayName = 3;
+required string channelTab = 4;
+}
+
+message ClaimBattleReportVeteranBonusResponse {
+required enum result = 1;
+}
+
+message ClientBattleReport {
+required int64 missionBattleReportId = 1;
+required int64 mapEntityTypeId = 2;
+required int64 mapEntityId = 3;
+required int64 missionPresetId = 4;
+required int64 defenderFactionId = 6;
+required int64 winnerFactionId = 7;
+required int32 missionTimeInSeconds = 8;
+required int32 battleStartTime = 9;
+required bool wasAutogenerated = 10;
+repeated ClientBattleReportFaction factions = 11;
+repeated ClientBattleReportCapturepointStatus capturepoints = 12;
+}
+
+message ClientBattleReportAssaultTeam {
+required string assaultTeamName = 1;
+required int64 commandNodeTemplateId = 2;
+required string ownerGamerTag = 3;
+required int64 ownerPlayerId = 4;
+}
+
+message ClientBattleReportCapturepointStatus {
+required int64 capturepointTemplateId = 1;
+required int64 ownerFactionId = 2;
+}
+
+message ClientBattleReportCharacter {
+required int64 characterId = 1;
+required int32 startXp = 2;
+required int32 endXp = 3;
+required int32 xpVeteranBonus = 4;
+required int32 xpBoosterBonus = 5;
+required int32 xpCampaignBonus = 6;
+required int32 xpUnderdogBonus = 7;
+required int32 xpSquadVetBonus = 8;
+required int32 xpDailyBonus = 9;
+required ClientBattleReportEarnings creditEarnings = 10;
+required ClientBattleReportEarnings warfundEarnings = 11;
+repeated ClientBattleStatRequirement xpStatValues = 12;
+repeated ClientBattleReportRibbon ribbons = 13;
+required int32 xpAnyFactionQuickplay = 14;
+required int32 xpQuickplay = 15;
+}
+
+message ClientBattleReportEarnings {
+required int32 valueEarned = 1;
+required int32 veteranBonus = 2;
+required int32 boosterBonus = 3;
+required int32 campaignBonus = 4;
+required int32 underdogBonus = 5;
+required int32 squadVetBonus = 6;
+required int32 dailyBonus = 7;
+repeated ClientBattleStatRequirement statValues = 8;
+required int32 anyFactionQuickplay = 9;
+}
+
+message ClientBattleReportFaction {
+required int64 factionId = 1;
+repeated ClientBattleReportPlayer players = 2;
+repeated ClientBattleReportAssaultTeam assaultTeams = 3;
+repeated ClientBattleReportResourceStats resourcesDestroyed = 4;
+repeated ClientBattleReportResourceStats resourcesCaptured = 5;
+}
+
+message ClientBattleReportPlayer {
+required int64 playerId = 1;
+required string playerTag = 2;
+required bool veteranMember = 3;
+required int32 playerScore = 4;
+required int32 playerCaptures = 5;
+required int32 playerKills = 6;
+required int32 playerDeaths = 7;
+required string squadName = 8;
+repeated ClientBattleReportCharacter characters = 9;
+}
+
+message ClientBattleReportResourceStats {
+required int64 armyResourceCategoryId = 1;
+required int32 value = 2;
+}
+
+message ClientBattleReportRibbon {
+required int64 ribbonTemplateId = 1;
+required int32 startValue = 2;
+required int32 endValue = 3;
+required int32 xpVeteranBonus = 4;
+required int32 xpBoosterBonus = 5;
+required int32 xpCampaignBonus = 6;
+required int32 xpUnderdogBonus = 7;
+required int32 xpSquadVetBonus = 8;
+repeated ClientBattleStatRequirement ribbonStatValues = 9;
+}
+
+message ClientBattleStatRequirement {
+required int64 statRequirementId = 1;
+required int32 statValue = 2;
+required float xpValue = 3;
+}
+
+message ClientLogMessage {
+required enum type = 1;
+required string message = 6;
+}
+
+message ClientLogMessageResponse {
+required enum response = 2;
+}
+
+message clothingselection {
+required int64 id = 1;
+required int64 charactertemplateid = 2;
+required int64 clothingtemplateid = 3;
+}
+
+message clothingtemplate {
+required int64 id = 1;
+required string meshname = 2;
+required string slots = 3;
+required string team = 4;
+required string name = 5;
+}
+
+message combatbadgetemplate {
+required int64 id = 1;
+required int64 combatbadgeTypeId = 2;
+required string name = 3;
+required uint32 actionid = 4;
+required float actionEffect = 5;
+}
+
+message combatbadgetype {
+required int64 id = 1;
+required string name = 2;
+required int64 combatbadgeCategory = 3;
+}
+
+message CommandNodeDefinition {
+required int64 id = 1;
+required string name = 2;
+required string abbreviation = 3;
+required int64 ownerPlayerId = 4;
+required int64 factionTemplateId = 5;
+required int64 commandNodeTemplateId = 6;
+required int32 rank = 7;
+optional int64 supplyResourceCategoryId = 8;
+required int64 generalCharacterId = 9;
+required int64 statUpdateTimeStamp = 10;
+required bool suppliedOnCreation = 11;
+}
+
+message CommandNodeMorale {
+required int64 id = 1;
+required int64 playerId = 2;
+required int64 commandNodeWarInstanceId = 3;
+required int64 warId = 4;
+required string moraleStartTimeStamp = 5;
+}
+
+message CommandNodeMoraleTemplate {
+required int64 id = 1;
+required uint32 moraleMinValue = 2;
+required uint32 moraleMaxValue = 3;
+required uint32 moraleLostPerBattle = 4;
+required uint32 moraleGainedPerWin = 5;
+required float moraleGainedPerMinute = 6;
+required uint32 moraleSurrenderLimit = 7;
+}
+
+message CommandNodeRetreatLocation {
+required int64 id = 1;
+required int64 commandNodeWarInstanceId = 2;
+required int64 mapEntityId = 3;
+required int64 mapEntityTypeId = 4;
+required int64 warId = 5;
+}
+
+message CommandNodeSupplyQueueItem {
+required int64 id = 1;
+required int64 playerId = 2;
+required int64 commandNodeWarInstanceId = 3;
+required int64 armyResourceCategoryId = 4;
+required int64 warId = 5;
+required int64 factionId = 6;
+required int64 timestamp = 7;
+required int64 pricingId = 8;
+required enum paymentCurrency = 9;
+required int32 queueNumber = 10;
+required int64 nearCapitalBattlefieldId = 11;
+required int64 playerSessionId = 12;
+required string deviceId = 13;
+required string metricsUid = 14;
+optional int64 discountId = 15;
+optional int64 commandNodeDefinitionId = 16;
+optional int32 resourcesNeeded = 17;
+}
+
+message CommandNodeSupplyQueueItemTicket {
+required int64 id = 1;
+required int64 playerId = 2;
+required int64 warId = 3;
+required int64 factionId = 4;
+required int64 timestamp = 7;
+required int32 queueNumber = 8;
+required int32 queuePlace = 9;
+}
+
+message commandnodetemplate {
+required int64 id = 1;
+required string name = 2;
+required int64 factionTemplateId = 3;
+required float speed = 4;
+required int32 attackradius = 6;
+required int32 transportradius = 7;
+required uint32 actionid = 8;
+required uint32 size = 9;
+required uint32 level = 10;
+required int64 convertTo = 11;
+required int64 parenttemplateid = 12;
+required uint32 victoryWarfundBonus = 13;
+required uint32 participationWarfundBonus = 14;
+required int32 viewRange = 15;
+required int64 generalCharacterTemplateId = 16;
+}
+
+message commandnodetemplatearmyresourcetemplaterelation {
+required int64 id = 1;
+required int64 armyresourcecategoryid = 2;
+required int64 commandnodetemplateid = 3;
+required uint32 count = 4;
+required bool hasVehicleData = 5;
+required uint32 vehicleSpawnSlots = 6;
+}
+
+message commandnodetemplatecharactertemplaterelation {
+required int64 id = 1;
+required int64 commandnodetemplateid = 2;
+required int64 charactertemplateid = 3;
+required uint32 spawnslots = 4;
+}
+
+message CommandNodeWarInstance {
+required int64 id = 1;
+required int64 commandNodeDefinitionId = 2;
+required int64 parentCommandNodeInstanceId = 3;
+required int64 factionId = 4;
+required int64 mapEntityId = 5;
+required int64 mapEntityTypeId = 6;
+required int64 warId = 7;
+required uint32 morale = 8;
+required int64 lastReset = 9;
+required uint32 isDeployed = 10;
+required bool hasGottenSoldierResourcesForFree = 11;
+required bool hasGottenVehicleResourcesForFree = 12;
+required uint32 maxMorale = 13;
+required float moraleGainModifier = 14;
+}
+
+message CompleteAssaultTeamRankRequest {
+required int64 commandNodeDefinitionId = 1;
+required int64 pricingId = 2;
+required int64 storeDiscountId = 3;
+required enum paymentCurrency = 4;
+}
+
+message CompleteAssaultTeamRankResponse {
+required enum response = 1;
+}
+
+message consecutive_daily_login_rewards {
+required int64 id = 1;
+required int32 day = 2;
+required string description = 3;
+required string image = 4;
+required string items = 5;
+}
+
+message CreateCharacterRequest {
+required string characterName = 1;
+required int64 characterPackId = 2;
+required int64 pricingId = 3;
+required int64 discountId = 4;
+required enum paymentCurrency = 5;
+}
+
+message CreateCharacterResponse {
+required enum result = 1;
+}
+
+message CreateCommandNodeRequest {
+required string commandnodeName = 1;
+required string abbreviation = 2;
+required int64 commandnodeTemplateId = 3;
+required int64 pricingId = 4;
+required int64 discountId = 5;
+required enum paymentCurrency = 6;
+}
+
+message CreateCommandNodeResponse {
+required enum result = 1;
+}
+
+message CreateCompanyRequest {
+required string nameLong = 1;
+required string nameShort = 2;
+required string description = 3;
+}
+
+message CreateCompanyResponse {
+required enum result = 1;
+}
+
+message CreateInsigniaRequest {
+repeated InsigniaPart parts = 1;
+repeated int64 pricingIds = 2;
+required enum paymentCurrency = 3;
+}
+
+message CreateInsigniaResponse {
+required enum status = 1;
+}
+
+message CreateMissionAssaultTeam {
+required int64 factionId = 1;
+required int64 commandNodeId = 2;
+required string commandNodeName = 3;
+required int64 commandNodeTemplateId = 4;
+required int64 accessPointTemplateId = 5;
+required int64 armyResourceCategoyMask = 6;
+repeated CreateMissionAssaultTeamSlot slots = 7;
+}
+
+message CreateMissionAssaultTeamSlot {
+required int64 characterTemplateId = 1;
+}
+
+message CreateMissionRequest {
+required int64 missionpreset = 1;
+required int64 attackerFactionId = 3;
+required int64 defenderFactionId = 4;
+repeated CreateMissionAssaultTeam assaultTeams = 5;
+required int32 factionAMinCount = 6;
+required int32 factionBMinCount = 7;
+required int32 factionAMaxCount = 8;
+required int32 factionBMaxCount = 9;
+}
+
+message CreateMissionResponse {
+required int64 missionId = 1;
+}
+
+message CreateSquadRequest {
+required int64 characterId = 1;
+}
+
+message CreateSquadResponse {
+required enum response = 1;
+}
+
+message CreateUniformVariantRequest {
+required int64 characterId = 1;
+required int64 characterPackId = 2;
+required string characterName = 3;
+required int64 characterPricingId = 4;
+required int64 uniformVariantTemplateId = 5;
+required int64 variantPricingId = 6;
+required int64 discountId = 7;
+required enum paymentCurrency = 8;
+}
+
+message CreateUniformVariantResponse {
+required enum response = 1;
+}
+
+message CreateVehicleAmmoRequest {
+required int64 ammoTemplateId = 1;
+required int64 vehicleId = 2;
+required int64 pricingId = 3;
+required int64 discountId = 4;
+required enum paymentCurrency = 5;
+}
+
+message CreateVehicleAmmoResponse {
+required enum response = 1;
+}
+
+message CreateVehicleUpgradeRequest {
+required int64 vehicleUpgradeTemplateId = 1;
+required int64 vehicleId = 2;
+required int64 pricingId = 3;
+required int64 discountId = 4;
+required enum paymentCurrency = 5;
+}
+
+message CreateVehicleUpgradeResponse {
+required enum response = 1;
+}
+
+message CreateVehicleVariantRequest {
+required int64 characterId = 1;
+required int64 vehicleVariantTemplateId = 2;
+required int64 vehicleVariantPricingId = 3;
+required int64 vehicleId = 4;
+required int64 extraVehicleVariantTemplateId = 5;
+required int64 extraVehicleVariantPricingId = 6;
+required int64 discountId = 7;
+required enum paymentCurrency = 8;
+}
+
+message CreateVehicleVariantResponse {
+required enum response = 1;
+}
+
+message CreateWeaponAmmoRequest {
+required int64 ammoTemplateId = 1;
+required int64 weaponId = 2;
+required int64 pricingId = 3;
+required int64 discountId = 4;
+required enum paymentCurrency = 5;
+}
+
+message CreateWeaponAmmoResponse {
+required enum response = 1;
+}
+
+message CreateWeaponModifierRequest {
+required int64 modifierTemplateId = 2;
+required int64 characterId = 3;
+required int64 weaponId = 4;
+required int64 pricingId = 5;
+required int64 discountId = 6;
+required enum paymentCurrency = 7;
+}
+
+message CreateWeaponModifierResponse {
+required enum response = 2;
+}
+
+message CreateWeaponVariantRequest {
+required int64 characterId = 1;
+required int64 weaponId = 2;
+required int64 weaponTemplateId = 3;
+required string weaponName = 4;
+required int64 weaponPricingId = 5;
+required int64 weaponVariantTemplateId = 6;
+required int64 weaponDiscountId = 7;
+required int64 variantPricingId = 8;
+required int64 variantDiscountId = 9;
+required enum paymentCurrency = 10;
+}
+
+message CreateWeaponVariantResponse {
+required enum response = 1;
+}
+
+message create_chatchannel_request {
+required string channelName = 1;
+required bool hidden = 2;
+required bool passwordRequired = 3;
+required string password = 4;
+required bool invitationOnly = 5;
+required string channelTab = 6;
+}
+
+message create_chatchannel_response {
+required enum response = 1;
+}
+
+message DailyBonus {
+required int64 id = 1;
+required int64 playerId = 2;
+required int64 characterId = 3;
+required int64 dailyBonusTemplateId = 4;
+required string lastReceived = 5;
+}
+
+message DailyBonusTemplate {
+required int64 id = 1;
+required int64 characterTemplateId = 2;
+required int32 percentageCreditsBonus = 3;
+required int32 percentageXpBonus = 4;
+}
+
+message DbField {
+required string name = 1;
+required string value = 2;
+required string type = 3;
+}
+
+message DbGroup {
+required string name = 1;
+repeated DbTable tables = 2;
+}
+
+message DbObject {
+required string type = 1;
+repeated DbField fields = 2;
+}
+
+message DbTable {
+required string name = 1;
+repeated DbField fields = 2;
+}
+
+message DbUpdate {
+required string field = 1;
+required string oldValue = 2;
+required string newValue = 3;
+}
+
+message DebugAddCharacterRibbonXPRequest {
+required string code = 1;
+required int64 characterId = 2;
+repeated DebugRibbonXP ribbonXP = 3;
+}
+
+message DebugAddCharacterRibbonXPResponse {
+required bool success = 1;
+}
+
+message DebugEquipATRequest {
+required string code = 1;
+required int64 characterId = 2;
+repeated int64 commandNodeDefinitionIds = 3;
+}
+
+message DebugEquipATResponse {
+required bool success = 1;
+}
+
+message DebugGetAtsRequest {
+required string code = 1;
+}
+
+message DebugGetAtsResponse {
+repeated CommandNodeDefinition commandNodeDefinitions = 1;
+}
+
+message DebugGetCharactersRequest {
+required string code = 1;
+}
+
+message DebugGetCharactersResponse {
+repeated character characters = 1;
+}
+
+message DebugGetPlayerRequest {
+required int64 id = 1;
+required string code = 2;
+}
+
+message DebugGetWarCatalogueRequest {
+required string code = 1;
+}
+
+message DebugGetWarRequest {
+required int64 id = 1;
+required string code = 2;
+}
+
+message DebugGetWarResponse {
+required bool isActive = 1;
+}
+
+message DebugPlaceATEntry {
+required int64 commandNodeDefinitionId = 1;
+required int64 mapEntityId = 2;
+required int64 mapEntityTypeId = 3;
+}
+
+message DebugPlaceATRequest {
+required string code = 1;
+repeated DebugPlaceATEntry entries = 2;
+}
+
+message DebugPlaceATResponse {
+required bool success = 1;
+}
+
+message DebugRemoveBattlesRequest {
+required string code = 1;
+repeated int64 battlefieldIds = 2;
+}
+
+message DebugRemoveBattlesResponse {
+required bool success = 1;
+}
+
+message DebugResupplyATRequest {
+required string code = 1;
+repeated int64 commandNodeDefinitionIds = 2;
+}
+
+message DebugResupplyATResponse {
+required bool success = 1;
+}
+
+message DebugRibbonXP {
+required int64 ribbonTemplateId = 1;
+required int64 ribbonXP = 2;
+}
+
+message DebugSetAtMoraleRequest {
+required string code = 1;
+repeated int64 atIds = 2;
+}
+
+message DebugSetAtMoraleResponse {
+required bool success = 1;
+}
+
+message DebugSetMapEntityOwnerEntry {
+required int64 mapEntityId = 1;
+required int64 mapEntityTypeId = 2;
+required int64 ownerFactionId = 3;
+}
+
+message DebugSetMapEntityOwnerRequest {
+required string code = 1;
+repeated DebugSetMapEntityOwnerEntry entries = 2;
+}
+
+message DebugSetMapEntityOwnerResponse {
+required bool success = 1;
+}
+
+message DebugSetPlayerGoldRequest {
+required string code = 1;
+}
+
+message DebugSetPlayerGoldResponse {
+required bool success = 1;
+}
+
+message DebugSetPlayerTierRequest {
+required string code = 1;
+required int32 playerTier = 2;
+}
+
+message DebugSetPlayerTierResponse {
+required enum result = 1;
+}
+
+message DebugStartBattlesRequest {
+required string code = 1;
+repeated int64 battlefieldIds = 2;
+}
+
+message DebugStartBattlesResponse {
+required bool success = 1;
+}
+
+message DebugTestStart {
+required int64 id = 1;
+required string code = 2;
+}
+
+message DebugTestStartResponse {
+required int64 id = 1;
+}
+
+message DebugTestSubscribe {
+required int64 id = 1;
+required string code = 2;
+}
+
+message DebugTestSubscribeResponse {
+required int64 id = 1;
+}
+
+message defencestructure {
+required int64 id = 1;
+required int64 defencesetup = 2;
+required string structure = 3;
+required string transformation = 10;
+}
+
+message DeleteCharacterRequest {
+required int64 characterId = 1;
+}
+
+message DeleteCharacterResponse {
+required enum response = 1;
+}
+
+message delete_mission {
+required int64 missionid = 1;
+}
+
+message delete_mission_response {
+required enum msg = 1;
+}
+
+message DeployCommandNodeRequest {
+required int64 commandNodeWarInstanceId = 1;
+required int64 soldierPricingId = 2;
+required int64 vehiclePricingId = 3;
+optional int64 nearCapitalBattlefieldId = 4;
+optional int64 soldierDiscountId = 5;
+optional int64 vehicleDiscountId = 6;
+required enum paymentCurrency = 7;
+}
+
+message DeployCommandNodeResponse {
+required enum msg = 1;
+}
+
+message DeployToolRequest {
+required string sessionToken = 1;
+required bool initiateShutdown = 2;
+required string shutdownTime = 3;
+required string shutdownReason = 4;
+required string downtimeEstimated = 5;
+}
+
+message DeployToolResponse {
+required bool success = 1;
+}
+
+message DepotNewItem {
+required int64 id = 1;
+required int64 playerId = 2;
+required string newItem = 3;
+}
+
+message DiscordFinalizeTransactionRequest {
+required string entitlementId = 1;
+required int32 productAmount = 2;
+}
+
+message DiscordFinalizeTransactionResponse {
+required enum response = 1;
+required int32 discordResponseCode = 2;
+}
+
+message DiscordInitializeTransactionRequest {
+required int64 discordId = 1;
+required int32 goldAmount = 2;
+required int32 discountPercentage = 3;
+}
+
+message DiscordInitializeTransactionResponse {
+required enum response = 1;
+}
+
+message DiscordQueryEntitlementsRequest {
+required bool claimNitroPerks = 1;
+}
+
+message DiscordQueryEntitlementsResponse {
+required enum response = 1;
+required int32 discordResponseCode = 2;
+required bool nitroPerksAreReady = 3;
+}
+
+message discount {
+required int64 id = 1;
+required string name = 2;
+required int32 discountitemcategory = 3;
+required int64 itemID = 4;
+required float value = 5;
+}
+
+message dissolve_commandnode {
+required int64 commandNodeWarInstanceId = 1;
+}
+
+message dissolve_commandnode_response {
+required enum msg = 1;
+}
+
+message EditChatChannelRequest {
+required int64 channelId = 1;
+optional string password = 2;
+optional bool isPasswordRequired = 3;
+optional string newPassword = 4;
+optional string newChannelName = 5;
+optional bool isInvitationOnly = 6;
+optional bool isHidden = 7;
+}
+
+message EditChatChannelResponse {
+required enum response = 1;
+}
+
+message EndMissionRequest {
+required int64 missionId = 1;
+required int64 winnerFactionTemplateId = 2;
+}
+
+message EndMissionResponse {
+required int64 missionId = 1;
+}
+
+message EpicFinalizeTransactionRequest {
+required string epicUserId = 1;
+required string accessToken = 2;
+required string entitlementId = 3;
+}
+
+message EpicFinalizeTransactionResponse {
+required enum response = 1;
+required int32 epicResponseCode = 2;
+}
+
+message EpicGetAccessTokenRequest {
+required string exchangeToken = 1;
+}
+
+message EpicGetAccessTokenResponse {
+required enum response = 1;
+required string accessToken = 2;
+}
+
+message EpicQueryBundlesRequest {
+required string epicUserId = 1;
+required string accessToken = 2;
+required int64 characterId = 3;
+}
+
+message EpicQueryBundlesResponse {
+required enum response = 1;
+required int32 steamResponseCode = 2;
+repeated VoucherPackInfo infos = 3;
+required string validFactionTemplateIds = 4;
+required string validCharacterTemplateIds = 5;
+}
+
+message EpicQueryEntitlementsRequest {
+required string epicUserId = 1;
+required string accessToken = 2;
+repeated EpicQueryEntitlementsSKU skus = 3;
+}
+
+message EpicQueryEntitlementsResponse {
+required enum response = 1;
+required int32 epicResponseCode = 2;
+}
+
+message EpicQueryEntitlementsSKU {
+required string catalogOfferId = 1;
+required string catalogItemName = 2;
+required int32 currencyAmount = 3;
+required string currencyCode = 4;
+}
+
+message ExperienceLevels {
+required int64 id = 1;
+required string rankXp = 2;
+required float campaignWarfundsPremiumMultiplier = 3;
+required float campaignWarfundsVictoryMultiplier = 4;
+required float campaignWarfundsLossMultiplier = 5;
+required float campaignWarfundsBasePriceMultiplier = 6;
+required float campaignMissionXpMultiplier = 7;
+required float campaignMissionRibbonXpMultiplier = 8;
+required float squadVeteranBonusMultiplier = 9;
+required float campaignMissionCreditMultiplier = 10;
+}
+
+message faction {
+required int64 id = 1;
+required int64 factiontemplateid = 2;
+required int64 supremecommand = 4;
+required int64 war = 5;
+required float underdogBonusXpMultiplier = 6;
+required float underdogBonusWarfundsMultiplier = 7;
+}
+
+message FactionResourceConsumption {
+required int64 id = 1;
+required int64 factionId = 2;
+required int64 warId = 3;
+required int64 factionHQCommandNodeWarInstanceId = 4;
+required int64 armyResourceCategoryId = 5;
+required string previousConsumptionTimeStamp = 6;
+required int32 previousConsumptionValue = 7;
+required int32 supplyQueueHead = 8;
+required int32 supplyQueueTail = 9;
+}
+
+message FactionResourceProduction {
+required int64 id = 1;
+required int64 factionId = 2;
+required int64 warId = 3;
+required int64 factionHQCommandNodeWarInstanceId = 4;
+required int64 armyResourceCategoryId = 5;
+required int64 armyResourceProductionTemplateId = 6;
+required string nextRunTimeStamp = 7;
+required int32 nextProductionValue = 8;
+required int32 warStartValue = 9;
+}
+
+message FactionResourceQueue {
+required int64 id = 1;
+required int64 factionId = 2;
+required int64 warId = 3;
+required int32 supplyQueueHead = 4;
+required int32 supplyQueueTail = 5;
+}
+
+message factiontemplate {
+required int64 id = 1;
+required string name = 2;
+required string abbreviation = 3;
+}
+
+message friendinfo {
+required int64 id = 1;
+required string gamertag = 2;
+required uint32 onlinestatus = 3;
+required int64 factionTemplateId = 4;
+required int64 factionId = 5;
+required int64 missionId = 6;
+required int64 missionFactionId = 7;
+required int64 warId = 8;
+required string warName = 9;
+required bool otherPlayerAlsoFriend = 10;
+required bool friendshipInitiatedByMe = 11;
+required int64 squadSessionId = 12;
+required int64 mapEntityId = 13;
+required int64 mapEntityTypeId = 14;
+}
+
+message gamemap {
+required int64 id = 1;
+required string gamemapname = 2;
+required string identifier = 3;
+required string scenefile = 4;
+required float terrainsize = 5;
+required string windId = 6;
+required uint32 terrainType = 7;
+required uint32 mapNumber = 8;
+required bool usePbr = 9;
+}
+
+message GetAssaultTeamStatsRecord {
+required enum result = 1;
+required int32 rank = 2;
+required int32 xp = 3;
+required int32 nextLevelUpXp = 4;
+required int32 battles = 5;
+required int32 battlesWon = 6;
+required int64 commandNodeDefinitionId = 7;
+}
+
+message GetAssaultTeamStatsRequest {
+repeated int64 commandNodeDefinitionIds = 1;
+}
+
+message GetAssaultTeamStatsResponse {
+repeated GetAssaultTeamStatsRecord records = 1;
+}
+
+message GetBattlePassSeasonResponse {
+required enum response = 1;
+repeated BattlePassTemplate activeBattlePassTemplates = 2;
+repeated BattlePassSeasonTemplate battlePassSeasonTemplates = 3;
+}
+
+message GetBattleReportRequest {
+repeated int64 missionBattleReportIds = 1;
+}
+
+message GetBattleReportResponse {
+required enum result = 1;
+repeated ClientBattleReport battleReports = 2;
+}
+
+message GetChatChannelsSubscribedRequest {
+optional int32 dummy = 1;
+}
+
+message GetChatChannelsSubscribedResponse {
+repeated ChatChannelSubscribed channelsSubscribed = 1;
+}
+
+message GetGoldPricesRequest {
+required string currencyWanted = 1;
+}
+
+message GetGoldPricesResponse {
+repeated Price prices = 1;
+required string currencyCode = 2;
+required enum response = 3;
+}
+
+message GetMailMessagesRequest {
+repeated int64 messageIds = 1;
+}
+
+message GetMailMessagesResponse {
+repeated MessageThread messageThreads = 1;
+}
+
+message GetMissionDetailsRequest {
+required int64 missionId = 1;
+required int64 battleId = 2;
+}
+
+message GetMissionDetailsResponse {
+required enum response = 1;
+required MissionInfo info = 2;
+repeated MissionDetailsFaction factions = 3;
+repeated MissionDetailsAssaultTeam assaultTeams = 4;
+repeated MissionDetailsArmyResource armyResources = 5;
+repeated MissionDetailsAccessPoint accessPoints = 6;
+repeated MissionDetailsCapturepointStatus capturepointStatuses = 7;
+required float posX = 8;
+required float posY = 9;
+}
+
+message GetMissionListRequest {
+required int64 characterId = 1;
+}
+
+message GetMissionListResponse {
+repeated MissionListEntry entries = 1;
+}
+
+message GreenlightMissionRequest {
+required int32 greenlight = 3;
+}
+
+message GreenlightMissionResponse {
+required enum response = 2;
+}
+
+message HostingCenterInfo {
+required int64 id = 1;
+required string pingServiceConnect = 2;
+required string hostingCenterName = 3;
+}
+
+message HostingCenterPing {
+required int64 hostingCenterId = 1;
+required int32 ping = 2;
+}
+
+message HypeFinalizeTransactionRequest {
+required string providerTransactionId = 1;
+required string gamerTag = 2;
+required string productType = 3;
+required float productAmount = 4;
+required string currencyType = 5;
+required float currencyAmount = 6;
+}
+
+message HypeFinalizeTransactionResponse {
+required string response = 1;
+required string transactionId = 2;
+required int32 responseCode = 3;
+}
+
+message HypeReverseTransactionRequest {
+required string providerTransactionId = 1;
+required string reason = 2;
+}
+
+message HypeReverseTransactionResponse {
+required string response = 1;
+required int32 responseCode = 2;
+}
+
+message ignoredplayer {
+required int64 id = 1;
+required int64 ignorerid = 2;
+required int64 ignoredid = 3;
+}
+
+message ignoredplayerwithname {
+required int64 id = 1;
+required int64 ignorerid = 2;
+required int64 ignoredid = 3;
+required string ignoredname = 4;
+}
+
+message IgnorePlayerChangeRequest {
+required string ignoredPlayerGamerTag = 1;
+required enum ignoreAction = 2;
+}
+
+message IgnorePlayerChangeResponse {
+required enum response = 1;
+}
+
+message InsigniaPart {
+required string partType = 1;
+required int64 partId = 2;
+required string fieldId = 3;
+required float scale = 4;
+required float offset = 5;
+}
+
+message InviteToCompanyRequest {
+required int64 playerToInvite = 1;
+}
+
+message InviteToCompanyResponse {
+required enum result = 1;
+}
+
+message JoinFactionBonusOfferRequest {
+required int64 warId = 1;
+}
+
+message JoinFactionBonusOfferResponse {
+required enum result = 1;
+required int64 bonusOfferId = 2;
+repeated int64 bonusFactionIds = 3;
+}
+
+message JoinMatchMakingRequest {
+required int64 characterId = 1;
+required int64 missionId = 2;
+repeated HostingCenterPing hostingCenters = 3;
+required bool warMissionFlag = 4;
+repeated int64 stagedMissionPresetList = 5;
+repeated int64 squadVehicleFilterArmyResourceTemplateIds = 6;
+required int64 gamemodeId = 7;
+required bool quickplay = 8;
+}
+
+message JoinMatchMakingResponse {
+required enum response = 1;
+}
+
+message JoinMissionRequest {
+required int64 missionId = 1;
+required int64 characterId = 2;
+repeated int64 hostingCenterIds = 3;
+}
+
+message JoinMissionResponse {
+required enum response = 1;
+required int64 missionId = 2;
+required int64 missionSessionId = 3;
+required string gameConnect = 4;
+}
+
+message join_war_request {
+required int64 warid = 1;
+required int64 factionid = 2;
+required int32 playedFirstBlood = 3;
+}
+
+message join_war_response {
+required enum msg = 1;
+optional string redirectSrv = 2;
+}
+
+message keyValue {
+optional string key = 1;
+optional string value = 2;
+}
+
+message KickFromCompanyRequest {
+required int64 playerToKick = 1;
+}
+
+message KickFromCompanyResponse {
+required enum result = 1;
+}
+
+message LeaveCompanyResponse {
+required enum result = 1;
+}
+
+message LeaveSupplyQueueRequest {
+required int64 commandNodeWarInstanceId = 1;
+}
+
+message LeaveSupplyQueueResponse {
+required enum response = 2;
+}
+
+message LinkedLoginSelectAccountNameRequest {
+required string accountName = 1;
+required string tempSessionid = 2;
+required bool wantsMarketingMails = 3;
+required string email = 4;
+required bool checkIfUsernameExists = 5;
+}
+
+message LinkedLoginSelectAccountNameResponse {
+required enum responseCode = 1;
+}
+
+message linked_login_begin {
+required string deviceid = 1;
+required enum partner = 2;
+required string partnerPlayerId = 3;
+repeated keyValue additionalArgs = 4;
+required bool accceptedPrivacyPolicy = 5;
+}
+
+message login2_begin {
+required string username = 1;
+optional string deviceid = 2;
+required bool acceptingPrivacyPolicy = 3;
+required bool acceptingBattlEyePolicy = 4;
+}
+
+message login2_challenge {
+required string salt = 1;
+required string tempSessionid = 2;
+required string encryptedSessionkey = 3;
+optional string gamertag = 4;
+optional string redirectSrv = 6;
+required enum responseCode = 7;
+optional string countryCode = 8;
+}
+
+message login2_player_updated {
+required string metricsUid = 1;
+}
+
+message login2_player_updated_response {
+required string msg = 1;
+}
+
+message login2_postlogin {
+required string tempSessionid = 1;
+required enum partnerId = 2;
+repeated keyValue additionalArgs = 3;
+}
+
+message login2_postlogin_result {
+required int64 sessionid = 1;
+required string platform = 2;
+required string deleteDate = 3;
+required enum result = 4;
+}
+
+message login2_response {
+required string tempSessionid = 1;
+required string digest = 2;
+}
+
+message login2_result {
+required string username = 1;
+required string time = 2;
+required enum response = 3;
+optional string banExpires = 4;
+optional string banReason = 5;
+required player currentplayer = 6;
+}
+
+message login2_service_login {
+required string sessionid = 1;
+required string servicename = 2;
+required string digest = 3;
+}
+
+message login2_service_login_result {
+required string result = 1;
+required string username = 2;
+required int64 playerid = 3;
+required int64 factionTemplate = 4;
+required string metricsUid = 5;
+required int32 offerGoldAdded = 6;
+}
+
+message LoginQueueUpdate {
+required int32 positionInQueue = 1;
+required bool mayProceed = 2;
+required int32 originalId = 3;
+required enum result = 4;
+}
+
+message logout {
+optional int32 dummy = 1;
+}
+
+message logoutresponse {
+required enum msg = 1;
+}
+
+message MailMessage {
+required int64 id = 1;
+required int64 threadMessageId = 2;
+required int64 replyToMessageId = 3;
+required int64 fromPlayerId = 4;
+required string subject = 5;
+required string text = 6;
+required string timestamp = 7;
+required string expiration = 8;
+}
+
+message MailRUFinalizeTransactionRequest {
+required string transactionId = 1;
+required string providerTransactionId = 2;
+}
+
+message MailRUFinalizeTransactionResponse {
+required string response = 1;
+}
+
+message MailRUInitializeTransactionRequest {
+required int64 mailRUId = 1;
+required int32 goldAmount = 2;
+required string currencyType = 3;
+required int32 discountPercentage = 4;
+}
+
+message MailRUInitializeTransactionResponse {
+required enum response = 1;
+required int32 mailRUResponseCode = 2;
+required string mailRUErrorMessage = 3;
+required string url = 4;
+}
+
+message MatchmakerWaitingTimeInfo {
+required int64 id = 1;
+required int64 warId = 2;
+required int64 hostingCenterId = 3;
+required int64 factionTemplateId = 4;
+required int64 characterTemplateId = 5;
+required int32 averageWaitingTimeSeconds = 6;
+required int32 peakWaitingTimeSeconds = 7;
+required int32 playerTier = 8;
+required int32 missionTypeMask = 9;
+required int64 squadResourceTemplateId = 10;
+required int64 missionPresetId = 11;
+}
+
+message MembershipBenefitTemplate {
+required int64 id = 1;
+required float creditMultiplier = 2;
+required float warfundMultiplier = 3;
+required float xpMultiplier = 4;
+required float ribbonxpMultiplier = 5;
+required bool unlockSecondCombatBadgeSlot = 6;
+required bool unlockFourthEquipmentSlot = 7;
+required float squadXPMultiplier = 8;
+}
+
+message memorytestrequest {
+required bytes Bytes = 1;
+}
+
+message memorytestresponse {
+required bytes Bytes = 1;
+}
+
+message MessageRecipient {
+required int64 id = 1;
+required int64 playerId = 2;
+required int64 messageId = 3;
+required bool isRead = 4;
+required bool isDeleted = 5;
+}
+
+message MessageThread {
+required int64 threadId = 1;
+repeated MailMessage messages = 2;
+repeated MessageThreadRecipient recipients = 3;
+}
+
+message MessageThreadRecipient {
+required int64 playerId = 1;
+required string gamertag = 2;
+}
+
+message MissionBattleReportAssaultTeam {
+required string assaultTeamName = 4;
+required int64 assaultTeamId = 5;
+required int64 commandNodeTemplateId = 6;
+required string ownerGamerTag = 7;
+required int64 ownerPlayerId = 8;
+}
+
+message MissionBattleReportCapturepointStatus {
+required int64 capturepointTemplateId = 3;
+required int64 ownerFactionId = 4;
+}
+
+message MissionBattleReportResourcesCaptured {
+required int64 armyResourceCategoryId = 1;
+required int32 value = 2;
+}
+
+message MissionBattleReportResourcesLost {
+required int64 armyResourceCategoryId = 1;
+required int32 value = 2;
+}
+
+message MissionCategory {
+required int64 id = 1;
+required string name = 2;
+required bool botControlledFaction = 3;
+required string characterTemplateIdsList = 4;
+}
+
+message MissionDetailsAccessPoint {
+required int64 accessPointTemplateId = 1;
+required int64 factionTemplateId = 2;
+}
+
+message MissionDetailsArmyResource {
+required int64 factionId = 1;
+required int64 armyResourceCategoryId = 2;
+required int64 accessPointTemplateId = 3;
+required uint32 count = 4;
+required bool spawnInAir = 5;
+}
+
+message MissionDetailsAssaultTeam {
+required int64 factionId = 1;
+required int64 commandNodeTemplateId = 2;
+required int64 accessPointTemplateId = 3;
+required int64 ownerPlayerId = 4;
+}
+
+message MissionDetailsCapturepointStatus {
+required int64 capturepointTemplateId = 3;
+required int64 ownerFactionId = 4;
+}
+
+message MissionDetailsFaction {
+required int64 factionId = 1;
+repeated MissionDetailsPlayer players = 2;
+}
+
+message MissionDetailsPlayer {
+required string gamerTag = 1;
+}
+
+message MissionInfo {
+required int64 missionId = 1;
+required int64 battleId = 2;
+required int64 missionpreset = 3;
+required int64 mapEntityId = 5;
+required int64 mapEntityTypeId = 6;
+required int32 isAutogenerated = 7;
+required int64 defenderFactionId = 8;
+required enum status = 9;
+required int64 hostingCenterId = 10;
+required string activationTimeStamp = 11;
+required int32 weatherTimeOfDay = 12;
+required int32 weatherCondition = 13;
+}
+
+message MissionListEntry {
+required MissionInfo info = 1;
+repeated MissionListFaction factions = 2;
+}
+
+message MissionListFaction {
+required int64 factionId = 1;
+required int32 playerCount = 2;
+}
+
+message missionpreset {
+required int64 id = 1;
+required int32 available = 2;
+required int64 gamemap = 3;
+required int64 missiontype = 4;
+required string missioninfo = 5;
+required uint32 timelimit = 6;
+required uint32 aiSaBotCountPerFaction = 7;
+required int64 aiGcCharacterProfile = 8;
+required int64 aiSaCharacterProfile = 9;
+required uint32 objectiveHoldTime = 10;
+required uint32 maxPlayerCount = 11;
+required int64 missionCategoryId = 12;
+required int32 minPlayerLevel = 13;
+required int32 maxPlayerLevel = 14;
+required int32 maxCharactersPerPlayer = 15;
+}
+
+message missionresource {
+required int64 id = 1;
+required int64 missionid = 2;
+required int64 warid = 3;
+required int64 factionId = 4;
+required int64 commandNodeWarInstanceId = 5;
+required int64 commandNodeTemplateId = 6;
+required int64 accesspointTemplateId = 7;
+required uint32 locked = 8;
+required bool allowedToLobby = 9;
+required bool spawnInAir = 10;
+}
+
+message missiontype {
+required int64 id = 1;
+required string title = 2;
+required string rules = 3;
+required uint32 capturepointCaptureTime = 4;
+required uint32 capturepointNeutralizeTime = 5;
+required uint32 objectiveCaptureTime = 6;
+required uint32 objectiveNeutralizeTime = 7;
+required uint32 accessPointCaptureTime = 8;
+required uint32 accessPointNeutralizeTime = 9;
+}
+
+message ModifySquadRequest {
+required int64 squadSessionId = 1;
+optional int32 removeSquadSupportSlot = 2;
+optional int64 addSquadSupportSlotTemplateId = 3;
+}
+
+message ModifySquadResponse {
+required enum response = 1;
+}
+
+message MonitorActionServer {
+required string serverId = 1;
+repeated MonitorActionServerFaction factions = 2;
+}
+
+message MonitorActionServerFaction {
+required int32 factionTemplateId = 1;
+required int32 players = 2;
+}
+
+message MonitorAutoGeneratedMissions {
+required int32 openTrainingMissions = 1;
+required int32 runningTrainingMissions = 2;
+required int32 openCaptureHoldInfantryMissions = 3;
+required int32 runningCaptureHoldInfantryMissions = 4;
+required int32 openCaptureHoldTanksMissions = 5;
+required int32 runningCaptureHoldTanksMissions = 6;
+required int32 openCaptureHoldCombinedMissions = 7;
+required int32 runningCaptureHoldCombinedMissions = 8;
+required int32 openAssaultSmallMissions = 9;
+required int32 runningAssaultSmallMissions = 10;
+required int32 openAssaultMissions = 11;
+required int32 runningAssaultMissions = 12;
+}
+
+message MonitorConcurrentPlayers {
+required int32 sessions = 1;
+required int32 actionSessions = 2;
+}
+
+message MonitorCurrency {
+required int64 avgGoldAvailable = 1;
+required int64 avgCreditsAvailable = 2;
+required int64 avgWarfundsAvailable = 3;
+required int64 medianGoldAvailable = 4;
+required int64 medianCreditsAvailable = 5;
+required int64 medianWarfundsAvailable = 6;
+}
+
+message MonitorHostingCenter {
+required string name = 1;
+required int32 free = 2;
+required int32 busy = 3;
+required int32 reserved = 4;
+repeated MonitorActionServer runningServers = 5;
+}
+
+message MonitorLoadRequest {
+required int32 requestType = 1;
+}
+
+message MonitorLoadResponse {
+repeated MonitorWar wars = 1;
+repeated MonitorHostingCenter hostingCenters = 2;
+required int32 playersInQueue = 3;
+required MonitorConcurrentPlayers concurrentPlayers = 4;
+required MonitorCurrency currency = 5;
+repeated MonitorWaitingTime waitingTimes = 6;
+required MonitorAutoGeneratedMissions autoGeneratedMissions = 9;
+}
+
+message MonitorResource {
+required int64 factionTemplateId = 1;
+required int64 armyResourceCategoryId = 2;
+required int64 count = 3;
+required bool hq = 4;
+}
+
+message MonitorWaitingTime {
+required int64 characterTemplateId = 1;
+required int64 factionTemplateId = 2;
+required int64 commandTemplateId = 3;
+required int32 missionTypeMask = 4;
+required int64 missionPresetId = 5;
+required int32 playerTier = 6;
+required float averageWaitingTime = 7;
+required float peakWaitingTime = 8;
+required int64 hostingCenterId = 9;
+required bool onlyWarMissions = 10;
+required int32 count = 11;
+required string hostingCenterName = 12;
+}
+
+message MonitorWar {
+required string name = 1;
+repeated MonitorWarFaction factions = 2;
+repeated MonitorResource resources = 4;
+required int32 totalSkirmishMissions = 5;
+required int32 activeSkirmishMissions = 6;
+required int32 totalAssaulthMissions = 7;
+required int32 activeAssaultMissions = 8;
+}
+
+message MonitorWarFaction {
+required int64 factionTemplateId = 1;
+required int32 playersOnline = 2;
+}
+
+message Notification {
+required int64 id = 1;
+required int64 playerId = 2;
+required int32 type = 3;
+required int64 typeId = 4;
+required int32 readStatus = 5;
+required string timestamp = 6;
+required string expires = 7;
+}
+
+message NotificationData {
+required int64 id = 1;
+required int64 notificationId = 2;
+required string key = 3;
+required int64 value = 4;
+}
+
+message physicsComponent {
+required int64 id = 1;
+required string name = 2;
+required int32 componentType = 3;
+required int32 armorHP = 4;
+required int32 internalHP = 5;
+required bool canPenetrate = 6;
+required bool secondaryCollision = 7;
+required bool secondaryCollisionSkip = 8;
+required float minArmorPercent = 9;
+required float totalDamageMultiplier = 10;
+required bool transferToSecondary = 11;
+}
+
+message player {
+required int64 id = 1;
+required string gamertag = 2;
+required uint32 invertmouse = 3;
+required uint32 invertmouseairplane = 4;
+required float mousesensitivity = 5;
+required string administrator = 6;
+required uint32 mousecontrolledcars = 7;
+required uint32 showcrosshair = 8;
+required uint32 showcrosshairVehicles = 9;
+required int64 war = 10;
+required int64 factionid = 11;
+required string subscribedupto = 12;
+required int64 goldBought = 13;
+required int64 goldEarned = 14;
+required int64 goldUsed = 15;
+required int64 creditsBought = 16;
+required int64 creditsEarned = 17;
+required int64 creditsUsed = 18;
+required string firstActionGameDate = 19;
+required int32 numloginsFlash = 20;
+required int32 numloginsMobile = 21;
+required string language = 22;
+required int64 warfundsBought = 23;
+required int64 warfundsEarned = 24;
+required int64 warfundsUsed = 25;
+optional string metricsUid = 26;
+required int32 yellowGriefPoints = 27;
+required int32 redGriefPoints = 28;
+required string latestRedGriefPointTimestamp = 29;
+required int32 tier = 30;
+required string lastLogin = 31;
+required int32 tutorialsCompleted = 32;
+required int64 goldBoughtSteam = 33;
+required float skillLevel = 34;
+required uint32 invertmouseturret = 35;
+required int64 totalScore = 36;
+repeated bool unlockBits = 37;
+required int32 level = 38;
+repeated bool achievementsBits = 39;
+required bool isDeleted = 40;
+required string currencyCode = 41;
+required string currencyRegion = 42;
+}
+
+message PlayerBattleReport {
+required int64 id = 1;
+required int64 missionBattleReportId = 2;
+required int64 missionBattleReportFactionId = 3;
+required int64 playerId = 4;
+required string playerGamerTag = 5;
+required bool veteranMember = 6;
+required int32 playerScore = 7;
+required int32 playerCaptures = 8;
+required int32 playerKills = 9;
+required int32 playerDeaths = 10;
+required string squadName = 11;
+repeated PlayerBattleReportCharacter characters = 12;
+}
+
+message PlayerBattleReportCharacter {
+required int64 characterId = 1;
+required int32 startXp = 2;
+required int32 endXp = 3;
+required int32 xpVeteranBonus = 4;
+required int32 xpBoosterBonus = 5;
+required int32 xpCampaignBonus = 6;
+required int32 xpUnderdogBonus = 7;
+required int32 xpSquadVetBonus = 8;
+required int32 xpDailyBonus = 9;
+required PlayerBattleReportEarnings creditEarnings = 10;
+required PlayerBattleReportEarnings warfundEarnings = 11;
+repeated PlayerBattleReportStatRequirement xpStatValues = 12;
+repeated PlayerBattleReportRibbon ribbons = 13;
+required int32 xpAnyFactionQuickplay = 14;
+required int32 xpQuickplay = 15;
+}
+
+message PlayerBattleReportEarnings {
+required int32 valueEarned = 1;
+required int32 veteranBonus = 2;
+required int32 boosterBonus = 3;
+required int32 campaignBonus = 4;
+required int32 underdogBonus = 5;
+required int32 squadVetBonus = 6;
+required int32 dailyBonus = 7;
+repeated PlayerBattleReportStatRequirement statValues = 8;
+required int32 anyFactionQuickplay = 9;
+}
+
+message PlayerBattleReportRibbon {
+required int64 ribbonTemplateId = 1;
+required int32 startValue = 2;
+required int32 endValue = 3;
+required int32 xpVeteranBonus = 4;
+required int32 xpBoosterBonus = 5;
+required int32 xpCampaignBonus = 6;
+required int32 xpUnderdogBonus = 7;
+required int32 xpSquadVetBonus = 8;
+repeated PlayerBattleReportStatRequirement ribbonStatValues = 9;
+}
+
+message PlayerBattleReportStatRequirement {
+required int64 statRequirementId = 4;
+required int32 statValue = 5;
+required int32 xpValue = 6;
+}
+
+message PlayerDiscountVoucher {
+required int64 id = 1;
+required string expiredDatetime = 2;
+required int64 playerId = 3;
+optional int64 storeDiscountId = 4;
+optional int64 storeCampaignId = 5;
+}
+
+message PlayerGoldOffer {
+required int64 id = 1;
+required int64 playerId = 2;
+required int32 goldAdded = 3;
+required string expireDate = 4;
+}
+
+message PlayerLevel {
+required int64 id = 1;
+required uint32 value = 2;
+}
+
+message PlayerLevelUnlock {
+required int64 id = 1;
+required int32 unlockMetaLevel = 2;
+required int32 unlockItemType = 3;
+required int64 unlockItemId = 4;
+required bool available = 6;
+required bool unlockable = 7;
+}
+
+message PlayerMatchMaking {
+required int64 id = 1;
+required int64 squadSessionId = 2;
+repeated HostingCenterPing hostingCenterPings = 3;
+required string timeEntered = 4;
+required string metricsUserId = 5;
+required int64 metricsSessionId = 6;
+required string metricsDeviceId = 7;
+required int64 missionId = 8;
+repeated int64 missionPresetId = 9;
+required bool isMatchmaking = 10;
+required int64 warId = 11;
+required int64 factionId = 12;
+required int32 missionTypeMask = 13;
+required bool forceStart = 14;
+required int32 tier = 15;
+required float skillLevel = 16;
+required bool playerVsBots = 17;
+required int32 playersInQueueLocal = 18;
+required int32 playersInQueueTotal = 19;
+required int32 playersInGameLocal = 20;
+required int32 playersInGameTotal = 21;
+required int32 missionsMatchingPopulating = 22;
+required int32 missionsMatchingRunning = 23;
+repeated QuickplayMatchmakingInfo quickplayInfo = 24;
+required int64 missionCategoryId = 25;
+}
+
+message PlayerMatchMakingInfo {
+required int64 id = 1;
+required int64 warId = 2;
+required int64 hostingCenterId = 3;
+required int64 factionId = 4;
+required int64 characterTemplateId = 5;
+required int32 averageWaitingTimeSeconds = 6;
+required int32 peakWaitingTimeSeconds = 7;
+required int32 playerTier = 8;
+required int32 missionTypeMask = 9;
+required int64 armyResourceCategoryMask = 10;
+required int64 missionPresetId = 11;
+}
+
+message PlayerMembershipItem {
+required int64 id = 1;
+required int64 playerId = 2;
+required int64 shopMembershipItemsId = 3;
+required string acquisitionDate = 4;
+required string expireDate = 5;
+required string timeLeft = 7;
+required bool onPause = 8;
+}
+
+message PlayerMissionSession {
+required int64 id = 1;
+required int64 playerId = 2;
+required string playerGamerTag = 3;
+required int64 characterId = 4;
+required int64 characterFactionId = 5;
+required string characterName = 6;
+required int32 characterRank = 7;
+required int64 missionId = 8;
+required int64 missionSessionId = 9;
+required int64 missionAssaultTeamId = 11;
+required int32 missionAssaultTeamSlot = 12;
+required string timeAdmitted = 13;
+required enum connectionState = 14;
+required int64 warId = 15;
+required int32 characterSpawned = 16;
+required string metricsUserId = 17;
+required int64 metricsSessionId = 18;
+required string metricsDeviceId = 19;
+required string gameConnect = 20;
+required string platform = 21;
+}
+
+message PlayerOfferMetrics {
+required int64 id = 1;
+required int64 playerId = 2;
+required int32 matchesPlayed = 3;
+required int32 goldOffersCount = 4;
+required int32 dailyRewardCount = 5;
+required int32 dailyRewardRedeemedCount = 6;
+required string unredeemedConsecutiveDayRewards = 7;
+required int32 consecutiveDayCount = 8;
+required string lastFirstBattleDate = 9;
+optional string lastUpdatedConsecutiveDayCountDate = 10;
+}
+
+message PlayerPartnerInfo {
+required int64 id = 1;
+required int64 playerId = 2;
+required int32 partnerId = 3;
+required string partnerUserId = 4;
+}
+
+message PlayerReferral {
+required int64 id = 1;
+required int64 playerId = 2;
+required int64 referredByPlayerId = 3;
+}
+
+message PlayerReport {
+required int64 id = 1;
+required enum status = 2;
+required string timestamp = 3;
+required int64 reporter = 4;
+required int64 reportedplayer = 5;
+required enum category = 6;
+optional int64 actiongamesession = 7;
+optional string chatlogs = 8;
+}
+
+message playerresponse {
+required enum msg = 1;
+}
+
+message PlayerSkill {
+required int64 id = 1;
+required int64 playerId = 2;
+required float rating = 3;
+required float deviation = 4;
+required float volatility = 5;
+required int32 matchesPlayed = 6;
+required int32 matchesCounted = 7;
+}
+
+message PlayerVerificationStatusRequest {
+optional int32 dummy = 1;
+}
+
+message PlayerVerificationStatusResponse {
+required enum msg = 1;
+}
+
+message Price {
+required int32 coins = 1;
+required bool isStarterPackItem = 2;
+required double price = 3;
+required int32 discountPercentage = 4;
+required string discountStart = 5;
+required string discountEnd = 6;
+required int32 addedCoinsDiscount = 7;
+required int32 addedValue = 8;
+required int32 addedCoinsOffer = 9;
+}
+
+message Pricing {
+required int64 id = 1;
+required string type = 2;
+required int64 objectId = 3;
+required float costGold = 4;
+required float costWarfunds = 5;
+required float costCredits = 6;
+required float relativeGoldValue = 7;
+}
+
+message progressionUnlock {
+required int64 id = 1;
+required int32 unlockType = 2;
+required int64 factionTemplateId = 3;
+required int32 characterType = 4;
+required string unlockMetaName = 5;
+required int32 unlockMetaLevel = 6;
+required int32 unlockItemType = 7;
+required int64 unlockItemId = 8;
+required bool includeItemAsGift = 9;
+required bool available = 10;
+required bool unlockable = 11;
+}
+
+message ProtobufChecksum32Request {
+repeated string types = 1;
+optional bool debug = 2;
+}
+
+message ProtobufChecksum32Response {
+required enum responseCode = 1;
+required uint32 checksum = 2;
+repeated string debugInfo = 3;
+}
+
+message PurchaseBattlePassSeasonRequest {
+required int64 battlePassSeasonTemplateId = 1;
+required int64 playerId = 2;
+required int64 pricingId = 3;
+required int64 discountId = 4;
+required enum paymentCurrency = 5;
+}
+
+message PurchaseBattlePassSeasonResponse {
+required enum response = 1;
+repeated BattlePassTemplate rewardedBattlePassTemplates = 2;
+}
+
+message PurchaseBattlePassTierRequest {
+required int64 battlePassTemplateId = 1;
+required int64 playerId = 2;
+required int64 pricingId = 3;
+required int64 discountId = 4;
+required enum paymentCurrency = 5;
+}
+
+message PurchaseBattlePassTierResponse {
+required enum response = 1;
+repeated BattlePassTemplate rewardedBattlePassTemplates = 2;
+}
+
+message PurchaseUniformPartRequest {
+required int64 characterId = 1;
+required int32 uniformPartType = 2;
+required int64 uniformPartTemplateId = 3;
+required int64 uniformPartPricingId = 4;
+required int64 discountId = 5;
+required enum paymentCurrency = 6;
+}
+
+message PurchaseUniformPartResponse {
+required enum response = 1;
+}
+
+message QueryActiveSurveyResponse {
+required string queryURL = 1;
+required string imageURL = 2;
+}
+
+message QueryBannedMachineRequest {
+required string machineIdentifier = 1;
+required string machineIdentifierOld = 2;
+}
+
+message QueryBannedMachineResponse {
+required bool isBanned = 1;
+required string banReason = 2;
+}
+
+message QueryFactionsOnBattlefieldRequest {
+required int64 battlefieldID = 1;
+}
+
+message QueryFactionsOnBattlefieldResponse {
+required enum response = 1;
+repeated AccesspointFactionInfo accesspointList = 2;
+}
+
+message QueryGamertagRequest {
+required int64 playerId = 1;
+}
+
+message QueryGamertagResponse {
+required string gamertag = 1;
+}
+
+message QueryServerInfo {
+optional int32 dummy = 1;
+}
+
+message QueryServerInfoResponse {
+required string servertime = 1;
+required int32 playersInWar = 2;
+required int32 onlineplayers = 3;
+required string version = 4;
+required string metricsUrl = 5;
+required string redShiftUrl = 6;
+required string engageUrl = 7;
+}
+
+message QuerySet {
+required string field = 1;
+required enum filter = 2;
+required string value = 3;
+}
+
+message QueryShopWarBondItemsRequest {
+optional int32 dummy = 1;
+}
+
+message QueryShopWarBondItemsResponse {
+repeated ShopWarBondItem warBonds = 2;
+}
+
+message QueryVoucherPacksRequest {
+required int64 characterId = 1;
+}
+
+message QueryVoucherPacksResponse {
+required enum response = 1;
+repeated VoucherPackInfo infos = 2;
+required string validFactionTemplateIds = 3;
+required string validCharacterTemplateIds = 4;
+}
+
+message query_commandnode_owner {
+required int64 commandNodeWarInstanceId = 1;
+}
+
+message query_commandnode_owner_response {
+required string name = 1;
+}
+
+message query_war_catalogue_request {
+optional int64 includeWarId = 1;
+}
+
+message query_war_catalogue_response {
+repeated war_catalogue warcataloguedata = 1;
+required int64 bonusId = 2;
+}
+
+message QuickplayMatchmakingInfo {
+required int64 factionTemplateId = 1;
+required int64 characterTemplateId = 2;
+repeated int64 missionPresetId = 3;
+repeated int64 equippedVehicleArmyResourceCategoryIds = 4;
+required bool war = 5;
+}
+
+message ReceiveBattlePassRewardRequest {
+required int64 battlePassSeasonTemplateId = 1;
+}
+
+message ReceiveBattlePassRewardResponse {
+required enum response = 1;
+repeated BattlePassTemplate rewardedBattlePassTemplates = 2;
+}
+
+message RedeemDailyLoginRewardRequest {
+required int64 playerId = 1;
+}
+
+message RedeemDailyLoginRewardResponse {
+required enum response = 1;
+repeated VoucherPackInfo infos = 2;
+}
+
+message RedeemVoucherRequest {
+required string voucherKey = 1;
+}
+
+message RedeemVoucherResponse {
+required enum result = 1;
+}
+
+message RemoveFromFriendsListRequest {
+required int64 playerId = 2;
+optional bool addToIgnoreList = 3;
+}
+
+message RemoveFromFriendsListResponse {
+required enum response = 2;
+}
+
+message RemoveInsigniaRequest {
+required int64 insigniaId = 1;
+}
+
+message RemoveInsigniaResponse {
+required enum status = 1;
+}
+
+message RemoveSquadMemberRequest {
+required int64 squadMemberSessionId = 1;
+}
+
+message RemoveSquadMemberResponse {
+required enum response = 1;
+}
+
+message RemoveSquadRequest {
+optional int32 dummy = 1;
+}
+
+message RemoveSquadResponse {
+required enum response = 1;
+}
+
+message remove_chatchannel_request {
+required int64 channelId = 1;
+}
+
+message remove_chatchannel_response {
+required enum response = 1;
+}
+
+message remove_equipmentselection {
+required int64 equipmentid = 1;
+required enum itemType = 2;
+}
+
+message remove_equipmentselection_response {
+required enum msg = 1;
+}
+
+message RenameCharacterRequest {
+required int64 characterId = 1;
+required string newName = 2;
+required int64 pricingId = 3;
+required int64 discountId = 4;
+required enum paymentCurrency = 5;
+}
+
+message RenameCharacterResponse {
+required enum result = 1;
+}
+
+message RenameCommandnodeRequest {
+required int64 commandNodeWarInstanceId = 1;
+required string newName = 2;
+required string newAbbreviation = 3;
+required int64 pricingId = 4;
+required int64 discountId = 5;
+required enum paymentCurrency = 6;
+}
+
+message RenameCommandnodeResponse {
+required enum result = 1;
+}
+
+message RenameWeaponRequest {
+required int64 weaponId = 1;
+required string newName = 2;
+required int64 pricingId = 3;
+required int64 discountId = 4;
+required enum paymentCurrency = 5;
+}
+
+message RenameWeaponResponse {
+required enum result = 1;
+}
+
+message ReorderSupplyQueueRequest {
+required int64 commandNodeWarInstanceId = 1;
+required int32 direction = 2;
+}
+
+message ReorderSupplyQueueResponse {
+required enum response = 2;
+}
+
+message RepairVehicleAmmoRequest {
+required int64 vehicleAmmoId = 1;
+required int32 repairToCondition = 2;
+required int64 maxConditionRepairPricingId = 3;
+required int64 storeDiscountId = 4;
+required enum paymentCurrency = 5;
+}
+
+message RepairVehicleAmmoResponse {
+required enum response = 1;
+}
+
+message RepairVehicleRequest {
+required int64 vehicleId = 2;
+required int32 repairToCondition = 3;
+required int64 maxConditionRepairPricingId = 4;
+required int32 overrideCondition = 5;
+required int64 storeDiscountId = 6;
+required enum paymentCurrency = 7;
+}
+
+message RepairVehicleResponse {
+required enum response = 2;
+}
+
+message RepairVehicleUpgradeRequest {
+required int64 vehicleUpgradeId = 1;
+required int32 repairToCondition = 2;
+required int64 maxConditionRepairPricingId = 3;
+required int64 storeDiscountId = 4;
+required enum paymentCurrency = 5;
+}
+
+message RepairVehicleUpgradeResponse {
+required enum response = 1;
+}
+
+message RepairWeaponAmmoRequest {
+required int64 weaponAmmoId = 1;
+required int32 repairToCondition = 2;
+required int64 maxConditionRepairPricingId = 3;
+required int64 storeDiscountId = 4;
+required enum paymentCurrency = 5;
+}
+
+message RepairWeaponAmmoResponse {
+required enum response = 1;
+}
+
+message RepairWeaponModifierRequest {
+required int64 weaponModifierId = 1;
+required int32 repairToCondition = 2;
+required int64 maxConditionRepairPricingId = 3;
+required int64 storeDiscountId = 4;
+required enum paymentCurrency = 5;
+}
+
+message RepairWeaponModifierResponse {
+required enum response = 2;
+}
+
+message RepairWeaponRequest {
+required int64 weaponId = 2;
+required int32 repairToCondition = 3;
+required int64 maxConditionRepairPricingId = 4;
+required int64 storeDiscountId = 5;
+required enum paymentCurrency = 6;
+}
+
+message RepairWeaponResponse {
+required enum response = 2;
+}
+
+message RequestBattleFieldSettings {
+required int64 missionid = 1;
+}
+
+message RequestBattleReportVeteranBonusRequest {
+required int64 battleReportId = 1;
+}
+
+message RequestBattleReportVeteranBonusResponse {
+required enum result = 1;
+}
+
+message ResetPlayerRequest {
+optional int32 dummy = 1;
+}
+
+message ResetPlayerResponse {
+required enum response = 1;
+}
+
+message RespondToCompanyInvitationRequest {
+required int64 invitationId = 1;
+required bool accept = 2;
+}
+
+message RespondToCompanyInvitationResponse {
+required enum result = 1;
+}
+
+message RespondToUnlockNotificationRequest {
+required int64 notificationId = 1;
+required int32 notificationResponseCode = 2;
+}
+
+message RespondToUnlockNotificationResponse {
+required enum response = 1;
+}
+
+message ResponseBattleFieldSettings {
+required int64 battlefieldid = 1;
+required int64 missionPresetId = 2;
+required int64 defender = 3;
+required float friendlyfire = 4;
+required string gamemode = 5;
+required float timelimit = 6;
+required uint32 fraglimit = 7;
+required uint32 deathlimit = 8;
+required float timeofday = 9;
+repeated string cities = 10;
+repeated defencestructure defencestructures = 11;
+repeated accesspointinfo accesspoints = 12;
+repeated train railway = 13;
+repeated ActionGameArmyResourceDefinition armyResourceList = 14;
+required int32 battlefieldRotation = 15;
+required int32 daysSinceWarStarted = 16;
+required bool isCampaignMission = 17;
+repeated BattlefieldSettingsFaction battlefieldFactions = 18;
+required int32 maxTotalPlayers = 19;
+required bool enableBots = 20;
+required int32 weatherTimeOfDay = 21;
+required int32 weatherCondition = 22;
+required string metricsMissionName = 23;
+required int64 supplyLineId = 24;
+required float supplyLineOffsetFromAP1 = 25;
+repeated battlefieldstatus battlefieldStatuses = 26;
+repeated accesspointstatus accessPointStatuses = 27;
+repeated supplylinestatus supplylineStatuses = 28;
+required float stagedPosX = 29;
+required float stagedPosY = 30;
+required bool enableSaBots = 31;
+}
+
+message resupply_request {
+required int64 commandNodeWarInstanceId = 1;
+required int64 soldierPricingId = 2;
+required int64 soldierDiscountId = 3;
+required int64 vehiclePricingId = 4;
+required int64 vehicleDiscountId = 5;
+optional int64 nearCapitalBattlefieldId = 6;
+repeated transport_commandnode_request_segment path = 7;
+required enum paymentCurrency = 8;
+}
+
+message resupply_request_response {
+required enum response = 2;
+}
+
+message RetreatCommandNodeRequest {
+required int64 commandNodeWarInstanceId = 1;
+optional bool serverInitiated = 2;
+}
+
+message RetreatCommandNodeResponse {
+required enum msg = 1;
+}
+
+message RibbonBooster {
+required int64 id = 1;
+required int64 playerId = 2;
+required int64 ribbonBoosterTemplateId = 3;
+required uint32 itemsAccumulated = 4;
+required string expirationTime = 5;
+}
+
+message RibbonBoosterTemplate {
+required int64 id = 1;
+required int64 ribbonTemplateId = 2;
+required uint32 durationInMinutes = 3;
+required float multiplier = 4;
+required bool forSale = 5;
+}
+
+message RibbonBoosterTemplateBundle {
+required int64 id = 1;
+required string ribbonBoosterTemplateIds = 2;
+}
+
+message ribbonlevel {
+required int64 id = 1;
+required uint32 value = 2;
+}
+
+message RibbonLevelUpgradeTemplate {
+required int64 id = 1;
+required int64 ribbonTemplateId = 2;
+required int64 ribbonLevelId = 3;
+}
+
+message RibbonRequirement {
+required int64 id = 1;
+required int64 ribbonTemplateId = 2;
+required int32 requirementTypeId = 3;
+required int64 requirementId = 4;
+}
+
+message ribbontemplate {
+required int64 id = 1;
+required string name = 2;
+required uint32 ribbonCategory = 3;
+required int32 sortingIndex = 4;
+required bool available = 5;
+required bool sendMetrics = 6;
+required int32 characterClassRequirement1 = 7;
+required int32 characterClassRequirement2 = 8;
+required int32 characterClassRequirement3 = 9;
+}
+
+message RommelMultiplier {
+required int64 id = 1;
+required int64 playerId = 2;
+required bool multiplierActive = 3;
+required float xpmultiplier = 4;
+required string multiplierEnd = 5;
+}
+
+message SearchPlayerDetailRequest {
+required string playerGamerTag = 1;
+}
+
+message SearchPlayerDetailResponse {
+required enum response = 1;
+required int64 playerId = 2;
+required string gamertag = 3;
+required int64 factiontemplateid = 4;
+required string warName = 5;
+}
+
+message SearchPlayersRequest {
+required string searchKeyword = 2;
+optional bool searchByEmail = 3;
+}
+
+message SearchPlayersResponse {
+required enum response = 2;
+repeated string gamerTagsFound = 3;
+}
+
+message SendItemToDepotRequest {
+required enum itemType = 1;
+required int64 objectId = 2;
+required int64 pricingId = 3;
+required int64 storeDiscountId = 4;
+required enum paymentCurrency = 5;
+required string tabName = 6;
+required bool isFree = 7;
+}
+
+message SendItemToDepotResponse {
+required enum response = 1;
+}
+
+message SendMailMessageRequest {
+required int64 replyToMessageId = 1;
+required string subject = 2;
+required string text = 3;
+repeated string recipientGamertags = 4;
+}
+
+message SendMailMessageResponse {
+required enum response = 1;
+}
+
+message SendUpgradesToDepotRequest {
+required enum itemType = 1;
+required int64 objectId = 2;
+required int64 characterId = 3;
+}
+
+message SendUpgradesToDepotResponse {
+required enum response = 1;
+}
+
+message ServerSystemEvent {
+required int64 id = 1;
+required int32 type = 2;
+required string startTime = 3;
+required string duration = 4;
+required string msg = 5;
+}
+
+message SetCharacterActiveStatusRequest {
+required int64 characterId = 1;
+required bool isOnLeave = 2;
+}
+
+message SetCharacterActiveStatusResponse {
+required enum response = 1;
+required int32 soldierMax = 2;
+}
+
+message SetCommandNodeEquipmentItem {
+required int64 characterId = 1;
+required int64 commandNodeWarInstanceId = 2;
+required bool doEquip = 3;
+required bool leaveSupplyQueue = 4;
+}
+
+message SetCommandNodeEquipmentRequest {
+repeated SetCommandNodeEquipmentItem equipmentItems = 1;
+}
+
+message SetCommandNodeEquipmentResponse {
+required enum msg = 1;
+}
+
+message SetDailyRewardRequest {
+required int32 rewardDay = 1;
+}
+
+message SetDailyRewardResponse {
+required enum result = 1;
+}
+
+message SetDepotItemViewedRequest {
+required string tabName = 1;
+required int64 itemId = 2;
+}
+
+message SetDepotItemViewedResponse {
+required enum response = 1;
+}
+
+message SetInventoryItemToCharacterRequest {
+required string itemType = 1;
+required int64 itemId = 2;
+required int64 characterId = 3;
+}
+
+message SetInventoryItemToCharacterResponse {
+required enum msg = 1;
+}
+
+message SetMessageRecipientsDeletedRequest {
+repeated int64 messageRecipientIds = 1;
+required bool isDeleted = 2;
+}
+
+message SetMessageRecipientsDeletedResponse {
+required enum response = 1;
+}
+
+message SetMessageRecipientsReadRequest {
+repeated int64 messageRecipientIds = 1;
+required bool isRead = 2;
+}
+
+message SetMessageRecipientsReadResponse {
+required enum response = 1;
+}
+
+message SetNotificationsReadRequest {
+repeated int64 notificationIds = 1;
+required enum readStatus = 2;
+}
+
+message SetNotificationsReadResponse {
+required enum response = 1;
+}
+
+message SetPlayerDiscordIdRequest {
+required int64 discordId = 1;
+}
+
+message SetPlayerDiscordIdResponse {
+required enum response = 1;
+}
+
+message SetPlayerLanguageRequest {
+required string languageCode = 1;
+}
+
+message SetPlayerLanguageResponse {
+required enum response = 1;
+}
+
+message SetPlayerMailRUIdResponse {
+required enum response = 1;
+}
+
+message SetPlayerSteamIdRequest {
+required int64 steamId = 1;
+}
+
+message SetPlayerSteamIdResponse {
+required enum response = 1;
+}
+
+message SetSquadDetailsRequest {
+required int64 characterId = 1;
+optional string squadName = 2;
+optional int64 pricingId = 3;
+optional int64 discountId = 4;
+optional bool saveSessionState = 5;
+required enum paymentCurrency = 6;
+}
+
+message SetSquadDetailsResponse {
+required enum response = 1;
+}
+
+message SetSquadMatchMakingFlagRequest {
+required int64 squadSessionId = 1;
+required bool matchMakeWarMissionFlag = 3;
+repeated int64 matchMakeStagedMissionPresetList = 4;
+repeated int64 matchMakeSquadVehicleFilterArmyResourceTemplateIds = 5;
+}
+
+message SetSquadMatchMakingFlagResponse {
+required enum response = 1;
+}
+
+message SetSquadMemberStatusRequest {
+required int64 squadSlotId = 1;
+required int64 memberCharacterId = 2;
+required int32 squadMemberSessionStatus = 3;
+}
+
+message SetSquadMemberStatusResponse {
+required enum response = 1;
+}
+
+message SetTracerEffectRequest {
+required bool isFree = 1;
+required int64 tracerEffectTemplateId = 2;
+required int64 characterId = 3;
+required int64 weaponId = 4;
+required int64 pricingId = 5;
+required int64 storeDiscountId = 6;
+required enum paymentCurrency = 7;
+required bool isUnequip = 8;
+required int64 tracerEffectId = 9;
+}
+
+message SetTracerEffectResponse {
+required enum response = 1;
+}
+
+message SetTutorialCompletedRequest {
+required int32 tutorial = 1;
+}
+
+message SetTutorialCompletedResponse {
+required enum result = 1;
+}
+
+message SetUniformPartRequest {
+required int64 characterId = 1;
+required int64 uniformPartId = 2;
+required int32 uniformPartType = 3;
+}
+
+message SetUniformPartResponse {
+required enum response = 2;
+}
+
+message SetUniformVariantRequest {
+required int64 characterId = 1;
+required int64 variantId = 2;
+}
+
+message SetUniformVariantResponse {
+required enum response = 2;
+}
+
+message SetVehicleAmmoAutoRepairRequest {
+required int64 vehicleAmmoId = 1;
+required int32 autoRepair = 2;
+}
+
+message SetVehicleAmmoAutoRepairResponse {
+required enum response = 1;
+}
+
+message SetVehicleAmmoRequest {
+required int64 vehicleId = 1;
+required int64 vehicleAmmoId = 2;
+required int64 vehicleAmmoStorageId = 3;
+required int32 slotIndex = 4;
+required bool doEquip = 5;
+}
+
+message SetVehicleAmmoResponse {
+required enum response = 1;
+}
+
+message SetVehicleAutoRepairRequest {
+required int64 vehicleId = 2;
+required int32 autoRepair = 12;
+}
+
+message SetVehicleAutoRepairResponse {
+required enum response = 2;
+}
+
+message SetVehicleEquipmentRequest {
+required int64 characterId = 1;
+required int64 vehicleId = 2;
+required int32 equipInSlot = 3;
+}
+
+message SetVehicleEquipmentResponse {
+required enum msg = 1;
+}
+
+message SetVehicleUpgradeAutoRepairRequest {
+required int64 vehicleUpgradeId = 1;
+required int32 autoRepair = 2;
+}
+
+message SetVehicleUpgradeAutoRepairResponse {
+required enum response = 1;
+}
+
+message SetVehicleUpgradeRequest {
+required int64 vehicleId = 1;
+required int64 vehicleUpgradeId = 2;
+required int64 vehicleUpgradeSlotId = 3;
+required bool doEquip = 4;
+}
+
+message SetVehicleUpgradeResponse {
+required enum response = 1;
+}
+
+message SetVehicleVariantRequest {
+required int64 vehicleId = 1;
+required int64 variantId = 2;
+}
+
+message SetVehicleVariantResponse {
+required enum response = 2;
+}
+
+message SetWeaponAmmoAutoRepairRequest {
+required int64 weaponAmmoId = 1;
+required int32 autoRepair = 2;
+}
+
+message SetWeaponAmmoAutoRepairResponse {
+required enum response = 1;
+}
+
+message SetWeaponAmmoRequest {
+required int64 weaponId = 1;
+required int64 weaponAmmoId = 2;
+required int32 slotIndex = 3;
+required bool doEquip = 4;
+}
+
+message SetWeaponAmmoResponse {
+required enum response = 1;
+}
+
+message SetWeaponAutoRepairRequest {
+required int64 weaponId = 2;
+required int32 autoRepair = 12;
+}
+
+message SetWeaponAutoRepairResponse {
+required enum response = 2;
+}
+
+message SetWeaponClipCountRequest {
+required int64 equipmentId = 1;
+required int32 clipCount = 2;
+}
+
+message SetWeaponClipCountResponse {
+required enum response = 1;
+}
+
+message SetWeaponModiferAutoRepairRequest {
+required int64 weaponModifierId = 1;
+required int32 autoRepair = 2;
+}
+
+message SetWeaponModiferAutoRepairResponse {
+required enum response = 1;
+}
+
+message SetWeaponModifierRequest {
+required int64 weaponModifierId = 1;
+required int64 weaponId = 2;
+required bool doEquip = 3;
+required int64 selectedCharacterId = 4;
+}
+
+message SetWeaponModifierResponse {
+required enum response = 2;
+}
+
+message SetWeaponVariantRequest {
+required int64 weaponId = 1;
+required int64 variantId = 2;
+}
+
+message SetWeaponVariantResponse {
+required enum response = 2;
+}
+
+message set_combatbadge_request {
+required int64 characterid = 1;
+required int64 combatbadgeid = 2;
+required int32 slotnumber = 3;
+}
+
+message set_combatbadge_response {
+required enum msg = 1;
+}
+
+message set_equipmentselection {
+required int64 characterid = 1;
+required int64 equipmentid = 2;
+required int32 equipmentslot = 3;
+}
+
+message set_equipmentselection_response {
+required enum msg = 1;
+}
+
+message ShopCharacterPacks {
+required int64 id = 1;
+required string identifier = 2;
+required int64 factionTemplateId = 3;
+required int64 characterTemplateId = 4;
+required int64 weaponTemplateIdSlot1 = 5;
+required int64 weaponTemplateIdSlot2 = 6;
+required int64 weaponTemplateIdSlot3 = 7;
+required int32 rank = 8;
+}
+
+message ShopMembershipItems {
+required int64 id = 1;
+required string identifier = 2;
+required uint32 durationDays = 3;
+required int64 membershipBenefitTemplateId = 4;
+required int32 forSale = 5;
+}
+
+message ShopWarBondItem {
+required int64 id = 1;
+required int64 templateId = 2;
+required uint32 serialNumber = 3;
+required int64 playerId = 4;
+required string aquiredDate = 5;
+required string lastInterestDate = 6;
+required bool isExpired = 7;
+}
+
+message ShopWarBondItemCounter {
+required int64 id = 1;
+required int64 templateId = 2;
+required uint32 counter = 3;
+}
+
+message ShopWarBondItemTemplate {
+required int64 id = 1;
+required string series = 2;
+required uint32 seriesSize = 3;
+required uint32 durationMonths = 4;
+required uint32 nominalValue = 6;
+required uint32 interestPerMonth = 7;
+optional string identifier = 8;
+required string currency = 9;
+}
+
+message SpawnAreaTemplate {
+required int64 id = 1;
+required int64 gamemap = 2;
+required int32 posx = 3;
+required int32 posy = 4;
+required bool allowPlayerSpawn = 5;
+required bool allowBotSpawn = 6;
+}
+
+message Squad {
+required int64 id = 1;
+required int64 playerId = 2;
+required int64 characterId = 3;
+required string name = 4;
+required int64 supportSlotTemplateId1 = 5;
+required int64 supportSlotTemplateId2 = 6;
+required int64 supportSlotTemplateId3 = 7;
+required bool matchMakeWarMissionFlag = 9;
+repeated int64 matchMakeStagedMissionPresetList = 10;
+}
+
+message SquadInvitePlayerRequest {
+required int64 ownerCharacterId = 1;
+required int64 friendPlayerId = 2;
+required bool matchMakeWarMissionFlag = 4;
+repeated int64 matchMakeStagedMissionPresetList = 5;
+repeated int64 matchMakeSquadVehicleFilterArmyResourceTemplateIds = 6;
+}
+
+message SquadInvitePlayerResponse {
+required enum result = 1;
+}
+
+message SquadMemberSession {
+required int64 id = 1;
+required int64 squadSessionId = 2;
+required int64 squadPlayerSlotTemplateId = 3;
+required int64 playerId = 4;
+required string gamerTag = 5;
+required int64 playerFactionTemplateId = 6;
+required int64 characterId = 7;
+required int64 uniformVariantTemplateId = 8;
+required int64 weaponVariantTemplateId = 9;
+required int32 characterRank = 10;
+required int64 shopMembershipItemId = 11;
+required int32 squadMemberSessionStatus = 12;
+repeated int64 verifiedSquadResourceTemplates = 13;
+required string characterName = 14;
+required int64 playerSessionId = 15;
+required int32 playerTier = 16;
+required int32 squadCustomizationPoints = 17;
+required bool wasInvited = 18;
+required bool isQuickplay = 19;
+required bool isQuickplaySelectedFaction = 20;
+}
+
+message SquadPlayerSlotTemplate {
+required int64 id = 1;
+required int64 squadTemplateId = 2;
+required bool defaultSlot = 3;
+required int32 slotNumber = 4;
+required int32 customizationCost = 5;
+}
+
+message SquadRequest {
+required int64 missionSessionId = 1;
+required int64 squadId = 2;
+}
+
+message SquadResource {
+required int64 id = 1;
+required int64 playerId = 2;
+required int64 squadId = 3;
+required int64 armyResourceCategoryId = 4;
+required int32 count = 5;
+}
+
+message SquadResourcePurchaseSet {
+required int64 armyResourceCategoryId = 1;
+required int64 resourcePricingId = 2;
+}
+
+message SquadResourceState {
+required int64 armyResourceCategoryId = 1;
+required int32 count = 2;
+}
+
+message SquadResourceTemplate {
+required int64 id = 1;
+required int64 characterTemplateId = 2;
+required int64 resourceCategoryId = 3;
+required int32 rule = 4;
+required int32 minResourcesRequired = 5;
+}
+
+message SquadRespondToInviteRequest {
+required int64 squadMemberSessionId = 1;
+required bool hasAccepted = 2;
+required int64 characterId = 3;
+}
+
+message SquadRespondToInviteResponse {
+required enum result = 1;
+}
+
+message SquadResponse {
+required int64 squadId = 1;
+required ActionGameSquadDefinition squadDefinition = 2;
+}
+
+message SquadSession {
+required int64 id = 1;
+required int64 ownerPlayerId = 2;
+required int64 characterTemplateId = 3;
+required int64 factionTemplateId = 4;
+required int64 supportSlotTemplateId1 = 5;
+required int64 supportSlotTemplateId2 = 6;
+required int64 supportSlotTemplateId3 = 7;
+required int32 totalCustomizationPoints = 8;
+required int32 usedCustomizationPoints = 9;
+required string name = 10;
+required bool matchMakeWarMissionFlag = 12;
+repeated int64 matchMakeStagedMissionPresetList = 13;
+repeated int64 matchMakeSquadVehicleFilterArmyResourceTemplateIds = 14;
+repeated SquadResourceState squadResourceList = 15;
+repeated int64 ignorePlayerIdList = 16;
+required int64 missionId = 17;
+required int64 squadId = 18;
+required int32 actionGamesEntered = 19;
+required bool isLockedForMembers = 20;
+required bool isLockedForCustomization = 21;
+required bool forceReady = 22;
+}
+
+message SquadSupportSlotTemplate {
+required int64 id = 1;
+required int64 squadTemplateId = 2;
+required int64 characterTemplateId = 3;
+required bool defaultSlot = 4;
+required int32 slotNumber = 5;
+required int32 customizationCost = 6;
+}
+
+message SquadTemplate {
+required int64 id = 1;
+required int64 characterTemplateId = 2;
+}
+
+message StagedMissionSetup {
+required int64 id = 1;
+required string data = 2;
+}
+
+message StagingAreaTemplate {
+required int64 id = 1;
+required int64 gamemap = 2;
+required int64 spawnAreaTemplateId = 3;
+required int64 accessPointTemplateId = 4;
+required int32 posx = 5;
+required int32 posy = 6;
+}
+
+message StartLogin {
+optional int32 dummy = 1;
+}
+
+message StatElement {
+required string statType = 1;
+required int64 meta1 = 2;
+required int64 meta2 = 3;
+required int64 value = 4;
+}
+
+message statRequirement {
+required int64 id = 1;
+required int32 eParentType = 2;
+required int64 parentId = 3;
+required string variableName = 4;
+required string variableVar1 = 5;
+required string variableVar2 = 6;
+required string variableVar3 = 7;
+required string targetPlayerType = 8;
+required float multiplier = 9;
+required int32 statCategoryId = 10;
+required int32 hudGroupId = 11;
+required int32 eProcessorType = 12;
+required int32 warMissionOnlyRequirement = 13;
+required int32 winOnlyRequirement = 14;
+required int32 rankOnlyRequirement = 15;
+required bool available = 16;
+}
+
+message SteamFinalizeTransactionRequest {
+required int64 orderId = 1;
+}
+
+message SteamFinalizeTransactionResponse {
+required enum response = 1;
+required int32 steamResponseCode = 2;
+}
+
+message SteamInitializeTransactionRequest {
+required int64 orderId = 1;
+required int64 steamId = 2;
+required string languageId = 3;
+required string currency = 4;
+repeated SteamTransactionItem items = 5;
+}
+
+message SteamInitializeTransactionResponse {
+required enum response = 1;
+required int32 steamResponseCode = 2;
+required int64 orderId = 3;
+}
+
+message SteamQueryBundlesRequest {
+required int64 characterId = 1;
+}
+
+message SteamQueryBundlesResponse {
+required enum response = 1;
+required int32 steamResponseCode = 2;
+repeated VoucherPackInfo infos = 3;
+required string validFactionTemplateIds = 4;
+required string validCharacterTemplateIds = 5;
+}
+
+message SteamTransactionItem {
+required enum type = 1;
+required int32 quantity = 2;
+required int32 discountPercentage = 3;
+}
+
+message StoreBundle {
+required int64 id = 1;
+required string identifier = 2;
+required string targetType = 3;
+required string factionTemplateIds = 4;
+required string characterTemplateIds = 5;
+required bool forSale = 6;
+required string items = 7;
+optional string epicIdentifier = 8;
+}
+
+message StoreCampaign {
+required int64 id = 1;
+required int32 type = 2;
+required string assetIdentifier = 3;
+required string callToAction = 4;
+required string iconType = 5;
+required string activeFromTime = 6;
+required string activeToTime = 7;
+}
+
+message StoreDiscount {
+required int64 id = 1;
+required string objectType = 2;
+required int64 objectId = 3;
+required int32 virtualCurrencyType = 4;
+required float discountValue = 5;
+required int64 campaignId = 6;
+}
+
+message subscribeassaultteamview {
+optional int32 dummy = 1;
+}
+
+message subscribebattlesview {
+optional int32 dummy = 1;
+}
+
+message subscribechatview {
+optional int32 dummy = 1;
+}
+
+message subscribecommandnodeview {
+optional int32 dummy = 1;
+}
+
+message subscribefriendview {
+optional int32 dummy = 1;
+}
+
+message SubscribeHostingCenterInfoView {
+optional int32 dummy = 1;
+}
+
+message subscribeignoredplayerview {
+optional int32 dummy = 1;
+}
+
+message SubscribeMessageView {
+optional int32 dummmy = 1;
+}
+
+message SubscribePlayerMissionViewRequest {
+optional int32 dummy = 1;
+}
+
+message SubscribePlayerSessionView {
+optional int32 dummy = 1;
+}
+
+message subscribeplayerview {
+optional int32 dummy = 1;
+}
+
+message subscriberesourceview {
+optional int32 dummy = 1;
+}
+
+message subscriberesponse {
+optional int32 dummy = 1;
+}
+
+message SubscribeShopView {
+optional int32 dummy = 1;
+}
+
+message subscribesoldierview {
+optional int32 dummy = 1;
+}
+
+message subscribetestview {
+optional int32 dummy = 1;
+}
+
+message subscribewarmaplightview {
+optional int32 dummy = 1;
+}
+
+message subscribewarmapview {
+optional int32 dummy = 1;
+}
+
+message supplyline {
+required int64 id = 1;
+required int64 mapid = 2;
+required int64 accesspoint1Id = 3;
+required int64 accesspoint2Id = 4;
+required int64 supplylinetemplateid = 5;
+}
+
+message supplylinestatus {
+required sfixed64 id = 1;
+required int64 warid = 2;
+required int64 factionid = 3;
+required int64 supplylineid = 4;
+}
+
+message SwapHeadRequest {
+required int64 characterId = 1;
+required int64 uniformPartTemplateId = 2;
+required int32 uniformPartType = 3;
+required int64 pricingId = 4;
+required int64 storeDiscountId = 5;
+required enum paymentCurrency = 6;
+}
+
+message SwapHeadResponse {
+required enum response = 1;
+}
+
+message testsmallobjectsubdata {
+required int32 intdata = 1;
+required string stringdata = 2;
+}
+
+message TracerEffect {
+required int64 id = 1;
+required int64 tracerEffectTemplateId = 2;
+required int64 playerId = 3;
+required int64 characterId = 4;
+required int64 weaponId = 5;
+required bool isEquipped = 6;
+}
+
+message TracerEffectTemplate {
+required int64 id = 1;
+required string displayName = 2;
+required string effectName = 3;
+required int32 rate = 4;
+}
+
+message TracerEffectWeaponMapping {
+required int64 id = 1;
+required int64 tracerEffectTemplateId = 2;
+required int64 weaponTemplateId = 3;
+}
+
+message train {
+required int64 id = 1;
+required uint32 railwayId = 2;
+required string vehicleIds = 3;
+}
+
+message transport_commandnode {
+required int64 commandNodeWarInstanceId = 1;
+required int64 targetId = 2;
+required string targetType = 3;
+optional int64 overrideTargetAccesspointId = 4;
+optional bool overrideMove = 5;
+repeated transport_commandnode_request_segment path = 6;
+}
+
+message transport_commandnode_destination {
+required int64 id = 1;
+required int64 commandNodeWarInstanceId = 2;
+required int64 battlefieldid = 3;
+required int64 accesspointid = 4;
+required string cachedpath = 5;
+required int64 warid = 6;
+required bool retreatFlag = 7;
+required float timeEstimate = 8;
+required float beginPosition = 9;
+}
+
+message transport_commandnode_request_segment {
+required int64 mapEntityId = 1;
+required int64 mapEntityType = 2;
+}
+
+message transport_commandnode_response {
+required int64 commandNodeWarInstanceId = 1;
+required int64 battlefieldId = 2;
+required enum msg = 3;
+}
+
+message transport_commandnode_segment {
+required int64 id = 1;
+required int64 commandNodeWarInstanceId = 2;
+required int64 supplylineid = 3;
+required int64 fromAccesspoint = 4;
+required int64 toAccesspoint = 5;
+required string begintime = 6;
+required string endtime = 7;
+required int64 warid = 8;
+optional int32 approachingSkirmish = 9;
+}
+
+message UniformPart {
+required int64 id = 1;
+required int64 playerId = 2;
+required int64 characterId = 3;
+required int64 uniformPartTemplateId = 4;
+required int32 uniformPartType = 5;
+}
+
+message UniformPartTemplate {
+required int64 id = 1;
+required bool available = 2;
+required string identifier = 3;
+required int32 eUniformPartType = 4;
+required string uniformPart = 5;
+required int32 variantId = 6;
+required int32 variantType = 7;
+required bool isDefault = 8;
+optional string linkedUniformPartTemplateId = 9;
+required int32 factionTemplateId = 10;
+}
+
+message UniformVariant {
+required int64 id = 1;
+required int64 playerId = 2;
+required int64 characterId = 3;
+required int64 uniformVariantTemplateId = 4;
+}
+
+message UniformVariantTemplate {
+required int64 id = 1;
+required string identifier = 2;
+required int64 parentCharacterTemplateId = 3;
+required int64 factionTemplateId = 4;
+required bool available = 5;
+required string bodyPartHead = 6;
+required int32 bodyPartHeadVariantId = 7;
+required string bodyPartHelmet = 8;
+required int32 bodyPartHelmetVariantId = 9;
+required string bodyPartJacket = 10;
+required int32 bodyPartJacketVariantId = 11;
+required string bodyPartPants = 12;
+required int32 bodyPartPantsVariantId = 13;
+required string bodyPartBoots = 14;
+required int32 bodyPartBootsVariantId = 15;
+required string bodyPartHands = 16;
+required int32 bodyPartHandsVariantId = 17;
+required string bodyPartAccessory1 = 18;
+required int32 bodyPartAccessory1VariantId = 19;
+required string bodyPartAccessory2 = 20;
+required int32 bodyPartAccessory2VariantId = 21;
+required string bodyPartAccessory3 = 22;
+required int32 bodyPartAccessory3VariantId = 23;
+required string bodyPartAccessory4 = 24;
+required int32 bodyPartAccessory4VariantId = 25;
+required string bodyPartAccessory5 = 26;
+required int32 bodyPartAccessory5VariantId = 27;
+required string bodyPartAccessory6 = 28;
+required int32 bodyPartAccessory6VariantId = 29;
+required string bodyPartAccessory7 = 30;
+required int32 bodyPartAccessory7VariantId = 31;
+required string bodyPartAccessory8 = 32;
+required int32 bodyPartAccessory8VariantId = 33;
+required int32 variantType = 34;
+}
+
+message UnlockNotification {
+required int64 id = 1;
+required int64 playerId = 2;
+required int64 characterId = 3;
+required int64 progressionUnlockId = 4;
+required int64 ribbonTemplateId = 5;
+required int64 ribbonLevel = 6;
+required string unlockTimestamp = 7;
+required int32 notificationResponse = 8;
+required bool markedForDelete = 9;
+}
+
+message unsubscribeassaultteamview {
+optional int32 dummy = 1;
+}
+
+message unsubscribebattlesview {
+optional int32 dummy = 1;
+}
+
+message unsubscribechatview {
+optional int32 dummy = 1;
+}
+
+message unsubscribecommandnodeview {
+optional int32 dummy = 1;
+}
+
+message unsubscribefriendview {
+optional int32 dummy = 1;
+}
+
+message UnsubscribeHostingCenterInfoView {
+optional int32 dummy = 1;
+}
+
+message unsubscribeignoredplayerview {
+optional int32 dummy = 1;
+}
+
+message UnsubscribeMessageView {
+optional int32 dummmy = 1;
+}
+
+message UnsubscribePlayerMissionViewRequest {
+optional int32 dummy = 1;
+}
+
+message UnsubscribePlayerSessionView {
+optional int32 dummy = 1;
+}
+
+message unsubscribeplayerview {
+optional int32 dummy = 1;
+}
+
+message unsubscriberesourceview {
+optional int32 dummy = 1;
+}
+
+message unsubscriberesponse {
+required string reply = 1;
+}
+
+message UnsubscribeShopView {
+optional int32 dummy = 1;
+}
+
+message unsubscribesoldierview {
+optional int32 dummy = 1;
+}
+
+message unsubscribetestview {
+optional int32 dummy = 1;
+}
+
+message unsubscribewarmaplightview {
+optional int32 dummy = 1;
+}
+
+message unsubscribewarmapview {
+optional int32 dummy = 1;
+}
+
+message UpdateSquadResourceRequest {
+required int64 squadSessionId = 1;
+repeated SquadResourcePurchaseSet resourcePurchaseList = 2;
+required enum paymentCurrency = 3;
+}
+
+message UpdateSquadResourceResponse {
+required enum response = 1;
+}
+
+message UpdateWarBondsItem {
+required int64 warBondId = 1;
+required int32 interestsEarnedGold = 2;
+required int32 interestsEarnedCredits = 3;
+required bool isExpired = 4;
+}
+
+message UpdateWarBondsRequest {
+optional int32 dummy = 1;
+}
+
+message UpdateWarBondsResponse {
+repeated UpdateWarBondsItem warBonds = 2;
+}
+
+message UpgradeCommandNodeRequest {
+required int64 commandNodeWarInstanceId = 1;
+required int64 upgradeToCommandnodeTemplateId = 2;
+required int64 pricingId = 3;
+required int64 discountId = 4;
+required enum paymentCurrency = 5;
+}
+
+message UpgradeCommandNodeResponse {
+required enum result = 1;
+}
+
+message Vehicle {
+required int64 id = 1;
+required int64 vehicleVariantTemplateId = 3;
+required int64 playerId = 4;
+required int64 characterId = 5;
+required int64 equippedInSlot = 6;
+required float condition = 7;
+required int32 autoRepair = 8;
+required int64 equippedVehicleVariantId = 9;
+}
+
+message VehicleAmmo {
+required int64 id = 1;
+required int64 ammoTemplateId = 2;
+required int64 vehicleId = 3;
+required int64 equippedVehicleAmmoStorageId = 4;
+required int32 equippedAmmoSlotIndex = 5;
+required int64 playerId = 6;
+required int64 characterId = 7;
+required float condition = 8;
+required int32 autoRepair = 9;
+}
+
+message VehicleAmmoStorage {
+required int64 id = 1;
+required int32 maxAmmoClips = 2;
+required int32 storageSlots = 3;
+}
+
+message VehicleDrivingMaterial {
+required int64 id = 1;
+required string name = 2;
+required float onRoadPercent = 3;
+required float tractionMul = 4;
+required float wobbliness = 5;
+}
+
+message VehicleFlightModelTemplate {
+required int64 id = 1;
+required float rollSpeedAtPeak = 10;
+required float rollSpeedAtMax = 11;
+required float rollPeakPercent = 12;
+required float rollAcceleration = 13;
+required float rollFrictionSpin = 14;
+required float yawSpeedAtPeak = 20;
+required float yawSpeedAtMax = 21;
+required float yawPeakPercent = 22;
+required float yawAcceleration = 23;
+required float yawFrictionSpin = 24;
+required float yawFrictionPushSpin = 25;
+required float yawFrictionPush = 26;
+required float pitchSpeedAtPeak = 30;
+required float pitchSpeedAtMax = 31;
+required float pitchPeakPercent = 32;
+required float pitchAcceleration = 33;
+required float pitchFrictionSpin = 34;
+required float pitchFrictionPushSpin = 35;
+required float pitchFrictionPush = 36;
+required float speedMaxHorizontal = 40;
+required float speedMaxDive = 41;
+required float speedAcceleration = 42;
+required float speedAccelerationGround = 44;
+required float speedMaxHorizontalReverse = 45;
+required float speedAccelerationBrake = 46;
+required float liftFadeInPercent = 47;
+required float stallSpeedPercent = 48;
+required float stallPushFrictionScale = 49;
+required float stallSpinFrictionScale = 50;
+required float stallPitchPushSpinFriction = 51;
+required float stallYawPushSpinFriction = 52;
+}
+
+message vehicletemplate {
+required int64 id = 1;
+required string name = 2;
+required int64 factiontemplateid = 3;
+required int64 armyresourcecategoryid = 4;
+required bool available = 5;
+required int32 eVehicleType = 6;
+required float engineStartTime = 7;
+required bool mobileSpawn = 8;
+required float fuelCapacity = 9;
+required float fuelLiterPerKm = 10;
+required float mass = 11;
+required float airFrictionArea = 12;
+required float speed = 13;
+required float speedOffRoadKph = 14;
+required float rpmLow = 15;
+required float rpmHgh = 16;
+required float maxRpmPerSecLow = 17;
+required float maxRpmPerSecHgh = 18;
+required int32 gearCountBackwards = 19;
+required int32 gearCountForward = 20;
+required float inertiaDimX = 21;
+required float inertiaDimY = 22;
+required float inertiaDimZ = 23;
+required float wheelTurnSpeed = 24;
+required float wheelTurnResetBoost = 25;
+required float wheelTurnSlack = 26;
+required float maxSteeringAngle = 27;
+required float maxSteeringAngleSpeedPerc = 28;
+required bool cameraLimitEnabled = 29;
+required float cameraLimit = 30;
+required float cameraDampening = 31;
+required float thirdPersonCamHeight = 32;
+required float thirdPersonCamDistance = 33;
+required string animToken = 34;
+required float maxCondition = 35;
+required float wearPerSpawn = 36;
+required float wearPerBattle = 37;
+required int32 upgradeSlots = 38;
+required float waterSetupDesiredDepth = 39;
+required float waterSetupMaxSpeedForward = 40;
+required float waterSetupMaxSpeedBackwards = 41;
+required float waterSetupDampScaleVertical = 42;
+required float waterSetupResScaleFront = 43;
+required float waterSetupResScaleSide = 44;
+required string waterSetupAnimNodeName = 45;
+required int64 flightModelTemplateId = 46;
+required float accelerationBase = 47;
+required float accelerationGamma = 48;
+required float accelerationFrictionGamma = 49;
+required float handlingSuspensionDampScale = 50;
+required float handlingWheelForceHeight = 51;
+required float handlingDynSpeedTH = 52;
+required float handlingDynFadeIn = 53;
+required float handlingDynAngleTH = 54;
+required float handlingBrakePower = 55;
+required float handlingCoastDeacceleration = 56;
+required float handlingDynamicFriction = 57;
+required float wheelSuspensionUp = 58;
+required float wheelSuspensionDown = 59;
+required float wheelStaticFrictionSide = 60;
+required float wheelStaticFrictionFront = 61;
+required float trackSuspensionUp = 62;
+required float trackSuspensionDown = 63;
+required float trackStaticFrictionSide = 64;
+required float trackStaticFrictionFront = 65;
+required float suspensionMinDist = 66;
+required float tankMinTurnRadius = 67;
+required float reverseSpeedKPH = 68;
+required int32 trackLinkCount = 69;
+required float maxTractionAngleFront = 70;
+required float maxTractionAngleSide = 71;
+required float tankTurnSpeed = 72;
+required float tankTurnBoost = 73;
+required float tankTurnBoostSlowPercent = 74;
+required float sturdiness = 76;
+required float wobblinessScale = 77;
+required float gravity = 78;
+required float turnAccBoost = 79;
+required float gravityScaleUp = 80;
+required float gravityScaleDown = 81;
+required int32 hitPoints = 82;
+required int32 deployPoolCost = 83;
+required float armorHPMul = 84;
+}
+
+message vehicletemplatelayout {
+required int64 id = 1;
+required float supplyCrateX = 2;
+required float supplyCrateY = 3;
+required float supplyCrateLabelOffsetX = 4;
+required float supplyCrateLabelOffsetY = 5;
+}
+
+message VehicleUpgrade {
+required int64 id = 1;
+required int64 vehicleUpgradeTemplateId = 2;
+required int64 vehicleId = 3;
+required int64 equippedVehicleUpgradeSlotId = 4;
+required int64 playerId = 5;
+required int64 characterId = 6;
+required float condition = 7;
+required int32 autoRepair = 8;
+}
+
+message VehicleUpgradeSlot {
+required int64 id = 1;
+required int64 vehicleTemplateId = 2;
+required int64 vehicleUpgradeTemplateId = 3;
+}
+
+message vehicleupgradetemplate {
+required int64 id = 1;
+required string name = 2;
+required int32 upgradeMasterCompoundId = 3;
+required int32 vehicleUpgradeType = 4;
+required int64 itemId = 5;
+required float maxCondition = 6;
+required float wearPerSpawn = 7;
+required float wearPerBattle = 8;
+required int32 deployPoolCost = 9;
+}
+
+message VehicleVariant {
+required int64 id = 1;
+required int64 playerId = 2;
+required int64 characterId = 3;
+required int64 vehicleId = 4;
+required int64 vehicleVariantTemplateId = 5;
+}
+
+message VehicleVariantTemplate {
+required int64 id = 1;
+required string name = 2;
+required int64 parentVehicleTemplateId = 3;
+required int32 textureIndex = 4;
+required bool available = 5;
+required int64 factionTemplateId = 6;
+required bool defaultVariant = 7;
+required int32 variantType = 8;
+}
+
+message VehicleWeaponLayout {
+required int64 id = 1;
+required float posX = 2;
+required float posY = 3;
+required float labelOffsetX = 4;
+required float labelOffsetY = 5;
+required int64 vehicleWeaponSlotId = 6;
+required int32 vehicleAmmoStorageIndex = 7;
+required bool visible = 8;
+}
+
+message VehicleWeaponSlot {
+required int64 id = 1;
+required int64 vehicleTemplateId = 2;
+required int64 weaponTemplateId = 3;
+required int32 firingSequence = 4;
+required int32 weaponSlotUser = 5;
+required int64 vehicleAmmoStorageId = 6;
+required int32 weaponPriority = 7;
+}
+
+message VerifyPremiumStatusRequest {
+optional int32 dummy = 1;
+}
+
+message VerifyPremiumStatusResponse {
+required enum msg = 1;
+}
+
+message ViewHandlerPulse {
+required int64 id = 1;
+required int64 lastTickTime = 2;
+required int64 serverTime = 3;
+}
+
+message VoucherPackInfo {
+required string identifier = 1;
+required int64 factionTemplateId = 2;
+required enum status = 3;
+repeated VoucherPackName names = 4;
+repeated VoucherPackItem items = 5;
+}
+
+message VoucherPackItem {
+required string objectType = 1;
+required int64 objectId = 2;
+optional string info = 3;
+}
+
+message VoucherPackName {
+required string language = 1;
+required string name = 2;
+}
+
+message war {
+required int64 id = 1;
+required string name = 2;
+required string begintime = 3;
+required string endtime = 4;
+required string web = 5;
+required string friendlyfire = 6;
+required int64 winningfactionid = 7;
+required int32 pointsNeededForVictory = 8;
+required uint32 automissionnormal = 9;
+required uint32 automissionskirmish = 10;
+required uint32 automissionsupply = 11;
+required float strategytimescale = 12;
+required float daycycletimescale = 13;
+required uint32 disablestrategy = 14;
+required int32 maxPlayerPerFaction = 15;
+required int64 sequelwarid = 16;
+required int64 mapid = 17;
+required int32 cleanupStatus = 18;
+required int32 fowGridSize = 19;
+required int32 fowGridOriginX = 20;
+required int32 fowGridOriginY = 21;
+required bool queueReinforcements = 22;
+required bool firstResourceFree = 23;
+required uint32 moraleMinValue = 24;
+required uint32 moraleMaxValue = 25;
+required uint32 moraleLostPerBattle = 26;
+required uint32 moraleGainedPerWin = 27;
+required float moraleGainedPerMinute = 28;
+required uint32 moraleSurrenderLimit = 29;
+}
+
+message war_catalogue {
+required int64 id = 1;
+required string name = 2;
+required string wartime = 3;
+required int32 pointsNeededForVictory = 4;
+required int64 winningFactionId = 5;
+required int32 battlefieldCount = 6;
+required int32 assaultTeamCount = 7;
+required int32 playerCount = 8;
+required int32 generalCount = 9;
+required uint32 infantryCount = 10;
+required uint32 tankCount = 11;
+required uint32 planeCount = 12;
+required uint32 vehicleCount = 13;
+required int64 sequelWarId = 14;
+repeated war_catalogue_faction warCatalogueFactions = 15;
+}
+
+message war_catalogue_faction {
+required int64 factionId = 1;
+required int64 factionTemplateId = 2;
+required string factionTag = 3;
+required int32 factionVictoryPoints = 4;
+required int32 factionPlayerCount = 5;
+required int32 factionMinPlayerCount = 6;
+required int32 factionMaxPlayerCount = 7;
+required int32 factionPlayerOnlineCount = 8;
+required int32 factionBonus = 9;
+required int32 factionDeployedCommandPointsInfantry = 10;
+required int32 factionDeployedCommandPointsArmor = 11;
+required int32 factionDeployedCommandPointsAir = 12;
+required int32 factionControlledBattlefields = 13;
+required uint32 battlesWon = 14;
+required uint32 battlesLost = 15;
+required uint32 infantryLost = 16;
+required uint32 vehiclesLost = 17;
+required uint32 tanksLost = 18;
+required uint32 planesLost = 19;
+repeated int64 ownedMajorCities = 20;
+}
+
+message war_create_request {
+required string name = 2;
+}
+
+message war_create_response {
+required enum response = 1;
+}
+
+message weapon {
+required int64 id = 1;
+required string name = 2;
+required int64 weapontemplateid = 3;
+required int64 playerid = 4;
+required int64 characterId = 5;
+required int32 posx = 6;
+required int32 posy = 7;
+required string decals = 8;
+required string containerType = 9;
+required int64 containerId = 10;
+required int32 containerSlot = 11;
+required float condition = 12;
+required int32 autoRepair = 13;
+required int32 clipCount = 14;
+required int64 equippedWeaponVariantId = 15;
+}
+
+message WeaponAmmo {
+required int64 id = 1;
+required int64 ammoTemplateId = 2;
+required int64 playerId = 3;
+required int64 characterId = 4;
+required int64 weaponId = 5;
+required int32 equippedAmmoSlotIndex = 6;
+required float condition = 7;
+required int32 autoRepair = 8;
+}
+
+message weaponAmmoMapping {
+required int64 id = 1;
+required int64 weaponTemplateId = 2;
+required int64 ammoTemplateId = 3;
+required bool defaultAmmo = 4;
+}
+
+message WeaponGroupMapping {
+required int64 id = 1;
+required int64 weaponTemplateId = 2;
+required int32 weaponGroup = 3;
+}
+
+message WeaponModCategory {
+required int64 id = 1;
+required string identifier = 2;
+required int64 weaponCategoryId = 3;
+required int32 weaponModSlotId = 4;
+}
+
+message WeaponModifier {
+required int64 id = 1;
+required int64 templateId = 2;
+required int64 playerId = 3;
+required int64 characterId = 4;
+required int64 weaponId = 5;
+required float condition = 6;
+required int32 autoRepair = 7;
+}
+
+message WeaponModifierTemplate {
+required int64 id = 1;
+required string name = 2;
+required float fRangeNear = 9;
+required float fRangeFar = 10;
+required float fDamage = 11;
+required float fDamageFar = 12;
+required float fCameraRecoilRight = 13;
+required float fCameraRecoilUp = 14;
+required float fCameraRecoilVariance = 15;
+required float fRecoilTime = 16;
+required float fChamberTime = 17;
+required float fConeStandMode = 18;
+required float fConeCrouchMode = 19;
+required float fConeProneMode = 20;
+required float fConeAimModifier = 21;
+required float fConeContractionPerSecond = 22;
+required float maxCondition = 23;
+required float wearPerShot = 24;
+required float wearPerBattle = 25;
+required int32 forSale = 26;
+required string imageName = 27;
+required int32 weaponModCategoryId = 28;
+required int32 masterId = 29;
+required int32 subMasterId = 30;
+required float sightMagnification = 31;
+required int32 sightDistMin = 32;
+required int32 sightDistMax = 33;
+required int32 sightDistIncrement = 34;
+required int32 deployPoolCost = 35;
+}
+
+message WeaponModMapping {
+required int64 id = 1;
+required int64 weaponModifierTemplateId = 2;
+required int64 weaponTemplateId = 3;
+}
+
+message weaponslotcategory {
+required int64 id = 1;
+required string identifier = 2;
+}
+
+message weapontemplate {
+required int64 id = 1;
+required string name = 2;
+required uint32 fireForce = 3;
+required float camerarecoilright = 4;
+required float camerarecoilup = 5;
+required float camerarecoilvariance = 6;
+required float swaystandmode = 7;
+required float swaycrouchmode = 8;
+required float swaypronemode = 9;
+required float swayprecisionmodifier = 10;
+required float aimpenaltyprecisionmodifier = 11;
+required float aimpenaltyperbullet = 12;
+required float aimpenaltyturn = 13;
+required float aimpenaltycontractionpersec = 14;
+required float baseconefire = 15;
+required float recoiltime = 16;
+required float fireat = 17;
+required float chambertime = 18;
+required float reloadtime = 19;
+required int32 clipsize = 20;
+required int32 maglowlimit = 21;
+required float respawntime = 22;
+required float chargetime = 23;
+required float effectscopemindist = 24;
+required float effectscopemaxdist = 25;
+required float effectscopesteps = 26;
+required float effectscopedefaultdist = 27;
+required float aimfov1 = 28;
+required float aimfov2 = 29;
+required float aimfov3 = 30;
+required float equiptime = 31;
+required float effectshellspeed = 32;
+required float dofSprintStart = 33;
+required float dofSprintEnd = 34;
+required float dofViewStart = 35;
+required float dofViewEnd = 36;
+required float dofAimStart = 37;
+required float dofAimEnd = 38;
+required float paththickness = 39;
+required float swayfatigue = 41;
+required float swayspeed = 42;
+required float pathred = 43;
+required float pathgreen = 44;
+required float pathblue = 45;
+required uint32 usewhilesprinting = 46;
+required float reloadtimescoped = 47;
+required uint32 recoilcamera = 48;
+required uint32 clipautoeject = 49;
+required uint32 pathdisplay = 50;
+required uint32 reloadattachrighthand = 51;
+required uint32 ammofeedanim = 52;
+required uint32 usewhilerunning = 53;
+required uint32 proneandaimonly = 54;
+required uint32 clipCount = 55;
+required int64 factiontemplateid = 56;
+required int64 weaponcategoryid = 57;
+required int64 weaponslotcategoryid = 58;
+required uint32 equipmentPointsCost = 59;
+required float maxCondition = 61;
+required float wearPerShot = 62;
+required float wearPerBattle = 63;
+required int32 canAdjustClipCount = 64;
+required int32 managabilitycost = 65;
+required bool available = 66;
+required string animToken = 67;
+required bool twoHanded = 68;
+required bool ignoreGrief = 69;
+required float audioShotDelay = 70;
+required float audioMechanicsDelay = 71;
+required float audioHammerDelay = 72;
+required float audioAutoEjectDelay = 73;
+required bool audioUseAnimEventsAsReloadSequenceTriggers = 74;
+required int32 itemType = 75;
+required float precCameraOffset = 76;
+required float precCameraOffsetProne = 77;
+required float precisionModeAcceleration = 78;
+required string bobCatagoryToken = 79;
+required float ammoSpeedMod = 80;
+required float ammoRangeMaxMod = 81;
+required float ammoDamageMod = 82;
+required float ammoDamageFarMod = 83;
+required float ammoRangeNearMod = 84;
+required float ammoRangeFarMod = 85;
+required float ammoArmorPenetrationAngleMod = 86;
+required float ammoArmorPenetrationAngleFalloffMod = 87;
+required float ammoArmorMinDamageMod = 88;
+required float ammoArmorMaxDamageMod = 89;
+required float ammoArmorMinPenetrationMod = 90;
+required float ammoArmorMaxPenetrationMod = 91;
+required int32 catridgeTypeID = 92;
+required string extraBulletTracer = 93;
+required int32 extraBulletTracerRate = 94;
+required bool fireModeAuto = 95;
+required bool fireModeSingle = 96;
+required int32 masterId = 97;
+required float dofPower = 98;
+required int32 deployPoolCost = 99;
+required int64 cameraKickGroupTemplateId = 100;
+required bool allowInVehicles = 101;
+}
+
+message weapontemplatelayout {
+required int64 id = 1;
+required int32 ammoX = 2;
+required int32 ammoY = 3;
+required int32 barrelX = 4;
+required int32 barrelY = 5;
+required int32 internalX = 6;
+required int32 internalY = 7;
+required int32 sightX = 8;
+required int32 sightY = 9;
+required int32 triggerX = 10;
+required int32 triggerY = 11;
+required int32 ammoLabelOffsetX = 12;
+required int32 ammoLabelOffsetY = 13;
+required int32 barrelLabelOffsetX = 14;
+required int32 barrelLabelOffsetY = 15;
+required int32 internalLabelOffsetX = 16;
+required int32 internalLabelOffsetY = 17;
+required int32 sightLabelOffsetX = 18;
+required int32 sightLabelOffsetY = 19;
+required int32 triggerLabelOffsetX = 20;
+required int32 triggerLabelOffsetY = 21;
+}
+
+message WeaponVariant {
+required int64 id = 1;
+required int64 playerId = 2;
+required int64 characterId = 3;
+required int64 weaponId = 4;
+required int64 weaponVariantTemplateId = 5;
+}
+
+message WeaponVariantTemplate {
+required int64 id = 1;
+required string identifier = 2;
+required int64 parentWeaponTemplateId = 3;
+required int32 textureIndex = 4;
+required bool available = 5;
+required int32 weaponVariantType = 6;
+}

@@ -1,0 +1,38 @@
+package netsysmessages;
+syntax = "proto3";
+
+message GetHandlerTypes {
+optional int32 dummy = 1;
+}
+
+message keepalive {
+required int32 value = 1;
+}
+
+message keepaliverequest {
+required int32 value = 1;
+}
+
+message keepaliveresponse {
+required int32 value = 1;
+}
+
+message KeyValueSyncCmd_GetVersion {
+optional int32 dummy = 1;
+}
+
+message KeyValueSyncCmd_GetVersionResponse {
+optional uint64 version = 1;
+}
+
+message KeyValueSyncCmd_RequestSyncResponse {
+optional int32 dummy = 1;
+}
+
+message ResponseHandlerTypes {
+repeated string names = 1;
+}
+
+message zipchunk {
+required bytes data = 1;
+}

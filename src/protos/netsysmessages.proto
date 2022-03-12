@@ -25,6 +25,10 @@ message KeyValueSyncCmd_GetVersionResponse {
 optional uint64 version = 1;
 }
 
+message KeyValueSyncCmd_RequestSync {
+
+}
+
 message KeyValueSyncCmd_RequestSyncResponse {
 optional int32 dummy = 1;
 }

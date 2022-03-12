@@ -32,7 +32,7 @@ required int32 enemyArmorDestroyed = 4;
 required int32 enemyAircraftDestroyed = 5;
 required int32 cPCaptured = 6;
 required int32 resourcesCaptured = 7;
-required string key = 8;
+optional string key = 8;
 }
 
 message CharacterATStats {
@@ -103,7 +103,7 @@ repeated CharacterKillStats characterkillsStatistics = 52;
 repeated GameModeStats gamemodeStatistics = 53;
 repeated VehicleKillStats vehiclekillsStatistics = 54;
 repeated CharacterATStats assaultteamStatistics = 55;
-required string key = 56;
+optional string key = 56;
 }
 
 message DailyCleanup {
@@ -279,6 +279,10 @@ required int32 nextValue = 5;
 
 message RequestXPs {
 required uint64 characterId = 1;
+}
+
+message Response {
+
 }
 
 message ResponseAddPlayerIp {

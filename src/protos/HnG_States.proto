@@ -1,6 +1,10 @@
 package HnG_States;
 syntax = "proto3";
 
+message AbandonMissionRequest {
+
+}
+
 message AbandonMissionResponse {
 required Common.Response response = 1;
 }
@@ -290,6 +294,10 @@ required Common.Response result = 1;
 required string executeResult = 2;
 }
 
+message AdminToolGetDbInfoRequest {
+
+}
+
 message AdminToolGetDbInfoResponse {
 required Common.Response result = 1;
 repeated DbGroup groups = 2;
@@ -338,6 +346,10 @@ repeated QuerySet querySets = 2;
 message AdminToolQueryResponse {
 required Common.Response result = 1;
 repeated DbObject objects = 2;
+}
+
+message AdminToolResponseCode {
+
 }
 
 message AdminToolStatQueryRequest {
@@ -874,6 +886,10 @@ required int64 id = 1;
 required string channelName = 2;
 required string displayName = 3;
 required string channelTab = 4;
+}
+
+message ClaimBattleReportVeteranBonusRequest {
+
 }
 
 message ClaimBattleReportVeteranBonusResponse {
@@ -1650,6 +1666,34 @@ message dissolve_commandnode_response {
 required Common.Response msg = 1;
 }
 
+message EAbiltyUnlock {
+
+}
+
+message EAchievementDriverType {
+
+}
+
+message EAchievementRewardType {
+
+}
+
+message EAchievementType {
+
+}
+
+message EAddplayerReportResponse {
+
+}
+
+message EBoosterType {
+
+}
+
+message EDiscountItemCategory {
+
+}
+
 message EditChatChannelRequest {
 required int64 channelId = 1;
 optional string password = 2;
@@ -1664,6 +1708,14 @@ message EditChatChannelResponse {
 required Common.Response response = 1;
 }
 
+message EHeadSwapType {
+
+}
+
+message EItemType {
+
+}
+
 message EndMissionRequest {
 required int64 missionId = 1;
 required int64 winnerFactionTemplateId = 2;
@@ -1671,6 +1723,10 @@ required int64 winnerFactionTemplateId = 2;
 
 message EndMissionResponse {
 required int64 missionId = 1;
+}
+
+message EPhysicsComponentType {
+
 }
 
 message EpicFinalizeTransactionRequest {
@@ -1723,6 +1779,66 @@ required string catalogOfferId = 1;
 required string catalogItemName = 2;
 required int32 currencyAmount = 3;
 required string currencyCode = 4;
+}
+
+message EPlayerLevelUnlockItemType {
+
+}
+
+message EPlayerReportCategory {
+
+}
+
+message EPlayerReportStatus {
+
+}
+
+message EProjectileType {
+
+}
+
+message ESquadResourceRule {
+
+}
+
+message EStatRequirementParentType {
+
+}
+
+message EStatRequirementProcessorType {
+
+}
+
+message EUniformPartType {
+
+}
+
+message EUnlockItemType {
+
+}
+
+message EUnlockType {
+
+}
+
+message EVehicleType {
+
+}
+
+message EVehicleUpgradeType {
+
+}
+
+message EVehicleWeaponPriority {
+
+}
+
+message EVehicleWeaponSlotUser {
+
+}
+
+message EWeaponGroup {
+
 }
 
 message ExperienceLevels {
@@ -1830,6 +1946,10 @@ repeated int64 commandNodeDefinitionIds = 1;
 
 message GetAssaultTeamStatsResponse {
 repeated GetAssaultTeamStatsRecord records = 1;
+}
+
+message GetBattlePassSeasonRequest {
+
 }
 
 message GetBattlePassSeasonResponse {
@@ -1955,6 +2075,10 @@ required int64 ignoredid = 3;
 required string ignoredname = 4;
 }
 
+message IgnorePlayerAction {
+
+}
+
 message IgnorePlayerChangeRequest {
 required string ignoredPlayerGamerTag = 1;
 required Common.Response ignoreAction = 2;
@@ -1962,6 +2086,10 @@ required Common.Response ignoreAction = 2;
 
 message IgnorePlayerChangeResponse {
 required Common.Response response = 1;
+}
+
+message IgnorePlayerChangeResponseCode {
+
 }
 
 message InsigniaPart {
@@ -1978,6 +2106,10 @@ required int64 playerToInvite = 1;
 
 message InviteToCompanyResponse {
 required Common.Response result = 1;
+}
+
+message ItemType {
+
 }
 
 message JoinFactionBonusOfferRequest {
@@ -2040,6 +2172,10 @@ required int64 playerToKick = 1;
 
 message KickFromCompanyResponse {
 required Common.Response result = 1;
+}
+
+message LeaveCompanyRequest {
+
 }
 
 message LeaveCompanyResponse {
@@ -2146,6 +2282,10 @@ required int32 positionInQueue = 1;
 required bool mayProceed = 2;
 required int32 originalId = 3;
 required Common.Response result = 4;
+}
+
+message logmessagetype {
+
 }
 
 message logout {
@@ -2362,6 +2502,14 @@ required bool allowedToLobby = 9;
 required bool spawnInAir = 10;
 }
 
+message MissionSquadState {
+
+}
+
+message MissionStatus {
+
+}
+
 message missiontype {
 required int64 id = 1;
 required string title = 2;
@@ -2499,6 +2647,22 @@ required string key = 3;
 required int64 value = 4;
 }
 
+message NotificationReadStatus {
+
+}
+
+message NotificationResponseCode {
+
+}
+
+message NotificationType {
+
+}
+
+message Notification_CurrencyReceivedReason {
+
+}
+
 message physicsComponent {
 required int64 id = 1;
 required string name = 2;
@@ -2556,6 +2720,10 @@ repeated bool achievementsBits = 39;
 required bool isDeleted = 40;
 required string currencyCode = 41;
 required string currencyRegion = 42;
+}
+
+message PlayerActionType {
+
 }
 
 message PlayerBattleReport {
@@ -2702,6 +2870,10 @@ required string timeLeft = 7;
 required bool onPause = 8;
 }
 
+message PlayerMissionConnectionState {
+
+}
+
 message PlayerMissionSession {
 required int64 id = 1;
 required int64 playerId = 2;
@@ -2736,6 +2908,10 @@ required string unredeemedConsecutiveDayRewards = 7;
 required int32 consecutiveDayCount = 8;
 required string lastFirstBattleDate = 9;
 optional string lastUpdatedConsecutiveDayCountDate = 10;
+}
+
+message PlayerPartnerId {
+
 }
 
 message PlayerPartnerInfo {
@@ -2831,6 +3007,10 @@ required uint32 checksum = 2;
 repeated string debugInfo = 3;
 }
 
+message ProtobufChecksumResponseCode {
+
+}
+
 message PurchaseBattlePassSeasonRequest {
 required int64 battlePassSeasonTemplateId = 1;
 required int64 playerId = 2;
@@ -2868,6 +3048,10 @@ required Common.Response paymentCurrency = 6;
 
 message PurchaseUniformPartResponse {
 required Common.Response response = 1;
+}
+
+message QueryActiveSurveyRequest {
+
 }
 
 message QueryActiveSurveyResponse {
@@ -2937,8 +3121,8 @@ required int64 characterId = 1;
 message QueryVoucherPacksResponse {
 required Common.Response response = 1;
 repeated VoucherPackInfo infos = 2;
-required string validFactionTemplateIds = 3;
-required string validCharacterTemplateIds = 4;
+optional string validFactionTemplateIds = 3;
+optional string validCharacterTemplateIds = 4;
 }
 
 message query_commandnode_owner {
@@ -3231,6 +3415,10 @@ repeated supplylinestatus supplylineStatuses = 28;
 required float stagedPosX = 29;
 required float stagedPosY = 30;
 required bool enableSaBots = 31;
+}
+
+message ResponseCodes {
+
 }
 
 message resupply_request {
@@ -3823,6 +4011,10 @@ required bool isQuickplay = 19;
 required bool isQuickplaySelectedFaction = 20;
 }
 
+message SquadMemberSessionStatus {
+
+}
+
 message SquadPlayerSlotTemplate {
 required int64 id = 1;
 required int64 squadTemplateId = 2;
@@ -3990,14 +4182,18 @@ message SteamQueryBundlesResponse {
 required Common.Response response = 1;
 required int32 steamResponseCode = 2;
 repeated VoucherPackInfo infos = 3;
-required string validFactionTemplateIds = 4;
-required string validCharacterTemplateIds = 5;
+optional string validFactionTemplateIds = 4;
+optional string validCharacterTemplateIds = 5;
 }
 
 message SteamTransactionItem {
 required Common.Response type = 1;
 required int32 quantity = 2;
 required int32 discountPercentage = 3;
+}
+
+message SteamTransactionItemType {
+
 }
 
 message StoreBundle {
@@ -4019,6 +4215,10 @@ required string callToAction = 4;
 required string iconType = 5;
 required string activeFromTime = 6;
 required string activeToTime = 7;
+}
+
+message StoreCampaignType {
+
 }
 
 message StoreDiscount {
@@ -4128,6 +4328,10 @@ required Common.Response paymentCurrency = 6;
 
 message SwapHeadResponse {
 required Common.Response response = 1;
+}
+
+message SystemEventType {
+
 }
 
 message testsmallobjectsubdata {
@@ -4642,6 +4846,10 @@ required int64 lastTickTime = 2;
 required int64 serverTime = 3;
 }
 
+message VirtualCurrencyType {
+
+}
+
 message VoucherPackInfo {
 required string identifier = 1;
 required int64 factionTemplateId = 2;
@@ -4659,6 +4867,10 @@ optional string info = 3;
 message VoucherPackName {
 required string language = 1;
 required string name = 2;
+}
+
+message VoucherPackStatus {
+
 }
 
 message war {
@@ -4778,6 +4990,10 @@ required int64 ammoTemplateId = 3;
 required bool defaultAmmo = 4;
 }
 
+message WeaponCategory {
+
+}
+
 message WeaponGroupMapping {
 required int64 id = 1;
 required int64 weaponTemplateId = 2;
@@ -4837,6 +5053,10 @@ message WeaponModMapping {
 required int64 id = 1;
 required int64 weaponModifierTemplateId = 2;
 required int64 weaponTemplateId = 3;
+}
+
+message WeaponModSlot {
+
 }
 
 message weaponslotcategory {
@@ -4985,4 +5205,12 @@ required int64 parentWeaponTemplateId = 3;
 required int32 textureIndex = 4;
 required bool available = 5;
 required int32 weaponVariantType = 6;
+}
+
+message WeatherCondition {
+
+}
+
+message WeatherTimeOfDay {
+
 }

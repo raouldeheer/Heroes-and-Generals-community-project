@@ -24,8 +24,7 @@ scripts.forEach(e => {
         .map(v => {
             const name = v.replace(".as", "");
             const content = fs.readFileSync(`./game/scripts/${e}/${v}`, "utf8");
-            const protobody = fileToProto(content);
-            return protobody ? `message ${name} {\r\n${protobody}\r\n}\r\n` : null;
+            return `message ${name} {\r\n${fileToProto(content) || ""}\r\n}\r\n`;
         })
         .filter(e => e)
         .join("\r\n");

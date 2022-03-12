@@ -67,6 +67,8 @@ export function toCanvasColored(dataStore: DataStore) {
         battlefieldid: string;
         factionid: string;
     }
+    const colors = ["#f00", "#0f0", "#00f", "#000", "#fff", "#888"];
+    const factions: string[] = [];
     const dbObj = dataStore.ToObject();
     const battlefieldstatus: { [key: string]: battlefieldstatusT; } = dbObj.battlefieldstatus;
     const battlefieldstatuses: battlefieldstatusT[] = [];
@@ -87,20 +89,8 @@ export function toCanvasColored(dataStore: DataStore) {
 
         // Draw battles
         battlefieldstatuses.forEach(e => {
-            switch (e.factionid) {
-                case "1453450728017739468":
-                    context.fillStyle = '#f00';
-                    break;
-                case "4479088871115797170":
-                    context.fillStyle = '#0f0';
-                    break;
-                case "2459942554710019316":
-                    context.fillStyle = '#00f';
-                    break;
-                default:
-                    context.fillStyle = '#fff';
-                    break;
-            }
+            if (!factions.includes(e.factionid)) factions.push(e.factionid);
+            context.fillStyle = colors[factions.indexOf(e.factionid)];
             const battlefield = dataStore.GetData("battlefield", e.battlefieldid);
             context.fillRect(battlefield.posx / 8, battlefield.posy / 8, 10, 10)
         });

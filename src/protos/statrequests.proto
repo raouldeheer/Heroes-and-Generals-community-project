@@ -1,0 +1,449 @@
+package statrequests;
+syntax = "proto3";
+
+message AddAssaultTeamStats {
+required int64 assaultteamId = 1;
+required int64 warId = 2;
+required AssaultTeamStats assaultteamStatistics = 3;
+}
+
+message AddCharacterStats {
+required uint64 characterId = 1;
+required uint64 sessionId = 2;
+required CharacterStats characterStatistics = 3;
+}
+
+message AddCharacterStatsList {
+repeated AddCharacterStats elements = 1;
+}
+
+message AddGeneralStats {
+required string ip = 1;
+required string username = 2;
+required string action = 3;
+repeated string extradata = 4;
+}
+
+message AssaultTeamStats {
+required int32 battles = 1;
+required int32 battlesWon = 2;
+required int32 enemiesKilled = 3;
+required int32 enemyArmorDestroyed = 4;
+required int32 enemyAircraftDestroyed = 5;
+required int32 cPCaptured = 6;
+required int32 resourcesCaptured = 7;
+required string key = 8;
+}
+
+message CharacterATStats {
+required int64 commandNodeId = 1;
+required int64 armyResourceCategoryId = 2;
+required int32 killCount = 3;
+}
+
+message CharacterKillStats {
+required uint64 character = 1;
+required int32 kills = 2;
+required int32 damageDealt = 3;
+required int32 revengeKill = 4;
+required int32 killsInARow = 5;
+}
+
+message CharacterStats {
+required int32 score = 1;
+required int32 kills = 2;
+required int32 deaths = 3;
+required int32 suicides = 4;
+required int32 spawns = 5;
+required int32 bestMultiKill = 6;
+required int32 saviorKills = 7;
+required int32 runDistanceInM = 8;
+required int32 walkDistanceInM = 9;
+required int32 sprintDistanceInM = 10;
+required int32 swimDistanceInM = 11;
+required int32 crouchDistanceInM = 12;
+required int32 timeOnFoot = 13;
+required int32 timePlayed = 14;
+required int32 timeCrouched = 15;
+required int32 parachuteTime = 16;
+required int32 parachuteFreefallTime = 17;
+required int32 parachuteFreefallDistInM = 18;
+required int32 parachuteSpawns = 19;
+required int32 parachuteEscape = 20;
+required int32 sessionsPlayed = 21;
+required int32 characterDamageDealt = 22;
+required int32 characterParachuteJumpsSuccessfull = 23;
+required int32 characterFreefallJumps = 24;
+required int32 characterTeamKills = 25;
+required int32 characterRevengeKills = 26;
+required int32 characterTeamScoreboard345 = 27;
+required int32 characterTeamScoreboard2 = 28;
+required int32 characterTeamScoreboard1 = 29;
+required int32 characterScoreboard1 = 30;
+required int32 characterBattlesWithoutDying = 31;
+required int32 characterNrOfMultiKill = 32;
+required int32 characterNrOfBattleWith1000ShotsFired = 33;
+required int32 characterNrOfBattleWithKillSameEnemy4Times = 34;
+required int32 characterXp = 35;
+required int32 characterNrOfBattleInfantryKillXArmor = 37;
+required int32 characterNrOfBattleArmorKillXArmor = 38;
+required int32 characterNrOfBattlePlaneKillXArmor = 39;
+required int32 characterNrOfBattleInfantryKillXInfantry = 40;
+required int32 characterNrOfBattleArmorKillXInfantry = 41;
+required int32 characterNrOfBattlePlaneKillXInfantry = 42;
+required int32 characterNrOfBattleXSaviorKills = 43;
+required int32 characterNrOfBattleXRevengeKills = 44;
+required int32 characterNrOfBattleXHeadshots = 45;
+required int32 characterNrOfBattleXKnifeKills = 46;
+required int32 characterNrOfBattleXGrenadeKills = 47;
+required int32 characterNrOfBattleXPistolKills = 48;
+repeated VehicleStats vehicleStatistics = 50;
+repeated WeaponStats weaponStatistics = 51;
+repeated CharacterKillStats characterkillsStatistics = 52;
+repeated GameModeStats gamemodeStatistics = 53;
+repeated VehicleKillStats vehiclekillsStatistics = 54;
+repeated CharacterATStats assaultteamStatistics = 55;
+required string key = 56;
+}
+
+message DailyCleanup {
+optional int32 dummy = 1;
+}
+
+message DoEraseCharacterStats {
+required uint64 characterId = 1;
+}
+
+message ExtendedCharacterStats {
+required uint64 characterId = 1;
+required int32 sessionsplayed = 2;
+required CharacterStats characterStatistics = 3;
+}
+
+message FinalizeCharacterStats {
+required uint64 sessionId = 1;
+repeated uint64 winners = 2;
+repeated uint64 premium = 3;
+}
+
+message GameModeStats {
+required int32 gameMode = 1;
+required int32 cPCaptures = 2;
+required int32 cPAssists = 3;
+required int32 cPTotalInfluence = 4;
+required int32 resourcesCaptured = 5;
+required int32 resourcesTotalInfluence = 6;
+required int32 killAnEnemyCapturing = 7;
+required int32 killedWhileCapturing = 8;
+required int32 cPNotSpotted = 9;
+required int32 gamemodeKillAnEnemyWhileCapturing = 10;
+required int32 gamemodeAssaultAttackerWon = 11;
+required int32 gamemodeAssaultDefenderWon = 12;
+required int32 gamemodeAssaultBattles = 13;
+required int32 gamemodeSkirmishBattlesWon = 14;
+required int32 gamemodeSkirmishBattles = 15;
+}
+
+message LeaderBoardRank {
+required uint64 playerId = 1;
+required uint64 characterId = 2;
+required string characterName = 3;
+required int32 index = 4;
+required int32 deaths = 5;
+required int32 kills = 6;
+required string gamerTag = 8;
+}
+
+message Player_Character_ID {
+required uint64 playerid = 1;
+repeated uint64 characterids = 2;
+}
+
+message RequestAddPlayerIp {
+required int64 playerId = 1;
+required string ipaddress = 2;
+}
+
+message RequestCachePlayerData {
+required int64 playerId = 1;
+required int64 playerWarId = 2;
+repeated int64 characterIdList = 3;
+repeated int64 commandNodeDefinitionIdList = 4;
+}
+
+message RequestCacheStatus {
+required int64 objectId = 1;
+required string objectType = 2;
+}
+
+message RequestCharacterRibbons {
+required uint64 characterId = 1;
+}
+
+message RequestCharacterSessionRibbons {
+required uint64 characterId = 1;
+}
+
+message RequestEarnings {
+required uint64 playerId = 1;
+}
+
+message RequestExtractCharacterStats {
+required uint64 characterId = 1;
+required bool lowToHigh = 2;
+required int32 start = 3;
+required int32 end = 4;
+required string orderby = 5;
+}
+
+message RequestLeaderBoardRanking {
+required int32 start = 1;
+required int32 stop = 2;
+repeated Player_Character_ID playerids = 3;
+}
+
+message RequestLogPlayerPartnerInfo {
+required int64 playerId = 1;
+required string partnerUserId = 2;
+required int32 partnerId = 3;
+}
+
+message RequestPlayerOnlineData {
+required int32 year = 1;
+repeated bool hour = 2;
+repeated bool day = 3;
+repeated bool dayofweek = 4;
+repeated bool week = 5;
+repeated bool month = 6;
+}
+
+message RequestReadAssaultTeamStats {
+required int64 warId = 1;
+required int64 assaultteamId = 3;
+}
+
+message RequestReadCharacterStats {
+repeated uint64 characterids = 1;
+optional bool ignoreSessionId = 2;
+}
+
+message RequestReadRibbonValue {
+required int64 characterId = 1;
+required int64 ribbonTemplateId = 2;
+}
+
+message RequestSessionCharacterStats {
+required uint64 sessionId = 1;
+optional uint64 characterId = 2;
+}
+
+message RequestSetEarnings {
+required uint64 playerId = 1;
+required uint64 silverEarned = 2;
+required uint64 goldEarned = 3;
+required uint64 silverUsed = 4;
+required uint64 goldUsed = 5;
+}
+
+message RequestSumCharacterStats {
+required uint64 characterId = 1;
+required int32 buckets = 2;
+required int64 startTime = 3;
+required int64 endTime = 4;
+}
+
+message RequestWriteAssaultTeamStats {
+required int64 warId = 1;
+repeated WriteAssaultTeamStats assaultteamStatistics = 4;
+}
+
+message RequestWriteCharacterStats {
+required uint64 sessionId = 1;
+required bool addToRibbon = 2;
+repeated WriteCharacterStats characterStatistics = 3;
+}
+
+message RequestWriteCharacterXPDebug {
+required int64 characterId = 1;
+required int32 writeCombatXP = 2;
+required int32 writeTacticalXP = 3;
+}
+
+message RequestWriteRibbonValue {
+required int64 characterId = 1;
+required int64 ribbonTemplateId = 2;
+required double ribbonValue = 3;
+required int32 ribbonLevel = 4;
+required int32 nextValue = 5;
+}
+
+message RequestXPs {
+required uint64 characterId = 1;
+}
+
+message ResponseAddPlayerIp {
+optional int32 dummy = 1;
+}
+
+message ResponseCacheStatus {
+required int64 objectId = 1;
+required string objectType = 2;
+required bool isCached = 3;
+}
+
+message ResponseCharacterRibbons {
+required uint64 characterId = 1;
+required uint64 sessionId = 2;
+required CharacterStats characterStatistics = 3;
+repeated Ribbon ribbons = 4;
+required int32 actionGamePlayTime = 8;
+required int32 strategyGamePlayTime = 9;
+required int32 wins = 10;
+required int32 losses = 11;
+required int32 creditsEarned = 12;
+required int32 creditsUsed = 13;
+}
+
+message ResponseEarnings {
+required uint64 playerId = 1;
+required uint64 silverEarned = 2;
+required uint64 goldEarned = 3;
+required uint64 silverUsed = 4;
+required uint64 goldUsed = 5;
+}
+
+message ResponseExtractCharacterStats {
+repeated ExtendedCharacterStats extendedCharacterStatistics = 1;
+}
+
+message ResponseFinalizeCharacterStats {
+repeated ResponseFinalizeCharacterStatsPlayerReward rewards = 1;
+}
+
+message ResponseFinalizeCharacterStatsPlayerReward {
+required uint64 characterId = 1;
+required int32 creditsEarned = 2;
+required int32 creditsUsed = 3;
+required bool isWinner = 4;
+required double combatXP = 14;
+required double tacticalXP = 15;
+}
+
+message ResponseLeaderBoardRanking {
+repeated LeaderBoardRank startEnd = 1;
+repeated LeaderBoardRank characters = 2;
+}
+
+message ResponseLogPlayerPartnerInfo {
+optional int32 dummy = 1;
+}
+
+message ResponsePlayerOnlineData {
+repeated int64 weekday = 1;
+repeated int64 week = 2;
+repeated int64 hour = 3;
+repeated int64 month = 4;
+repeated int64 day = 5;
+}
+
+message ResponseReadAssaultTeamStats {
+required int64 warId = 1;
+required int64 assaultteamId = 3;
+required AssaultTeamStats assaultteamStatistics = 4;
+}
+
+message ResponseReadCharacterStats {
+repeated ResponseReadCharacterStatsEntry entries = 1;
+}
+
+message ResponseReadCharacterStatsEntry {
+required uint64 characterId = 1;
+required CharacterStats alltimeCharacterStatistics = 2;
+repeated Ribbon attributes = 3;
+}
+
+message ResponseReadRibbonValue {
+required int64 characterId = 1;
+required int64 ribbonTemplateId = 2;
+required double ribbonValue = 3;
+required int32 ribbonLevel = 4;
+}
+
+message ResponseSessionCharacterStats {
+repeated ExtendedCharacterStats extended = 1;
+}
+
+message ResponseSumCharacterStats {
+repeated CharacterStats characterStatistics = 1;
+}
+
+message ResponseWriteCharacterXPDebug {
+required int64 characterId = 1;
+required int32 totalCombatXP = 2;
+required int32 totalTacticalXP = 3;
+}
+
+message ResponseXPs {
+required double combatXP = 1;
+required double tacticalXP = 2;
+}
+
+message Ribbon {
+required int64 ribbonTemplateId = 1;
+required int32 currentValue = 2;
+required int32 currentLevel = 3;
+required int32 nextValue = 4;
+}
+
+message SR {
+required enum response = 1;
+}
+
+message VehicleKillStats {
+required int32 weapon = 1;
+required int32 vehicle = 2;
+required int32 kills = 3;
+required int32 damage = 4;
+}
+
+message VehicleStats {
+required int32 vehicle = 1;
+required int32 destroyed = 2;
+required int32 lost = 3;
+required int32 distdriven = 4;
+required int32 distdrivenpassenger = 5;
+required int32 timespent = 6;
+required int32 damagedealt = 7;
+}
+
+message WeaponStats {
+required int32 weapon = 1;
+required int32 shotsfired = 2;
+required int32 headshots = 3;
+required int32 hits = 4;
+required int32 kills = 5;
+required int32 killed = 6;
+required int32 timespent = 7;
+required int32 characterkills = 8;
+required int32 mosthitsinarow = 9;
+required int32 damagetoplayers = 10;
+required int32 damagecloserange = 11;
+required int32 damagemidlowrange = 12;
+required int32 damagemidhighrange = 13;
+required int32 damagefarrange = 14;
+required int32 killscloserange = 15;
+required int32 killsmidlowrange = 16;
+required int32 killsmidhighrange = 17;
+required int32 killsfarrange = 18;
+}
+
+message WriteAssaultTeamStats {
+required int64 assaultteamId = 1;
+required AssaultTeamStats assaultteamStatistics = 2;
+}
+
+message WriteCharacterStats {
+required uint64 characterId = 1;
+required CharacterStats characterStatistics = 2;
+repeated Ribbon attributes = 3;
+}

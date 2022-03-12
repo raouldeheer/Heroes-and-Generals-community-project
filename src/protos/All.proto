@@ -1,5 +1,7 @@
 syntax = "proto3";
 
+import "HnG_States.proto";
+import "statrequests.proto";
 import "Common.proto";
 import "Player.proto";
 import "Login.proto";

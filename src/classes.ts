@@ -95,7 +95,7 @@ export class SteamQueryBundlesResponse {
     static parse = (buf: BufferCursor) =>
         BufToDecodedProto(this.proto, buf.buffer.slice(8));
 }
- 
+
 export class QueryActiveSurveyRequest {
     static proto = Protos.lookupType("HnG_States.QueryActiveSurveyRequest");
     static parse = (buf: BufferCursor) =>
@@ -154,6 +154,9 @@ export class keepalive {
     static proto = Protos.lookupType("netsysmessages.keepalive");
     static parse = (buf: BufferCursor) =>
         BufToDecodedProto(this.proto, buf.buffer.slice(8));
+    static toBuffer = (payload: {
+        value: number,
+    }): Buffer => ProtoToBuf(this.proto, payload);
 }
 
 export class query_commandnode_owner {
@@ -218,6 +221,18 @@ export class GetBattleReportRequest {
 
 export class GetBattleReportResponse {
     static proto = Protos.lookupType("HnG_States.GetBattleReportResponse");
+    static parse = (buf: BufferCursor) =>
+        BufToDecodedProto(this.proto, buf.buffer.slice(8));
+}
+
+export class join_war_request {
+    static proto = Protos.lookupType("HnG_States.join_war_request");
+    static parse = (buf: BufferCursor) =>
+        BufToDecodedProto(this.proto, buf.buffer.slice(8));
+}
+
+export class join_war_response {
+    static proto = Protos.lookupType("HnG_States.join_war_response");
     static parse = (buf: BufferCursor) =>
         BufToDecodedProto(this.proto, buf.buffer.slice(8));
 }

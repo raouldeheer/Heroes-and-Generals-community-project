@@ -18,6 +18,7 @@ export class Client extends EventEmitter {
 
         this.con.on("close", err => {
             console.log(`closed and ${err ? "had" : "no"} error`);
+            this.emit("closed");
         });
 
         this.con.on("error", console.error);

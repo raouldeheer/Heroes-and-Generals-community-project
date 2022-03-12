@@ -135,7 +135,7 @@ export class Client extends EventEmitter {
                         this.handleMessage(gunzipSync(result().data));
                         return;
                     }
-                break;
+                    break;
                 case "QueryServerInfoResponse":
                     this.sendPacketToBuffer("QueryBannedMachineRequest");
                     break;
@@ -158,6 +158,9 @@ export class Client extends EventEmitter {
                     break;
                 case "login2_result":
                     this.emit("loggedin");
+                    break;
+                case "keepaliverequest":
+                    this.sendPacketToBuffer("keepalive", { value: 8374 });
                     break;
                 default:
                     this.emit(typeText, result);

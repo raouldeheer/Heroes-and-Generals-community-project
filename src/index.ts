@@ -127,7 +127,6 @@ bufs.forEach(parse);
 console.log(loseEnd);
 fs.writeFileSync("total.txt", totalString, "utf-8");
 fs.writeFileSync("total.jsonc", dataStore.ToString(), "utf-8");
-console.log(dataStore.GetData("PlayerPartnerInfo", "1181427495443169983"));
 
 (() => {
     // let totalString = "";

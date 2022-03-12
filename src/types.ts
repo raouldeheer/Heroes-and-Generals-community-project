@@ -76,6 +76,8 @@ const keys = new Map<String, packetClassParser>([
     ["ResponseReadCharacterStats", all.ResponseReadCharacterStats],
     ["GetBattleReportRequest", all.GetBattleReportRequest],
     ["GetBattleReportResponse", all.GetBattleReportResponse],
+    ["join_war_response", all.join_war_response],
+    ["join_war_request", all.join_war_request],
 ]);
 
 export { keys };

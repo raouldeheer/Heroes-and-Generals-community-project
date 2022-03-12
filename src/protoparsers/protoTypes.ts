@@ -27,6 +27,7 @@ export const enum KeyValueChangeKey {
     accesspointstatus = "accesspointstatus",
     accesspointtemplate = "accesspointtemplate",
     transport_commandnode_segment = "transport_commandnode_segment",
+    transport_commandnode_destination = "transport_commandnode_destination",
     air_transport = "air_transport",
     air_commandnode_base = "air_commandnode_base",
     battle = "battle",
@@ -56,6 +57,7 @@ export const enum KeyValueChangeKey {
     SquadMemberSession = "SquadMemberSession",
     PlayerMatchMaking = "PlayerMatchMaking",
     PlayerGoldOffer = "PlayerGoldOffer",
+    PlayerMembershipItem = "PlayerMembershipItem",
 }
 
 const Protos = protobuf.loadSync("./src/protos/All.proto");
@@ -82,6 +84,7 @@ export const SetProtoParsers = new Map<string, protobuf.Type>([
     [KeyValueChangeKey.accesspointstatus, Protos.lookupType("HnG_States.accesspointstatus")],
     [KeyValueChangeKey.accesspointtemplate, Protos.lookupType("HnG_States.accesspointtemplate")],
     [KeyValueChangeKey.transport_commandnode_segment, Protos.lookupType("HnG_States.transport_commandnode_segment")],
+    [KeyValueChangeKey.transport_commandnode_destination, Protos.lookupType("HnG_States.transport_commandnode_destination")],
     [KeyValueChangeKey.air_transport, Protos.lookupType("HnG_States.air_transport")],
     [KeyValueChangeKey.air_commandnode_base, Protos.lookupType("HnG_States.air_commandnode_base")],
     [KeyValueChangeKey.battle, Protos.lookupType("HnG_States.battle")],
@@ -111,4 +114,5 @@ export const SetProtoParsers = new Map<string, protobuf.Type>([
     [KeyValueChangeKey.SquadMemberSession, Protos.lookupType("HnG_States.SquadMemberSession")],
     [KeyValueChangeKey.PlayerMatchMaking, Protos.lookupType("HnG_States.PlayerMatchMaking")],
     [KeyValueChangeKey.PlayerGoldOffer, Protos.lookupType("HnG_States.PlayerGoldOffer")],
+    [KeyValueChangeKey.PlayerMembershipItem, Protos.lookupType("HnG_States.PlayerMembershipItem")],
 ]);

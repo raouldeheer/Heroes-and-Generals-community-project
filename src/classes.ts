@@ -5,19 +5,19 @@ import protobuf from "protobufjs";
 const Protos = protobuf.loadSync("./src/protos/All.proto");
 
 export class QueryServerInfoResponse {
-    static proto = Protos.lookupType("ServerInfo.QueryServerInfoResponse");
+    static proto = Protos.lookupType("HnG_States.QueryServerInfoResponse");
     static parse = (buf: BufferCursor) =>
         BufToDecodedProto(this.proto, buf.buffer.slice(8));
 }
 
 export class zipchunk {
-    static proto = Protos.lookupType("Common.zipchunk");
+    static proto = Protos.lookupType("netsysmessages.zipchunk");
     static parse = (buf: BufferCursor) =>
         (() => BufToDecodedProto(this.proto, buf.buffer.slice(8)));
 }
 
 export class query_war_catalogue_request {
-    static proto = Protos.lookupType("War.query_war_catalogue_request");
+    static proto = Protos.lookupType("HnG_States.query_war_catalogue_request");
     static parse = (buf: BufferCursor) =>
         BufToDecodedProto(this.proto, buf.buffer.slice(8));
     static toBuffer = (payload: {
@@ -26,32 +26,32 @@ export class query_war_catalogue_request {
 }
 
 export class query_war_catalogue_response {
-    static proto = Protos.lookupType("War.query_war_catalogue_response");
+    static proto = Protos.lookupType("HnG_States.query_war_catalogue_response");
     static parse = (buf: BufferCursor) =>
         BufToDecodedProto(this.proto, buf.buffer.slice(8));
 }
 
 export class QueryShopWarBondItemsResponse {
-    static proto = Protos.lookupType("Player.QueryShopWarBondItemsResponse");
+    static proto = Protos.lookupType("HnG_States.QueryShopWarBondItemsResponse");
     static parse = (buf: BufferCursor) =>
         BufToDecodedProto(this.proto, buf.buffer.slice(8));
 }
 
 export class GetChatChannelsSubscribedResponse {
-    static proto = Protos.lookupType("Player.GetChatChannelsSubscribedResponse");
+    static proto = Protos.lookupType("HnG_States.GetChatChannelsSubscribedResponse");
     static parse = (buf: BufferCursor) =>
         BufToDecodedProto(this.proto, buf.buffer.slice(8));
 }
 
 export class RequestReadCharacterStats {
-    static proto = Protos.lookupType("Player.RequestReadCharacterStats");
+    static proto = Protos.lookupType("statrequests.RequestReadCharacterStats");
     static parse = (buf: BufferCursor) =>
         BufToDecodedProto(this.proto, buf.buffer.slice(8));
     // TODO implement toBuffer
 }
 
 export class GetAssaultTeamStatsRequest {
-    static proto = Protos.lookupType("War.GetAssaultTeamStatsRequest");
+    static proto = Protos.lookupType("HnG_States.GetAssaultTeamStatsRequest");
     static parse = (buf: BufferCursor) =>
         BufToDecodedProto(this.proto, buf.buffer.slice(8));
     static toBuffer = (payload: {
@@ -60,13 +60,13 @@ export class GetAssaultTeamStatsRequest {
 }
 
 export class GetAssaultTeamStatsResponse {
-    static proto = Protos.lookupType("War.GetAssaultTeamStatsResponse");
+    static proto = Protos.lookupType("HnG_States.GetAssaultTeamStatsResponse");
     static parse = (buf: BufferCursor) =>
         BufToDecodedProto(this.proto, buf.buffer.slice(8));
 }
 
 export class QueryVoucherPacksRequest {
-    static proto = Protos.lookupType("Player.QueryVoucherPacksRequest");
+    static proto = Protos.lookupType("HnG_States.QueryVoucherPacksRequest");
     static parse = (buf: BufferCursor) =>
         BufToDecodedProto(this.proto, buf.buffer.slice(8));
     static toBuffer = (payload: {
@@ -75,13 +75,13 @@ export class QueryVoucherPacksRequest {
 }
 
 export class QueryVoucherPacksResponse {
-    static proto = Protos.lookupType("Player.QueryVoucherPacksResponse");
+    static proto = Protos.lookupType("HnG_States.QueryVoucherPacksResponse");
     static parse = (buf: BufferCursor) =>
         BufToDecodedProto(this.proto, buf.buffer.slice(8));
 }
 
 export class SteamQueryBundlesRequest {
-    static proto = Protos.lookupType("Player.SteamQueryBundlesRequest");
+    static proto = Protos.lookupType("HnG_States.SteamQueryBundlesRequest");
     static parse = (buf: BufferCursor) =>
         BufToDecodedProto(this.proto, buf.buffer.slice(8));
     static toBuffer = (payload: {
@@ -90,14 +90,14 @@ export class SteamQueryBundlesRequest {
 }
 
 export class SteamQueryBundlesResponse {
-    static proto = Protos.lookupType("Player.SteamQueryBundlesResponse");
+    static proto = Protos.lookupType("HnG_States.SteamQueryBundlesResponse");
 
     static parse = (buf: BufferCursor) =>
         BufToDecodedProto(this.proto, buf.buffer.slice(8));
 }
-
+ 
 export class QueryActiveSurveyRequest {
-    static proto = Protos.lookupType("Player.QueryActiveSurveyRequest");
+    static proto = Protos.lookupType("HnG_States.QueryActiveSurveyRequest");
     static parse = (buf: BufferCursor) =>
         BufToDecodedProto(this.proto, buf.buffer.slice(8));
     static toBuffer = (): Buffer =>
@@ -105,13 +105,13 @@ export class QueryActiveSurveyRequest {
 }
 
 export class QueryActiveSurveyResponse {
-    static proto = Protos.lookupType("Player.QueryActiveSurveyResponse");
+    static proto = Protos.lookupType("HnG_States.QueryActiveSurveyResponse");
     static parse = (buf: BufferCursor) =>
         BufToDecodedProto(this.proto, buf.buffer.slice(8));
 }
 
 export class GetMissionDetailsRequest {
-    static proto = Protos.lookupType("MissionDetails.GetMissionDetailsRequest");
+    static proto = Protos.lookupType("HnG_States.GetMissionDetailsRequest");
     static parse = (buf: BufferCursor) =>
         BufToDecodedProto(this.proto, buf.buffer.slice(8));
     static toBuffer = (payload: {
@@ -121,91 +121,103 @@ export class GetMissionDetailsRequest {
 }
 
 export class GetMissionDetailsResponse {
-    static proto = Protos.lookupType("MissionDetails.GetMissionDetailsResponse");
+    static proto = Protos.lookupType("HnG_States.GetMissionDetailsResponse");
     static parse = (buf: BufferCursor) =>
         BufToDecodedProto(this.proto, buf.buffer.slice(8));
 }
 
 export class transport_commandnode {
-    static proto = Protos.lookupType("War.transport_commandnode");
+    static proto = Protos.lookupType("HnG_States.transport_commandnode");
     static parse = (buf: BufferCursor) =>
         BufToDecodedProto(this.proto, buf.buffer.slice(8));
 }
 
 export class transport_commandnode_response {
-    static proto = Protos.lookupType("War.transport_commandnode_response");
+    static proto = Protos.lookupType("HnG_States.transport_commandnode_response");
     static parse = (buf: BufferCursor) =>
         BufToDecodedProto(this.proto, buf.buffer.slice(8));
 }
 
 export class keepaliverequest {
-    static proto = Protos.lookupType("ServerInfo.keepaliverequest");
+    static proto = Protos.lookupType("netsysmessages.keepaliverequest");
     static parse = (buf: BufferCursor) =>
         BufToDecodedProto(this.proto, buf.buffer.slice(8));
 }
 
 export class keepaliveresponse {
-    static proto = Protos.lookupType("ServerInfo.keepaliveresponse");
+    static proto = Protos.lookupType("netsysmessages.keepaliveresponse");
     static parse = (buf: BufferCursor) =>
         BufToDecodedProto(this.proto, buf.buffer.slice(8));
 }
 
 export class keepalive {
-    static proto = Protos.lookupType("ServerInfo.keepalive");
+    static proto = Protos.lookupType("netsysmessages.keepalive");
     static parse = (buf: BufferCursor) =>
         BufToDecodedProto(this.proto, buf.buffer.slice(8));
 }
 
 export class query_commandnode_owner {
-    static proto = Protos.lookupType("War.query_commandnode_owner");
+    static proto = Protos.lookupType("HnG_States.query_commandnode_owner");
     static parse = (buf: BufferCursor) =>
         BufToDecodedProto(this.proto, buf.buffer.slice(8));
 }
 
 export class query_commandnode_owner_response {
-    static proto = Protos.lookupType("War.query_commandnode_owner_response");
+    static proto = Protos.lookupType("HnG_States.query_commandnode_owner_response");
     static parse = (buf: BufferCursor) =>
         BufToDecodedProto(this.proto, buf.buffer.slice(8));
 }
 
 export class GetGoldPricesRequest {
-    static proto = Protos.lookupType("Player.GetGoldPricesRequest");
+    static proto = Protos.lookupType("HnG_States.GetGoldPricesRequest");
     static parse = (buf: BufferCursor) =>
         BufToDecodedProto(this.proto, buf.buffer.slice(8));
 }
 
 export class GetGoldPricesResponse {
-    static proto = Protos.lookupType("Player.GetGoldPricesResponse");
+    static proto = Protos.lookupType("HnG_States.GetGoldPricesResponse");
     static parse = (buf: BufferCursor) =>
         BufToDecodedProto(this.proto, buf.buffer.slice(8));
 }
 
 export class JoinMatchMakingRequest {
-    static proto = Protos.lookupType("MissionDetails.JoinMatchMakingRequest");
+    static proto = Protos.lookupType("HnG_States.JoinMatchMakingRequest");
     static parse = (buf: BufferCursor) =>
         BufToDecodedProto(this.proto, buf.buffer.slice(8));
 }
 
 export class JoinMatchMakingResponse {
-    static proto = Protos.lookupType("MissionDetails.JoinMatchMakingResponse");
+    static proto = Protos.lookupType("HnG_States.JoinMatchMakingResponse");
     static parse = (buf: BufferCursor) =>
         BufToDecodedProto(this.proto, buf.buffer.slice(8));
 }
 
 export class CancelJoinMatchMakingRequest {
-    static proto = Protos.lookupType("MissionDetails.CancelJoinMatchMakingRequest");
+    static proto = Protos.lookupType("HnG_States.CancelJoinMatchMakingRequest");
     static parse = (buf: BufferCursor) =>
         BufToDecodedProto(this.proto, buf.buffer.slice(8));
 }
 
 export class CancelJoinMatchMakingResponse {
-    static proto = Protos.lookupType("MissionDetails.CancelJoinMatchMakingResponse");
+    static proto = Protos.lookupType("HnG_States.CancelJoinMatchMakingResponse");
     static parse = (buf: BufferCursor) =>
         BufToDecodedProto(this.proto, buf.buffer.slice(8));
 }
 
 export class ResponseReadCharacterStats {
-    static proto = Protos.lookupType("Stats.ResponseReadCharacterStats");
+    static proto = Protos.lookupType("statrequests.ResponseReadCharacterStats");
+    static parse = (buf: BufferCursor) =>
+        BufToDecodedProto(this.proto, buf.buffer.slice(8));
+}
+
+export class GetBattleReportRequest {
+    static proto = Protos.lookupType("HnG_States.GetBattleReportRequest");
+    static parse = (buf: BufferCursor) =>
+        BufToDecodedProto(this.proto, buf.buffer.slice(8));
+}
+
+export class GetBattleReportResponse {
+    static proto = Protos.lookupType("HnG_States.GetBattleReportResponse");
     static parse = (buf: BufferCursor) =>
         BufToDecodedProto(this.proto, buf.buffer.slice(8));
 }

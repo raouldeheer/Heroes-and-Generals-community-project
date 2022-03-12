@@ -45,6 +45,8 @@ export class KeyValueChangeSet {
                     switch (key) {
                         case KeyValueChangeKey.battle:
                         case KeyValueChangeKey.BattleInfo:
+                        case KeyValueChangeKey.transport_commandnode_segment:
+                        case KeyValueChangeKey.air_transport:
                             returnObj.delete.push({
                                 key,
                                 value: value.readBigUint64LE().toString(),

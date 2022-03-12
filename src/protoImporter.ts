@@ -12,7 +12,7 @@ const fileToProto = (file: string) => file
         let [name, messageName, type, label, id] = e;
         return `${label.replace("Descriptor.LABEL_", "").toLowerCase()
             } ${messageName.replace(/\"/g, "")
-            || type.replace("Descriptor.", "").toLowerCase()
+            || (type.replace("Descriptor.", "").toLowerCase()=="enum"? "Common.Response" :type.replace("Descriptor.", "").toLowerCase())
             } ${name.replace(/\"/g, "")} = ${id};`;
     })?.join("\r\n");
 

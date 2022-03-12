@@ -396,7 +396,7 @@ required int32 nextValue = 4;
 }
 
 message SR {
-required enum response = 1;
+required Common.Response response = 1;
 }
 
 message VehicleKillStats {

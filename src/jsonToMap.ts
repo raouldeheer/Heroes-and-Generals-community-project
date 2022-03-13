@@ -5,6 +5,7 @@ import BufferCursor from "./buffercursor";
 import { keys } from "./types";
 import { ProtoToString } from "./proto";
 import { readdir, readFile } from "fs/promises";
+import { existsSync, fstat, mkdirSync } from "fs";
 
 
 async function jsonToMap(filename: string, imageName: string, dataStore: DataStore) {
@@ -47,10 +48,13 @@ async function jsonToMap(filename: string, imageName: string, dataStore: DataSto
         console.log(typeText);
     }
     console.log("Loaded template");
-    for (const iterator of await readdir("./saves")) {
+    const warId = "4399881207183542806";
+    if (!existsSync(`./saves/${warId}`)) mkdirSync(`./saves/${warId}`);
+    if (!existsSync(`./savesMap/${warId}`)) mkdirSync(`./savesMap/${warId}`);
+    for (const iterator of await readdir(`./saves/${warId}`)) {
         await jsonToMap(
-            `./saves/${iterator}`,
-            `./savesMap/${iterator.replace("jsonc", "jpg")}`,
+            `./saves/${warId}/${iterator}`,
+            `./savesMap/${warId}/${iterator.replace("jsonc", "jpg")}`,
             new DataStore(dataStore.GetMap()));
     }
     console.log("Done");

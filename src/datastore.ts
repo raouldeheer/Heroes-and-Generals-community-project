@@ -3,8 +3,8 @@ import { IKeyValueChangeSetResult } from "./KeyValueChangeSet";
 export class DataStore {
     private readonly mainStore: Map<string, Map<string, any>>;
 
-    constructor() {
-        this.mainStore = new Map;
+    constructor(from?: Map<string, Map<string, any>>) {
+        this.mainStore = from ? new Map(from) : new Map;
     }
 
     public SaveData(data: IKeyValueChangeSetResult) {
@@ -39,5 +39,9 @@ export class DataStore {
 
     public ToString() {
         return JSON.stringify(this.ToObject());
+    }
+
+    public GetMap() {
+        return this.mainStore;
     }
 }

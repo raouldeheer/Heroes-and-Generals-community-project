@@ -2,6 +2,8 @@ import BufferCursor from "./buffercursor";
 import { createCanvas, loadImage } from 'canvas';
 import fs from "fs";
 import { DataStore } from "./datastore";
+import { Canvas } from "canvas";
+import { pipeline } from "stream/promises";
 
 export function bytesToString(source: Buffer | BufferCursor): string {
     const buf = source instanceof BufferCursor ? source.buffer : source;
@@ -60,42 +62,32 @@ export function toCanvas(dataStore: DataStore) {
 }
 
 
-export function toCanvasColored(dataStore: DataStore) {
-    interface battlefieldstatusT {
-        id: string;
-        warid: string;
-        battlefieldid: string;
-        factionid: string;
-    }
+export async function toCanvasColored(dataStore: DataStore, imageName = "./warmap.png") {
     const colors = ["#f00", "#0f0", "#00f", "#000", "#fff", "#888"];
     const factions: string[] = [];
-    const dbObj = dataStore.ToObject();
-    const battlefieldstatus: { [key: string]: battlefieldstatusT; } = dbObj.battlefieldstatus;
-    const battlefieldstatuses: battlefieldstatusT[] = [];
+    const battlefieldstatus = dataStore.ToObject().battlefieldstatus;
 
-    for (const infokey in battlefieldstatus)
-        if (Object.prototype.hasOwnProperty.call(battlefieldstatus, infokey))
-            battlefieldstatuses.push(battlefieldstatus[infokey]);
+    const canvas = createCanvas(2048, 1440);
+    const context = canvas.getContext("2d");
 
-    const width = 2048;
-    const height = 1440;
+    const image = await loadImage("./background.png");
+    // Draw background
+    context.drawImage(image, 0, 0, image.width, image.height);
 
-    const canvas = createCanvas(width, height);
-    const context = canvas.getContext('2d');
+    // Draw battles
+    for (const infokey in battlefieldstatus) {
+        if (battlefieldstatus.hasOwnProperty(infokey)) {
+            const element = battlefieldstatus[infokey];
+            if (!factions.includes(element.factionid)) factions.push(element.factionid);
+            context.fillStyle = colors[factions.indexOf(element.factionid)];
+            const battlefield = dataStore.GetData("battlefield", element.battlefieldid);
+            context.fillRect(
+                (battlefield.posx / 8) - 5,
+                (battlefield.posy / 8) - 5,
+                10, 10);
+        }
+    }
 
-    loadImage('./background.png').then(image => {
-        // Draw background
-        context.drawImage(image, 0, 0, image.width, image.height);
-
-        // Draw battles
-        battlefieldstatuses.forEach(e => {
-            if (!factions.includes(e.factionid)) factions.push(e.factionid);
-            context.fillStyle = colors[factions.indexOf(e.factionid)];
-            const battlefield = dataStore.GetData("battlefield", e.battlefieldid);
-            context.fillRect(battlefield.posx / 8, battlefield.posy / 8, 10, 10)
-        });
-
-        // Save output to file
-        fs.writeFileSync('./warmap.png', canvas.toBuffer('image/png'));
-    });
+    // Save output to file
+    await pipeline(canvas.createJPEGStream(), fs.createWriteStream(imageName));
 }

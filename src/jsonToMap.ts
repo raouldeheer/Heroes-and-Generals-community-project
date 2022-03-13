@@ -1,27 +1,33 @@
 import mylas from "mylas";
 import { DataStore } from "./datastore";
 import { toCanvasColored } from "./utils";
-import fs from "fs";
 import BufferCursor from "./buffercursor";
 import { keys } from "./types";
 import { ProtoToString } from "./proto";
+import { readdir, readFile } from "fs/promises";
 
 
-const data = mylas.json.loadS("./total.jsonc");
+async function jsonToMap(filename: string, imageName: string, dataStore: DataStore) {
+    const data = await mylas.json.load(filename);
 
-const dataStore = new DataStore;
+    for (const key in data) if (data.hasOwnProperty(key))
+        for (const key2 in data[key]) if (data[key].hasOwnProperty(key2))
+            dataStore.SaveData({ set: [{ key, value: data[key][key2] }] });
 
-(() => {
-    const tempFile = fs.readFileSync("./captures/battlefield");
+    await toCanvasColored(dataStore, imageName);
+    console.log(`saved: ${imageName}`);
+}
 
+(async () => {
+    const tempFile = await readFile("./captures/battlefield");
+    const dataStore = new DataStore;
     const element = new BufferCursor(tempFile);
 
-    const size = element.readUInt32LE() - 4;
+    element.move(4);
     const typeLength = element.readUInt32LE() - 4;
     const typeText = element.slice(typeLength).toString("ascii");
 
     const DataBuf = element.slice();
-    const DataLen = DataBuf.readUInt32LE() - 4;
     DataBuf.seek(0);
 
     let result;
@@ -40,23 +46,14 @@ const dataStore = new DataStore;
     } else {
         console.log(typeText);
     }
+    console.log("Loaded template");
+    for (const iterator of await readdir("./saves")) {
+        await jsonToMap(
+            `./saves/${iterator}`,
+            `./savesMap/${iterator.replace("jsonc", "jpg")}`,
+            new DataStore(dataStore.GetMap()));
+    }
+    console.log("Done");
 })();
 
-for (const key in data) {
-    if (Object.prototype.hasOwnProperty.call(data, key)) {
-        const element = data[key];
-        for (const key2 in element) {
-            if (Object.prototype.hasOwnProperty.call(element, key2)) {
-                const element2 = element[key2];
-                dataStore.SaveData({
-                    set: [
-                        { key, value: element2 }
-                    ]
-                });
-            }
-        }
-    }
-}
-
-toCanvasColored(dataStore);
 

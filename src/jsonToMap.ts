@@ -5,7 +5,7 @@ import BufferCursor from "./buffercursor";
 import { keys } from "./types";
 import { ProtoToString } from "./proto";
 import { readdir, readFile } from "fs/promises";
-import { existsSync, fstat, mkdirSync } from "fs";
+import { existsSync, mkdirSync } from "fs";
 
 
 async function jsonToMap(filename: string, imageName: string, dataStore: DataStore) {

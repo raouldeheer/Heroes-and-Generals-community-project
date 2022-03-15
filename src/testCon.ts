@@ -2,39 +2,55 @@ import { Client } from "./client";
 import { DataStore } from "./datastore";
 import { ip, port } from "./env";
 import mylas from "mylas";
-
-const sleep = (delay: number) => new Promise(res => setTimeout(res, delay));
+import Long from "long";
+import { setTimeout } from "timers/promises";
 
 const dataStore = new DataStore;
 const cl = new Client(ip, port);
 cl.once("loggedin", async () => {
-    // cl.sendPacketToBuffer("subscribecommandnodeview");
-    // await sleep(1000);
-    // cl.sendPacketToBuffer("SubscribeHostingCenterInfoView");
-    // await sleep(1000);
-    // cl.sendPacketToBuffer("subscribebattlesview");
-    // await sleep(1000);
+    cl.sendPacketToBuffer("subscribeplayerview");
     cl.sendPacketToBuffer("subscribewarmaplightview");
-    await sleep(2000);
 
-    setInterval(() => {
-        const date = (new Date).toISOString().replace(/[-:.]/g, "");
+    await setTimeout(2000);
 
-        const battlefieldstatus = dataStore.ToObject().battlefieldstatus;
-        const aBattleField = battlefieldstatus[Object.keys(battlefieldstatus)[0]];
-        if (aBattleField?.warid) {
-            console.log(`saving to: ./saves/${aBattleField.warid}/${date}.jsonc`);
-            mylas.json.saveS(`./saves/${aBattleField.warid}/${date}.jsonc`, dataStore.ToObject());
-        }
-    }, 30000);
-});
-cl.on("message", (typetext, data) => {
+    setInterval(saveMapNow, 30000);
+}).on("message", (typetext, data) => {
     if (typetext == "KeyValueChangeSet") {
+        if (data?.set) {
+            for (const iterator of data.set) {
+                if (iterator.key == "war") {
+                    const value = iterator.value;
+                    if (value.sequelwarid !== "0") {
+                        saveMapNow();
+                        console.log(`${value.id} ended, switching to: ${value.sequelwarid}`);
+                        dataStore.ResetData("battlefieldstatus");
+                        cl.sendPacketToBuffer("join_war_request", {
+                            warid: Long.fromString(value.sequelwarid),
+                            factionid: Long.ZERO,
+                            playedFirstBlood: 0,
+                        });
+                    }
+                }
+            }
+        }
+
         dataStore.SaveData(data);
     }
-
-});
-cl.on("closed", () => {
+}).on("closed", () => {
     console.log("Socket closed!");
     process.exit(1);
 });
+
+function saveMapNow() {
+    const date = (new Date).toISOString().replace(/[-:.]/g, "");
+
+    const battlefieldstatus = dataStore.ToObject().battlefieldstatus;
+    if (!battlefieldstatus) return
+    const aBattleField = battlefieldstatus[Object.keys(battlefieldstatus)[0]];
+    if (aBattleField?.warid) {
+        console.log(`saving to: ./saves/${aBattleField.warid}/${date}.jsonc`);
+        mylas.json.saveS(`./saves/${aBattleField.warid}/${date}.jsonc`, {
+            battlefieldstatus: dataStore.ToObject().battlefieldstatus,
+        });
+    }
+}

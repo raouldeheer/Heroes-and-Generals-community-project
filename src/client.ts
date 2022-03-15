@@ -6,6 +6,7 @@ import { keys } from "./types";
 import { password } from "./env";
 import { ProtoToString } from "./proto";
 import { gunzipSync } from "zlib";
+import { appendFileSync, writeFileSync } from "fs";
 
 export class Client extends EventEmitter {
     con: net.Socket;
@@ -42,6 +43,7 @@ export class Client extends EventEmitter {
         });
 
         this.con.on("connect", () => {
+            writeFileSync("./testConLog.txt", "", "utf8");
             // connected to server with tcp
             this.sendPacketToBuffer("QueryServerInfo");
         });
@@ -183,5 +185,6 @@ export class Client extends EventEmitter {
             : midString
             }`;
         console.log(outputStr);
+        appendFileSync("./testConLog.txt", outputStr+"\n", "utf8");
     }
 }

@@ -78,6 +78,7 @@ typings/
 dist
 captures
 total.txt
+testConLog.txt
 total.jsonc
 infos.jsonc
 src/env.ts

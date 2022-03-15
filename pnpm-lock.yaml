@@ -3,12 +3,14 @@ lockfileVersion: 5.3
 specifiers:
   '@types/node': ^17.0.5
   canvas: ^2.9.0
+  long: ^5.2.0
   mylas: ^2.1.9
   nodemon: ^2.0.15
   protobufjs: ^6.11.2
 
 dependencies:
   canvas: 2.9.0
+  long: 5.2.0
   mylas: 2.1.9
   protobufjs: 6.11.2
 
@@ -625,6 +627,10 @@ packages:
 
   /long/4.0.0:
     resolution: {integrity: sha512-XsP+KhQif4bjX1kbuSiySJFNAehNxgLb6hPRGJ9QsUr8ajHkuXGdrHmFUTUUXhDwVX2R5bY4JNZEwbUiMhV+MA==}
+    dev: false
+
+  /long/5.2.0:
+    resolution: {integrity: sha512-9RTUNjK60eJbx3uz+TEGF7fUr29ZDxR5QzXcyDpeSfeH28S9ycINflOgOlppit5U+4kNTe83KQnMEerw7GmE8w==}
     dev: false
 
   /lowercase-keys/1.0.1:

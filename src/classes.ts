@@ -21,8 +21,8 @@ export class query_war_catalogue_request {
     static parse = (buf: BufferCursor) =>
         BufToDecodedProto(this.proto, buf.buffer.slice(8));
     static toBuffer = (payload: {
-        includeWarId?: Long,
-    }): Buffer => ProtoToBuf(this.proto, payload);
+        includeWarId?: Long | number,
+    } = { includeWarId: 0 }): Buffer => ProtoToBuf(this.proto, payload);
 }
 
 export class query_war_catalogue_response {
@@ -229,6 +229,11 @@ export class join_war_request {
     static proto = Protos.lookupType("HnG_States.join_war_request");
     static parse = (buf: BufferCursor) =>
         BufToDecodedProto(this.proto, buf.buffer.slice(8));
+    static toBuffer = (payload: {
+        warid: Long,
+        factionid: Long,
+        playedFirstBlood: number,
+    }): Buffer => ProtoToBuf(this.proto, payload);
 }
 
 export class join_war_response {

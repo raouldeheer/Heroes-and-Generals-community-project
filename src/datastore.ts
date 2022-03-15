@@ -25,6 +25,10 @@ export class DataStore {
         });
     }
 
+    public ResetData(itemStoreName: string) {
+        this.mainStore.set(itemStoreName, new Map);
+    }
+
     public GetData = (itemStoreName: string, id: string) =>
         this.mainStore.get(itemStoreName)?.get?.(id);
 

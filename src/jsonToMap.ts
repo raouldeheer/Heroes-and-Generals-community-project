@@ -4,7 +4,7 @@ import { toCanvasColored } from "./utils";
 import BufferCursor from "./buffercursor";
 import { keys } from "./types";
 import { ProtoToString } from "./proto";
-import { readdir, readFile } from "fs/promises";
+import { readdir } from "fs/promises";
 import { existsSync, mkdirSync } from "fs";
 
 
@@ -20,7 +20,7 @@ async function jsonToMap(filename: string, imageName: string, dataStore: DataSto
 }
 
 (async () => {
-    const tempFile = await readFile("./captures/battlefield");
+    const tempFile = await mylas.buf.load("./captures/battlefield");
     const dataStore = new DataStore;
     const element = new BufferCursor(tempFile);
 

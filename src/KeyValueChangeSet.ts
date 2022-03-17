@@ -1,6 +1,6 @@
 import BufferCursor from "./buffercursor";
 import { BufToDecodedProto } from "./proto";
-import { KeyValueChangeKey, KeyValueOp, SetProtoParsers } from "./protoparsers/protoTypes";
+import { KeyValueChangeKey, KeyValueOp, KeyProtoSet } from "./protolinking/KeyValueSet";
 import { bytesToString, parseGroups } from "./utils";
 
 export type KeyValue = { key: string, value: any; };
@@ -20,8 +20,8 @@ export class KeyValueChangeSet {
                 for (let i = 0; i < groups.length; i += 2) {
                     const key = bytesToString(groups[i]);
                     const value = groups[i + 1];
-                    if (SetProtoParsers.has(key)) {
-                        const proto = SetProtoParsers.get(key)!;
+                    if (KeyProtoSet.has(key)) {
+                        const proto = KeyProtoSet.get(key)!;
                         const decoded = BufToDecodedProto(proto, value);
                         returnObj.set.push({
                             key,

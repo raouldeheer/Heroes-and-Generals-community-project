@@ -62,7 +62,7 @@ export const enum KeyValueChangeKey {
 
 const Protos = protobuf.loadSync("./src/protos/All.proto");
 
-export const SetProtoParsers = new Map<string, protobuf.Type>([
+export const KeyProtoSet = new Map<string, protobuf.Type>([
     [KeyValueChangeKey.HostingCenterInfo, Protos.lookupType("HnG_States.HostingCenterInfo")],
     [KeyValueChangeKey.CommandNodeDefinition, Protos.lookupType("HnG_States.CommandNodeDefinition")],
     [KeyValueChangeKey.CommandNodeWarInstance, Protos.lookupType("HnG_States.CommandNodeWarInstance")],

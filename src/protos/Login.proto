@@ -2,7 +2,7 @@ package Login;
 syntax = "proto3";
 
 import "Common.proto";
-import "Player.proto";
+import "HnG_States.proto";
 
 enum Result {
     ZERO = 0;
@@ -46,7 +46,7 @@ message login2_result {
     required Common.Response response = 3;
     optional string banExpires = 4;
     optional string banReason = 5;
-    required Player.player currentplayer = 6;
+    required HnG_States.player currentplayer = 6;
 }
 
 message keyValue {

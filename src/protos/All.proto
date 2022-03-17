@@ -4,7 +4,6 @@ import "HnG_States.proto";
 import "statrequests.proto";
 import "netsysmessages.proto";
 import "Common.proto";
-import "Player.proto";
 import "Login.proto";
 import "ServerInfo.proto";
 import "MissionDetails.proto";

@@ -45,7 +45,7 @@ export class Client extends EventEmitter {
         this.con.on("connect", () => {
             writeFileSync("./testConLog.txt", "", "utf8");
             // connected to server with tcp
-            this.sendPacketToBuffer("QueryServerInfo");
+            this.sendPacket("QueryServerInfo");
         });
     }
 
@@ -69,10 +69,12 @@ export class Client extends EventEmitter {
         return result.buffer;
     }
 
-    public sendPacketToBuffer(className: string, payload?: any) {
+    public sendPacket(className: string, payload?: any, callback?: () => void | Promise<void>) {
         const buffer = keys.get(className)?.toBuffer?.(payload);
         if (!buffer) return false;
-        this.con.write(this.packer(className, buffer));
+        const packed = this.packer(className, buffer);
+        if (callback) this.once(`id:${this.idNumber}`, callback);
+        this.con.write(packed);
         return true;
     }
 
@@ -140,32 +142,33 @@ export class Client extends EventEmitter {
                     }
                     break;
                 case "QueryServerInfoResponse":
-                    this.sendPacketToBuffer("QueryBannedMachineRequest");
+                    this.sendPacket("QueryBannedMachineRequest");
                     break;
                 case "QueryBannedMachineResponse":
                     if (result.isBanned) {
                         this.close();
                         console.error("Player banned");
                     } else {
-                        this.sendPacketToBuffer("StartLogin");
+                        this.sendPacket("StartLogin");
                     }
                     break;
                 case "LoginQueueUpdate":
                     console.info(`Queue: ${result.positionInQueue}`);
                     if (result.mayProceed) {
-                        this.sendPacketToBuffer("login2_begin");
+                        this.sendPacket("login2_begin");
                     }
                     break;
                 case "login2_challenge":
-                    this.sendPacketToBuffer("login2_response", this.login(password, result));
+                    this.sendPacket("login2_response", this.login(password, result));
                     break;
                 case "login2_result":
                     this.emit("loggedin");
                     break;
                 case "keepaliverequest":
-                    this.sendPacketToBuffer("keepalive", { value: 8374 });
+                    this.sendPacket("keepalive", { value: 8374 });
                     break;
                 default:
+                    this.emit(`id:${id}`, result);
                     this.emit(typeText, result);
                     this.emit("message", typeText, result);
                     break;
@@ -185,6 +188,6 @@ export class Client extends EventEmitter {
             : midString
             }`;
         console.log(outputStr);
-        appendFileSync("./testConLog.txt", outputStr+"\n", "utf8");
+        appendFileSync("./testConLog.txt", outputStr + "\n", "utf8");
     }
 }

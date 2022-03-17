@@ -2,7 +2,6 @@ package MissionDetails;
 syntax = "proto3";
 
 import "Common.proto";
-import "ServerInfo.proto";
 
 message GetMissionDetailsRequest {
     required int64 missionId = 1;

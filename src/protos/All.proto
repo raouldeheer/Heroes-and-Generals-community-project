@@ -5,4 +5,3 @@ import "statrequests.proto";
 import "netsysmessages.proto";
 import "Common.proto";
 import "Login.proto";
-import "MissionDetails.proto";

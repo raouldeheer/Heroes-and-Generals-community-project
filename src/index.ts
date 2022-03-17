@@ -2,11 +2,11 @@ import fs from "fs";
 import BufferCursor from "./buffercursor";
 import { ProtoToString } from "./proto";
 import { keys } from "./types";
-import { toCanvasColored, bytesToString, toCanvas } from "./utils";
+import { bytesToString } from "./utils";
 import { gunzipSync } from "zlib";
 import { DataStore } from "./datastore";
 
-const data = fs.readFileSync("./captures/capturetext9.txt", "utf-8");
+const data = fs.readFileSync("./captures/capturetext11.txt", "utf-8");
 
 /**
  * regex for finding client to server packets:
@@ -127,52 +127,3 @@ bufs.forEach(parse);
 console.log(loseEnd);
 fs.writeFileSync("total.txt", totalString, "utf-8");
 fs.writeFileSync("total.jsonc", dataStore.ToString(), "utf-8");
-
-(() => {
-    // let totalString = "";
-    const tempFile = fs.readFileSync("./captures/battlefield");
-
-    const element = new BufferCursor(tempFile);
-
-    const size = element.readUInt32LE() - 4;
-    const typeLength = element.readUInt32LE() - 4;
-    const typeText = element.slice(typeLength).toString("ascii");
-
-    const DataBuf = element.slice();
-    const DataLen = DataBuf.readUInt32LE() - 4;
-    DataBuf.seek(0);
-
-    let result;
-    if (keys.has(typeText)) {
-        try {
-            // Find class to parse packet with.
-            const klas = keys.get(typeText)!;
-            result = klas.parse(DataBuf);
-            if (typeof result == "function" && typeText == "zipchunk") {
-                // @ts-ignore
-                const gunzipped = new BufferCursor(gunzipSync(result().data));
-                parse(gunzipped);
-            } else if (typeof result == "object") {
-                if (typeText == "KeyValueChangeSet") dataStore.SaveData(result);
-                result = ProtoToString(result);
-            }
-        } catch (error) {
-            console.error(error);
-        }
-    } else {
-        console.log(typeText);
-    }
-
-    // Make output string.
-    // const outputStr = `${typeText.padEnd(35)} ${result
-    //     ? result // Print bytes when class didn't give any results.
-    //     : `${DataLen.toString().padEnd(5)} ${bytesToString(element).substr(20 + typeLength, 50)}`
-    // }`;
-    // console.log(outputStr);
-    // totalString += `${outputStr}\n`;
-    // fs.writeFileSync("totaltemplate.txt", totalString, "utf-8");
-    // fs.writeFileSync("totaltemplate.jsonc", dataStore.ToString(), "utf-8");
-    // accesspointtemplatetoCanvas(dataStore);
-})();
-
-toCanvasColored(dataStore);

@@ -2,7 +2,6 @@ import BufferCursor from "./buffercursor";
 import { createCanvas, loadImage } from 'canvas';
 import fs from "fs";
 import { DataStore } from "./datastore";
-import { Canvas } from "canvas";
 import { pipeline } from "stream/promises";
 
 export function bytesToString(source: Buffer | BufferCursor): string {

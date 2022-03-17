@@ -18,6 +18,7 @@ const keys = new Map<String, packetClassParser>([
     ["login2_response", login.login2_response],
     ["login2_result", login.login2_result],
     ["subscribeplayerview", subs.DummyClass],
+    ["unsubscribeplayerview", subs.DummyClass],
     ["subscribecommandnodeview", subs.DummyClass],
     ["SubscribeHostingCenterInfoView", subs.DummyClass],
     ["subscribefriendview", subs.DummyClass],
@@ -86,7 +87,7 @@ const keys = new Map<String, packetClassParser>([
 
 export { keys };
 
-export const enum ResponseTypes {
+export const enum ResponseType {
     fail = 0,
     ok = 1,
     add_operation_fail = 2,

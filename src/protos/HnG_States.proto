@@ -2244,7 +2244,7 @@ repeated keyValue additionalArgs = 3;
 message login2_postlogin_result {
 required int64 sessionid = 1;
 required string platform = 2;
-required string deleteDate = 3;
+optional string deleteDate = 3;
 required Common.Response result = 4;
 }
 

@@ -6,13 +6,13 @@ import protobuf from "protobufjs";
 const Protos = protobuf.loadSync("./src/protos/All.proto");
 
 export class LoginQueueUpdate {
-    static proto = Protos.lookupType("Login.LoginQueueUpdate");
+    static proto = Protos.lookupType("HnG_States.LoginQueueUpdate");
     static parse = (buf: BufferCursor) =>
         BufToDecodedProto(this.proto, buf.buffer.slice(8));
 }
 
 export class login2_begin {
-    static proto = Protos.lookupType("Login.login2_begin");
+    static proto = Protos.lookupType("HnG_States.login2_begin");
     static parse = (buf: BufferCursor) =>
         BufToDecodedProto(this.proto, buf.buffer.slice(8));
     static toBuffer = (payload: {
@@ -29,13 +29,13 @@ export class login2_begin {
 }
 
 export class login2_challenge {
-    static proto = Protos.lookupType("Login.login2_challenge");
+    static proto = Protos.lookupType("HnG_States.login2_challenge");
     static parse = (buf: BufferCursor) =>
         BufToDecodedProto(this.proto, buf.buffer.slice(8));
 }
 
 export class login2_response {
-    static proto = Protos.lookupType("Login.login2_response");
+    static proto = Protos.lookupType("HnG_States.login2_response");
     static parse = (buf: BufferCursor) =>
         BufToDecodedProto(this.proto, buf.buffer.slice(8));
     static toBuffer = (payload: {
@@ -45,25 +45,25 @@ export class login2_response {
 }
 
 export class login2_result {
-    static proto = Protos.lookupType("Login.login2_result");
+    static proto = Protos.lookupType("HnG_States.login2_result");
     static parse = (buf: BufferCursor) =>
         BufToDecodedProto(this.proto, buf.buffer.slice(8));
 }
 
 export class login2_postlogin {
-    static proto = Protos.lookupType("Login.login2_postlogin");
+    static proto = Protos.lookupType("HnG_States.login2_postlogin");
     static parse = (buf: BufferCursor) =>
         BufToDecodedProto(this.proto, buf.buffer.slice(8));
 }
 
 export class login2_postlogin_result {
-    static proto = Protos.lookupType("Login.login2_postlogin_result");
+    static proto = Protos.lookupType("HnG_States.login2_postlogin_result");
     static parse = (buf: BufferCursor) =>
         BufToDecodedProto(this.proto, buf.buffer.slice(8));
 }
 
 export class RedeemDailyLoginRewardRequest {
-    static proto = Protos.lookupType("Login.RedeemDailyLoginRewardRequest");
+    static proto = Protos.lookupType("HnG_States.RedeemDailyLoginRewardRequest");
     static parse = (buf: BufferCursor) =>
         BufToDecodedProto(this.proto, buf.buffer.slice(8));
     static toBuffer = (payload: {
@@ -72,13 +72,13 @@ export class RedeemDailyLoginRewardRequest {
 }
 
 export class RedeemDailyLoginRewardResponse {
-    static proto = Protos.lookupType("Login.RedeemDailyLoginRewardResponse");
+    static proto = Protos.lookupType("HnG_States.RedeemDailyLoginRewardResponse");
     static parse = (buf: BufferCursor) =>
         BufToDecodedProto(this.proto, buf.buffer.slice(8));
 }
 
 export class QueryBannedMachineRequest {
-    static proto = Protos.lookupType("Login.QueryBannedMachineRequest");
+    static proto = Protos.lookupType("HnG_States.QueryBannedMachineRequest");
     static parse = (buf: BufferCursor) =>
         BufToDecodedProto(this.proto, buf.buffer.slice(8));
     static toBuffer = (payload: {
@@ -91,7 +91,7 @@ export class QueryBannedMachineRequest {
 }
 
 export class QueryBannedMachineResponse {
-    static proto = Protos.lookupType("Login.QueryBannedMachineResponse");
+    static proto = Protos.lookupType("HnG_States.QueryBannedMachineResponse");
     static parse = (buf: BufferCursor) =>
         BufToDecodedProto(this.proto, buf.buffer.slice(8));
 }

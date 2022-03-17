@@ -2,7 +2,7 @@ import { EventEmitter } from "events";
 import net from "net";
 import crypto from 'crypto';
 import BufferCursor from "./buffercursor";
-import { keys } from "./types";
+import { keyToClass } from "./protolinking/classKeys";
 import { password } from "./env";
 import { ProtoToString } from "./proto";
 import { gunzipSync } from "zlib";
@@ -70,7 +70,7 @@ export class Client extends EventEmitter {
     }
 
     public sendPacket(className: string, payload?: any, callback?: () => void | Promise<void>) {
-        const buffer = keys.get(className)?.toBuffer?.(payload);
+        const buffer = keyToClass.get(className)?.toBuffer?.(payload);
         if (!buffer) return false;
         const packed = this.packer(className, buffer);
         if (callback) this.once(`id:${this.idNumber}`, callback);
@@ -130,9 +130,9 @@ export class Client extends EventEmitter {
         DataBuf.seek(0);
 
         let result;
-        if (keys.has(typeText)) {
+        if (keyToClass.has(typeText)) {
             // Find class to parse packet with.
-            const klas = keys.get(typeText)!;
+            const klas = keyToClass.get(typeText)!;
             result = klas.parse(DataBuf) as any;
             switch (typeText) {
                 case "zipchunk":

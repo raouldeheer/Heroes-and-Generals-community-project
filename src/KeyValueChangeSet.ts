@@ -1,6 +1,6 @@
 import BufferCursor from "./buffercursor";
 import { BufToDecodedProto } from "./proto";
-import { KeyValueChangeKey, KeyValueOp, KeyProtoSet } from "./protolinking/KeyValueSet";
+import { KeyValueChangeKey, KeyValueOp, KeyProtoSet } from "./protolinking/keyValueSet";
 import { bytesToString, parseGroups } from "./utils";
 
 export type KeyValue = { key: string, value: any; };

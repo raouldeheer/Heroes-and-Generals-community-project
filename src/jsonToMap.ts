@@ -2,7 +2,7 @@ import mylas from "mylas";
 import { DataStore } from "./datastore";
 import { toCanvasColored } from "./utils";
 import BufferCursor from "./buffercursor";
-import { keys } from "./types";
+import { keyToClass } from "./protolinking/classKeys";
 import { ProtoToString } from "./proto";
 import { readdir } from "fs/promises";
 import { existsSync, mkdirSync } from "fs";
@@ -32,10 +32,10 @@ async function jsonToMap(filename: string, imageName: string, dataStore: DataSto
     DataBuf.seek(0);
 
     let result;
-    if (keys.has(typeText)) {
+    if (keyToClass.has(typeText)) {
         try {
             // Find class to parse packet with.
-            const klas = keys.get(typeText)!;
+            const klas = keyToClass.get(typeText)!;
             result = klas.parse(DataBuf);
             if (typeof result == "object") {
                 if (typeText == "KeyValueChangeSet") dataStore.SaveData(result);
@@ -48,7 +48,7 @@ async function jsonToMap(filename: string, imageName: string, dataStore: DataSto
         console.log(typeText);
     }
     console.log("Loaded template");
-    const warId = "4399881207183542806";
+    const warId = "1671700699470235387";
     if (!existsSync(`./saves/${warId}`)) mkdirSync(`./saves/${warId}`);
     if (!existsSync(`./savesMap/${warId}`)) mkdirSync(`./savesMap/${warId}`);
     for (const iterator of await readdir(`./saves/${warId}`)) {

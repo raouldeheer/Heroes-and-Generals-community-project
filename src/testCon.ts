@@ -4,7 +4,7 @@ import { ip, port } from "./env";
 import mylas from "mylas";
 import Long from "long";
 import { setTimeout } from "timers/promises";
-import { ResponseType } from "./types";
+import { ResponseType } from "./protolinking/classKeys";
 
 const dataStore = new DataStore;
 const cl = new Client(ip, port);

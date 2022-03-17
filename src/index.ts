@@ -1,7 +1,7 @@
 import fs from "fs";
 import BufferCursor from "./buffercursor";
 import { ProtoToString } from "./proto";
-import { keys } from "./types";
+import { keyToClass } from "./protolinking/classKeys";
 import { bytesToString } from "./utils";
 import { gunzipSync } from "zlib";
 import { DataStore } from "./datastore";
@@ -87,10 +87,10 @@ const parse = (element: BufferCursor) => {
     DataBuf.seek(0);
 
     let result;
-    if (keys.has(typeText)) {
+    if (keyToClass.has(typeText)) {
         try {
             // Find class to parse packet with.
-            const klas = keys.get(typeText)!;
+            const klas = keyToClass.get(typeText)!;
             result = klas.parse(DataBuf);
             if (typeof result == "function" && typeText == "zipchunk") {
                 // @ts-ignore

@@ -1,15 +1,15 @@
-import * as all from "./classes";
-import * as login from "./LoginClasses";
-import { DummyClass, unsubscriberesponse } from "./SubscriptionClasses";
-import { KeyValueChangeSet } from "./KeyValueChangeSet";
-import BufferCursor from "./buffercursor";
+import * as all from "../classes";
+import * as login from "../LoginClasses";
+import { DummyClass, unsubscriberesponse } from "../subscriptionClasses";
+import { KeyValueChangeSet } from "../keyValueChangeSet";
+import BufferCursor from "../buffercursor";
 
 export interface packetClassParser {
     parse: (buf: BufferCursor) => void | object | Function;
     toBuffer?: (payload?: any) => Buffer;
 }
 
-const keys = new Map<String, packetClassParser>([
+const keyToClass = new Map<String, packetClassParser>([
     ["StartLogin", DummyClass],
     ["zipchunk", all.zipchunk],
     ["login2_begin", login.login2_begin],
@@ -85,7 +85,7 @@ const keys = new Map<String, packetClassParser>([
     ["join_war_request", all.join_war_request],
 ]);
 
-export { keys };
+export { keyToClass };
 
 export const enum ResponseType {
     fail = 0,

@@ -7,4 +7,3 @@ import "Common.proto";
 import "Login.proto";
 import "ServerInfo.proto";
 import "MissionDetails.proto";
-import "Stats.proto";

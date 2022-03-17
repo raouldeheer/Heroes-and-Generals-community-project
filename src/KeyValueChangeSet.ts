@@ -68,9 +68,4 @@ export class KeyValueChangeSet {
         }
         return returnObj;
     }
-
-    private static parseToHex(type: KeyValueChangeKey, value: Buffer) {
-        return type.toString() + ` - ` + value.toString("hex");
-    }
-
 }

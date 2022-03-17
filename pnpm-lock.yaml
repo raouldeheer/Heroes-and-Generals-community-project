@@ -7,12 +7,14 @@ specifiers:
   mylas: ^2.1.9
   nodemon: ^2.0.15
   protobufjs: ^6.11.2
+  tslib: ^2.3.1
 
 dependencies:
   canvas: 2.9.0
   long: 5.2.0
   mylas: 2.1.9
   protobufjs: 6.11.2
+  tslib: 2.3.1
 
 devDependencies:
   '@types/node': 17.0.18
@@ -1025,6 +1027,10 @@ packages:
 
   /tr46/0.0.3:
     resolution: {integrity: sha1-gYT9NH2snNwYWZLzpmIuFLnZq2o=}
+    dev: false
+
+  /tslib/2.3.1:
+    resolution: {integrity: sha512-77EbyPPpMz+FRFRuAFlWMtmgUWGe9UOG2Z25NqCwiIjRhOf5iKGuzSe5P2w1laq+FkRy4p+PCuVkJSGkzTEKVw==}
     dev: false
 
   /type-fest/0.20.2:

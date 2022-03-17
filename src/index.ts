@@ -122,8 +122,11 @@ const parse = (element: BufferCursor) => {
         console.log(`${Number(plen)} === ${element.length}`);
     }
 };
-
+const t1 = Date.now();
 bufs.forEach(parse);
+const t2 = Date.now();
+console.log(`Time: ${t2 - t1}`);
+
 console.log(loseEnd);
 fs.writeFileSync("total.txt", totalString, "utf-8");
 fs.writeFileSync("total.jsonc", dataStore.ToString(), "utf-8");

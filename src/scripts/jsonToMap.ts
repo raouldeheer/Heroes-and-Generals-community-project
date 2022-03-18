@@ -1,9 +1,9 @@
 import mylas from "mylas";
-import { DataStore } from "./datastore";
-import { toCanvasColored } from "./utils";
-import BufferCursor from "./buffercursor";
-import { keyToClass } from "./protolinking/classKeys";
-import { ProtoToString } from "./proto";
+import { DataStore } from "../datastore";
+import { toCanvasColored } from "../utils";
+import BufferCursor from "../buffercursor";
+import { keyToClass } from "../protolinking/classKeys";
+import { ProtoToString } from "../proto";
 import { readdir } from "fs/promises";
 import { existsSync, mkdirSync } from "fs";
 

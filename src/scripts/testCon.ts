@@ -1,10 +1,10 @@
-import { Client } from "./client";
-import { DataStore } from "./datastore";
-import { ip, port } from "./env";
+import { Client } from "../client";
+import { DataStore } from "../datastore";
+import { ip, port } from "../env";
 import mylas from "mylas";
 import Long from "long";
 import { setTimeout } from "timers/promises";
-import { ResponseType } from "./protolinking/classKeys";
+import { ResponseType } from "../protolinking/classKeys";
 
 const dataStore = new DataStore;
 const cl = new Client(ip, port);

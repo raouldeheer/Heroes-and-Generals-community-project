@@ -7,8 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev:build": "tsc -w",
     "dev:start": "nodemon dist/index.js",
-    "testcon": "node dist/testCon.js",
-    "jsonToMap": "node dist/jsonToMap.js"
+    "testcon": "node dist/scripts/testCon.js",
+    "jsonToMap": "node dist/scripts/jsonToMap.js"
   },
   "repository": {
     "type": "git",

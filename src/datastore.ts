@@ -1,4 +1,4 @@
-import { IKeyValueChangeSetResult } from "./keyValueChangeSet";
+import { IKeyValueChangeSetResult } from "./protoclasses/keyValueChangeSet";
 
 export class DataStore {
     private readonly mainStore: Map<string, Map<string, any>>;

@@ -1,7 +1,7 @@
-import * as all from "../classes";
-import * as login from "../LoginClasses";
-import { DummyClass, unsubscriberesponse } from "../subscriptionClasses";
-import { KeyValueChangeSet } from "../keyValueChangeSet";
+import * as all from "../protoclasses/classes";
+import * as login from "../protoclasses/LoginClasses";
+import { DummyClass, unsubscriberesponse } from "../protoclasses/subscriptionClasses";
+import { KeyValueChangeSet } from "../protoclasses/keyValueChangeSet";
 import BufferCursor from "../buffercursor";
 
 export interface packetClassParser {

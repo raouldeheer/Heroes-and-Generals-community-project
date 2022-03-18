@@ -18,7 +18,7 @@ cl.once("loggedin", async () => {
     await setTimeout(2000);
 
     saveMapTimer = setInterval(saveMapNow, 30000);
-}).on("join_war_response", async (data: {msg: ResponseType, redirectSrv?: string }) => {
+}).on("join_war_response", async (data: { msg: ResponseType, redirectSrv?: string; }) => {
     if (data.msg === ResponseType.ok) {
         if (data.redirectSrv) {
             console.log(`redirectSrv detected: ${data.redirectSrv}`);
@@ -49,7 +49,7 @@ cl.once("loggedin", async () => {
                             warid: Long.fromString(value.sequelwarid),
                             factionid: Long.ZERO,
                             playedFirstBlood: 0,
-                        });                        
+                        });
                     }
                 }
             }

@@ -69,11 +69,11 @@ export class Client extends EventEmitter {
         return result.buffer;
     }
 
-    public sendPacket(className: string, payload?: any, callback?: () => void | Promise<void>) {
+    public sendPacket(className: string, payload?: any, callback?: (result: any) => void) {
         const buffer = keyToClass.get(className)?.toBuffer?.(payload);
         if (!buffer) return false;
         const packed = this.packer(className, buffer);
-        if (callback) this.once(`id:${this.idNumber}`, callback);
+        if (callback) this.once(`id${this.idNumber}`, callback);
         this.con.write(packed);
         return true;
     }
@@ -118,7 +118,7 @@ export class Client extends EventEmitter {
         const element = new BufferCursor(data);
         const plen = element.readUInt32LE().toString().padEnd(5);
         element.move(4);
-        const id = element.readUInt32LE().toString().padEnd(5);
+        const id = element.readUInt32LE();
 
         const size = element.readUInt32LE() - 4;
         const typeLength = element.readUInt32LE() - 4;
@@ -168,7 +168,7 @@ export class Client extends EventEmitter {
                     this.sendPacket("keepalive", { value: 8374 });
                     break;
                 default:
-                    this.emit(`id:${id}`, result);
+                    this.emit(`id${id}`, result);
                     this.emit(typeText, result);
                     this.emit("message", typeText, result);
                     break;
@@ -181,7 +181,7 @@ export class Client extends EventEmitter {
             console.log(`unsupported message: ${typeText}`);
         }
 
-        const startString = `${plen} ${id} ${typeText.padEnd(35)}`;
+        const startString = `${plen} ${id.toString().padEnd(5)} ${typeText.padEnd(35)}`;
         const midString = `${DataLen.toString().padEnd(5)}`;
         const outputStr = `${startString} ${result
             ? result // Print bytes when class didn't give any results.

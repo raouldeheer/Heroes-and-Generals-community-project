@@ -58,6 +58,8 @@ export const enum KeyValueChangeKey {
     PlayerMatchMaking = "PlayerMatchMaking",
     PlayerGoldOffer = "PlayerGoldOffer",
     PlayerMembershipItem = "PlayerMembershipItem",
+    accesspoint = "accesspoint",
+    supplyline = "supplyline",
 }
 
 const Protos = protobuf.loadSync("./src/protos/All.proto");
@@ -115,4 +117,6 @@ export const KeyProtoSet = new Map<string, protobuf.Type>([
     [KeyValueChangeKey.PlayerMatchMaking, Protos.lookupType("HnG_States.PlayerMatchMaking")],
     [KeyValueChangeKey.PlayerGoldOffer, Protos.lookupType("HnG_States.PlayerGoldOffer")],
     [KeyValueChangeKey.PlayerMembershipItem, Protos.lookupType("HnG_States.PlayerMembershipItem")],
+    [KeyValueChangeKey.accesspoint, Protos.lookupType("HnG_States.accesspoint")],
+    [KeyValueChangeKey.supplyline, Protos.lookupType("HnG_States.supplyline")],
 ]);

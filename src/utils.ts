@@ -44,46 +44,49 @@ export function toCanvas(dataStore: DataStore) {
     const height = 1440;
 
     const canvas = createCanvas(width, height);
-    const context = canvas.getContext('2d');
+    const context = canvas.getContext("2d");
 
-    loadImage('./background.png').then(image => {
+    loadImage("./background.png").then(image => {
         // Draw background
         context.drawImage(image, 0, 0, image.width, image.height);
 
         // Draw battles
-        context.fillStyle = '#fff';
+        context.fillStyle = "#fff";
         infos.forEach(e => context.fillRect(e.posX / 8, e.posY / 8, 10, 10));
 
         // Save output to file
-        fs.writeFileSync('./warmap.png', canvas.toBuffer('image/png'));
+        fs.writeFileSync("./warmap.png", canvas.toBuffer("image/png"));
     });
 
 }
 
-
 export async function toCanvasColored(dataStore: DataStore, imageName = "./warmap.png") {
     const colors = ["#f00", "#0f0", "#00f", "#000", "#fff", "#888"];
     const factions: string[] = [];
-    const battlefieldstatus = dataStore.ToObject().battlefieldstatus;
 
     const canvas = createCanvas(2048, 1440);
     const context = canvas.getContext("2d");
+    const dotSize = 2;
 
     const image = await loadImage("./background.png");
     // Draw background
     context.drawImage(image, 0, 0, image.width, image.height);
 
     // Draw battles
+    const battlefieldstatus = dataStore.ToObject().battlefieldstatus;
     for (const infokey in battlefieldstatus) {
         if (battlefieldstatus.hasOwnProperty(infokey)) {
             const element = battlefieldstatus[infokey];
             if (!factions.includes(element.factionid)) factions.push(element.factionid);
             context.fillStyle = colors[factions.indexOf(element.factionid)];
             const battlefield = dataStore.GetData("battlefield", element.battlefieldid);
-            context.fillRect(
-                (battlefield.posx / 8) - 5,
-                (battlefield.posy / 8) - 5,
-                10, 10);
+
+            context.beginPath();
+            context.arc(
+                (battlefield.posx / 8) - (dotSize / 2),
+                (battlefield.posy / 8) - (dotSize / 2),
+                dotSize, 0, 2 * Math.PI);
+            context.fill();
         }
     }
 

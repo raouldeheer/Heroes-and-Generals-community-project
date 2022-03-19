@@ -1,5 +1,5 @@
 import BufferCursor from "../buffercursor";
-import { BufToDecodedProto, ProtoToBuf } from "../proto";
+import { BufToDecodedProto, ProtoToBuf } from "./proto";
 import protobuf from "protobufjs";
 
 const Protos = protobuf.loadSync("./src/protos/All.proto");

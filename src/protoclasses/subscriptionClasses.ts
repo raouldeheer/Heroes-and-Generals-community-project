@@ -1,6 +1,6 @@
 import protobuf from "protobufjs";
 import BufferCursor from "../buffercursor";
-import { BufToDecodedProto, ProtoToBuf } from "../proto";
+import { BufToDecodedProto, ProtoToBuf } from "./proto";
 
 const Protos = protobuf.loadSync("./src/protos/All.proto");
 

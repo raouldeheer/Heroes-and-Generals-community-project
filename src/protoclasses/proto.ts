@@ -1,4 +1,4 @@
-import BufferCursor from "./buffercursor";
+import BufferCursor from "../buffercursor";
 
 export function ProtoToString(result: object, prefix = `${" ".repeat(16)}`): string {
     return "\n" +

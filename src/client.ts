@@ -4,7 +4,7 @@ import crypto from 'crypto';
 import BufferCursor from "./buffercursor";
 import { keyToClass } from "./protolinking/classKeys";
 import { password } from "./env";
-import { ProtoToString } from "./proto";
+import { ProtoToString } from "./protoclasses/proto";
 import { gunzipSync } from "zlib";
 import { appendFileSync, writeFileSync } from "fs";
 

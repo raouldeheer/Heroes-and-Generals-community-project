@@ -62,7 +62,7 @@ const dataStore = new DataStore;
 
 const parse = (element: BufferCursor) => {
     /************************************************************
-     * Name :   TotalLen|IDLen|ID|Size|Hlen|Header  |Data       *
+     * Name :   TotalLen|IDLen|ID|Size|HLen|Header  |Data       *
      * Bytes:   4       |4    |4 |4   |4   |Variable|Variable   *
      *                  |     |  |    |    |   15   |   10      *
      *                  |     8  |    |    19       |   10      *

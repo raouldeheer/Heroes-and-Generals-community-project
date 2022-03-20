@@ -8,6 +8,7 @@ import { ResponseType } from "../protolinking/classKeys";
 
 const dataStore = new DataStore;
 const cl = new Client(ip, port);
+const startTime = Date.now();
 let saveMapTimer: NodeJS.Timer;
 let warId: string | null = null;
 cl.once("loggedin", async () => {
@@ -57,6 +58,7 @@ cl.once("loggedin", async () => {
     }
 }).on("closed", () => {
     console.log("Socket closed!");
+    console.log(`After ${Date.now() - startTime}ms`);
     clearInterval(saveMapTimer);
     process.exit(1);
 });

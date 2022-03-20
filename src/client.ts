@@ -1,6 +1,6 @@
 import { EventEmitter } from "events";
-import net from "net";
-import crypto from 'crypto';
+import { Socket, createConnection } from "net";
+import { createHash, createHmac } from 'crypto';
 import BufferCursor from "./buffercursor";
 import { keyToClass } from "./protolinking/classKeys";
 import { password } from "./env";
@@ -9,13 +9,13 @@ import { gunzipSync } from "zlib";
 import { appendFileSync, writeFileSync } from "fs";
 
 export class Client extends EventEmitter {
-    con: net.Socket;
+    con: Socket;
     private idNumber;
     private rest: Buffer | undefined;
     constructor(host: string, port: number) {
         super();
         this.idNumber = 0;
-        this.con = net.createConnection({ host, port });
+        this.con = createConnection({ host, port });
 
         this.con.on("close", err => {
             console.log(`closed and ${err ? "had" : "no"} error`);
@@ -93,23 +93,18 @@ export class Client extends EventEmitter {
         const sessionid = Buffer.from(tempSessionid, "base64");
 
         const sha1concat = (d1: Buffer, d2: Buffer) =>
-            crypto.createHash('sha1').update(Buffer.concat([d1, d2])).digest();
+            createHash('sha1').update(Buffer.concat([d1, d2])).digest();
 
         const loginkeyhash = sha1concat(sha1concat(
             Buffer.from(password, "latin1"),
             Buffer.from(salt, "base64")
         ), sessionid);
 
-        const computeHMAC = (key: crypto.BinaryLike, data: crypto.BinaryLike) =>
-            crypto.createHmac('sha1', key).update(data).digest("base64");
-
-        const digest = computeHMAC(
-            Buffer.from(encryptedSessionkey, "base64")
-                .map((value, i) => value ^ loginkeyhash[i % loginkeyhash.length]),
-            sessionid);
-
         return {
-            digest,
+            digest: createHmac('sha1', Buffer.from(encryptedSessionkey, "base64")
+                .map((value, i) => value ^ loginkeyhash[i % loginkeyhash.length]))
+                .update(sessionid)
+                .digest("base64"),
             tempSessionid,
         };
     }

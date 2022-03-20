@@ -138,7 +138,7 @@ fs.writeFileSync("total.jsonc", dataStore.ToString(), "utf-8");
     await loadTemplate("accesspointtemplate");
     await loadTemplate("accesspoint");
     fs.writeFileSync("total.jsonc", dataStore.ToString(), "utf-8");
-    toCanvasColored(dataStore);
+    toCanvasColored(dataStore, dataStore);
 })();
 
 async function loadTemplate(name: string) {

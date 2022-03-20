@@ -10,12 +10,13 @@ import { existsSync, mkdirSync } from "fs";
 
 async function jsonToMap(filename: string, imageName: string, dataStore: DataStore) {
     const data = await mylas.json.load(filename);
+    const dataStore2 = new DataStore;
 
     for (const key in data) if (data.hasOwnProperty(key))
         for (const key2 in data[key]) if (data[key].hasOwnProperty(key2))
-            dataStore.SaveData({ set: [{ key, value: data[key][key2] }] });
-
-    await toCanvasColored(dataStore, imageName);
+            dataStore2.SaveData({ set: [{ key, value: data[key][key2] }] });
+    
+    await toCanvasColored(dataStore, dataStore2, imageName);
     console.log(`saved: ${imageName}`);
 }
 
@@ -63,7 +64,7 @@ async function jsonToMap(filename: string, imageName: string, dataStore: DataSto
         await jsonToMap(
             `./saves/${warId}/${iterator}`,
             `./savesMap/${warId}/${iterator.replace("jsonc", "jpg")}`,
-            new DataStore(dataStore.GetMap()));
+            dataStore);
     }
     console.log("Done");
 })();

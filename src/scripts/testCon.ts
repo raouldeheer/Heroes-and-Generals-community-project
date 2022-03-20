@@ -12,8 +12,7 @@ const startTime = Date.now();
 let saveMapTimer: NodeJS.Timer;
 let warId: string | null = null;
 cl.once("loggedin", async () => {
-    cl.sendPacket("subscribeplayerview");
-    cl.sendPacket("subscribewarmaplightview");
+    cl.sendPacket("subscribewarmapview");
     cl.sendPacket("query_war_catalogue_request");
 
     await setTimeout(2000);
@@ -24,11 +23,9 @@ cl.once("loggedin", async () => {
         if (data.redirectSrv) {
             console.log(`redirectSrv detected: ${data.redirectSrv}`);
         }
-        cl.sendPacket("unsubscribeplayerview");
-        cl.sendPacket("unsubscribewarmaplightview");
+        cl.sendPacket("unsubscribewarmapview");
         await setTimeout(1000);
-        cl.sendPacket("subscribeplayerview");
-        cl.sendPacket("subscribewarmaplightview");
+        cl.sendPacket("subscribewarmapview");
         cl.sendPacket("query_war_catalogue_request");
     } else {
         console.error(`ERROR: ${data}`);
@@ -67,8 +64,10 @@ function saveMapNow() {
     const date = (new Date).toISOString().replace(/[-:.]/g, "");
     if (warId) {
         console.log(`saving to: ./saves/${warId}/${date}.jsonc`);
+        const obj = dataStore.ToObject();
         mylas.json.saveS(`./saves/${warId}/${date}.jsonc`, {
-            battlefieldstatus: dataStore.ToObject().battlefieldstatus,
+            battlefieldstatus: obj.battlefieldstatus,
+            supplylinestatus: obj.supplylinestatus,
         });
     }
 }

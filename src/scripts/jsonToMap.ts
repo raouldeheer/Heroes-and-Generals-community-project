@@ -20,33 +20,41 @@ async function jsonToMap(filename: string, imageName: string, dataStore: DataSto
 }
 
 (async () => {
-    const tempFile = await mylas.buf.load("./captures/battlefield");
     const dataStore = new DataStore;
-    const element = new BufferCursor(tempFile);
 
-    element.move(4);
-    const typeLength = element.readUInt32LE() - 4;
-    const typeText = element.slice(typeLength).toString("ascii");
+    async function loadTemplate(name: string) {
+        const tempFile = await mylas.buf.load(`./captures/${name}`);
+        const element = new BufferCursor(tempFile);
 
-    const DataBuf = element.slice();
-    DataBuf.seek(0);
+        element.move(4);
+        const typeLength = element.readUInt32LE() - 4;
+        const typeText = element.slice(typeLength).toString("ascii");
 
-    let result;
-    if (keyToClass.has(typeText)) {
-        try {
-            // Find class to parse packet with.
-            const klas = keyToClass.get(typeText)!;
-            result = klas.parse(DataBuf);
-            if (typeof result == "object") {
-                if (typeText == "KeyValueChangeSet") dataStore.SaveData(result);
-                result = ProtoToString(result);
+        const DataBuf = element.slice();
+        DataBuf.seek(0);
+
+        let result;
+        if (keyToClass.has(typeText)) {
+            try {
+                // Find class to parse packet with.
+                const klas = keyToClass.get(typeText)!;
+                result = klas.parse(DataBuf);
+                if (typeof result == "object") {
+                    if (typeText == "KeyValueChangeSet")
+                        dataStore.SaveData(result);
+                    result = ProtoToString(result);
+                }
+            } catch (error) {
+                console.error(error);
             }
-        } catch (error) {
-            console.error(error);
+        } else {
+            console.log(typeText);
         }
-    } else {
-        console.log(typeText);
     }
+
+    await loadTemplate("battlefield");
+    await loadTemplate("supplyline");
+    await loadTemplate("accesspoint");
     console.log("Loaded template");
     const warId = "1671700699470235387";
     if (!existsSync(`./saves/${warId}`)) mkdirSync(`./saves/${warId}`);

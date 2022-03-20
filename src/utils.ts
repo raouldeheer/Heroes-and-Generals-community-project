@@ -89,7 +89,27 @@ export async function toCanvasColored(dataStore: DataStore, imageName = "./warma
             context.fill();
         }
     }
+    
+    // Draw battles
+    context.lineWidth = 1;
+    const supplylinestatus = dataStore.ToObject().supplylinestatus;
+    for (const infokey in supplylinestatus) {
+        if (supplylinestatus.hasOwnProperty(infokey)) {
+            const element = supplylinestatus[infokey];
+            context.strokeStyle = colors[factions.indexOf(element.factionid)];
+            const supplyline = dataStore.GetData("supplyline", element.supplylineid);
+            const accesspoint1 = dataStore.GetData("accesspoint", supplyline.accesspoint1Id);
+            const accesspoint2 = dataStore.GetData("accesspoint", supplyline.accesspoint2Id);
+            const battlefield1 = dataStore.GetData("battlefield", accesspoint1.battlefield);
+            const battlefield2 = dataStore.GetData("battlefield", accesspoint2.battlefield);
+
+            context.beginPath();
+            context.moveTo(battlefield1.posx / 8, battlefield1.posy / 8);
+            context.lineTo(battlefield2.posx / 8, battlefield2.posy / 8);
+            context.stroke();
+        }
+    }
 
     // Save output to file
-    await pipeline(canvas.createJPEGStream(), fs.createWriteStream(imageName));
+    await pipeline(canvas.createPNGStream(), fs.createWriteStream(imageName));
 }

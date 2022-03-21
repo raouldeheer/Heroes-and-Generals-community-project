@@ -15,19 +15,12 @@
     "url": "https://github.com/raouldeheer/Heroes-and-Generals-community-project/issues"
   },
   "homepage": "https://github.com/raouldeheer/Heroes-and-Generals-community-project#readme",
-  "devDependencies": {
-    "@types/node": "^17.0.5",
-    "nodemon": "^2.0.15"
-  },
   "engines": {
     "node": ">=12.0.0"
   },
   "funding": {
     "type": "github",
     "url": "https://github.com/sponsors/raouldeheer"
-  },
-  "dependencies": {
-    "tslib": "^2.3.1"
   },
   "workspaces": [
     "./packages/*"

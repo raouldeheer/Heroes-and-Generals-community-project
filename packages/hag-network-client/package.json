@@ -1,9 +1,15 @@
 {
-  "name": "hag-community-project",
+  "name": "hag-network-client",
   "version": "1.0.0",
-  "description": "Heroes and Generals community project",
+  "description": "",
+  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc",
+    "dev:build": "tsc -w",
+    "dev:start": "nodemon dist/index.js",
+    "testcon": "node dist/scripts/testCon.js",
+    "jsonToMap": "node dist/scripts/jsonToMap.js"
   },
   "repository": {
     "type": "git",
@@ -27,9 +33,10 @@
     "url": "https://github.com/sponsors/raouldeheer"
   },
   "dependencies": {
+    "canvas": "^2.9.0",
+    "long": "^5.2.0",
+    "mylas": "^2.1.9",
+    "protobufjs": "^6.11.2",
     "tslib": "^2.3.1"
-  },
-  "workspaces": [
-    "./packages/*"
-  ]
+  }
 }

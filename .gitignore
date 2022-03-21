@@ -81,7 +81,7 @@ total.txt
 testConLog.txt
 total.jsonc
 infos.jsonc
-src/env.ts
+packages/hag-network-client/src/env.ts
 warmap.png
 
 game/

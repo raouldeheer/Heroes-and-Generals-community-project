@@ -58,8 +58,8 @@ async function jsonToMap(filename: string, imageName: string, dataStore: DataSto
     await loadTemplate("accesspoint");
     console.log("Loaded template");
     const warId = "7772518062970218736";
-    if (!existsSync(`./saves/${warId}`)) mkdirSync(`./saves/${warId}`);
-    if (!existsSync(`./savesMap/${warId}`)) mkdirSync(`./savesMap/${warId}`);
+    if (!existsSync(`./saves/${warId}`)) mylas.dir.mkS(`./saves/${warId}`);
+    if (!existsSync(`./savesMap/${warId}`)) mylas.dir.mkS(`./savesMap/${warId}`);
     for (const iterator of await readdir(`./saves/${warId}`)) {
         await jsonToMap(
             `./saves/${warId}/${iterator}`,

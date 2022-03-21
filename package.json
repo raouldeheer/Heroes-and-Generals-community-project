@@ -1,5 +1,5 @@
 {
-  "name": "hag-decode",
+  "name": "hag-community-project",
   "version": "1.0.0",
   "description": "Decoding Heroes & Generals network protocol",
   "main": "dist/index.js",
@@ -12,14 +12,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/raouldeheer/Heroes-and-Generals-decode.git"
+    "url": "git+https://github.com/raouldeheer/Heroes-and-Generals-community-project.git"
   },
   "author": "Raoul de Heer",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/raouldeheer/Heroes-and-Generals-decode/issues"
+    "url": "https://github.com/raouldeheer/Heroes-and-Generals-community-project/issues"
   },
-  "homepage": "https://github.com/raouldeheer/Heroes-and-Generals-decode#readme",
+  "homepage": "https://github.com/raouldeheer/Heroes-and-Generals-community-project#readme",
   "devDependencies": {
     "@types/node": "^17.0.5",
     "nodemon": "^2.0.15"

@@ -39,12 +39,9 @@ const Warmap = (): JSX.Element => {
 
     const battlefields = getDatastore.ToObject().battlefield || {};
     const bfs = [];
-    for (const key in battlefields) {
-        if (Object.prototype.hasOwnProperty.call(battlefields, key)) {
-            const element = battlefields[key];
-            bfs.push({ name: element.bftitle, id: element.id });
-        }
-    }
+    for (const key in battlefields)
+        if (Object.prototype.hasOwnProperty.call(battlefields, key))
+            bfs.push(battlefields[key].id);
 
     const supplylines = getDatastore.ToObject().supplyline || {};
     const sups = [];
@@ -66,7 +63,7 @@ const Warmap = (): JSX.Element => {
                 <circle cx="50" cy="50" r="40" stroke="black" strokeWidth="3" fill="red" />
                 <circle cx="350" cy="350" r="40" stroke="black" strokeWidth="3" fill="green" />
                 {sups.map(element => <Supplyline key={element} supplylineId={element} datastore={getDatastore} />)}
-                {bfs.map(element => <BattlefieldPoint key={element.id} battlefieldId={element.id} datastore={getDatastore} />)}
+                {bfs.map(element => <BattlefieldPoint key={element} battlefieldId={element} datastore={getDatastore} />)}
             </svg>
         </MapInteractionCSS>
     </div>;

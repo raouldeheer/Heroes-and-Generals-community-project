@@ -2,7 +2,7 @@ import BufferCursor from "../buffercursor";
 import { BufToDecodedProto, ProtoToBuf } from "./proto";
 import protobuf from "protobufjs";
 
-const Protos = protobuf.loadSync("./src/protos/All.proto");
+const Protos = protobuf.loadSync("../hag-network-client/src/protos/All.proto");
 
 export class QueryServerInfoResponse {
     static proto = Protos.lookupType("HnG_States.QueryServerInfoResponse");

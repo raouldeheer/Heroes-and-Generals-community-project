@@ -1,10 +1,16 @@
-import Warmap from "./warmap";
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
+import Warmap from "./map/warmap";
 
 const App = (): JSX.Element => (
   <>
-    <p>Empty app______</p>
+    <p>Empty app______  </p>
     <Warmap />
   </>
 );
 
-export default App;
+function render() {
+  ReactDOM.render(<App />, document.getElementById("app"));
+}
+
+render();

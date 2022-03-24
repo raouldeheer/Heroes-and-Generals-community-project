@@ -62,7 +62,7 @@ export const enum KeyValueChangeKey {
     supplyline = "supplyline",
 }
 
-const Protos = protobuf.loadSync("./src/protos/All.proto");
+const Protos = protobuf.loadSync("../hag-network-client/src/protos/All.proto");
 
 export const KeyProtoSet = new Map<string, protobuf.Type>([
     [KeyValueChangeKey.HostingCenterInfo, Protos.lookupType("HnG_States.HostingCenterInfo")],

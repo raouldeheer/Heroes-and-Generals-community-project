@@ -4,10 +4,10 @@ import image from "../background.png";
 // @ts-expect-error no dts
 import { MapInteractionCSS } from 'react-map-interaction';
 import BattlefieldPoint from "./battlefieldPoint";
-import React, { useState } from 'react';
+import React from 'react';
 const electron = window.require('electron');
-import { DataStore } from "hag-network-client/dist/datastore";
 import Supplyline from "./supplyline";
+import { useMap } from "./mapState";
 
 electron.ipcRenderer.send('anything-asynchronous', 'ping');
 
@@ -31,25 +31,19 @@ const mapStyles: React.CSSProperties = {
 };
 
 const Warmap = (): JSX.Element => {
-    const [getDatastore, setDatastore] = useState(new DataStore);
-    electron.ipcRenderer.on("datastore", (_, data) => {
+    const battlefieldsMap = useMap<string, any>();
+    const supplylinesMap = useMap<string, any>();
+    const accesspointsMap = useMap<string, any>();
+
+    electron.ipcRenderer.on("datastore", (_, data: Map<string, Map<string, unknown>>) => {
         console.log("Got Data!");
-        setDatastore(new DataStore(data));
+        battlefieldsMap.setState(data.get("battlefield"));
+        accesspointsMap.setState(data.get("accesspoint"));
+        supplylinesMap.setState(data.get("supplyline"));
     });
 
-    const battlefields = getDatastore.ToObject().battlefield || {};
-    const bfs = [];
-    for (const key in battlefields)
-        if (Object.prototype.hasOwnProperty.call(battlefields, key))
-            bfs.push(battlefields[key].id);
-
-    const supplylines = getDatastore.ToObject().supplyline || {};
-    const sups = [];
-    for (const key in supplylines)
-        if (Object.prototype.hasOwnProperty.call(supplylines, key))
-            sups.push(supplylines[key].id);
-
-
+    const bfs = Array.from(battlefieldsMap.state.keys());
+    const sups = Array.from(supplylinesMap.state.keys());
 
     return <div style={componentStyling}>
         <MapInteractionCSS minScale={0.10}
@@ -62,8 +56,18 @@ const Warmap = (): JSX.Element => {
                 <line x1="50" y1="50" x2="350" y2="350" stroke="black" strokeWidth="10" />
                 <circle cx="50" cy="50" r="40" stroke="black" strokeWidth="3" fill="red" />
                 <circle cx="350" cy="350" r="40" stroke="black" strokeWidth="3" fill="green" />
-                {sups.map(element => <Supplyline key={element} supplylineId={element} datastore={getDatastore} />)}
-                {bfs.map(element => <BattlefieldPoint key={element} battlefieldId={element} datastore={getDatastore} />)}
+                {sups.map(element => <Supplyline
+                    key={element}
+                    supplylineId={element}
+                    battlefields={battlefieldsMap.state}
+                    accesspoints={accesspointsMap.state}
+                    supplylines={supplylinesMap.state}
+                />)}
+                {bfs.map(element => <BattlefieldPoint
+                    key={element}
+                    battlefieldId={element}
+                    battlefields={battlefieldsMap.state}
+                />)}
             </svg>
         </MapInteractionCSS>
     </div>;

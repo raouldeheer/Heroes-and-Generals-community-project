@@ -1,18 +1,18 @@
-import { DataStore } from "hag-network-client/dist/datastore";
-
 
 const Supplyline = ({
     supplylineId,
-    datastore
+    supplylines,
+    accesspoints,
+    battlefields,
 }: {
     supplylineId: string;
-    datastore: DataStore;
+    supplylines: Map<string, { accesspoint1Id: string, accesspoint2Id: string; }>;
+    accesspoints: Map<string, { battlefield: string; }>;
+    battlefields: Map<string, { posx: number, posy: number; }>;
 }): JSX.Element => {
-    const supplyline = datastore.GetData("supplyline", supplylineId);
-    const accesspoint1 = datastore.GetData("accesspoint", supplyline.accesspoint1Id);
-    const accesspoint2 = datastore.GetData("accesspoint", supplyline.accesspoint2Id);
-    const battlefield1 = datastore.GetData("battlefield", accesspoint1.battlefield);
-    const battlefield2 = datastore.GetData("battlefield", accesspoint2.battlefield);
+    const { accesspoint1Id, accesspoint2Id } = supplylines.get(supplylineId);
+    const battlefield1 = battlefields.get(accesspoints.get(accesspoint1Id).battlefield);
+    const battlefield2 = battlefields.get(accesspoints.get(accesspoint2Id).battlefield);
 
     return <line
         x1={battlefield1.posx}

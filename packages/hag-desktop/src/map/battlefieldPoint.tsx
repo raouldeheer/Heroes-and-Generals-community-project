@@ -1,4 +1,3 @@
-import { DataStore } from "hag-network-client/dist/datastore";
 import { useState } from "react";
 
 const pointSize = 15;
@@ -16,12 +15,12 @@ interface Battlefield {
 
 const BattlefieldPoint = ({
     battlefieldId,
-    datastore
+    battlefields,
 }: {
     battlefieldId: string;
-    datastore: DataStore;
+    battlefields: Map<string, Battlefield>;
 }): JSX.Element => {
-    const bfdata: Battlefield = datastore.GetData("battlefield", battlefieldId);
+    const bfdata: Battlefield = battlefields.get(battlefieldId);
     const [count, setCount] = useState(0);
     
     function clicked(e: { preventDefault: () => void; }) {

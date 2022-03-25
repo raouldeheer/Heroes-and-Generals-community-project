@@ -12,8 +12,5 @@ const App = (): JSX.Element => {
   </>;
 };
 
-function render() {
-  ReactDOM.render(<App />, document.getElementById("app"));
-}
+ReactDOM.render(<App />, document.getElementById("app"));
 
-render();

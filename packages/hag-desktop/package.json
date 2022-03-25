@@ -12,10 +12,7 @@
     "lint": "eslint --ext .ts,.tsx ."
   },
   "keywords": [],
-  "author": {
-    "name": "Raoul de Heer",
-    "email": "raouldeheer@users.noreply.github.com"
-  },
+  "author": "Raoul de Heer",
   "license": "MIT",
   "config": {
     "forge": {
@@ -85,7 +82,6 @@
     "typescript": "~4.5.4"
   },
   "dependencies": {
-    "@electron/remote": "^2.0.8",
     "electron": "17.1.2",
     "electron-squirrel-startup": "^1.0.0",
     "file-loader": "^6.2.0",

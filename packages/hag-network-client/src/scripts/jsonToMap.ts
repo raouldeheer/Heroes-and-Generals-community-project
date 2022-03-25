@@ -1,12 +1,9 @@
 import mylas from "mylas";
 import { DataStore } from "../datastore";
-import { toCanvasColored } from "../utils";
-import BufferCursor from "../buffercursor";
-import { keyToClass } from "../protolinking/classKeys";
-import { ProtoToString } from "../protoclasses/proto";
 import { readdir } from "fs/promises";
 import { existsSync } from "fs";
-
+import { toCanvasColored } from "../utils/canvas";
+import { loadTemplate } from "../utils/assetLoading";
 
 async function jsonToMap(filename: string, imageName: string, dataStore: DataStore) {
     const data = await mylas.json.load(filename);
@@ -23,39 +20,9 @@ async function jsonToMap(filename: string, imageName: string, dataStore: DataSto
 (async () => {
     const dataStore = new DataStore;
 
-    async function loadTemplate(name: string) {
-        const tempFile = await mylas.buf.load(`./captures/${name}`);
-        const element = new BufferCursor(tempFile);
-
-        element.move(4);
-        const typeLength = element.readUInt32LE() - 4;
-        const typeText = element.slice(typeLength).toString("ascii");
-
-        const DataBuf = element.slice();
-        DataBuf.seek(0);
-
-        let result;
-        if (keyToClass.has(typeText)) {
-            try {
-                // Find class to parse packet with.
-                const klas = keyToClass.get(typeText)!;
-                result = klas.parse(DataBuf);
-                if (typeof result == "object") {
-                    if (typeText == "KeyValueChangeSet")
-                        dataStore.SaveData(result);
-                    result = ProtoToString(result);
-                }
-            } catch (error) {
-                console.error(error);
-            }
-        } else {
-            console.log(typeText);
-        }
-    }
-
-    await loadTemplate("battlefield");
-    await loadTemplate("supplyline");
-    await loadTemplate("accesspoint");
+    await loadTemplate(dataStore, "battlefield");
+    await loadTemplate(dataStore, "supplyline");
+    await loadTemplate(dataStore, "accesspoint");
     console.log("Loaded template");
     const warId = "7772518062970218736";
     if (!existsSync(`./saves/${warId}`)) mylas.dir.mkS(`./saves/${warId}`);

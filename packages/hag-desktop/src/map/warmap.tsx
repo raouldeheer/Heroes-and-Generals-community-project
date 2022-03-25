@@ -9,7 +9,7 @@ const electron = window.require("electron");
 import Supplyline from "./supplyline";
 import { useMap } from "./mapState";
 
-electron.ipcRenderer.send("get-setup-data", "ping");
+electron.ipcRenderer.send("get-setup-data");
 
 const posStyling: React.CSSProperties = {
     position: "absolute",
@@ -35,8 +35,7 @@ const Warmap = (): JSX.Element => {
     const supplylinesMap = useMap<string, any>();
     const accesspointsMap = useMap<string, any>();
 
-    electron.ipcRenderer.on("datastore", (_, data: Map<string, Map<string, unknown>>) => {
-        console.log("Got Data!");
+    electron.ipcRenderer.once("datastore", (_, data: Map<string, Map<string, unknown>>) => {
         battlefieldsMap.setState(data.get("battlefield"));
         accesspointsMap.setState(data.get("accesspoint"));
         supplylinesMap.setState(data.get("supplyline"));

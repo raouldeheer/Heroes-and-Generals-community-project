@@ -2,14 +2,14 @@
 // @ts-ignore
 import image from "../background.png";
 // @ts-expect-error no dts
-import { MapInteractionCSS } from 'react-map-interaction';
+import { MapInteractionCSS } from "react-map-interaction";
 import BattlefieldPoint from "./battlefieldPoint";
-import React from 'react';
-const electron = window.require('electron');
+import React from "react";
+const electron = window.require("electron");
 import Supplyline from "./supplyline";
 import { useMap } from "./mapState";
 
-electron.ipcRenderer.send('anything-asynchronous', 'ping');
+electron.ipcRenderer.send("get-setup-data", "ping");
 
 const posStyling: React.CSSProperties = {
     position: "absolute",

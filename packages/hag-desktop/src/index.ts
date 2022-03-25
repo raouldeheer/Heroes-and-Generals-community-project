@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain } from 'electron';
+import { app, BrowserWindow, ipcMain } from "electron";
 import { DataStore } from "hag-network-client/dist/datastore";
 import BufferCursor from "hag-network-client/dist/buffercursor";
 import mylas from "mylas";
@@ -11,7 +11,7 @@ import { keyToClass } from "hag-network-client/dist/protolinking/classKeys";
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
-if (require('electron-squirrel-startup')) {
+if (require("electron-squirrel-startup")) {
   // eslint-disable-line global-require
   app.quit();
 }
@@ -26,11 +26,10 @@ const createWindow = (): void => {
       contextIsolation: false,
     }
   });
-  
-ipcMain.on('anything-asynchronous', (event, arg) => {
-  //execute tasks on behalf of renderer process 
-  console.log(arg); // prints "ping"
-  (async () => {
+  const userAgent = mainWindow.webContents.userAgent;
+
+  ipcMain.on("get-setup-data", async (_, arg) => {
+    console.log(arg);
     const dataStore = new DataStore;
 
     async function loadTemplate(name: string) {
@@ -65,10 +64,9 @@ ipcMain.on('anything-asynchronous', (event, arg) => {
     await loadTemplate("battlefield");
     await loadTemplate("supplyline");
     await loadTemplate("accesspoint");
+    console.log("Send setup data");
     mainWindow.webContents.send("datastore", dataStore.GetMap());
-    console.log("Send data");
-  })();
-});
+  });
 
   // and load the index.html of the app.
   mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
@@ -99,5 +97,3 @@ app.on('activate', () => {
   }
 });
 
-  // In this file you can include the rest of your app's specific main process
-  // code. You can also put them in separate files and import them here.

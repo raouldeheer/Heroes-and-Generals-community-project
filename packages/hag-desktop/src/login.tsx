@@ -1,9 +1,12 @@
+const electron = window.require("electron");
 import { useForm } from "react-hook-form";
 
 const Login = (): JSX.Element => {
     const { register, handleSubmit, formState: { errors } } = useForm();
-    const onSubmit = (data: { Username: string, Password: string; }) =>
+    const onSubmit = (data: { Username: string, Password: string; }) => {
+        electron.ipcRenderer.invoke("login");
         console.log(data);
+    };
 
     return <>
         <form onSubmit={handleSubmit(onSubmit)}>

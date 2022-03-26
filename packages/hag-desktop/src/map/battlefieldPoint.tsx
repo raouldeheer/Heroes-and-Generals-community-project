@@ -34,7 +34,7 @@ const BattlefieldPoint = ({
         r={pointSize}
         stroke="black"
         strokeWidth="2"
-        fill={count ? "green" : "red"}
+        fill={count ? "green" : "#888"}
         onClick={clicked} />;
 };
 

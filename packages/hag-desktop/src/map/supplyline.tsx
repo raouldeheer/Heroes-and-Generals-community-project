@@ -19,7 +19,7 @@ const Supplyline = ({
         y1={battlefield1.posy}
         x2={battlefield2.posx}
         y2={battlefield2.posy}
-        stroke="black"
+        stroke="#888"
         strokeWidth="10"
     />;
 };

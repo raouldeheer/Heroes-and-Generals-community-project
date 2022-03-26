@@ -4,7 +4,7 @@ import image from "../background.png";
 // @ts-expect-error no dts
 import { MapInteractionCSS } from "react-map-interaction";
 import BattlefieldPoint from "./battlefieldPoint";
-import React from "react";
+import React, { useEffect } from "react";
 const electron = window.require("electron");
 import Supplyline from "./supplyline";
 import { useMap } from "./mapState";
@@ -35,11 +35,17 @@ const Warmap = (): JSX.Element => {
     const supplylinesMap = useMap<string, any>();
     const accesspointsMap = useMap<string, any>();
 
-    electron.ipcRenderer.once("datastore", (_, data: Map<string, Map<string, unknown>>) => {
-        battlefieldsMap.setState(data.get("battlefield"));
-        accesspointsMap.setState(data.get("accesspoint"));
-        supplylinesMap.setState(data.get("supplyline"));
-    });
+    useEffect(() => {
+        electron.ipcRenderer.invoke("getSetupData").then((data: Map<string, Map<string, unknown>>) => {
+            battlefieldsMap.setState(data.get("battlefield"));
+            accesspointsMap.setState(data.get("accesspoint"));
+            supplylinesMap.setState(data.get("supplyline"));
+        });
+        electron.ipcRenderer.on("newDataSet", (_, data: { key: string, value: any; }[]) => {
+            console.log(data);
+            
+        });
+    }, []);
 
     const bfs = Array.from(battlefieldsMap.state.keys());
     const sups = Array.from(supplylinesMap.state.keys());

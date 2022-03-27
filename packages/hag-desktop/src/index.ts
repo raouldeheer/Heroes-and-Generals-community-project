@@ -41,8 +41,6 @@ const createWindow = (): void => {
   mainWindow.webContents.openDevTools();
 
   {
-    const colors = ["#f00", "#0f0", "#00f", "#000", "#fff", "#888"];
-    const factions: string[] = [];
     const dataStore = new DataStore;
     const cl = new Client(ip, port);
     const startTime = Date.now();
@@ -65,6 +63,7 @@ const createWindow = (): void => {
     }).on("message", async (typetext, data) => {
       if (typetext == "KeyValueChangeSet") {
         if (data?.set) {
+          mainWindow.webContents.send("setUpdate", data.set);
           for (const iterator of data.set) {
             if (iterator.key == "war") {
               const value = iterator.value;
@@ -77,20 +76,6 @@ const createWindow = (): void => {
                   playedFirstBlood: 0,
                 });
               }
-            } else if (iterator.key == "battlefieldstatus") {
-              const data = iterator.value;
-              if (!factions.includes(data.factionid)) factions.push(data.factionid);
-              data.color = colors[factions.indexOf(data.factionid)];
-              mainWindow.webContents.send(`battlefield${data.battlefieldid}`, data);
-              // console.log(`battlefield${data.battlefieldid}`);
-              // console.log(data);
-            } else if (iterator.key == "supplylinestatus") {
-              const data = iterator.value;
-              if (!factions.includes(data.factionid)) factions.push(data.factionid);
-              data.color = colors[factions.indexOf(data.factionid)];
-              mainWindow.webContents.send(`supplyline${data.supplylineid}`, data);
-              // console.log(`supplyline${data.supplylineid}`);
-              // console.log(data);
             }
           }
         }

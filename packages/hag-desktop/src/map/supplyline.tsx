@@ -1,5 +1,6 @@
 const electron = window.require("electron");
 import { useEffect, useState } from "react";
+import { WarmapEventHandler } from "./warmap";
 
 interface supplylinestatus {
     id: string;
@@ -14,11 +15,13 @@ const Supplyline = ({
     supplylines,
     accesspoints,
     battlefields,
+    warmapEventHandler,
 }: {
     supplylineId: string;
     supplylines: Map<string, { accesspoint1Id: string, accesspoint2Id: string; }>;
     accesspoints: Map<string, { battlefield: string; }>;
     battlefields: Map<string, { posx: number, posy: number; }>;
+    warmapEventHandler: WarmapEventHandler;
 }): JSX.Element => {
     const { accesspoint1Id, accesspoint2Id } = supplylines.get(supplylineId);
     const battlefield1 = battlefields.get(accesspoints.get(accesspoint1Id).battlefield);
@@ -26,7 +29,7 @@ const Supplyline = ({
     const [color, setColor] = useState("#888");
 
     useEffect(() => {
-        electron.ipcRenderer.on(`supplyline${supplylineId}`, (_, data: supplylinestatus) => {
+        warmapEventHandler.on(`supplyline${supplylineId}`, (data: supplylinestatus) => {
             // console.log(data.color);
             setColor(data.color);
         });

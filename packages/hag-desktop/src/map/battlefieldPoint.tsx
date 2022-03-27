@@ -1,5 +1,6 @@
 const electron = window.require("electron");
 import { useEffect, useState } from "react";
+import { WarmapEventHandler } from "./warmap";
 
 const pointSize = 15;
 
@@ -25,15 +26,17 @@ interface battlefieldstatus {
 const BattlefieldPoint = ({
     battlefieldId,
     battlefields,
+    warmapEventHandler
 }: {
     battlefieldId: string;
     battlefields: Map<string, Battlefield>;
+    warmapEventHandler: WarmapEventHandler;
 }): JSX.Element => {
     const bfdata: Battlefield = battlefields.get(battlefieldId);
     const [color, setColor] = useState("#888");
 
     useEffect(() => {
-        electron.ipcRenderer.on(`battlefield${battlefieldId}`, (_, data: battlefieldstatus) => {
+        warmapEventHandler.on(`battlefield${battlefieldId}`, (data: battlefieldstatus) => {
             // console.log(data.color);
             setColor(data.color);
         });

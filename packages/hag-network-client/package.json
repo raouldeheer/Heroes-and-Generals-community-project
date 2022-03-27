@@ -13,7 +13,8 @@
     "dev:build": "tsc -w",
     "wiresharkDecode": "nodemon dist/scripts/wiresharkDecode.js",
     "testcon": "node dist/scripts/testCon.js",
-    "jsonToMap": "node dist/scripts/jsonToMap.js"
+    "jsonToMap": "node dist/scripts/jsonToMap.js",
+    "protoToJson": "node dist/scripts/protoToJson.js"
   },
   "repository": {
     "type": "git",

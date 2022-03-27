@@ -1,7 +1,7 @@
 {
   "name": "hag-desktop",
-  "productName": "hag-desktop",
-  "version": "1.0.0",
+  "productName": "hagcp-desktop",
+  "version": "0.0.1",
   "description": "My Electron application description",
   "main": ".webpack/main",
   "scripts": {

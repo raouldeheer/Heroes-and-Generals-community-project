@@ -4,12 +4,14 @@ import image from "../background.png";
 // @ts-expect-error no dts
 import { MapInteractionCSS } from "react-map-interaction";
 import BattlefieldPoint from "./battlefieldPoint";
-import React, { useEffect } from "react";
+import React from "react";
 const electron = window.require("electron");
 import Supplyline from "./supplyline";
-import { useMap } from "./mapState";
+import accesspoint from "hag-network-client/jsondb/accesspoint.json";
+import battlefield from "hag-network-client/jsondb/battlefield.json";
+import supplyline from "hag-network-client/jsondb/supplyline.json";
 
-electron.ipcRenderer.send("get-setup-data");
+// electron.ipcRenderer.send("get-setup-data");
 
 const posStyling: React.CSSProperties = {
     position: "absolute",
@@ -30,26 +32,16 @@ const mapStyles: React.CSSProperties = {
     height: `${1440 * 8}px`
 };
 
+const battlefieldsMap = new Map<string, any>(battlefield as Iterable<readonly [string, any]>);
+const supplylinesMap = new Map<string, any>(supplyline as Iterable<readonly [string, any]>);
+const accesspointsMap = new Map<string, any>(accesspoint as Iterable<readonly [string, any]>);
+
+const bfs = Array.from(battlefieldsMap.keys());
+const sups = Array.from(supplylinesMap.keys());
+
 const Warmap = (): JSX.Element => {
-    const battlefieldsMap = useMap<string, any>();
-    const supplylinesMap = useMap<string, any>();
-    const accesspointsMap = useMap<string, any>();
 
-    useEffect(() => {
-        electron.ipcRenderer.invoke("getSetupData").then((data: Map<string, Map<string, unknown>>) => {
-            battlefieldsMap.setState(data.get("battlefield"));
-            accesspointsMap.setState(data.get("accesspoint"));
-            supplylinesMap.setState(data.get("supplyline"));
-        });
-        electron.ipcRenderer.on("newDataSet", (_, data: { key: string, value: any; }[]) => {
-            console.log(data);
-            
-        });
-    }, []);
-
-    const bfs = Array.from(battlefieldsMap.state.keys());
-    const sups = Array.from(supplylinesMap.state.keys());
-
+    
     return <div style={componentStyling}>
         <MapInteractionCSS minScale={0.10}
             defaultValue={{
@@ -61,14 +53,14 @@ const Warmap = (): JSX.Element => {
                 {sups.map(element => <Supplyline
                     key={element}
                     supplylineId={element}
-                    battlefields={battlefieldsMap.state}
-                    accesspoints={accesspointsMap.state}
-                    supplylines={supplylinesMap.state}
+                    battlefields={battlefieldsMap}
+                    accesspoints={accesspointsMap}
+                    supplylines={supplylinesMap}
                 />)}
                 {bfs.map(element => <BattlefieldPoint
                     key={element}
                     battlefieldId={element}
-                    battlefields={battlefieldsMap.state}
+                    battlefields={battlefieldsMap}
                 />)}
             </svg>
         </MapInteractionCSS>

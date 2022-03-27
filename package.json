@@ -1,6 +1,6 @@
 {
   "name": "hag-community-project",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "Heroes and Generals community project",
   "scripts": {
     "install:all": "npm install -workspaces",

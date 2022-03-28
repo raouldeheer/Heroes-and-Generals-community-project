@@ -3,7 +3,6 @@ import { Socket, createConnection } from "net";
 import { createHash, createHmac } from 'crypto';
 import BufferCursor from "./buffercursor";
 import { keyToClass } from "./protolinking/classKeys";
-import { password } from "./env";
 import { ProtoToString } from "./protoclasses/proto";
 import { gunzipSync } from "zlib";
 import { appendFileSync, writeFileSync } from "fs";
@@ -12,7 +11,13 @@ export class Client extends EventEmitter {
     private con: Socket;
     private idNumber;
     private rest: Buffer | undefined;
-    constructor(host: string, port: number) {
+    constructor(
+        host: string,
+        port: number,
+        private readonly userAgent: string,
+        private readonly userName: string,
+        private readonly password: string
+    ) {
         super();
         this.idNumber = 0;
         this.con = createConnection({ host, port });
@@ -150,11 +155,17 @@ export class Client extends EventEmitter {
                     }
                     break;
                 case "LoginQueueUpdate":
+                    this.emit("LoginQueueUpdate", result.positionInQueue);
                     console.info(`Queue: ${result.positionInQueue}`);
-                    if (result.mayProceed) this.sendPacket("login2_begin");
+                    if (result.mayProceed) this.sendPacket("login2_begin", {
+                        username: this.userName,
+                        deviceid: this.userAgent,
+                        acceptingPrivacyPolicy: false,
+                        acceptingBattlEyePolicy: false,
+                    });
                     break;
                 case "login2_challenge":
-                    this.sendPacket("login2_response", this.login(password, result));
+                    this.sendPacket("login2_response", this.login(this.password, result));
                     break;
                 case "login2_result":
                     this.emit("loggedin");
@@ -174,10 +185,10 @@ export class Client extends EventEmitter {
             console.log(`unsupported message: ${typeText}`);
         }
 
-        // const startString = `${plen.toString().padEnd(5)} ${id.toString().padEnd(5)} ${typeText.padEnd(35)}`;
-        // const midString = `${DataLen.toString().padEnd(5)}`;
-        // const outputStr = `${startString} ${result ? result : midString}`;
-        // console.log(outputStr);
+        const startString = `${plen.toString().padEnd(5)} ${id.toString().padEnd(5)} ${typeText.padEnd(35)}`;
+        const midString = `${DataLen.toString().padEnd(5)}`;
+        const outputStr = `${startString} ${result ? result : midString}`;
+        console.log(outputStr);
         // appendFileSync("./testConLog.txt", outputStr + "\n", "utf8");
     }
 }

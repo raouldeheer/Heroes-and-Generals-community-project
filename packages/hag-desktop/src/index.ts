@@ -1,6 +1,6 @@
 import { app, BrowserWindow, ipcMain } from "electron";
 import { Client, DataStore } from "hag-network-client";
-import { ip, port } from "hag-network-client/dist/env";
+import { ip, port, userName, password } from "hag-network-client/dist/env";
 import { ResponseType } from "hag-network-client/dist/protolinking/classKeys";
 import Long from "long";
 
@@ -42,7 +42,7 @@ const createWindow = (): void => {
 
   {
     const dataStore = new DataStore;
-    const cl = new Client(ip, port);
+    const cl = new Client(ip, port, userAgent, userName, password);
     const startTime = Date.now();
     cl.once("loggedin", async () => {
       cl.sendPacket("subscribewarmapview");

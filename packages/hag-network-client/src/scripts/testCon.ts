@@ -5,15 +5,16 @@ import mylas from "mylas";
 import Long from "long";
 import { setTimeout } from "timers/promises";
 import { ResponseType } from "../protolinking/classKeys";
+import { password, userAgent, userName } from "../env";
 
 const dataStore = new DataStore;
-const cl = new Client(ip, port);
+const cl = new Client(ip, port, userAgent, userName, password);
 const startTime = Date.now();
 let saveMapTimer: NodeJS.Timer;
 let warId: string | null = null;
 cl.once("loggedin", async () => {
-    cl.sendPacket("subscribewarmapview");
-    cl.sendPacket("query_war_catalogue_request");
+    // cl.sendPacket("subscribewarmapview");
+    // cl.sendPacket("query_war_catalogue_request");
 
     await setTimeout(2000);
 

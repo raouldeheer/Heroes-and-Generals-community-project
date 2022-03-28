@@ -20,12 +20,7 @@ export class login2_begin {
         deviceid: string,
         acceptingPrivacyPolicy: boolean,
         acceptingBattlEyePolicy: boolean,
-    } = {
-            username: userName,
-            deviceid: userAgent,
-            acceptingPrivacyPolicy: false,
-            acceptingBattlEyePolicy: false,
-        }): Buffer => ProtoToBuf(this.proto, payload);
+    }): Buffer => ProtoToBuf(this.proto, payload);
 }
 
 export class login2_challenge {

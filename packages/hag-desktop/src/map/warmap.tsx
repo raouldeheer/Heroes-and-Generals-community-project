@@ -31,15 +31,11 @@ export class WarmapEventHandler extends EventEmitter {
                     if (!factions.includes(data.factionid)) factions.push(data.factionid);
                     data.color = colors[factions.indexOf(data.factionid)];
                     this.emit(`battlefield${data.battlefieldid}`, data);
-                    // console.log(`battlefield${data.battlefieldid}`);
-                    // console.log(data);
                 } else if (iterator.key == "supplylinestatus") {
                     const data = iterator.value;
                     if (!factions.includes(data.factionid)) factions.push(data.factionid);
                     data.color = colors[factions.indexOf(data.factionid)];
                     this.emit(`supplyline${data.supplylineid}`, data);
-                    // console.log(`supplyline${data.supplylineid}`);
-                    // console.log(data);
                 }
             }
         }
@@ -75,7 +71,6 @@ const bfs = Array.from(battlefieldsMap.keys());
 const sups = Array.from(supplylinesMap.keys());
 
 const Warmap = (): JSX.Element => {
-
 
     return <div style={componentStyling}>
         <MapInteractionCSS minScale={0.10}

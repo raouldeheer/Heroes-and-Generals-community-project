@@ -7,7 +7,7 @@ const App = (): JSX.Element => {
 
   return <>
     <p>Empty app______  </p>
-    {/* <Login /> */}
+    <Login />
     <Warmap />
   </>;
 };

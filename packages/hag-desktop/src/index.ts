@@ -1,6 +1,6 @@
 import { app, BrowserWindow, ipcMain } from "electron";
 import { Client, DataStore } from "hag-network-client";
-import { ip, port, userName, password } from "hag-network-client/dist/env";
+import { ip, port } from "hag-network-client/dist/env";
 import { ResponseType } from "hag-network-client/dist/protolinking/classKeys";
 import Long from "long";
 
@@ -9,17 +9,68 @@ import Long from "long";
 // whether you're running in development or production).
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
 
+let dataStore: DataStore;
+let client: Client;
+
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require("electron-squirrel-startup")) {
   // eslint-disable-line global-require
   app.quit();
 }
 
-// ipcMain.handle("login", async (event, ...args) => {
-//   event.sender.userAgent;
-//   -// TODO make login.tsx work with this.
-//   return {};
-// });
+ipcMain.on("startClient", (event, data) => {
+  startClient(event.sender, data.userName, data.password);
+});
+
+function startClient(webContents: Electron.WebContents, userName: string, password: string) {
+  dataStore = new DataStore;
+  client = new Client(ip, port, webContents.userAgent, userName, password);
+  const startTime = Date.now();
+  client.once("loggedin", async () => {
+    webContents.send("loggedin");
+    client.sendPacket("subscribewarmapview");
+    client.sendPacket("query_war_catalogue_request");
+  }).on("join_war_response", async (data: { msg: ResponseType, redirectSrv?: string; }) => {
+    if (data.msg === ResponseType.ok) {
+      if (data.redirectSrv) {
+        console.log(`redirectSrv detected: ${data.redirectSrv}`);
+      }
+      client.sendPacket("unsubscribewarmapview");
+      setTimeout(() => {
+        client.sendPacket("subscribewarmapview");
+        client.sendPacket("query_war_catalogue_request");
+      }, 1000);
+    } else {
+      console.error(`ERROR: ${data}`);
+    }
+  }).on("message", async (typetext, data) => {
+    if (typetext == "KeyValueChangeSet") {
+      if (data?.set) {
+        webContents.send("setUpdate", data.set);
+        for (const iterator of data.set) {
+          if (iterator.key == "war") {
+            const value = iterator.value;
+            if (value.sequelwarid !== "0") {
+              console.log(`${value.id} ended, switching to: ${value.sequelwarid}`);
+              dataStore.ResetData("battlefieldstatus"); // TODO reset react.
+              client.sendPacket("join_war_request", {
+                warid: Long.fromString(value.sequelwarid),
+                factionid: Long.ZERO,
+                playedFirstBlood: 0,
+              });
+            }
+          }
+        }
+      }
+    }
+  }).on("LoginQueueUpdate", (pos) => {
+    webContents.send("LoginQueueUpdate", pos);
+  }).on("closed", () => {
+    console.log("Socket closed!");
+    console.log(`After ${Date.now() - startTime}ms`);
+    process.exit(1);
+  });
+}
 
 const createWindow = (): void => {
   // Create the browser window.
@@ -31,61 +82,12 @@ const createWindow = (): void => {
       contextIsolation: false,
     }
   });
-  const userAgent = mainWindow.webContents.userAgent;
-  console.log(`userAgent: ${userAgent}`);
 
   // and load the index.html of the app.
   mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
 
   // Open the DevTools.
   mainWindow.webContents.openDevTools();
-
-  {
-    const dataStore = new DataStore;
-    const cl = new Client(ip, port, userAgent, userName, password);
-    const startTime = Date.now();
-    cl.once("loggedin", async () => {
-      cl.sendPacket("subscribewarmapview");
-      cl.sendPacket("query_war_catalogue_request");
-    }).on("join_war_response", async (data: { msg: ResponseType, redirectSrv?: string; }) => {
-      if (data.msg === ResponseType.ok) {
-        if (data.redirectSrv) {
-          console.log(`redirectSrv detected: ${data.redirectSrv}`);
-        }
-        cl.sendPacket("unsubscribewarmapview");
-        setTimeout(() => {
-          cl.sendPacket("subscribewarmapview");
-          cl.sendPacket("query_war_catalogue_request");
-        }, 1000);
-      } else {
-        console.error(`ERROR: ${data}`);
-      }
-    }).on("message", async (typetext, data) => {
-      if (typetext == "KeyValueChangeSet") {
-        if (data?.set) {
-          mainWindow.webContents.send("setUpdate", data.set);
-          for (const iterator of data.set) {
-            if (iterator.key == "war") {
-              const value = iterator.value;
-              if (value.sequelwarid !== "0") {
-                console.log(`${value.id} ended, switching to: ${value.sequelwarid}`);
-                dataStore.ResetData("battlefieldstatus"); // TODO reset react.
-                cl.sendPacket("join_war_request", {
-                  warid: Long.fromString(value.sequelwarid),
-                  factionid: Long.ZERO,
-                  playedFirstBlood: 0,
-                });
-              }
-            }
-          }
-        }
-      }
-    }).on("closed", () => {
-      console.log("Socket closed!");
-      console.log(`After ${Date.now() - startTime}ms`);
-      process.exit(1);
-    });
-  }
 };
 
 // This method will be called when Electron has finished

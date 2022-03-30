@@ -11,7 +11,7 @@ import accesspoint from "hag-network-client/jsondb/accesspoint.json";
 import battlefield from "hag-network-client/jsondb/battlefield.json";
 import supplyline from "hag-network-client/jsondb/supplyline.json";
 
-const colors = ["#f00", "#0f0", "#00f", "#000", "#fff", "#888"];
+const colors = ["#f00", "#0f0", "#00f", "#000", "#fff", "#888"]; // TODO fix colors!
 const factions: string[] = [];
 
 export class WarmapEventHandler extends EventEmitter {

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { throttle } from "lodash";
 
 type Pos = { x: number; y: number; };
 
@@ -161,37 +162,35 @@ export class MapInteractionControlled extends Component<any, any> {
   }
 
   // handles both touch and mouse drags
-  // TODO make this faster
-  onDrag(pointer: MouseEvent | Touch) {
-    requestAnimationFrame(() => {
-      if (!this.startPointerInfo) return;
-      const { translation, pointers } = this.startPointerInfo;
-      const startPointer = pointers[0];
-      const dragX = pointer.clientX - startPointer.clientX;
-      const dragY = pointer.clientY - startPointer.clientY;
-      const newTranslation = {
-        x: translation.x + dragX,
-        y: translation.y + dragY
-      };
+  onDrag = throttle(this.realOnDrag, 30);
+  realOnDrag(pointer: MouseEvent | Touch) {
+    if (!this.startPointerInfo) return;
+    const { translation, pointers } = this.startPointerInfo;
+    const startPointer = pointers[0];
+    const dragX = pointer.clientX - startPointer.clientX;
+    const dragY = pointer.clientY - startPointer.clientY;
+    const newTranslation = {
+      x: translation.x + dragX,
+      y: translation.y + dragY
+    };
 
-      const shouldPreventTouchEndDefault = Math.abs(dragX) > 1 || Math.abs(dragY) > 1;
-      this.setState({
-        shouldPreventTouchEndDefault
-      }, () => {
-        this.props.onChange({
-          scale: this.props.value.scale,
-          translation: this.clampTranslation(newTranslation)
-        });
+    const shouldPreventTouchEndDefault = Math.abs(dragX) > 1 || Math.abs(dragY) > 1;
+    this.setState({
+      shouldPreventTouchEndDefault
+    }, () => {
+      this.props.onChange({
+        scale: this.props.value.scale,
+        translation: this.clampTranslation(newTranslation)
       });
     });
   }
 
-  // TODO make this faster
-  onWheel(e: React.WheelEvent<HTMLElement>) {
+  onWheel = throttle(this.realOnWheel, 30);
+  realOnWheel(e: React.WheelEvent<HTMLElement>) {
+    e.preventDefault();
+    e.stopPropagation();
     requestAnimationFrame(() => {
       if (this.props.disableZoom) return;
-      e.preventDefault();
-      e.stopPropagation();
 
       const scaleChange = 2 ** (e.deltaY * 0.002);
       const newScale = clamp(

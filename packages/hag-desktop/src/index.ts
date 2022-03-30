@@ -32,8 +32,10 @@ function startClient(webContents: Electron.WebContents, userName: string, passwo
         console.log(`redirectSrv detected: ${data.redirectSrv}`);
       }
       client.sendPacket("unsubscribewarmapview");
-      setTimeout(client.close, 100);
-      setTimeout(webContents.reload, 200);
+      setTimeout(() => {
+        client.close();
+        webContents.reload();
+      }, 100);
     } else {
       console.error(`ERROR: ${data}`);
     }
@@ -67,7 +69,6 @@ function startClient(webContents: Electron.WebContents, userName: string, passwo
   }).on("closed", () => {
     console.log("Socket closed!");
     console.log(`After ${Date.now() - startTime}ms`);
-    process.exit(1);
   });
 }
 

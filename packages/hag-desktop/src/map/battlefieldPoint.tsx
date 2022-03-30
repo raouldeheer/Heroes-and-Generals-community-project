@@ -42,20 +42,19 @@ const BattlefieldPoint = ({
         });
     }, []);
 
-    // function clicked(e: { preventDefault: () => void; }) {
-    //     e.preventDefault();
-    //     setCount(1);
-    //     console.log(`You clicked on: ${battlefieldId}`);
-    // }
+    function clicked(e: { preventDefault: () => void; }) {
+        e.preventDefault();
+        console.log(`You clicked on: ${bfdata.bftitle}`);
+    }
     return <circle style={{ cursor: "pointer" }}
-        cx={bfdata.posx/8}
-        cy={bfdata.posy/8}
+        cx={bfdata.posx / 8}
+        cy={bfdata.posy / 8}
         r={pointSize}
         stroke="black"
         strokeWidth="0.5"
         fill={color}
-        // onClick={clicked}
-         />;
+        onClick={clicked}
+    />;
 };
 
 export default BattlefieldPoint;

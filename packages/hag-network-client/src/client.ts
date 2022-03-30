@@ -55,10 +55,7 @@ export class Client extends EventEmitter {
     }
 
     public close() {
-        try {
-            this.con.end();
-            this.con.destroy();
-        } catch (_) { }
+        try { this.con.end().destroy(); } catch (_) { }
     }
 
     public sendPacket(className: string, payload?: any, callback?: (result: any) => void) {
@@ -185,10 +182,10 @@ export class Client extends EventEmitter {
             console.log(`unsupported message: ${typeText}`);
         }
 
-        const startString = `${plen.toString().padEnd(5)} ${id.toString().padEnd(5)} ${typeText.padEnd(35)}`;
-        const midString = `${DataLen.toString().padEnd(5)}`;
-        const outputStr = `${startString} ${result ? result : midString}`;
-        console.log(outputStr);
+        // const startString = `${plen.toString().padEnd(5)} ${id.toString().padEnd(5)} ${typeText.padEnd(35)}`;
+        // const midString = `${DataLen.toString().padEnd(5)}`;
+        // const outputStr = `${startString} ${result ? result : midString}`;
+        // console.log(outputStr);
         // appendFileSync("./testConLog.txt", outputStr + "\n", "utf8");
     }
 }

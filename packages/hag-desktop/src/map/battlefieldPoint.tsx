@@ -2,7 +2,7 @@ const electron = window.require("electron");
 import { useEffect, useState } from "react";
 import { WarmapEventHandler } from "./warmap";
 
-const pointSize = 15;
+const pointSize = 2;
 
 interface Battlefield {
     id: string;
@@ -48,11 +48,11 @@ const BattlefieldPoint = ({
     //     console.log(`You clicked on: ${battlefieldId}`);
     // }
     return <circle style={{ cursor: "pointer" }}
-        cx={bfdata.posx}
-        cy={bfdata.posy}
+        cx={bfdata.posx/8}
+        cy={bfdata.posy/8}
         r={pointSize}
         stroke="black"
-        strokeWidth="2"
+        strokeWidth="0.5"
         fill={color}
         // onClick={clicked}
          />;

@@ -9,9 +9,6 @@ import Long from "long";
 // whether you're running in development or production).
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
 
-let dataStore: DataStore;
-let client: Client;
-
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require("electron-squirrel-startup")) {
   // eslint-disable-line global-require
@@ -23,8 +20,7 @@ ipcMain.on("startClient", (event, data) => {
 });
 
 function startClient(webContents: Electron.WebContents, userName: string, password: string) {
-  dataStore = new DataStore;
-  client = new Client(ip, port, webContents.userAgent, userName, password);
+  const client = new Client(ip, port, webContents.userAgent, userName, password);
   const startTime = Date.now();
   client.once("loggedin", async () => {
     webContents.send("loggedin");
@@ -36,29 +32,32 @@ function startClient(webContents: Electron.WebContents, userName: string, passwo
         console.log(`redirectSrv detected: ${data.redirectSrv}`);
       }
       client.sendPacket("unsubscribewarmapview");
-      setTimeout(() => {
-        client.sendPacket("subscribewarmapview");
-        client.sendPacket("query_war_catalogue_request");
-      }, 1000);
+      setTimeout(client.close, 100);
+      setTimeout(webContents.reload, 200);
     } else {
       console.error(`ERROR: ${data}`);
     }
   }).on("message", async (typetext, data) => {
     if (typetext == "KeyValueChangeSet") {
       if (data?.set) {
-        webContents.send("setUpdate", data.set);
         for (const iterator of data.set) {
-          if (iterator.key == "war") {
-            const value = iterator.value;
-            if (value.sequelwarid !== "0") {
-              console.log(`${value.id} ended, switching to: ${value.sequelwarid}`);
-              dataStore.ResetData("battlefieldstatus"); // TODO reset react.
-              client.sendPacket("join_war_request", {
-                warid: Long.fromString(value.sequelwarid),
-                factionid: Long.ZERO,
-                playedFirstBlood: 0,
-              });
-            }
+          switch (iterator.key) {
+            case "battlefieldstatus":
+              webContents.send("updateBattlefieldstatus", iterator.value);
+              break;
+            case "supplylinestatus":
+              webContents.send("updateSupplylinestatus", iterator.value);
+              break;
+            case "war":
+              if (iterator.value.sequelwarid !== "0") {
+                console.log(`${iterator.value.id} ended, switching to: ${iterator.value.sequelwarid}`);
+                client.sendPacket("join_war_request", {
+                  warid: Long.fromString(iterator.value.sequelwarid),
+                  factionid: Long.ZERO,
+                  playedFirstBlood: 0,
+                });
+              }
+              break;
           }
         }
       }

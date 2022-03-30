@@ -1,6 +1,6 @@
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-import Login from './login';
+import "react";
+import * as ReactDOM from "react-dom";
+import Login from "./login";
 import Warmap from "./map/warmap";
 
 const App = (): JSX.Element => {

@@ -36,12 +36,12 @@ const Supplyline = ({
     }, []);
     
     return <line
-        x1={battlefield1.posx}
-        y1={battlefield1.posy}
-        x2={battlefield2.posx}
-        y2={battlefield2.posy}
+        x1={battlefield1.posx/8}
+        y1={battlefield1.posy/8}
+        x2={battlefield2.posx/8}
+        y2={battlefield2.posy/8}
         stroke={color}
-        strokeWidth="10"
+        strokeWidth="2"
     />;
 };
 

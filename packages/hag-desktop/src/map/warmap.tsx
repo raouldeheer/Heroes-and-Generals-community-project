@@ -1,8 +1,7 @@
 // eslint-disable-next-line
 // @ts-ignore
 import image from "../background.png";
-// @ts-expect-error no dts
-import { MapInteractionCSS } from "react-map-interaction";
+import MapInteractionCSS from "./MapInteraction";
 import BattlefieldPoint from "./battlefieldPoint";
 import React from "react";
 const electron = window.require("electron");
@@ -18,27 +17,16 @@ const factions: string[] = [];
 export class WarmapEventHandler extends EventEmitter {
     constructor() {
         super();
-        electron.ipcRenderer.on("setUpdate", (_, data) => {
-            this.handleSet(data);
+        electron.ipcRenderer.on("updateBattlefieldstatus", (_, data) => {
+            if (!factions.includes(data.factionid)) factions.push(data.factionid);
+            data.color = colors[factions.indexOf(data.factionid)];
+            this.emit(`battlefield${data.battlefieldid}`, data);
         });
-    }
-
-    public handleSet(set: { key: string, value: any; }[]) {
-        if (set) {
-            for (const iterator of set) {
-                if (iterator.key == "battlefieldstatus") {
-                    const data = iterator.value;
-                    if (!factions.includes(data.factionid)) factions.push(data.factionid);
-                    data.color = colors[factions.indexOf(data.factionid)];
-                    this.emit(`battlefield${data.battlefieldid}`, data);
-                } else if (iterator.key == "supplylinestatus") {
-                    const data = iterator.value;
-                    if (!factions.includes(data.factionid)) factions.push(data.factionid);
-                    data.color = colors[factions.indexOf(data.factionid)];
-                    this.emit(`supplyline${data.supplylineid}`, data);
-                }
-            }
-        }
+        electron.ipcRenderer.on("updateSupplylinestatus", (_, data) => {
+            if (!factions.includes(data.factionid)) factions.push(data.factionid);
+            data.color = colors[factions.indexOf(data.factionid)];
+            this.emit(`supplyline${data.supplylineid}`, data);
+        });
     }
 }
 
@@ -59,8 +47,8 @@ const componentStyling: React.CSSProperties = {
 
 const mapStyles: React.CSSProperties = {
     ...posStyling,
-    width: `${2048 * 8}px`,
-    height: `${1440 * 8}px`
+    width: `${2048}px`,
+    height: `${1440}px`
 };
 
 const battlefieldsMap = new Map<string, any>(battlefield as Iterable<readonly [string, any]>);
@@ -73,9 +61,9 @@ const sups = Array.from(supplylinesMap.keys());
 const Warmap = (): JSX.Element => {
 
     return <div style={componentStyling}>
-        <MapInteractionCSS minScale={0.10}
+        <MapInteractionCSS minScale={0.60}
             defaultValue={{
-                scale: 0.10,
+                scale: 0.60,
                 translation: { x: 0, y: 0, },
             }}>
             <img src={image} style={mapStyles} />

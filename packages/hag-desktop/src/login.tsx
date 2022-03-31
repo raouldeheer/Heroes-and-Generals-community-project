@@ -47,13 +47,13 @@ const Login = (): JSX.Element => {
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <input placeholder="Username" {...register("Username", { required: true })} />
 
-                    <input placeholder="Password" {...register("Password", { required: true })} />
+                    <input type="password" placeholder="Password" {...register("Password", { required: true })} />
 
                     {errors.exampleRequired && <span>This field is required</span>}
 
                     <input type="submit" />
                 </form>
-                <p>Place in queue: {queue}</p>
+                {queue == 0 ? null : <p>Place in queue: {queue}</p>}
             </div>
         </div>;
     } else {

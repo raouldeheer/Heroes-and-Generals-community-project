@@ -62,6 +62,7 @@ function startClient(webContents: Electron.WebContents, userName: string, passwo
               break;
             case "war":
               if (iterator.value.sequelwarid !== "0") {
+                // TODO make popup to ask user to switch.
                 console.log(`${iterator.value.id} ended, switching to: ${iterator.value.sequelwarid}`);
                 client.sendPacket("join_war_request", {
                   warid: Long.fromString(iterator.value.sequelwarid),
@@ -88,7 +89,7 @@ function startClient(webContents: Electron.WebContents, userName: string, passwo
   });
 }
 
-const createWindow = (): void => {
+const createWindow = () => {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
     height: 600,

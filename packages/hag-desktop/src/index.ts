@@ -42,13 +42,25 @@ function startClient(webContents: Electron.WebContents, userName: string, passwo
   }).on("message", async (typetext, data) => {
     if (typetext == "KeyValueChangeSet") {
       if (data?.set) {
+        let battlefieldstatusArr = [];
+        let supplylinestatusArr = [];
         for (const iterator of data.set) {
           switch (iterator.key) {
             case "battlefieldstatus":
-              webContents.send("updateBattlefieldstatus", iterator.value);
+              battlefieldstatusArr.push(iterator.value);
+              if (battlefieldstatusArr.length > 500) {
+                webContents.send("updateBattlefieldstatusBatch", battlefieldstatusArr);
+                battlefieldstatusArr = [];
+              }
+              // webContents.send("updateBattlefieldstatus", iterator.value);
               break;
             case "supplylinestatus":
-              webContents.send("updateSupplylinestatus", iterator.value);
+              supplylinestatusArr.push(iterator.value);
+              if (supplylinestatusArr.length > 500) {
+                webContents.send("updateSupplylinestatusBatch", supplylinestatusArr);
+                supplylinestatusArr = [];
+              }
+              // webContents.send("updateSupplylinestatus", iterator.value);
               break;
             case "war":
               if (iterator.value.sequelwarid !== "0") {
@@ -61,6 +73,12 @@ function startClient(webContents: Electron.WebContents, userName: string, passwo
               }
               break;
           }
+        }
+        if (battlefieldstatusArr.length > 0) {
+          webContents.send("updateBattlefieldstatusBatch", battlefieldstatusArr);
+        }
+        if (supplylinestatusArr.length > 0) {
+          webContents.send("updateSupplylinestatusBatch", supplylinestatusArr);
         }
       }
     }

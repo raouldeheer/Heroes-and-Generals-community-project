@@ -1,6 +1,6 @@
-const electron = window.require("electron");
 import { useEffect, useState } from "react";
 import { WarmapEventHandler } from "./warmap";
+import { Line } from 'react-konva';
 
 interface supplylinestatus {
     id: string;
@@ -34,14 +34,19 @@ const Supplyline = ({
             setColor(data.color);
         });
     }, []);
-    
-    return <line
-        x1={battlefield1.posx/8}
-        y1={battlefield1.posy/8}
-        x2={battlefield2.posx/8}
-        y2={battlefield2.posy/8}
+
+    return <Line
+        points={[
+            battlefield1.posx,
+            battlefield1.posy,
+            battlefield2.posx,
+            battlefield2.posy
+        ]}
         stroke={color}
-        strokeWidth="2"
+        strokeWidth={8}
+        listening={false}
+        transformsEnabled = {"position"}
+        perfectDrawEnabled={false}
     />;
 };
 

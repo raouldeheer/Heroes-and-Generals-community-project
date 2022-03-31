@@ -1,8 +1,8 @@
-const electron = window.require("electron");
 import { useEffect, useState } from "react";
 import { WarmapEventHandler } from "./warmap";
+import { Circle, Text } from 'react-konva';
 
-const pointSize = 2;
+const pointSize = 15;
 
 interface Battlefield {
     id: string;
@@ -42,19 +42,28 @@ const BattlefieldPoint = ({
         });
     }, []);
 
-    function clicked(e: { preventDefault: () => void; }) {
-        e.preventDefault();
+    function clicked() {
         console.log(`You clicked on: ${bfdata.bftitle}`);
     }
-    return <circle style={{ cursor: "pointer" }}
-        cx={bfdata.posx / 8}
-        cy={bfdata.posy / 8}
-        r={pointSize}
-        stroke="black"
-        strokeWidth="0.5"
-        fill={color}
-        onClick={clicked}
-    />;
+    return <>
+        <Circle style={{ cursor: "pointer" }}
+            x={bfdata.posx}
+            y={bfdata.posy}
+            radius={pointSize}
+            stroke="black"
+            strokeWidth={2}
+            fill={color}
+            onClick={clicked}
+            transformsEnabled={"position"}
+        />
+        <Text
+            text={bfdata.bftitle}
+            x={bfdata.posx}
+            y={bfdata.posy + pointSize}
+            listening={false}
+            transformsEnabled = {"position"}
+        />
+    </>;
 };
 
 export default BattlefieldPoint;

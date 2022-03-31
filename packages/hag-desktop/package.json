@@ -86,10 +86,12 @@
     "electron": "17.1.2",
     "electron-squirrel-startup": "^1.0.0",
     "file-loader": "^6.2.0",
+    "konva": "^8.3.5",
     "lodash": "^4.17.21",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-hook-form": "^7.28.1",
+    "react-konva": "^17.0.2-6",
     "react-map-interaction": "^2.1.0"
   }
 }

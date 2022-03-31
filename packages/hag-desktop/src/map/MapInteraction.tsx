@@ -162,7 +162,7 @@ export class MapInteractionControlled extends Component<any, any> {
   }
 
   // handles both touch and mouse drags
-  onDrag = throttle(this.realOnDrag, 30);
+  onDrag = throttle(this.realOnDrag, 6.9);
   realOnDrag(pointer: MouseEvent | Touch) {
     if (!this.startPointerInfo) return;
     const { translation, pointers } = this.startPointerInfo;
@@ -185,7 +185,7 @@ export class MapInteractionControlled extends Component<any, any> {
     });
   }
 
-  onWheel = throttle(this.realOnWheel, 30);
+  onWheel = throttle(this.realOnWheel, 6.9);
   realOnWheel(e: React.WheelEvent<HTMLElement>) {
     e.preventDefault();
     e.stopPropagation();

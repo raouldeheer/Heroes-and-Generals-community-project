@@ -21,11 +21,6 @@ const factions: string[] = [];
 export class WarmapEventHandler extends EventEmitter {
     constructor() {
         super();
-        electron.ipcRenderer.on("updateBattlefieldstatus", (_, data) => {
-            if (!factions.includes(data.factionid)) factions.push(data.factionid);
-            data.color = colors[factions.indexOf(data.factionid)];
-            this.emit(`battlefield${data.battlefieldid}`, data);
-        });
         electron.ipcRenderer.on("updateBattlefieldstatusBatch", (_, data: any[]) => {
             data.forEach(element => {
                 if (!factions.includes(element.factionid)) factions.push(element.factionid);
@@ -39,11 +34,6 @@ export class WarmapEventHandler extends EventEmitter {
                 element.color = colors[factions.indexOf(element.factionid)];
                 this.emit(`supplyline${element.supplylineid}`, element);
             });
-        });
-        electron.ipcRenderer.on("updateSupplylinestatus", (_, data) => {
-            if (!factions.includes(data.factionid)) factions.push(data.factionid);
-            data.color = colors[factions.indexOf(data.factionid)];
-            this.emit(`supplyline${data.supplylineid}`, data);
         });
     }
 }

@@ -1,5 +1,5 @@
 import { app, BrowserWindow, ipcMain } from "electron";
-import { Client, DataStore } from "hag-network-client";
+import { Client } from "hag-network-client";
 import { ip, port } from "hag-network-client/dist/env";
 import { ResponseType } from "hag-network-client/dist/protolinking/classKeys";
 import Long from "long";
@@ -52,7 +52,6 @@ function startClient(webContents: Electron.WebContents, userName: string, passwo
                 webContents.send("updateBattlefieldstatusBatch", battlefieldstatusArr);
                 battlefieldstatusArr = [];
               }
-              // webContents.send("updateBattlefieldstatus", iterator.value);
               break;
             case "supplylinestatus":
               supplylinestatusArr.push(iterator.value);
@@ -60,7 +59,6 @@ function startClient(webContents: Electron.WebContents, userName: string, passwo
                 webContents.send("updateSupplylinestatusBatch", supplylinestatusArr);
                 supplylinestatusArr = [];
               }
-              // webContents.send("updateSupplylinestatus", iterator.value);
               break;
             case "war":
               if (iterator.value.sequelwarid !== "0") {

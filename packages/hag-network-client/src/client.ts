@@ -2,7 +2,7 @@ import { EventEmitter } from "events";
 import { Socket, createConnection } from "net";
 import { createHash, createHmac } from 'crypto';
 import BufferCursor from "./buffercursor";
-import { keyToClass } from "./protolinking/classKeys";
+import { keyToClass, ResponseType } from "./protolinking/classKeys";
 import { ProtoToString } from "./protoclasses/proto";
 import { gunzipSync } from "zlib";
 import { appendFileSync, writeFileSync } from "fs";
@@ -165,7 +165,12 @@ export class Client extends EventEmitter {
                     this.sendPacket("login2_response", this.login(this.password, result));
                     break;
                 case "login2_result":
-                    this.emit("loggedin");
+                    if (result.response == ResponseType.login_success) {
+                        this.emit("loggedin");
+                    } else {
+                        console.log("Login failed!!!");
+                        this.emit("loginFailed");
+                    }
                     break;
                 case "keepaliverequest":
                     // TODO Find out what 8374 means.

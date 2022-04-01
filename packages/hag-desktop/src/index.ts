@@ -25,7 +25,14 @@ function startClient(webContents: Electron.WebContents, userName: string, passwo
   client.once("loggedin", async () => {
     webContents.send("loggedin");
     client.sendPacket("subscribewarmapview");
+    client.sendPacket("subscribebattlesview");
     client.sendPacket("query_war_catalogue_request");
+  }).on("loginFailed", () => {
+    webContents.mainFrame.executeJavaScript("alert('Login failed!');");
+    setTimeout(() => {
+      client.close();
+      webContents.reload();
+    }, 500);
   }).on("join_war_response", async (data: { msg: ResponseType, redirectSrv?: string; }) => {
     if (data.msg === ResponseType.ok) {
       if (data.redirectSrv) {
@@ -44,8 +51,12 @@ function startClient(webContents: Electron.WebContents, userName: string, passwo
       if (data?.set) {
         let battlefieldstatusArr = [];
         let supplylinestatusArr = [];
+        const battlesArr = [];
         for (const iterator of data.set) {
           switch (iterator.key) {
+            case "BattleInfo":
+              battlesArr.push(iterator.value);
+              break;
             case "battlefieldstatus":
               battlefieldstatusArr.push(iterator.value);
               if (battlefieldstatusArr.length > 500) {
@@ -76,8 +87,23 @@ function startClient(webContents: Electron.WebContents, userName: string, passwo
         if (battlefieldstatusArr.length > 0) {
           webContents.send("updateBattlefieldstatusBatch", battlefieldstatusArr);
         }
+        if (battlesArr.length > 0) {
+          webContents.send("setBattlesBatch", battlesArr);
+        }
         if (supplylinestatusArr.length > 0) {
           webContents.send("updateSupplylinestatusBatch", supplylinestatusArr);
+        }
+      } else if (data?.delete) {
+        const battlesArr = [];
+        for (const iterator of data.delete) {
+          switch (iterator.key) {
+            case "BattleInfo":
+              battlesArr.push(iterator.value);
+              break;
+          }
+        }
+        if (battlesArr.length > 0) {
+          webContents.send("deleteBattlesBatch", battlesArr);
         }
       }
     }

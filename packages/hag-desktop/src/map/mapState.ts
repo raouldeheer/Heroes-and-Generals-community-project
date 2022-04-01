@@ -16,6 +16,18 @@ export function useMap<T, Y>(from?: Map<T, Y>) {
                 return newState;
             });
         },
+        insertbatch: (data: { key: T, value: Y; }[]) => {
+            setState((oldState) =>
+                data.reduce((prev, { key, value }) =>
+                    prev.set(key, value), new Map(oldState)));
+        },
+        deletebatch: (data: T[]) => {
+            setState((oldState) =>
+                data.reduce((prev, key) => {
+                    prev.delete(key);
+                    return prev;
+                }, new Map(oldState)));
+        },
         clear: () => {
             setState((prev) => {
                 prev.clear();

@@ -2,12 +2,13 @@
 // @ts-ignore
 import image from "../background.png";
 import MapInteractionCSS from "./MapInteraction";
-import React from "react";
+import React, { useEffect } from "react";
 import BattlefieldPoint from "./battlefieldPoint";
-import { Stage, Layer } from 'react-konva';
+import { Stage, Layer, Circle } from 'react-konva';
 const electron = window.require("electron");
 import EventEmitter from "events";
 import Supplyline from "./supplyline";
+import { useMap } from "./mapState";
 import accesspoint from "hag-network-client/jsondb/accesspoint.json";
 import battlefield from "hag-network-client/jsondb/battlefield.json";
 import supplyline from "hag-network-client/jsondb/supplyline.json";
@@ -67,6 +68,20 @@ const bfs = Array.from(battlefieldsMap.keys());
 const sups = Array.from(supplylinesMap.keys());
 
 const Warmap = (): JSX.Element => {
+    const {
+        state: battles,
+        insertbatch: insertBattles,
+        deletebatch: deleteBattles
+    } = useMap<any, any>();
+
+    useEffect(() => {
+        electron.ipcRenderer.on("setBattlesBatch", (_, data: any[]) => {
+            insertBattles(data.map(v => ({ key: v.id, value: v })));
+        });
+        electron.ipcRenderer.on("deleteBattlesBatch", (_, data: any[]) => {
+            deleteBattles(data);
+        });
+    }, []);
 
     return <div style={componentStyling}>
         <MapInteractionCSS minScale={0.10}
@@ -90,6 +105,16 @@ const Warmap = (): JSX.Element => {
                         battlefieldId={element}
                         battlefields={battlefieldsMap}
                         warmapEventHandler={warmapEventHandler}
+                    />)}
+                </Layer>
+                <Layer>
+                    {Array.from(battles.values()).map(v => <Circle
+                        key={v.id}
+                        x={v.posX}
+                        y={v.posY}
+                        radius={3}
+                        fill="black"
+                        transformsEnabled={"position"}
                     />)}
                 </Layer>
             </Stage>

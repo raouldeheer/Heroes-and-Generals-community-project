@@ -2259,7 +2259,7 @@ required string time = 2;
 required Common.Response response = 3;
 optional string banExpires = 4;
 optional string banReason = 5;
-required player currentplayer = 6;
+optional player currentplayer = 6;
 }
 
 message login2_service_login {

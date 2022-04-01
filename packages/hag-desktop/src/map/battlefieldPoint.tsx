@@ -24,31 +24,28 @@ interface battlefieldstatus {
 }
 
 const BattlefieldPoint = ({
-    battlefieldId,
-    battlefields,
+    battlefield,
     warmapEventHandler
 }: {
-    battlefieldId: string;
-    battlefields: Map<string, Battlefield>;
+    battlefield: Battlefield;
     warmapEventHandler: WarmapEventHandler;
 }): JSX.Element => {
-    const bfdata: Battlefield = battlefields.get(battlefieldId);
     const [color, setColor] = useState("#888");
 
     useEffect(() => {
-        warmapEventHandler.on(`battlefield${battlefieldId}`, (data: battlefieldstatus) => {
+        warmapEventHandler.on(`battlefield${battlefield.id}`, (data: battlefieldstatus) => {
             // console.log(data.color);
             setColor(data.color);
         });
     }, []);
 
     function clicked() {
-        console.log(`You clicked on: ${bfdata.bftitle}`);
+        console.log(`You clicked on: ${battlefield.bftitle}`);
     }
     return <>
         <Circle style={{ cursor: "pointer" }}
-            x={bfdata.posx}
-            y={bfdata.posy}
+            x={battlefield.posx}
+            y={battlefield.posy}
             radius={pointSize}
             stroke="black"
             strokeWidth={2}
@@ -57,9 +54,9 @@ const BattlefieldPoint = ({
             transformsEnabled={"position"}
         />
         <Text
-            text={bfdata.bftitle}
-            x={bfdata.posx}
-            y={bfdata.posy + pointSize}
+            text={battlefield.bftitle}
+            x={battlefield.posx}
+            y={battlefield.posy + pointSize}
             listening={false}
             transformsEnabled = {"position"}
         />

@@ -9,12 +9,13 @@ const electron = window.require("electron");
 import EventEmitter from "events";
 import Supplyline from "./supplyline";
 import { useMap } from "./mapState";
-import accesspoint from "hag-network-client/jsondb/accesspoint.json";
 import battlefield from "hag-network-client/jsondb/battlefield.json";
 import supplyline from "hag-network-client/jsondb/supplyline.json";
 
-const width = 2048 * 8;
-const height = 1440 * 8;
+const baseWidth = 2048;
+const baseHeight = 1440;
+const width = baseWidth * 8;
+const height = baseHeight * 8;
 
 const colors = ["#f00", "#0f0", "#00f", "#000", "#fff", "#888"]; // TODO fix colors!
 const factions: string[] = [];
@@ -60,28 +61,73 @@ const mapStyles: React.CSSProperties = {
     height: `${height}px`
 };
 
-const battlefieldsMap = new Map<string, any>(battlefield as Iterable<readonly [string, any]>);
-const supplylinesMap = new Map<string, any>(supplyline as Iterable<readonly [string, any]>);
-const accesspointsMap = new Map<string, any>(accesspoint as Iterable<readonly [string, any]>);
+const posToSector = (x: number, y: number) =>
+    (Math.floor(y / baseHeight) * 8) + Math.floor(x / baseWidth);
 
-const bfs = Array.from(battlefieldsMap.keys());
-const sups = Array.from(supplylinesMap.keys());
+
+const bfsSectors: any[][] = [];
+battlefield.map(v => v[1]).forEach((element: any) => {
+    const index = posToSector(element.posx, element.posy);
+    if (index > 64) return;
+    if (!bfsSectors[index]) bfsSectors[index] = [];
+    bfsSectors[index].push(element);
+});
+const supsSectors: any[][] = [];
+supplyline.map(v => v[1]).forEach((element: any) => {
+    const index = posToSector(element.posx1, element.posy1);
+    const index2 = posToSector(element.posx2, element.posy2);
+    if (!supsSectors[index]) supsSectors[index] = [];
+    supsSectors[index].push(element);
+    if (index !== index2) {
+        if (!supsSectors[index2]) supsSectors[index2] = [];
+        supsSectors[index2].push(element);
+    }
+});
 
 const Warmap = (): JSX.Element => {
-    const {
-        state: battles,
-        insertbatch: insertBattles,
-        deletebatch: deleteBattles
-    } = useMap<any, any>();
+    // const {
+    //     state: battles,
+    //     insertbatch: insertBattles,
+    //     deletebatch: deleteBattles
+    // } = useMap<any, any>();
 
-    useEffect(() => {
-        electron.ipcRenderer.on("setBattlesBatch", (_, data: any[]) => {
-            insertBattles(data.map(v => ({ key: v.id, value: v })));
-        });
-        electron.ipcRenderer.on("deleteBattlesBatch", (_, data: any[]) => {
-            deleteBattles(data);
-        });
-    }, []);
+    // useEffect(() => {
+    //     electron.ipcRenderer.on("setBattlesBatch", (_, data: any[]) => {
+    //         insertBattles(data.map(v => ({ key: v.id, value: v })));
+    //     });
+    //     electron.ipcRenderer.on("deleteBattlesBatch", (_, data: any[]) => {
+    //         deleteBattles(data);
+    //     });
+    // }, []);
+
+    const sectors = [];
+    for (let x = 0; x < 8; x++) {
+        for (let y = 0; y < 8; y++) {
+            const index = (y * 8) + x;
+            if (bfsSectors[index] || supsSectors[index]) {
+                sectors.push(<Stage style={{
+                    position: "absolute",
+                    top: `${baseHeight * y}px`,
+                    left: `${baseWidth * x}px`,
+                    width: `${baseWidth}px`,
+                    height: `${baseHeight}px`
+                }} key={`sector${index}`} width={baseWidth} height={baseHeight} offsetX={baseWidth * x} offsetY={baseHeight * y}>
+                    <Layer>
+                        {supsSectors[index]?.map(element => <Supplyline
+                            key={element.id}
+                            supplyline={element}
+                            warmapEventHandler={warmapEventHandler}
+                        />)}
+                        {bfsSectors[index]?.map(element => <BattlefieldPoint
+                            key={element.id}
+                            battlefield={element}
+                            warmapEventHandler={warmapEventHandler}
+                        />)}
+                    </Layer>
+                </Stage>);
+            }
+        }
+    }
 
     return <div style={componentStyling}>
         <MapInteractionCSS minScale={0.10}
@@ -90,23 +136,8 @@ const Warmap = (): JSX.Element => {
                 translation: { x: 0, y: 0, },
             }}>
             <img src={image} style={mapStyles} />
-            <Stage style={mapStyles} width={width} height={height}>
-                <Layer>
-                    {sups.map(element => <Supplyline
-                        key={element}
-                        supplylineId={element}
-                        battlefields={battlefieldsMap}
-                        accesspoints={accesspointsMap}
-                        supplylines={supplylinesMap}
-                        warmapEventHandler={warmapEventHandler}
-                    />)}
-                    {bfs.map(element => <BattlefieldPoint
-                        key={element}
-                        battlefieldId={element}
-                        battlefields={battlefieldsMap}
-                        warmapEventHandler={warmapEventHandler}
-                    />)}
-                </Layer>
+            {sectors}
+            {/* <Stage style={mapStyles} width={width} height={height}>
                 <Layer>
                     {Array.from(battles.values()).map(v => <Circle
                         key={v.id}
@@ -117,7 +148,7 @@ const Warmap = (): JSX.Element => {
                         transformsEnabled={"position"}
                     />)}
                 </Layer>
-            </Stage>
+            </Stage> */}
         </MapInteractionCSS>
     </div>;
 };

@@ -11,25 +11,25 @@ interface supplylinestatus {
 }
 
 const Supplyline = ({
-    supplylineId,
-    supplylines,
-    accesspoints,
-    battlefields,
+    supplyline,
     warmapEventHandler,
 }: {
-    supplylineId: string;
-    supplylines: Map<string, { accesspoint1Id: string, accesspoint2Id: string; }>;
-    accesspoints: Map<string, { battlefield: string; }>;
-    battlefields: Map<string, { posx: number, posy: number; }>;
+    supplyline: {
+        id: string;
+        accesspoint1Id: string;
+        accesspoint2Id: string;
+        posx1: number;
+        posy1: number;
+        posx2: number;
+        posy2: number;
+    };
     warmapEventHandler: WarmapEventHandler;
 }): JSX.Element => {
-    const { accesspoint1Id, accesspoint2Id } = supplylines.get(supplylineId);
-    const battlefield1 = battlefields.get(accesspoints.get(accesspoint1Id).battlefield);
-    const battlefield2 = battlefields.get(accesspoints.get(accesspoint2Id).battlefield);
+    const { posx1, posy1, posx2, posy2 } = supplyline;
     const [color, setColor] = useState("#888");
 
     useEffect(() => {
-        warmapEventHandler.on(`supplyline${supplylineId}`, (data: supplylinestatus) => {
+        warmapEventHandler.on(`supplyline${supplyline.id}`, (data: supplylinestatus) => {
             // console.log(data.color);
             setColor(data.color);
         });
@@ -37,15 +37,15 @@ const Supplyline = ({
 
     return <Line
         points={[
-            battlefield1.posx,
-            battlefield1.posy,
-            battlefield2.posx,
-            battlefield2.posy
+            posx1, 
+            posy1, 
+            posx2, 
+            posy2
         ]}
         stroke={color}
         strokeWidth={8}
         listening={false}
-        transformsEnabled = {"position"}
+        transformsEnabled={"position"}
         perfectDrawEnabled={false}
     />;
 };

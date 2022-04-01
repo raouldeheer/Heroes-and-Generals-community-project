@@ -66,21 +66,35 @@ const posToSector = (x: number, y: number) =>
 
 
 const bfsSectors: any[][] = [];
+const supsSectors: any[][] = [];
+
+function addToSector(sectors: any[][], index: number, element: any) {
+    if (index > 64) return;
+    if (!sectors[index]) sectors[index] = [];
+    sectors[index].push(element);
+}
+
 battlefield.map(v => v[1]).forEach((element: any) => {
     const index = posToSector(element.posx, element.posy);
-    if (index > 64) return;
-    if (!bfsSectors[index]) bfsSectors[index] = [];
-    bfsSectors[index].push(element);
+    addToSector(bfsSectors, index, element);
+    const edgeY = element.posy % baseHeight;
+    if (edgeY < 50) addToSector(bfsSectors, index - 8, element);
+    else if (edgeY > (baseHeight - 50)) addToSector(bfsSectors, index + 8, element);
+    const edgeX = element.posx % baseWidth;
+    if (edgeX < 50) addToSector(bfsSectors, index - 1, element);
+    else if (edgeX > (baseWidth - 50)) addToSector(bfsSectors, index + 1, element);
 });
-const supsSectors: any[][] = [];
+
 supplyline.map(v => v[1]).forEach((element: any) => {
     const index = posToSector(element.posx1, element.posy1);
     const index2 = posToSector(element.posx2, element.posy2);
-    if (!supsSectors[index]) supsSectors[index] = [];
-    supsSectors[index].push(element);
+    addToSector(supsSectors, index, element);
     if (index !== index2) {
-        if (!supsSectors[index2]) supsSectors[index2] = [];
-        supsSectors[index2].push(element);
+        addToSector(supsSectors, index2, element);
+        const index3 = posToSector(element.posx1, element.posy2);
+        if (index3 !== index && index3 !== index2) addToSector(supsSectors, index3, element);
+        const index4 = posToSector(element.posx2, element.posy1);
+        if (index4 !== index && index4 !== index2 && index4 !== index3) addToSector(supsSectors, index4, element);
     }
 });
 

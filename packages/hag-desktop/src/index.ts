@@ -25,8 +25,6 @@ function startClient(webContents: Electron.WebContents, userName: string, passwo
   client.once("loggedin", async () => {
     webContents.send("loggedin");
     client.sendPacket("subscribewarmapview");
-    client.sendPacket("subscribebattlesview");
-    client.sendPacket("query_war_catalogue_request");
   }).on("loginFailed", () => {
     webContents.mainFrame.executeJavaScript("alert('Login failed!');");
     setTimeout(() => {
@@ -42,7 +40,7 @@ function startClient(webContents: Electron.WebContents, userName: string, passwo
       setTimeout(() => {
         client.close();
         webContents.reload();
-      }, 100);
+      }, 500);
     } else {
       console.error(`ERROR: ${data}`);
     }
@@ -51,11 +49,15 @@ function startClient(webContents: Electron.WebContents, userName: string, passwo
       if (data?.set) {
         let battlefieldstatusArr = [];
         let supplylinestatusArr = [];
-        const battlesArr = [];
+        const battleInfosArr = [];
+        const battleArr = [];
         for (const iterator of data.set) {
           switch (iterator.key) {
             case "BattleInfo":
-              battlesArr.push(iterator.value);
+              battleInfosArr.push(iterator.value);
+              break;
+            case "battle":
+              battleArr.push(iterator.value);
               break;
             case "battlefieldstatus":
               battlefieldstatusArr.push(iterator.value);
@@ -87,23 +89,34 @@ function startClient(webContents: Electron.WebContents, userName: string, passwo
         if (battlefieldstatusArr.length > 0) {
           webContents.send("updateBattlefieldstatusBatch", battlefieldstatusArr);
         }
-        if (battlesArr.length > 0) {
-          webContents.send("setBattlesBatch", battlesArr);
+        if (battleArr.length > 0) {
+          webContents.send("updateBattlesBatch", battleArr);
+        }
+        if (battleInfosArr.length > 0) {
+          webContents.send("setBattleInfosBatch", battleInfosArr);
         }
         if (supplylinestatusArr.length > 0) {
           webContents.send("updateSupplylinestatusBatch", supplylinestatusArr);
         }
       } else if (data?.delete) {
-        const battlesArr = [];
+        const battleInfosArr = [];
+        const battleArr = [];
         for (const iterator of data.delete) {
           switch (iterator.key) {
             case "BattleInfo":
-              battlesArr.push(iterator.value);
+              battleInfosArr.push(iterator.value);
+              break;
+            case "battle":
+              battleArr.push(iterator.value);
               break;
           }
+          console.log(`deleted: ${iterator.key} id: ${iterator.value}`);
         }
-        if (battlesArr.length > 0) {
-          webContents.send("deleteBattlesBatch", battlesArr);
+        if (battleInfosArr.length > 0) {
+          webContents.send("deleteBattleInfosBatch", battleInfosArr);
+        }
+        if (battleArr.length > 0) {
+          webContents.send("deleteBattlesBatch", battleArr);
         }
       }
     }

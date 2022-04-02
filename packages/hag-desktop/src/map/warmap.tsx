@@ -30,6 +30,14 @@ export class WarmapEventHandler extends EventEmitter {
                 this.emit(`battlefield${element.battlefieldid}`, element);
             });
         });
+        electron.ipcRenderer.on("updateBattlesBatch", (_, data: any[]) => {
+            console.log("updateBattlesBatch");
+            console.log(data);
+        });
+        electron.ipcRenderer.on("deleteBattlesBatch", (_, data: any[]) => {
+            console.log("deleteBattlesBatch");
+            console.log(data);
+        });
         electron.ipcRenderer.on("updateSupplylinestatusBatch", (_, data: any[]) => {
             data.forEach(element => {
                 if (!factions.includes(element.factionid)) factions.push(element.factionid);
@@ -99,21 +107,6 @@ supplyline.map(v => v[1]).forEach((element: any) => {
 });
 
 const Warmap = (): JSX.Element => {
-    // const {
-    //     state: battles,
-    //     insertbatch: insertBattles,
-    //     deletebatch: deleteBattles
-    // } = useMap<any, any>();
-
-    // useEffect(() => {
-    //     electron.ipcRenderer.on("setBattlesBatch", (_, data: any[]) => {
-    //         insertBattles(data.map(v => ({ key: v.id, value: v })));
-    //     });
-    //     electron.ipcRenderer.on("deleteBattlesBatch", (_, data: any[]) => {
-    //         deleteBattles(data);
-    //     });
-    // }, []);
-
     const sectors = [];
     for (let x = 0; x < 8; x++) {
         for (let y = 0; y < 8; y++) {
@@ -151,18 +144,6 @@ const Warmap = (): JSX.Element => {
             }}>
             <img src={image} style={mapStyles} />
             {sectors}
-            {/* <Stage style={mapStyles} width={width} height={height}>
-                <Layer>
-                    {Array.from(battles.values()).map(v => <Circle
-                        key={v.id}
-                        x={v.posX}
-                        y={v.posY}
-                        radius={3}
-                        fill="black"
-                        transformsEnabled={"position"}
-                    />)}
-                </Layer>
-            </Stage> */}
         </MapInteractionCSS>
     </div>;
 };

@@ -3,7 +3,7 @@ const accesspoint = JSON.loadS("./jsondb/accesspoint.json");
 const battlefield = JSON.loadS("./jsondb/battlefield.json");
 const supplyline = JSON.loadS("./jsondb/supplyline.json");
 
-
+// TODO fix this so that it works with new jsondb without keys.
 const battlefields = new Map<string, any>(battlefield as Iterable<readonly [string, any]>);
 const supplylines = new Map<string, any>(supplyline as Iterable<readonly [string, any]>);
 const accesspoints = new Map<string, any>(accesspoint as Iterable<readonly [string, any]>);

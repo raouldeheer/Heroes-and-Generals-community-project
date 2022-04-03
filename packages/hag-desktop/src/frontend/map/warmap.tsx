@@ -1,6 +1,6 @@
 // eslint-disable-next-line
 // @ts-ignore
-import image from "../background.png";
+import image from "../imgs/background.png";
 import MapInteractionCSS from "./MapInteraction";
 import React, { useEffect } from "react";
 import BattlefieldPoint from "./battlefieldPoint";

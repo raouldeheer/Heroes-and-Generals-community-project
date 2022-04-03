@@ -30,7 +30,7 @@ module.exports = [
     test: /\.(jpe?g|png|gif|svg)$/i,
     loader: 'file-loader',
     options: {
-      name: 'src/[name].[ext]'
+      name: 'src/frontend/[name].[ext]'
     }
   },
 ];

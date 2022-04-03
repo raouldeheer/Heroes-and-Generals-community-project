@@ -82,7 +82,7 @@ function addToSector(sectors: any[][], index: number, element: any) {
     sectors[index].push(element);
 }
 
-battlefield.map(v => v[1]).forEach((element: any) => {
+battlefield.forEach((element: any) => {
     const index = posToSector(element.posx, element.posy);
     addToSector(bfsSectors, index, element);
     const edgeY = element.posy % baseHeight;
@@ -93,10 +93,10 @@ battlefield.map(v => v[1]).forEach((element: any) => {
     else if (edgeX > (baseWidth - 50)) addToSector(bfsSectors, index + 1, element);
 });
 
-supplyline.map(v => v[1]).forEach((element: any) => {
+supplyline.forEach((element: any) => {
     const index = posToSector(element.posx1, element.posy1);
-    const index2 = posToSector(element.posx2, element.posy2);
     addToSector(supsSectors, index, element);
+    const index2 = posToSector(element.posx2, element.posy2);
     if (index !== index2) {
         addToSector(supsSectors, index2, element);
         const index3 = posToSector(element.posx1, element.posy2);

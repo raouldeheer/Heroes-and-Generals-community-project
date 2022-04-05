@@ -2,6 +2,7 @@ import "react";
 import * as ReactDOM from "react-dom";
 import Login from "./login";
 import Warmap from "./map/warmap";
+import Popups from "./popup/popups";
 
 const App = (): JSX.Element => {
 
@@ -9,6 +10,7 @@ const App = (): JSX.Element => {
     <p>Empty app______  </p>
     <Login />
     <Warmap />
+    <Popups />
   </>;
 };
 

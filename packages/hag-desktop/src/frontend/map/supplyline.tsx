@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { WarmapEventHandler } from "./warmap";
 import { Line } from 'react-konva';
+import { WarmapEventHandler } from "../warmapEventHandler";
 
 interface supplylinestatus {
     id: string;

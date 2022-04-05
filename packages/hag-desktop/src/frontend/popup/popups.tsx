@@ -1,5 +1,6 @@
 const electron = window.require("electron");
 import { MouseEventHandler, useEffect, useState } from "react";
+import { WarmapEventHandler } from "../warmapEventHandler";
 import BattlefieldInfoPopup from "./battlefieldInfoPopup";
 
 const wrapperStyling: React.CSSProperties = {
@@ -15,31 +16,30 @@ const wrapperStyling: React.CSSProperties = {
     zIndex: 10,
 };
 
-const Popups = (): JSX.Element => {
+const Popups = ({
+    warmapEventHandler
+}: {
+    warmapEventHandler: WarmapEventHandler;
+}): JSX.Element => {
     const [isVisible, setIsVisible] = useState(true);
 
 
     useEffect(() => {
-        // effect
+        warmapEventHandler.on("BattlefieldInfoPopup_Show", (id: string) => {
+            console.log(`Showing battlefield: ${id}`);
+            setIsVisible(true);
+        });
     }, []);
 
     const close = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-        console.log(event);
-        console.log(event.target);
-        console.log(event.currentTarget);
-        
         if (event.target == event.currentTarget) {
-            console.log("true");
-            
             setIsVisible(false);
-        } else {
-            console.log("false")
         }
     };
 
     if (isVisible) {
         return <div style={wrapperStyling} onClick={close}>
-            <BattlefieldInfoPopup />
+            <BattlefieldInfoPopup warmapEventHandler={warmapEventHandler} />
         </div>;
     } else {
         return <></>;

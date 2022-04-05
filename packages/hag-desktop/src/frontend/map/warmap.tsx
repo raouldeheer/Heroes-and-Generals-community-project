@@ -6,49 +6,15 @@ import React, { useEffect } from "react";
 import BattlefieldPoint from "./battlefieldPoint";
 import { Stage, Layer, Circle } from 'react-konva';
 const electron = window.require("electron");
-import EventEmitter from "events";
 import Supplyline from "./supplyline";
-import { useMap } from "./mapState";
 import battlefield from "hag-network-client/jsondb/battlefield.json";
 import supplyline from "hag-network-client/jsondb/supplyline.json";
+import { WarmapEventHandler } from "../warmapEventHandler";
 
 const baseWidth = 2048;
 const baseHeight = 1440;
 const width = baseWidth * 8;
 const height = baseHeight * 8;
-
-const colors = ["#f00", "#0f0", "#00f", "#000", "#fff", "#888"]; // TODO fix colors!
-const factions: string[] = [];
-
-export class WarmapEventHandler extends EventEmitter {
-    constructor() {
-        super();
-        electron.ipcRenderer.on("updateBattlefieldstatusBatch", (_, data: any[]) => {
-            data.forEach(element => {
-                if (!factions.includes(element.factionid)) factions.push(element.factionid);
-                element.color = colors[factions.indexOf(element.factionid)];
-                this.emit(`battlefield${element.battlefieldid}`, element);
-            });
-        });
-        electron.ipcRenderer.on("updateBattlesBatch", (_, data: any[]) => {
-            console.log("updateBattlesBatch");
-            console.log(data);
-        });
-        electron.ipcRenderer.on("deleteBattlesBatch", (_, data: any[]) => {
-            console.log("deleteBattlesBatch");
-            console.log(data);
-        });
-        electron.ipcRenderer.on("updateSupplylinestatusBatch", (_, data: any[]) => {
-            data.forEach(element => {
-                if (!factions.includes(element.factionid)) factions.push(element.factionid);
-                element.color = colors[factions.indexOf(element.factionid)];
-                this.emit(`supplyline${element.supplylineid}`, element);
-            });
-        });
-    }
-}
-
-const warmapEventHandler = new WarmapEventHandler();
 
 const posStyling: React.CSSProperties = {
     position: "absolute",
@@ -106,7 +72,11 @@ supplyline.forEach((element: any) => {
     }
 });
 
-const Warmap = (): JSX.Element => {
+const Warmap = ({
+    warmapEventHandler
+}: {
+    warmapEventHandler: WarmapEventHandler;
+}): JSX.Element => {
     const sectors = [];
     for (let x = 0; x < 8; x++) {
         for (let y = 0; y < 8; y++) {

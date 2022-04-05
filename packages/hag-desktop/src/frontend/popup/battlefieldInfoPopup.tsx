@@ -1,5 +1,6 @@
 const electron = window.require("electron");
 import { useEffect, useState } from "react";
+import { WarmapEventHandler } from "../warmapEventHandler";
 
 const wrapperStyling: React.CSSProperties = {
     display: "flex",
@@ -12,10 +13,14 @@ const wrapperStyling: React.CSSProperties = {
     zIndex: 10,
 };
 
-const BattlefieldInfoPopup = (): JSX.Element => {
+const BattlefieldInfoPopup = ({
+    warmapEventHandler
+}: {
+    warmapEventHandler: WarmapEventHandler;
+}): JSX.Element => {
 
     useEffect(() => {
-        // effect
+        // Effect
     }, []);
 
     return <div style={wrapperStyling}>

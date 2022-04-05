@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { WarmapEventHandler } from "./warmap";
 import { Circle, Text } from 'react-konva';
+import { WarmapEventHandler } from "../warmapEventHandler";
 
 const pointSize = 15;
 
@@ -41,6 +41,7 @@ const BattlefieldPoint = ({
 
     function clicked() {
         console.log(`You clicked on: ${battlefield.bftitle}`);
+        warmapEventHandler.emit("BattlefieldInfoPopup_Show", battlefield.id);
     }
     return <>
         <Circle style={{ cursor: "pointer" }}

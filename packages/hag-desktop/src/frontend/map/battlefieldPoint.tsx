@@ -4,7 +4,7 @@ import { WarmapEventHandler } from "../warmapEventHandler";
 
 const pointSize = 15;
 
-interface Battlefield {
+export interface Battlefield {
     id: string;
     mapid: string;
     bftitle: string;
@@ -41,7 +41,7 @@ const BattlefieldPoint = ({
 
     function clicked() {
         console.log(`You clicked on: ${battlefield.bftitle}`);
-        warmapEventHandler.emit("BattlefieldInfoPopup_Show", battlefield.id);
+        warmapEventHandler.emit("BattlefieldInfoPopup_Show", battlefield);
     }
     return <>
         <Circle style={{ cursor: "pointer" }}

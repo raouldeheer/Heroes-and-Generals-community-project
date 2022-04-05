@@ -1,5 +1,6 @@
 const electron = window.require("electron");
 import { MouseEventHandler, useEffect, useState } from "react";
+import { Battlefield } from "../map/battlefieldPoint";
 import { WarmapEventHandler } from "../warmapEventHandler";
 import BattlefieldInfoPopup from "./battlefieldInfoPopup";
 
@@ -25,8 +26,8 @@ const Popups = ({
 
 
     useEffect(() => {
-        warmapEventHandler.on("BattlefieldInfoPopup_Show", (id: string) => {
-            console.log(`Showing battlefield: ${id}`);
+        warmapEventHandler.on("BattlefieldInfoPopup_Show", (battlefield: Battlefield) => {
+            console.log(`Showing battlefield: ${battlefield.id}`);
             setIsVisible(true);
         });
     }, []);

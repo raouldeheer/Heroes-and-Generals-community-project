@@ -162,7 +162,7 @@ required int64 boosterId = 3;
 required bool activateNow = 4;
 required int64 pricingId = 5;
 required int64 discountId = 6;
-required Common.Response paymentCurrency = 7;
+required VirtualCurrencyType paymentCurrency = 7;
 }
 
 message AddBoosterResponse {
@@ -199,7 +199,7 @@ required int64 membershipTemplateId = 1;
 required int64 pricingId = 2;
 required int64 discountId = 3;
 optional string promoName = 4;
-required Common.Response paymentCurrency = 5;
+required VirtualCurrencyType paymentCurrency = 5;
 }
 
 message AddMembershipResponse {
@@ -223,7 +223,7 @@ required int64 ribbonLevelUpgradeTemplateId = 1;
 required int64 characterId = 2;
 required int64 pricingId = 3;
 required int64 discountId = 4;
-required Common.Response paymentCurrency = 5;
+required VirtualCurrencyType paymentCurrency = 5;
 }
 
 message AddRibbonLevelResponse {
@@ -244,7 +244,7 @@ required int32 eBoosterType = 2;
 required bool activateNow = 3;
 required int64 pricingId = 4;
 required int64 discountId = 5;
-required Common.Response paymentCurrency = 6;
+required VirtualCurrencyType paymentCurrency = 6;
 }
 
 message AddVariousBoosterResponse {
@@ -255,7 +255,7 @@ message AddWarBondRequest {
 required int64 warBondTemplateId = 1;
 required int64 pricingId = 2;
 required int64 discountId = 3;
-required Common.Response paymentCurrency = 4;
+required VirtualCurrencyType paymentCurrency = 4;
 }
 
 message AddWarBondResponse {
@@ -690,7 +690,7 @@ required int64 storeBundleId = 1;
 required int64 pricingId = 2;
 required int64 storeDiscountId = 3;
 required int64 characterId = 4;
-required Common.Response paymentCurrency = 5;
+required VirtualCurrencyType paymentCurrency = 5;
 }
 
 message BuyStoreBundleResponse {
@@ -762,7 +762,7 @@ required string name = 8;
 message ChangeCharacterTemplateRequest {
 required int64 characterId = 1;
 required int64 pricingId = 2;
-required Common.Response paymentCurrency = 3;
+required VirtualCurrencyType paymentCurrency = 3;
 required int64 discountId = 4;
 }
 
@@ -1081,7 +1081,7 @@ required int64 warId = 5;
 required int64 factionId = 6;
 required int64 timestamp = 7;
 required int64 pricingId = 8;
-required Common.Response paymentCurrency = 9;
+required VirtualCurrencyType paymentCurrency = 9;
 required int32 queueNumber = 10;
 required int64 nearCapitalBattlefieldId = 11;
 required int64 playerSessionId = 12;
@@ -1157,7 +1157,7 @@ message CompleteAssaultTeamRankRequest {
 required int64 commandNodeDefinitionId = 1;
 required int64 pricingId = 2;
 required int64 storeDiscountId = 3;
-required Common.Response paymentCurrency = 4;
+required VirtualCurrencyType paymentCurrency = 4;
 }
 
 message CompleteAssaultTeamRankResponse {
@@ -1177,7 +1177,7 @@ required string characterName = 1;
 required int64 characterPackId = 2;
 required int64 pricingId = 3;
 required int64 discountId = 4;
-required Common.Response paymentCurrency = 5;
+required VirtualCurrencyType paymentCurrency = 5;
 }
 
 message CreateCharacterResponse {
@@ -1190,7 +1190,7 @@ required string abbreviation = 2;
 required int64 commandnodeTemplateId = 3;
 required int64 pricingId = 4;
 required int64 discountId = 5;
-required Common.Response paymentCurrency = 6;
+required VirtualCurrencyType paymentCurrency = 6;
 }
 
 message CreateCommandNodeResponse {
@@ -1210,7 +1210,7 @@ required Common.Response result = 1;
 message CreateInsigniaRequest {
 repeated InsigniaPart parts = 1;
 repeated int64 pricingIds = 2;
-required Common.Response paymentCurrency = 3;
+required VirtualCurrencyType paymentCurrency = 3;
 }
 
 message CreateInsigniaResponse {
@@ -1262,7 +1262,7 @@ required int64 characterPricingId = 4;
 required int64 uniformVariantTemplateId = 5;
 required int64 variantPricingId = 6;
 required int64 discountId = 7;
-required Common.Response paymentCurrency = 8;
+required VirtualCurrencyType paymentCurrency = 8;
 }
 
 message CreateUniformVariantResponse {
@@ -1274,7 +1274,7 @@ required int64 ammoTemplateId = 1;
 required int64 vehicleId = 2;
 required int64 pricingId = 3;
 required int64 discountId = 4;
-required Common.Response paymentCurrency = 5;
+required VirtualCurrencyType paymentCurrency = 5;
 }
 
 message CreateVehicleAmmoResponse {
@@ -1286,7 +1286,7 @@ required int64 vehicleUpgradeTemplateId = 1;
 required int64 vehicleId = 2;
 required int64 pricingId = 3;
 required int64 discountId = 4;
-required Common.Response paymentCurrency = 5;
+required VirtualCurrencyType paymentCurrency = 5;
 }
 
 message CreateVehicleUpgradeResponse {
@@ -1301,7 +1301,7 @@ required int64 vehicleId = 4;
 required int64 extraVehicleVariantTemplateId = 5;
 required int64 extraVehicleVariantPricingId = 6;
 required int64 discountId = 7;
-required Common.Response paymentCurrency = 8;
+required VirtualCurrencyType paymentCurrency = 8;
 }
 
 message CreateVehicleVariantResponse {
@@ -1313,7 +1313,7 @@ required int64 ammoTemplateId = 1;
 required int64 weaponId = 2;
 required int64 pricingId = 3;
 required int64 discountId = 4;
-required Common.Response paymentCurrency = 5;
+required VirtualCurrencyType paymentCurrency = 5;
 }
 
 message CreateWeaponAmmoResponse {
@@ -1326,7 +1326,7 @@ required int64 characterId = 3;
 required int64 weaponId = 4;
 required int64 pricingId = 5;
 required int64 discountId = 6;
-required Common.Response paymentCurrency = 7;
+required VirtualCurrencyType paymentCurrency = 7;
 }
 
 message CreateWeaponModifierResponse {
@@ -1343,7 +1343,7 @@ required int64 weaponVariantTemplateId = 6;
 required int64 weaponDiscountId = 7;
 required int64 variantPricingId = 8;
 required int64 variantDiscountId = 9;
-required Common.Response paymentCurrency = 10;
+required VirtualCurrencyType paymentCurrency = 10;
 }
 
 message CreateWeaponVariantResponse {
@@ -1595,7 +1595,7 @@ required int64 vehiclePricingId = 3;
 optional int64 nearCapitalBattlefieldId = 4;
 optional int64 soldierDiscountId = 5;
 optional int64 vehicleDiscountId = 6;
-required Common.Response paymentCurrency = 7;
+required VirtualCurrencyType paymentCurrency = 7;
 }
 
 message DeployCommandNodeResponse {
@@ -3016,7 +3016,7 @@ required int64 battlePassSeasonTemplateId = 1;
 required int64 playerId = 2;
 required int64 pricingId = 3;
 required int64 discountId = 4;
-required Common.Response paymentCurrency = 5;
+required VirtualCurrencyType paymentCurrency = 5;
 }
 
 message PurchaseBattlePassSeasonResponse {
@@ -3029,7 +3029,7 @@ required int64 battlePassTemplateId = 1;
 required int64 playerId = 2;
 required int64 pricingId = 3;
 required int64 discountId = 4;
-required Common.Response paymentCurrency = 5;
+required VirtualCurrencyType paymentCurrency = 5;
 }
 
 message PurchaseBattlePassTierResponse {
@@ -3043,7 +3043,7 @@ required int32 uniformPartType = 2;
 required int64 uniformPartTemplateId = 3;
 required int64 uniformPartPricingId = 4;
 required int64 discountId = 5;
-required Common.Response paymentCurrency = 6;
+required VirtualCurrencyType paymentCurrency = 6;
 }
 
 message PurchaseUniformPartResponse {
@@ -3231,7 +3231,7 @@ required int64 characterId = 1;
 required string newName = 2;
 required int64 pricingId = 3;
 required int64 discountId = 4;
-required Common.Response paymentCurrency = 5;
+required VirtualCurrencyType paymentCurrency = 5;
 }
 
 message RenameCharacterResponse {
@@ -3244,7 +3244,7 @@ required string newName = 2;
 required string newAbbreviation = 3;
 required int64 pricingId = 4;
 required int64 discountId = 5;
-required Common.Response paymentCurrency = 6;
+required VirtualCurrencyType paymentCurrency = 6;
 }
 
 message RenameCommandnodeResponse {
@@ -3256,7 +3256,7 @@ required int64 weaponId = 1;
 required string newName = 2;
 required int64 pricingId = 3;
 required int64 discountId = 4;
-required Common.Response paymentCurrency = 5;
+required VirtualCurrencyType paymentCurrency = 5;
 }
 
 message RenameWeaponResponse {
@@ -3277,7 +3277,7 @@ required int64 vehicleAmmoId = 1;
 required int32 repairToCondition = 2;
 required int64 maxConditionRepairPricingId = 3;
 required int64 storeDiscountId = 4;
-required Common.Response paymentCurrency = 5;
+required VirtualCurrencyType paymentCurrency = 5;
 }
 
 message RepairVehicleAmmoResponse {
@@ -3290,7 +3290,7 @@ required int32 repairToCondition = 3;
 required int64 maxConditionRepairPricingId = 4;
 required int32 overrideCondition = 5;
 required int64 storeDiscountId = 6;
-required Common.Response paymentCurrency = 7;
+required VirtualCurrencyType paymentCurrency = 7;
 }
 
 message RepairVehicleResponse {
@@ -3302,7 +3302,7 @@ required int64 vehicleUpgradeId = 1;
 required int32 repairToCondition = 2;
 required int64 maxConditionRepairPricingId = 3;
 required int64 storeDiscountId = 4;
-required Common.Response paymentCurrency = 5;
+required VirtualCurrencyType paymentCurrency = 5;
 }
 
 message RepairVehicleUpgradeResponse {
@@ -3314,7 +3314,7 @@ required int64 weaponAmmoId = 1;
 required int32 repairToCondition = 2;
 required int64 maxConditionRepairPricingId = 3;
 required int64 storeDiscountId = 4;
-required Common.Response paymentCurrency = 5;
+required VirtualCurrencyType paymentCurrency = 5;
 }
 
 message RepairWeaponAmmoResponse {
@@ -3326,7 +3326,7 @@ required int64 weaponModifierId = 1;
 required int32 repairToCondition = 2;
 required int64 maxConditionRepairPricingId = 3;
 required int64 storeDiscountId = 4;
-required Common.Response paymentCurrency = 5;
+required VirtualCurrencyType paymentCurrency = 5;
 }
 
 message RepairWeaponModifierResponse {
@@ -3338,7 +3338,7 @@ required int64 weaponId = 2;
 required int32 repairToCondition = 3;
 required int64 maxConditionRepairPricingId = 4;
 required int64 storeDiscountId = 5;
-required Common.Response paymentCurrency = 6;
+required VirtualCurrencyType paymentCurrency = 6;
 }
 
 message RepairWeaponResponse {
@@ -3429,7 +3429,7 @@ required int64 vehiclePricingId = 4;
 required int64 vehicleDiscountId = 5;
 optional int64 nearCapitalBattlefieldId = 6;
 repeated transport_commandnode_request_segment path = 7;
-required Common.Response paymentCurrency = 8;
+required VirtualCurrencyType paymentCurrency = 8;
 }
 
 message resupply_request_response {
@@ -3531,7 +3531,7 @@ required Common.Response itemType = 1;
 required int64 objectId = 2;
 required int64 pricingId = 3;
 required int64 storeDiscountId = 4;
-required Common.Response paymentCurrency = 5;
+required VirtualCurrencyType paymentCurrency = 5;
 required string tabName = 6;
 required bool isFree = 7;
 }
@@ -3682,7 +3682,7 @@ optional string squadName = 2;
 optional int64 pricingId = 3;
 optional int64 discountId = 4;
 optional bool saveSessionState = 5;
-required Common.Response paymentCurrency = 6;
+required VirtualCurrencyType paymentCurrency = 6;
 }
 
 message SetSquadDetailsResponse {
@@ -3717,7 +3717,7 @@ required int64 characterId = 3;
 required int64 weaponId = 4;
 required int64 pricingId = 5;
 required int64 storeDiscountId = 6;
-required Common.Response paymentCurrency = 7;
+required VirtualCurrencyType paymentCurrency = 7;
 required bool isUnequip = 8;
 required int64 tracerEffectId = 9;
 }
@@ -4323,7 +4323,7 @@ required int64 uniformPartTemplateId = 2;
 required int32 uniformPartType = 3;
 required int64 pricingId = 4;
 required int64 storeDiscountId = 5;
-required Common.Response paymentCurrency = 6;
+required VirtualCurrencyType paymentCurrency = 6;
 }
 
 message SwapHeadResponse {
@@ -4563,7 +4563,7 @@ optional int32 dummy = 1;
 message UpdateSquadResourceRequest {
 required int64 squadSessionId = 1;
 repeated SquadResourcePurchaseSet resourcePurchaseList = 2;
-required Common.Response paymentCurrency = 3;
+required VirtualCurrencyType paymentCurrency = 3;
 }
 
 message UpdateSquadResourceResponse {
@@ -4590,7 +4590,7 @@ required int64 commandNodeWarInstanceId = 1;
 required int64 upgradeToCommandnodeTemplateId = 2;
 required int64 pricingId = 3;
 required int64 discountId = 4;
-required Common.Response paymentCurrency = 5;
+required VirtualCurrencyType paymentCurrency = 5;
 }
 
 message UpgradeCommandNodeResponse {
@@ -4846,8 +4846,10 @@ required int64 lastTickTime = 2;
 required int64 serverTime = 3;
 }
 
-message VirtualCurrencyType {
-
+enum VirtualCurrencyType {
+    Credits = 1;
+    Warfunds = 2;
+    Gold = 3;
 }
 
 message VoucherPackInfo {

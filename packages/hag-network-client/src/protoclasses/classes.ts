@@ -2,6 +2,7 @@ import BufferCursor from "../buffercursor";
 import { BufToDecodedProto, ProtoToBuf } from "./proto";
 import protobuf from "protobufjs";
 import Long from "long";
+import { VirtualCurrencyType } from "../protolinking/classKeys";
 
 const Protos = protobuf.loadSync("../hag-network-client/src/protos/All.proto");
 
@@ -254,7 +255,7 @@ export class DeployCommandNodeRequest {
         nearCapitalBattlefieldId?: Long,
         soldierDiscountId?: Long,
         vehicleDiscountId?: Long,
-        paymentCurrency: ResponseType, // TODO Find out what enum this is, ResponseType is the wrong enum.
+        paymentCurrency: VirtualCurrencyType,
     }): Buffer => ProtoToBuf(this.proto, payload);
 }
 

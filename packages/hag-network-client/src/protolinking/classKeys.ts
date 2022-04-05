@@ -345,3 +345,9 @@ export const enum ResponseType {
     epic_call_failed = 279,
     voucher_expired = 280,
 }
+
+export enum VirtualCurrencyType {
+    Credits = 1,
+    Warfunds = 2,
+    Gold = 3,
+}

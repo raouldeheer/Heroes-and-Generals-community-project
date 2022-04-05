@@ -60,6 +60,8 @@ export const enum KeyValueChangeKey {
     PlayerMembershipItem = "PlayerMembershipItem",
     accesspoint = "accesspoint",
     supplyline = "supplyline",
+    CommandNodeSupplyQueueItem = "CommandNodeSupplyQueueItem",
+    CommandNodeSupplyQueueItemTicket = "CommandNodeSupplyQueueItemTicket",
 }
 
 const Protos = protobuf.loadSync("../hag-network-client/src/protos/All.proto");
@@ -119,4 +121,6 @@ export const KeyProtoSet = new Map<string, protobuf.Type>([
     [KeyValueChangeKey.PlayerMembershipItem, Protos.lookupType("HnG_States.PlayerMembershipItem")],
     [KeyValueChangeKey.accesspoint, Protos.lookupType("HnG_States.accesspoint")],
     [KeyValueChangeKey.supplyline, Protos.lookupType("HnG_States.supplyline")],
+    [KeyValueChangeKey.CommandNodeSupplyQueueItem, Protos.lookupType("HnG_States.CommandNodeSupplyQueueItem")],
+    [KeyValueChangeKey.CommandNodeSupplyQueueItemTicket, Protos.lookupType("HnG_States.CommandNodeSupplyQueueItemTicket")],
 ]);

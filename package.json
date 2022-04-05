@@ -2,10 +2,6 @@
   "name": "hag-community-project",
   "version": "0.0.1",
   "description": "Heroes and Generals community project",
-  "scripts": {
-    "install:all": "npm install -workspaces",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/raouldeheer/Heroes-and-Generals-community-project.git"

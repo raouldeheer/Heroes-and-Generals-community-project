@@ -257,3 +257,9 @@ export class DeployCommandNodeRequest {
         paymentCurrency: ResponseType, // TODO Find out what enum this is, ResponseType is the wrong enum.
     }): Buffer => ProtoToBuf(this.proto, payload);
 }
+
+export class DeployCommandNodeResponse {
+    static proto = Protos.lookupType("HnG_States.DeployCommandNodeResponse");
+    static parse = (buf: BufferCursor) =>
+        BufToDecodedProto(this.proto, buf.buffer.slice(8));
+}

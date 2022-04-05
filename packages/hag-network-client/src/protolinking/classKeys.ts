@@ -84,6 +84,7 @@ const keyToClass = new Map<String, packetClassParser>([
     ["join_war_response", all.join_war_response],
     ["join_war_request", all.join_war_request],
     ["DeployCommandNodeRequest", all.DeployCommandNodeRequest],
+    ["DeployCommandNodeResponse", all.DeployCommandNodeResponse],
 ]);
 
 export { keyToClass };

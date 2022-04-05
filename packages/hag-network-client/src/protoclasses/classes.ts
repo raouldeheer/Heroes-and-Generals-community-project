@@ -1,6 +1,7 @@
 import BufferCursor from "../buffercursor";
 import { BufToDecodedProto, ProtoToBuf } from "./proto";
 import protobuf from "protobufjs";
+import Long from "long";
 
 const Protos = protobuf.loadSync("../hag-network-client/src/protos/All.proto");
 
@@ -240,4 +241,19 @@ export class join_war_response {
     static proto = Protos.lookupType("HnG_States.join_war_response");
     static parse = (buf: BufferCursor) =>
         BufToDecodedProto(this.proto, buf.buffer.slice(8));
+}
+
+export class DeployCommandNodeRequest {
+    static proto = Protos.lookupType("HnG_States.DeployCommandNodeRequest");
+    static parse = (buf: BufferCursor) =>
+        BufToDecodedProto(this.proto, buf.buffer.slice(8));
+    static toBuffer = (payload: {
+        commandNodeWarInstanceId: Long,
+        soldierPricingId: Long,
+        vehiclePricingId: Long,
+        nearCapitalBattlefieldId?: Long,
+        soldierDiscountId?: Long,
+        vehicleDiscountId?: Long,
+        paymentCurrency: ResponseType, // TODO Find out what enum this is, ResponseType is the wrong enum.
+    }): Buffer => ProtoToBuf(this.proto, payload);
 }

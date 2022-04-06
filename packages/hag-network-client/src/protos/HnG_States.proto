@@ -2000,14 +2000,14 @@ required int64 battleId = 2;
 
 message GetMissionDetailsResponse {
 required Common.Response response = 1;
-required MissionInfo info = 2;
+optional MissionInfo info = 2;
 repeated MissionDetailsFaction factions = 3;
 repeated MissionDetailsAssaultTeam assaultTeams = 4;
 repeated MissionDetailsArmyResource armyResources = 5;
 repeated MissionDetailsAccessPoint accessPoints = 6;
 repeated MissionDetailsCapturepointStatus capturepointStatuses = 7;
-required float posX = 8;
-required float posY = 9;
+optional float posX = 8;
+optional float posY = 9;
 }
 
 message GetMissionListRequest {

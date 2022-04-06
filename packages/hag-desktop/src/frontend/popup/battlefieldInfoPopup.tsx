@@ -1,6 +1,8 @@
 const electron = window.require("electron");
 import { useEffect, useState } from "react";
+import { battleBattlefieldPair } from "../map/battlefieldPoint";
 import { WarmapEventHandler } from "../warmapEventHandler";
+import Long from "long";
 
 const wrapperStyling: React.CSSProperties = {
     display: "flex",
@@ -14,17 +16,28 @@ const wrapperStyling: React.CSSProperties = {
 };
 
 const BattlefieldInfoPopup = ({
-    warmapEventHandler
+    warmapEventHandler,
+    BattlefieldInfoPopupData,
 }: {
     warmapEventHandler: WarmapEventHandler;
+    BattlefieldInfoPopupData: battleBattlefieldPair;
 }): JSX.Element => {
+    const [data, setData] = useState(null);
 
     useEffect(() => {
-        // Effect
+        if (!data) {
+            getData();
+        }
     }, []);
 
+    const getData = async () => {
+        const result = await electron.ipcRenderer.invoke("GetMissionDetailsRequest", { missionId: 0, battleId: Long.fromString(BattlefieldInfoPopupData.battle.id) });
+        console.log(result);
+        setData(result);
+    };
+
     return <div style={wrapperStyling}>
-        <p>Hello popup!</p>
+        <p>Hello popup! </p>
     </div>;
 };
 

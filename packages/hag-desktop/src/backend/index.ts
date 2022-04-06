@@ -14,22 +14,28 @@ if (require("electron-squirrel-startup")) {
   app.quit();
 }
 
+let client: Client;
+
 ipcMain.on("startClient", (event, data) => {
-  startClient(event.sender, data.userName, data.password);
+  if (!client) {
+    startClient(event.sender, data.userName, data.password);
+  }
 });
 
+ipcMain.handle("GetMissionDetailsRequest", async (event, data) => {
+  const result = await new Promise(res => {client.sendPacket("GetMissionDetailsRequest", data, res)});
+  return result;
+})
+
 function startClient(webContents: Electron.WebContents, userName: string, password: string) {
-  const client = new Client(ip, port, webContents.userAgent, userName, password);
+  client = new Client(ip, port, webContents.userAgent, userName, password);
   const startTime = Date.now();
   client.once("loggedin", async () => {
     webContents.send("loggedin");
     client.sendPacket("subscribewarmapview");
   }).on("loginFailed", () => {
     webContents.mainFrame.executeJavaScript("alert('Login failed!');");
-    setTimeout(() => {
-      client.close();
-      webContents.reload();
-    }, 500);
+    // TODO Add try again logic
   }).on("join_war_response", async (data: { msg: ResponseType, redirectSrv?: string; }) => {
     if (data.msg === ResponseType.ok) {
       if (data.redirectSrv) {
@@ -37,8 +43,7 @@ function startClient(webContents: Electron.WebContents, userName: string, passwo
       }
       client.sendPacket("unsubscribewarmapview");
       setTimeout(() => {
-        client.close();
-        webContents.reload();
+        client.sendPacket("subscribewarmapview");
       }, 500);
     } else {
       console.error(`ERROR: ${data}`);
@@ -108,6 +113,7 @@ function startClient(webContents: Electron.WebContents, userName: string, passwo
             case "battle":
               battleArr.push(iterator.value);
               break;
+            // TODO Add supplylinestatus delete key and logic!!!
           }
           console.log(`deleted: ${iterator.key} id: ${iterator.value}`);
         }

@@ -23,12 +23,14 @@ const Popups = ({
     warmapEventHandler: WarmapEventHandler;
 }): JSX.Element => {
     const [isVisible, setIsVisible] = useState(true);
+    const [BattlefieldInfoPopupData, setBattlefieldInfoPopupData] = useState<battleBattlefieldPair>(null);
 
 
     useEffect(() => {
         warmapEventHandler.on("BattlefieldInfoPopup_Show", (pair: battleBattlefieldPair) => {
             console.log(`Showing battlefield: ${pair.battlefield.id}`);
             console.log(`Showing battle: ${pair.battle.id}`);
+            setBattlefieldInfoPopupData(pair);
             setIsVisible(true);
         });
     }, []);
@@ -40,9 +42,13 @@ const Popups = ({
     };
 
     if (isVisible) {
-        return <div style={wrapperStyling} onClick={close}>
-            <BattlefieldInfoPopup warmapEventHandler={warmapEventHandler} />
-        </div>;
+        if (BattlefieldInfoPopupData) {
+            return <div style={wrapperStyling} onClick={close}>
+                <BattlefieldInfoPopup warmapEventHandler={warmapEventHandler} BattlefieldInfoPopupData={BattlefieldInfoPopupData}/>
+            </div>;
+        } else {
+            return <></>;
+        }
     } else {
         return <></>;
     }

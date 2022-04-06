@@ -23,6 +23,20 @@ interface battlefieldstatus {
     color: string;
 }
 
+export interface battle {
+    id: string;
+    warid: string;
+    mapEntityId: string;
+    mapEntityTypeId: string;
+    start: string;
+    factioncount: number;
+    excludedFactionId: string;
+    position: string;
+    activationTimeStamp: string;
+}
+
+export type battleBattlefieldPair = { battle: battle, battlefield: Battlefield; };
+
 const BattlefieldPoint = ({
     battlefield,
     warmapEventHandler
@@ -31,17 +45,30 @@ const BattlefieldPoint = ({
     warmapEventHandler: WarmapEventHandler;
 }): JSX.Element => {
     const [color, setColor] = useState("#888");
+    const [battle, setBattle] = useState<battle>(null);
 
     useEffect(() => {
         warmapEventHandler.on(`battlefield${battlefield.id}`, (data: battlefieldstatus) => {
-            // console.log(data.color);
             setColor(data.color);
+        });
+        warmapEventHandler.on(`battlefield${battlefield.id}receivebattleset`, (data: battle) => {
+            setBattle(data);
+            warmapEventHandler.on(`battlefield${data.id}receivebattledelete`, () => {
+                setBattle(null);
+            });
         });
     }, []);
 
     function clicked() {
         console.log(`You clicked on: ${battlefield.bftitle}`);
-        warmapEventHandler.emit("BattlefieldInfoPopup_Show", battlefield);
+        console.log(battle);
+
+        if (battle) {
+            warmapEventHandler.emit("BattlefieldInfoPopup_Show", {
+                battlefield,
+                battle,
+            });
+        }
     }
     return <>
         <Circle style={{ cursor: "pointer" }}
@@ -59,7 +86,7 @@ const BattlefieldPoint = ({
             x={battlefield.posx}
             y={battlefield.posy + pointSize}
             listening={false}
-            transformsEnabled = {"position"}
+            transformsEnabled={"position"}
         />
     </>;
 };

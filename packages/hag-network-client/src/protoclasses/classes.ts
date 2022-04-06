@@ -117,8 +117,8 @@ export class GetMissionDetailsRequest {
     static parse = (buf: BufferCursor) =>
         BufToDecodedProto(this.proto, buf.buffer.slice(8));
     static toBuffer = (payload: {
-        missionId: Long,
-        battleId: Long,
+        missionId?: Long,
+        battleId?: Long,
     }): Buffer => ProtoToBuf(this.proto, payload);
 }
 

@@ -33,6 +33,7 @@ function startClient(webContents: Electron.WebContents, userName: string, passwo
   client.once("loggedin", async () => {
     webContents.send("loggedin");
     client.sendPacket("subscribewarmapview");
+    client.sendPacket("subscribebattlesview");
   }).on("loginFailed", () => {
     webContents.mainFrame.executeJavaScript("alert('Login failed!');");
     // TODO Add try again logic

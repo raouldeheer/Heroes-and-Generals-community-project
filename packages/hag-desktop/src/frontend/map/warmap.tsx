@@ -10,6 +10,7 @@ import Supplyline from "./supplyline";
 import battlefield from "hag-network-client/jsondb/battlefield.json";
 import supplyline from "hag-network-client/jsondb/supplyline.json";
 import { WarmapEventHandler } from "../warmapEventHandler";
+import MapSector from "./mapSector";
 
 const baseWidth = 2048;
 const baseHeight = 1440;
@@ -35,7 +36,7 @@ const mapStyles: React.CSSProperties = {
     height: `${height}px`
 };
 
-const posToSector = (x: number, y: number) =>
+export const posToSector = (x: number, y: number) =>
     (Math.floor(y / baseHeight) * 8) + Math.floor(x / baseWidth);
 
 
@@ -82,26 +83,17 @@ const Warmap = ({
         for (let y = 0; y < 8; y++) {
             const index = (y * 8) + x;
             if (bfsSectors[index] || supsSectors[index]) {
-                sectors.push(<Stage style={{
-                    position: "absolute",
-                    top: `${baseHeight * y}px`,
-                    left: `${baseWidth * x}px`,
-                    width: `${baseWidth}px`,
-                    height: `${baseHeight}px`
-                }} key={`sector${index}`} width={baseWidth} height={baseHeight} offsetX={baseWidth * x} offsetY={baseHeight * y}>
-                    <Layer>
-                        {supsSectors[index]?.map(element => <Supplyline
-                            key={element.id}
-                            supplyline={element}
-                            warmapEventHandler={warmapEventHandler}
-                        />)}
-                        {bfsSectors[index]?.map(element => <BattlefieldPoint
-                            key={element.id}
-                            battlefield={element}
-                            warmapEventHandler={warmapEventHandler}
-                        />)}
-                    </Layer>
-                </Stage>);
+                sectors.push(<MapSector
+                    bfsSectors={bfsSectors}
+                    supsSectors={supsSectors}
+                    posx={baseWidth}
+                    posy={baseHeight}
+                    offsetx={baseWidth * x}
+                    offsety={baseHeight * y}
+                    index={index}
+                    warmapEventHandler={warmapEventHandler}
+                    key={index}
+                />);
             }
         }
     }

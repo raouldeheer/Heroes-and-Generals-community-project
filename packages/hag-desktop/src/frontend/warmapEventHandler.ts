@@ -1,5 +1,6 @@
 const electron = window.require("electron");
 import EventEmitter from "events";
+import { battle } from "./map/battlefieldPoint";
 
 const colors = ["#f00", "#0f0", "#00f", "#000", "#fff", "#888"]; // TODO fix colors!
 const factions: string[] = [];
@@ -9,6 +10,7 @@ const lookupBattlefieldToBattle = new Map<string, string>();
 export class WarmapEventHandler extends EventEmitter {
     constructor() {
         super();
+        electron.ipcRenderer.setMaxListeners(64);
         electron.ipcRenderer.on("updateBattlefieldstatusBatch", (_, data: any[]) => {
             data.forEach(element => {
                 if (!factions.includes(element.factionid)) factions.push(element.factionid);
@@ -16,8 +18,8 @@ export class WarmapEventHandler extends EventEmitter {
                 this.emit(`battlefield${element.battlefieldid}`, element);
             });
         });
-        electron.ipcRenderer.on("updateBattlesBatch", (_, data: any[]) => {
-            data.forEach(element => {
+        electron.ipcRenderer.on("updateBattlesBatch", (_, data: battle[]) => {
+            data.forEach(element => {                
                 if (element.mapEntityTypeId == "1") {
                     lookupBattlefieldToBattle.set(element.id, element.mapEntityId);
                     this.emit(`battlefield${element.mapEntityId}receivebattleset`, element);

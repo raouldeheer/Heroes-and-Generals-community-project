@@ -37,7 +37,10 @@ const BattlefieldInfoPopup = ({
     };
 
     return <div style={wrapperStyling}>
-        <p>Hello popup! </p>
+        {data ? <div>
+            <h1>Battle information</h1>
+            <h2></h2>
+        </div> : null}
     </div>;
 };
 

@@ -33,7 +33,6 @@ function startClient(webContents: Electron.WebContents, userName: string, passwo
   client.once("loggedin", async () => {
     webContents.send("loggedin");
     client.sendPacket("subscribewarmapview");
-    client.sendPacket("subscribebattlesview");
   }).on("loginFailed", () => {
     webContents.mainFrame.executeJavaScript("alert('Login failed!');");
     // TODO Add try again logic
@@ -54,13 +53,9 @@ function startClient(webContents: Electron.WebContents, userName: string, passwo
       if (data?.set) {
         let battlefieldstatusArr = [];
         let supplylinestatusArr = [];
-        const battleInfosArr = [];
         const battleArr = [];
         for (const iterator of data.set) {
           switch (iterator.key) {
-            case "BattleInfo":
-              battleInfosArr.push(iterator.value);
-              break;
             case "battle":
               battleArr.push(iterator.value);
               break;
@@ -97,29 +92,19 @@ function startClient(webContents: Electron.WebContents, userName: string, passwo
         if (battleArr.length > 0) {
           webContents.send("updateBattlesBatch", battleArr);
         }
-        if (battleInfosArr.length > 0) {
-          webContents.send("setBattleInfosBatch", battleInfosArr);
-        }
         if (supplylinestatusArr.length > 0) {
           webContents.send("updateSupplylinestatusBatch", supplylinestatusArr);
         }
       } else if (data?.delete) {
-        const battleInfosArr = [];
         const battleArr = [];
         for (const iterator of data.delete) {
           switch (iterator.key) {
-            case "BattleInfo":
-              battleInfosArr.push(iterator.value);
-              break;
             case "battle":
               battleArr.push(iterator.value);
               break;
             // TODO Add supplylinestatus delete key and logic!!!
           }
           console.log(`deleted: ${iterator.key} id: ${iterator.value}`);
-        }
-        if (battleInfosArr.length > 0) {
-          webContents.send("deleteBattleInfosBatch", battleInfosArr);
         }
         if (battleArr.length > 0) {
           webContents.send("deleteBattlesBatch", battleArr);

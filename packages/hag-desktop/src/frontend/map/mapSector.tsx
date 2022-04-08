@@ -1,12 +1,9 @@
-import BattlefieldPoint, { battle } from "./battlefieldPoint";
-import { Stage, Layer, Circle } from 'react-konva';
+import BattlefieldPoint from "./battlefieldPoint";
+import { Stage, Layer } from 'react-konva';
 const electron = window.require("electron");
 import Supplyline from "./supplyline";
 import { WarmapEventHandler } from "../warmapEventHandler";
-import { useEffect, useState } from "react";
-import { useMap } from "./mapState";
-import { posToSector } from "./warmap";
-import BattleInfoIcon from "./battle";
+import { useEffect } from "react";
 
 const MapSector = ({
     posx,
@@ -27,36 +24,9 @@ const MapSector = ({
     bfsSectors: any[][];
     warmapEventHandler: WarmapEventHandler;
 }): JSX.Element => {
-    const {
-        state: battleinfos,
-        setState: setBattleinfos,
-    } = useMap<string, any>(new Map);
 
     useEffect(() => {
-        electron.ipcRenderer.on("setBattleInfosBatch", (_, data: any[]) => {
-            const localData = data.filter(element =>
-                element.posX >= (offsetx - 50) &&
-                element.posX <= (offsetx + posx + 50) &&
-                element.posY >= (offsety - 50) &&
-                element.posY <= (offsety + posy + 50));
-
-            if (localData.length > 0) {
-                setBattleinfos((oldState) =>
-                    localData.reduce((prev, element) =>
-                        prev.set(element.id, element), new Map(oldState)));
-            }
-        });
-        electron.ipcRenderer.on("deleteBattleInfosBatch", (_, data: string[]) => {
-            const localData = data.filter(e => battleinfos.has(e));
-
-            if (localData.length > 0) {
-                setBattleinfos((oldState) =>
-                    data.reduce((prev, key) => {
-                        prev.delete(key);
-                        return prev;
-                    }, new Map(oldState)));
-            }
-        });
+        // effect
     }, []);
 
     return <Stage style={{
@@ -75,11 +45,6 @@ const MapSector = ({
             {bfsSectors[index]?.map(element => <BattlefieldPoint
                 key={element.id}
                 battlefield={element}
-                warmapEventHandler={warmapEventHandler}
-            />)}
-            {Array.from(battleinfos.values()).map(v => <BattleInfoIcon
-                key={v.id}
-                battleinfo={v}
                 warmapEventHandler={warmapEventHandler}
             />)}
         </Layer>

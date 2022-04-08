@@ -51,9 +51,9 @@ const BattlefieldPoint = ({
         warmapEventHandler.on(`battlefield${battlefield.id}`, (data: battlefieldstatus) => {
             setColor(data.color);
         });
-        warmapEventHandler.on(`battlefield${battlefield.id}receivebattleset`, (data: battle) => {
+        warmapEventHandler.on(`battlesetmapEntityId${battlefield.id}`, (data: battle) => {
             setBattle(data);
-            warmapEventHandler.on(`battlefield${data.id}receivebattledelete`, () => {
+            warmapEventHandler.on(`battledelete${data.id}`, () => {
                 setBattle(null);
             });
         });
@@ -75,7 +75,7 @@ const BattlefieldPoint = ({
             x={battlefield.posx}
             y={battlefield.posy}
             radius={pointSize}
-            stroke="black"
+            stroke={battle ? "orange" : "black"}
             strokeWidth={2}
             fill={color}
             onClick={clicked}

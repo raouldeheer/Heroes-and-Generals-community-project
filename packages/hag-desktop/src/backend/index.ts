@@ -66,14 +66,14 @@ function startClient(webContents: Electron.WebContents, userName: string, passwo
               break;
             case "battlefieldstatus":
               battlefieldstatusArr.push(iterator.value);
-              if (battlefieldstatusArr.length > 500) {
+              if (battlefieldstatusArr.length > 1000) {
                 webContents.send("updateBattlefieldstatusBatch", battlefieldstatusArr);
                 battlefieldstatusArr = [];
               }
               break;
             case "supplylinestatus":
               supplylinestatusArr.push(iterator.value);
-              if (supplylinestatusArr.length > 500) {
+              if (supplylinestatusArr.length > 1000) {
                 webContents.send("updateSupplylinestatusBatch", supplylinestatusArr);
                 supplylinestatusArr = [];
               }

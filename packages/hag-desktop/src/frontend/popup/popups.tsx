@@ -1,6 +1,6 @@
 const electron = window.require("electron");
-import { MouseEventHandler, useEffect, useState } from "react";
-import { battleBattlefieldPair, Battlefield } from "../map/battlefieldPoint";
+import { useEffect, useState } from "react";
+import { battleBattlefieldPair } from "../map/battlefieldPoint";
 import { WarmapEventHandler } from "../warmapEventHandler";
 import BattlefieldInfoPopup from "./battlefieldInfoPopup";
 

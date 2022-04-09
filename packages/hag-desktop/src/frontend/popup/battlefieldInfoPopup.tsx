@@ -1,6 +1,6 @@
 const electron = window.require("electron");
 import { useEffect, useState } from "react";
-import { battleBattlefieldPair } from "../map/battlefieldPoint";
+import { battleBattlefieldPair } from "../map/mapInterfaces";
 import { WarmapEventHandler } from "../warmapEventHandler";
 import Long from "long";
 

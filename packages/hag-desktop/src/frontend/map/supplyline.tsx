@@ -1,29 +1,13 @@
 import { useEffect, useState } from "react";
 import { Circle, Line } from 'react-konva';
 import { WarmapEventHandler } from "../warmapEventHandler";
-import { battle } from "./battlefieldPoint";
-
-interface supplylinestatus {
-    id: string;
-    warid: string;
-    factionid: string;
-    supplylineid: string;
-    color: string;
-}
+import { battle, supplylinestatus, supplyline } from "./mapInterfaces";
 
 const Supplyline = ({
     supplyline,
     warmapEventHandler,
 }: {
-    supplyline: {
-        id: string;
-        accesspoint1Id: string;
-        accesspoint2Id: string;
-        posx1: number;
-        posy1: number;
-        posx2: number;
-        posy2: number;
-    };
+    supplyline: supplyline;
     warmapEventHandler: WarmapEventHandler;
 }): JSX.Element => {
     const { posx1, posy1, posx2, posy2 } = supplyline;

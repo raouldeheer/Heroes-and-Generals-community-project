@@ -1,41 +1,9 @@
 import { useEffect, useState } from "react";
 import { Circle, Text } from 'react-konva';
 import { WarmapEventHandler } from "../warmapEventHandler";
+import { Battlefield, battle, battlefieldstatus } from "./mapInterfaces";
 
 const pointSize = 15;
-
-export interface Battlefield {
-    id: string;
-    mapid: string;
-    bftitle: string;
-    sector: string;
-    posx: number;
-    posy: number;
-    gamemap: string;
-    rotation?: number;
-}
-
-interface battlefieldstatus {
-    id: string;
-    warid: string;
-    battlefieldid: string;
-    factionid: string;
-    color: string;
-}
-
-export interface battle {
-    id: string;
-    warid: string;
-    mapEntityId: string;
-    mapEntityTypeId: string;
-    start: string;
-    factioncount: number;
-    excludedFactionId: string;
-    position: string;
-    activationTimeStamp: string;
-}
-
-export type battleBattlefieldPair = { battle: battle, battlefield: Battlefield; };
 
 const BattlefieldPoint = ({
     battlefield,

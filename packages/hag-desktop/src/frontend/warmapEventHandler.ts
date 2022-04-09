@@ -1,6 +1,6 @@
 const electron = window.require("electron");
 import EventEmitter from "events";
-import { battle } from "./map/battlefieldPoint";
+import { battle } from "./map/mapInterfaces";
 
 const colors = ["#f00", "#0f0", "#00f", "#000", "#fff", "#888"]; // TODO fix colors!
 const factions: string[] = [];

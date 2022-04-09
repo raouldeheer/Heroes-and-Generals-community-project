@@ -41,7 +41,7 @@ function startClient(webContents: Electron.WebContents, userName: string, passwo
   }).on("query_war_catalogue_response", (data) => {
     webContents.send("warCatalogueFactions", data.warcataloguedata[0].warCatalogueFactions);
   }).on("join_war_response", async (data: { msg: ResponseType, redirectSrv?: string; }) => {
-    if (data.msg === ResponseType.ok) { // TODO redo war ending logic
+    if (data.msg === ResponseType.ok) { //! TODO redo war ending logic
       if (data.redirectSrv) {
         console.log(`redirectSrv detected: ${data.redirectSrv}`);
       }
@@ -58,7 +58,7 @@ function startClient(webContents: Electron.WebContents, userName: string, passwo
       if (data?.set) {
         for (const iterator of data.set) {
           switch (iterator.key) {
-            case "war": // TODO redo war ending logic
+            case "war": //! TODO redo war ending logic
               if (iterator.value.sequelwarid !== "0") {
                 // TODO make popup to ask user to switch.
                 console.log(`${iterator.value.id} ended, switching to: ${iterator.value.sequelwarid}`);
@@ -67,7 +67,7 @@ function startClient(webContents: Electron.WebContents, userName: string, passwo
                   factionid: Long.ZERO,
                   playedFirstBlood: 0,
                 });
-              } // TODO redo war ending logic
+              } //! TODO redo war ending logic
               break;
           }
         }

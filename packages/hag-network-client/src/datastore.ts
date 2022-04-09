@@ -29,7 +29,7 @@ export class DataStore {
         this.mainStore.set(itemStoreName, new Map);
     }
 
-    public GetData = (itemStoreName: string, id: string) =>
+    public GetData = <T = any>(itemStoreName: string, id: string): T =>
         this.mainStore.get(itemStoreName)?.get?.(id);
 
     public ToObject() {

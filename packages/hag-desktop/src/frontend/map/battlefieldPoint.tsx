@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Circle, Text } from 'react-konva';
 import { WarmapEventHandler } from "../warmapEventHandler";
-import { Battlefield, battle, battlefieldstatus } from "./mapInterfaces";
+import { Battlefield, battlefieldstatus } from "./mapInterfaces";
 
 const pointSize = 15;
 
@@ -12,34 +12,34 @@ const BattlefieldPoint = ({
     battlefield: Battlefield;
     warmapEventHandler: WarmapEventHandler;
 }): JSX.Element => {
-    const [color, setColor] = useState("#888");
-    const [battle, setBattle] = useState<battle>(null);
+    const [battleId, setBattleId] = useState<string>(null);
+    const [battlefieldstatusId, setbattlefieldstatusId] = useState<string>(null);
+
+    const color = battlefieldstatusId
+        ? warmapEventHandler.lookupFactions.get(
+            warmapEventHandler.datastore.GetData<battlefieldstatus>(
+                "battlefieldstatus", battlefieldstatusId
+            ).factionid
+        )?.color || "#888"
+        : "#888";
+    const battle = warmapEventHandler.GetBattle(battleId);
 
     useEffect(() => {
-        warmapEventHandler.on(`battlefield${battlefield.id}`, (data: battlefieldstatus) => {
-            setColor(data.color);
-        });
-        warmapEventHandler.on(`battlesetmapEntityId${battlefield.id}`, (data: battle) => {
-            setBattle(data);
-            warmapEventHandler.on(`battledelete${data.id}`, () => {
-                setBattle(null);
+        warmapEventHandler.on(`battlefield${battlefield.id}`, setbattlefieldstatusId);
+        warmapEventHandler.on(`battlesetmapEntityId${battlefield.id}`, (data: string) => {
+            setBattleId(data);
+            warmapEventHandler.on(`battledelete${data}`, () => {
+                setBattleId(null);
             });
         });
     }, []);
 
     function clicked() {
-        console.log(`You clicked on: ${battlefield.bftitle}`);
-        console.log(battle);
-
-        if (battle) {
-            warmapEventHandler.emit("BattlefieldInfoPopup_Show", {
-                battlefield,
-                battle,
-            });
-        }
+        if (battle)
+            warmapEventHandler.emit("BattlefieldInfoPopup_Show", battle);
     }
     return <>
-        <Circle style={{ cursor: "pointer" }}
+        <Circle
             x={battlefield.posx}
             y={battlefield.posy}
             radius={pointSize}

@@ -22,7 +22,7 @@ ipcMain.on("startClient", (event, data) => {
   }
 });
 
-ipcMain.handle("GetMissionDetailsRequest", async (event, data) => {
+ipcMain.handle("GetMissionDetailsRequest", async (_, data) => {
   const result = await new Promise(res => {client.sendPacket("GetMissionDetailsRequest", data, res)});
   return result;
 })
@@ -32,12 +32,16 @@ function startClient(webContents: Electron.WebContents, userName: string, passwo
   const startTime = Date.now();
   client.once("loggedin", async () => {
     webContents.send("loggedin");
-    client.sendPacket("subscribewarmapview");
+    client.sendPacket("query_war_catalogue_request", {}, () => {
+      client.sendPacket("subscribewarmapview");
+    });
   }).on("loginFailed", () => {
     webContents.mainFrame.executeJavaScript("alert('Login failed!');");
     // TODO Add try again logic
+  }).on("query_war_catalogue_response", (data) => {
+    webContents.send("warCatalogueFactions", data.warcataloguedata[0].warCatalogueFactions);
   }).on("join_war_response", async (data: { msg: ResponseType, redirectSrv?: string; }) => {
-    if (data.msg === ResponseType.ok) {
+    if (data.msg === ResponseType.ok) { // TODO redo war ending logic
       if (data.redirectSrv) {
         console.log(`redirectSrv detected: ${data.redirectSrv}`);
       }
@@ -50,30 +54,11 @@ function startClient(webContents: Electron.WebContents, userName: string, passwo
     }
   }).on("message", async (typetext, data) => {
     if (typetext == "KeyValueChangeSet") {
+      webContents.send("KeyValueChangeSet", data);
       if (data?.set) {
-        let battlefieldstatusArr = [];
-        let supplylinestatusArr = [];
-        const battleArr = [];
         for (const iterator of data.set) {
           switch (iterator.key) {
-            case "battle":
-              battleArr.push(iterator.value);
-              break;
-            case "battlefieldstatus":
-              battlefieldstatusArr.push(iterator.value);
-              if (battlefieldstatusArr.length > 1000) {
-                webContents.send("updateBattlefieldstatusBatch", battlefieldstatusArr);
-                battlefieldstatusArr = [];
-              }
-              break;
-            case "supplylinestatus":
-              supplylinestatusArr.push(iterator.value);
-              if (supplylinestatusArr.length > 1000) {
-                webContents.send("updateSupplylinestatusBatch", supplylinestatusArr);
-                supplylinestatusArr = [];
-              }
-              break;
-            case "war":
+            case "war": // TODO redo war ending logic
               if (iterator.value.sequelwarid !== "0") {
                 // TODO make popup to ask user to switch.
                 console.log(`${iterator.value.id} ended, switching to: ${iterator.value.sequelwarid}`);
@@ -82,32 +67,9 @@ function startClient(webContents: Electron.WebContents, userName: string, passwo
                   factionid: Long.ZERO,
                   playedFirstBlood: 0,
                 });
-              }
+              } // TODO redo war ending logic
               break;
           }
-        }
-        if (battlefieldstatusArr.length > 0) {
-          webContents.send("updateBattlefieldstatusBatch", battlefieldstatusArr);
-        }
-        if (battleArr.length > 0) {
-          webContents.send("updateBattlesBatch", battleArr);
-        }
-        if (supplylinestatusArr.length > 0) {
-          webContents.send("updateSupplylinestatusBatch", supplylinestatusArr);
-        }
-      } else if (data?.delete) {
-        const battleArr = [];
-        for (const iterator of data.delete) {
-          switch (iterator.key) {
-            case "battle":
-              battleArr.push(iterator.value);
-              break;
-            // TODO Add supplylinestatus delete key and logic!!!
-          }
-          console.log(`deleted: ${iterator.key} id: ${iterator.value}`);
-        }
-        if (battleArr.length > 0) {
-          webContents.send("deleteBattlesBatch", battleArr);
         }
       }
     }

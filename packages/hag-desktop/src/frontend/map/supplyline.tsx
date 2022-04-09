@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Circle, Line } from 'react-konva';
 import { WarmapEventHandler } from "../warmapEventHandler";
-import { battle, supplylinestatus, supplyline } from "./mapInterfaces";
+import { supplylinestatus, supplyline } from "./mapInterfaces";
 
 const Supplyline = ({
     supplyline,
@@ -11,32 +11,31 @@ const Supplyline = ({
     warmapEventHandler: WarmapEventHandler;
 }): JSX.Element => {
     const { posx1, posy1, posx2, posy2 } = supplyline;
-    const [color, setColor] = useState("#888");
-    const [battle, setBattle] = useState<battle>(null);
+    const [battleId, setBattleId] = useState<string>(null);
+    const [supplylinestatusId, setsupplylinestatusId] = useState<string>(null);
+
+    const color = supplylinestatusId
+        ? warmapEventHandler.lookupFactions.get(
+            warmapEventHandler.datastore.GetData<supplylinestatus>(
+                "supplylinestatus", supplylinestatusId
+            ).factionid
+        )?.color || "#888"
+        : "#888";
+    const battle = warmapEventHandler.GetBattle(battleId);
 
     useEffect(() => {
-        warmapEventHandler.on(`supplyline${supplyline.id}`, (data: supplylinestatus) => {
-            // console.log(data.color);
-            setColor(data.color);
-        });
-        warmapEventHandler.on(`battlesetmapEntityId${supplyline.id}`, (data: battle) => {
-            setBattle(data);
-            warmapEventHandler.on(`battledelete${data.id}`, () => {
-                setBattle(null);
+        warmapEventHandler.on(`supplyline${supplyline.id}`, setsupplylinestatusId);
+        warmapEventHandler.on(`battlesetmapEntityId${supplyline.id}`, (data: string) => {
+            setBattleId(data);
+            warmapEventHandler.on(`battledelete${data}`, () => {
+                setBattleId(null);
             });
         });
     }, []);
 
     function clicked() {
-        console.log(`supplylineBattle: ${battle.id}`);
-        console.log(battle);
-
-        if (battle) {
-            warmapEventHandler.emit("BattlefieldInfoPopup_Show", {
-                battlefield: supplyline,
-                battle,
-            });
-        }
+        if (battle)
+            warmapEventHandler.emit("BattlefieldInfoPopup_Show", battle);
     }
 
     return <>

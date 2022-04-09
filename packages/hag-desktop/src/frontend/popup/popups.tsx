@@ -1,6 +1,6 @@
 const electron = window.require("electron");
 import { useEffect, useState } from "react";
-import { battleBattlefieldPair } from "../map/mapInterfaces";
+import { battle } from "../map/mapInterfaces";
 import { WarmapEventHandler } from "../warmapEventHandler";
 import BattlefieldInfoPopup from "./battlefieldInfoPopup";
 
@@ -23,13 +23,12 @@ const Popups = ({
     warmapEventHandler: WarmapEventHandler;
 }): JSX.Element => {
     const [isVisible, setIsVisible] = useState(true);
-    const [BattlefieldInfoPopupData, setBattlefieldInfoPopupData] = useState<battleBattlefieldPair>(null);
+    const [BattlefieldInfoPopupData, setBattlefieldInfoPopupData] = useState<battle>(null);
 
 
     useEffect(() => {
-        warmapEventHandler.on("BattlefieldInfoPopup_Show", (pair: battleBattlefieldPair) => {
-            console.log(`Showing battlefield: ${pair.battlefield.id}`);
-            console.log(`Showing battle: ${pair.battle.id}`);
+        warmapEventHandler.on("BattlefieldInfoPopup_Show", (pair: battle) => {
+            console.log(`Showing battle: ${pair.id}`);
             setBattlefieldInfoPopupData(pair);
             setIsVisible(true);
         });
@@ -44,7 +43,9 @@ const Popups = ({
     if (isVisible) {
         if (BattlefieldInfoPopupData) {
             return <div style={wrapperStyling} onClick={close}>
-                <BattlefieldInfoPopup warmapEventHandler={warmapEventHandler} BattlefieldInfoPopupData={BattlefieldInfoPopupData}/>
+                <BattlefieldInfoPopup 
+                warmapEventHandler={warmapEventHandler} 
+                BattlefieldInfoPopupData={BattlefieldInfoPopupData}/>
             </div>;
         } else {
             return <></>;

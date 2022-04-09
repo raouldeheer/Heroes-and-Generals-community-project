@@ -1,6 +1,6 @@
 const electron = window.require("electron");
 import { useEffect, useState } from "react";
-import { battleBattlefieldPair } from "../map/mapInterfaces";
+import { battle } from "../map/mapInterfaces";
 import { WarmapEventHandler } from "../warmapEventHandler";
 import Long from "long";
 
@@ -20,7 +20,7 @@ const BattlefieldInfoPopup = ({
     BattlefieldInfoPopupData,
 }: {
     warmapEventHandler: WarmapEventHandler;
-    BattlefieldInfoPopupData: battleBattlefieldPair;
+    BattlefieldInfoPopupData: battle;
 }): JSX.Element => {
     const [data, setData] = useState(null);
 
@@ -31,7 +31,7 @@ const BattlefieldInfoPopup = ({
     }, []);
 
     const getData = async () => {
-        const result = await electron.ipcRenderer.invoke("GetMissionDetailsRequest", { missionId: 0, battleId: Long.fromString(BattlefieldInfoPopupData.battle.id) });
+        const result = await electron.ipcRenderer.invoke("GetMissionDetailsRequest", { missionId: 0, battleId: Long.fromString(BattlefieldInfoPopupData.id) });
         console.log(result);
         setData(result);
     };

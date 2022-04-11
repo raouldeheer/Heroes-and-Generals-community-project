@@ -54,8 +54,8 @@ const Supplyline = ({
         />
         {battle ? <Circle
             key={battle.id}
-            x={posx2 + (posx1 - posx2) * Number(battle.position)}
-            y={posy2 + (posy1 - posy2) * Number(battle.position)}
+            x={posx1 + (posx2 - posx1) * Number(battle.position)}
+            y={posy1 + (posy2 - posy1) * Number(battle.position)}
             radius={8}
             fill="orange"
             onClick={clicked}

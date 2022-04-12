@@ -18,23 +18,38 @@ let client: Client;
 
 ipcMain.on("startClient", (event, data) => {
   if (!client) {
-    startClient(event.sender, data.userName, data.password);
+    client = new Client(ip, port, event.sender.userAgent, data.userName, data.password);
   }
+  attachToClient(event.sender);
+  console.log("client attached");
+  if (client) resubscribeClient();
 });
 
-ipcMain.handle("GetMissionDetailsRequest", async (_, data) => {
-  const result = await new Promise(res => {client.sendPacket("GetMissionDetailsRequest", data, res)});
-  return result;
-})
+ipcMain.handle("IsClientActive", () => {
+  return !!client;
+});
 
-function startClient(webContents: Electron.WebContents, userName: string, password: string) {
-  client = new Client(ip, port, webContents.userAgent, userName, password);
-  const startTime = Date.now();
+ipcMain.handle("GetMissionDetailsRequest", (_, data) =>
+  client.sendPacketAsync("GetMissionDetailsRequest", data));
+
+async function subscribeClient() {
+  await client.sendPacketAsync("query_war_catalogue_request");
+  await client.sendPacketAsync("subscribewarmapview");
+}
+
+async function unsubscribeClient() {
+  await client.sendPacketAsync("unsubscribewarmapview");
+}
+
+async function resubscribeClient() {
+  await unsubscribeClient();
+  await subscribeClient();
+}
+
+function attachToClient(webContents: Electron.WebContents) {
   client.once("loggedin", async () => {
     webContents.send("loggedin");
-    client.sendPacket("query_war_catalogue_request", {}, () => {
-      client.sendPacket("subscribewarmapview");
-    });
+    subscribeClient();
   }).on("loginFailed", () => {
     webContents.mainFrame.executeJavaScript("alert('Login failed!');");
     // TODO Add try again logic
@@ -45,10 +60,7 @@ function startClient(webContents: Electron.WebContents, userName: string, passwo
       if (data.redirectSrv) {
         console.log(`redirectSrv detected: ${data.redirectSrv}`);
       }
-      client.sendPacket("unsubscribewarmapview");
-      setTimeout(() => {
-        client.sendPacket("subscribewarmapview");
-      }, 500);
+      resubscribeClient();
     } else {
       console.error(`ERROR: ${data}`);
     }
@@ -77,7 +89,6 @@ function startClient(webContents: Electron.WebContents, userName: string, passwo
     webContents.send("LoginQueueUpdate", pos);
   }).on("closed", () => {
     console.log("Socket closed!");
-    console.log(`After ${Date.now() - startTime}ms`);
   });
 }
 

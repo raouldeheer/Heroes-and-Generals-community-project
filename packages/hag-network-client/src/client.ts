@@ -80,6 +80,18 @@ export class Client extends EventEmitter {
         return true;                    // Return success.
     }
 
+    public async sendPacketAsync(className: string, payload?: any) {
+        return new Promise<any>((resolve, reject) => {
+            try {
+                this.sendPacket(className, payload, (result) => {
+                    resolve(result);
+                });
+            } catch (error) {
+                reject(error);
+            }
+        });
+    }
+
     private login(
         password: string,
         {

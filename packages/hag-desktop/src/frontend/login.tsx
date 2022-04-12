@@ -71,9 +71,7 @@ const Login = (): JSX.Element => {
             userName: data.Username,
             password: data.Password,
         });
-        console.log(data);
     };
-
 
     useEffect(() => {
         electron.ipcRenderer.on("LoginQueueUpdate", (_, data: number) => {
@@ -81,6 +79,15 @@ const Login = (): JSX.Element => {
         });
         electron.ipcRenderer.on("loggedin", () => {
             setIsVisible(false);
+        });
+        electron.ipcRenderer.invoke("IsClientActive").then(isActive => {
+            if (isActive) {
+                electron.ipcRenderer.send("startClient", {
+                    userName: "",
+                    password: "",
+                });
+                setIsVisible(false);
+            }
         });
     }, []);
 

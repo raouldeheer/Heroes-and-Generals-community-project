@@ -17,10 +17,10 @@ const wrapperStyling: React.CSSProperties = {
 
 const BattlefieldInfoPopup = ({
     warmapEventHandler,
-    BattlefieldInfoPopupData,
+    battleId,
 }: {
     warmapEventHandler: WarmapEventHandler;
-    BattlefieldInfoPopupData: battle;
+    battleId: string;
 }): JSX.Element => {
     const [data, setData] = useState(null);
 
@@ -31,7 +31,7 @@ const BattlefieldInfoPopup = ({
     }, []);
 
     const getData = async () => {
-        const result = await electron.ipcRenderer.invoke("GetMissionDetailsRequest", { missionId: 0, battleId: Long.fromString(BattlefieldInfoPopupData.id) });
+        const result = await electron.ipcRenderer.invoke("GetMissionDetailsRequest", { missionId: 0, battleId: Long.fromString(battleId) });
         console.log(result);
         setData(result);
     };

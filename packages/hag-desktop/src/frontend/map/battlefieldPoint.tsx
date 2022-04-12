@@ -35,8 +35,8 @@ const BattlefieldPoint = ({
     }, []);
 
     function clicked() {
-        if (battle)
-            warmapEventHandler.emit("BattlefieldInfoPopup_Show", battle);
+        if (battleId)
+            warmapEventHandler.emit("BattlefieldInfoPopup_Show", battleId);
     }
     return <>
         <Circle

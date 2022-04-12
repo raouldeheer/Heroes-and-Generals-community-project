@@ -1,6 +1,5 @@
 const electron = window.require("electron");
 import { useEffect, useState } from "react";
-import { battle } from "../map/mapInterfaces";
 import { WarmapEventHandler } from "../warmapEventHandler";
 import BattlefieldInfoPopup from "./battlefieldInfoPopup";
 
@@ -23,29 +22,27 @@ const Popups = ({
     warmapEventHandler: WarmapEventHandler;
 }): JSX.Element => {
     const [isVisible, setIsVisible] = useState(true);
-    const [BattlefieldInfoPopupData, setBattlefieldInfoPopupData] = useState<battle>(null);
+    const [battleId, setBattleId] = useState<string>(null);
 
 
     useEffect(() => {
-        warmapEventHandler.on("BattlefieldInfoPopup_Show", (pair: battle) => {
-            console.log(`Showing battle: ${pair.id}`);
-            setBattlefieldInfoPopupData(pair);
+        warmapEventHandler.on("BattlefieldInfoPopup_Show", (bid: string) => {
+            console.log(`Showing battle: ${bid}`);
+            setBattleId(bid);
             setIsVisible(true);
         });
     }, []);
 
     const close = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-        if (event.target == event.currentTarget) {
-            setIsVisible(false);
-        }
+        if (event.target == event.currentTarget) setIsVisible(false);
     };
 
     if (isVisible) {
-        if (BattlefieldInfoPopupData) {
+        if (battleId) {
             return <div style={wrapperStyling} onClick={close}>
-                <BattlefieldInfoPopup 
-                warmapEventHandler={warmapEventHandler} 
-                BattlefieldInfoPopupData={BattlefieldInfoPopupData}/>
+                <BattlefieldInfoPopup
+                    warmapEventHandler={warmapEventHandler}
+                    battleId={battleId} />
             </div>;
         } else {
             return <></>;

@@ -2,11 +2,8 @@
 // @ts-ignore
 import image from "../imgs/background.png";
 import MapInteractionCSS from "./MapInteraction";
-import React, { useEffect } from "react";
-import BattlefieldPoint from "./battlefieldPoint";
-import { Stage, Layer, Circle } from 'react-konva';
+import React from "react";
 const electron = window.require("electron");
-import Supplyline from "./supplyline";
 import battlefield from "hag-network-client/jsondb/battlefield.json";
 import supplyline from "hag-network-client/jsondb/supplyline.json";
 import { WarmapEventHandler } from "../warmapEventHandler";

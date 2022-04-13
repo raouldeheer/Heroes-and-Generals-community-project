@@ -27,7 +27,8 @@ const Supplyline = ({
         warmapEventHandler.on(`supplyline${supplyline.id}`, setsupplylinestatusId);
         warmapEventHandler.on(`battlesetmapEntityId${supplyline.id}`, (data: string) => {
             setBattleId(data);
-            warmapEventHandler.on(`battledelete${data}`, () => {
+            warmapEventHandler.once(`battledelete${data}`, () => {
+                console.log(`Deleting ${data}`);
                 setBattleId(null);
             });
         });

@@ -69,18 +69,27 @@ function attachToClient(webContents: Electron.WebContents) {
       webContents.send("KeyValueChangeSet", data);
       if (data?.set) {
         for (const iterator of data.set) {
+          // switch (iterator.key) {
+          //   case "war": //! TODO redo war ending logic
+          //     if (iterator.value.sequelwarid !== "0") {
+          //       // TODO make popup to ask user to switch.
+          //       console.log(`${iterator.value.id} ended, switching to: ${iterator.value.sequelwarid}`);
+          //       client.sendPacket("join_war_request", {
+          //         warid: Long.fromString(iterator.value.sequelwarid),
+          //         factionid: Long.ZERO,
+          //         playedFirstBlood: 0,
+          //       });
+          //     } //! TODO redo war ending logic
+          //     break;
+          // }
+        }
+      } else if (data?.delete) {
+        for (const iterator of data.delete) {
           switch (iterator.key) {
-            case "war": //! TODO redo war ending logic
-              if (iterator.value.sequelwarid !== "0") {
-                // TODO make popup to ask user to switch.
-                console.log(`${iterator.value.id} ended, switching to: ${iterator.value.sequelwarid}`);
-                client.sendPacket("join_war_request", {
-                  warid: Long.fromString(iterator.value.sequelwarid),
-                  factionid: Long.ZERO,
-                  playedFirstBlood: 0,
-                });
-              } //! TODO redo war ending logic
+            case "battle":
+              console.log(`battledelete${iterator.value}`);
               break;
+            // TODO Add supplylinestatus delete key and logic!!!
           }
         }
       }

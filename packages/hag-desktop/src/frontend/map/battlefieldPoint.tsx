@@ -29,6 +29,7 @@ const BattlefieldPoint = ({
         warmapEventHandler.on(`battlesetmapEntityId${battlefield.id}`, (data: string) => {
             setBattleId(data);
             warmapEventHandler.on(`battledelete${data}`, () => {
+                console.log(`Deleting ${data}`);
                 setBattleId(null);
             });
         });

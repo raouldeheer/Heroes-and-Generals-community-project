@@ -5,10 +5,12 @@ import { battle } from "./map/mapInterfaces";
 
 export class WarmapEventHandler extends EventEmitter {
     public readonly lookupFactions: Map<string, any>;
+    public readonly lookupFactionsByTemplateId: Map<string, any>;
     public readonly datastore: DataStore;
     constructor() {
         super();
         this.lookupFactions = new Map<string, any>();
+        this.lookupFactionsByTemplateId = new Map<string, any>();
         this.datastore = new DataStore;
         electron.ipcRenderer.setMaxListeners(64);
         electron.ipcRenderer.on("warCatalogueFactions", (_, data: any[]) => {
@@ -28,6 +30,7 @@ export class WarmapEventHandler extends EventEmitter {
                         break;
                 }
                 this.lookupFactions.set(element.factionId, element);
+                this.lookupFactionsByTemplateId.set(element.factionTemplateId, element);
             });
         });
         electron.ipcRenderer.on("KeyValueChangeSet", (_, data: any) => {

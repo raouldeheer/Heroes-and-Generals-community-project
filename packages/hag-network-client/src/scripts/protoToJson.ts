@@ -11,4 +11,5 @@ async function toJsonDB(name:string) {
     await toJsonDB("battlefield");
     await toJsonDB("supplyline");
     await toJsonDB("accesspoint");
+    await toJsonDB("armyresourcecategory");
 })();

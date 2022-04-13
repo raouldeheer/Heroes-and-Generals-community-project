@@ -14,7 +14,8 @@
     "wiresharkDecode": "nodemon dist/scripts/wiresharkDecode.js",
     "testcon": "node dist/scripts/testCon.js",
     "jsonToMap": "node dist/scripts/jsonToMap.js",
-    "protoToJson": "node dist/scripts/protoToJson.js"
+    "protoToJson": "node dist/scripts/protoToJson.js",
+    "supplyscript": "node dist/scripts/supplyscript.js"
   },
   "repository": {
     "type": "git",

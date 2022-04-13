@@ -52,13 +52,24 @@ export class WarmapEventHandler extends EventEmitter {
                     case "supplylinestatus":
                         this.emit(`supplyline${iterator.value.supplylineid}`, iterator.value.id);
                         break;
+                    case "war":
+                        if (iterator.value.sequelwarid !== "0") {
+                            // TODO make popup to ask user to switch.
+                            console.log(`${iterator.value.id} ended, switching to: ${iterator.value.sequelwarid}`);
+                            this.emit("warEnding", iterator.value);
+                        }
+                        break;
                 }
             }
         } else if (data?.delete) {
             for (const iterator of data.delete) {
                 switch (iterator.key) {
                     case "battle":
+                        console.log(`battledelete${iterator.value}`);
                         this.emit(`battledelete${iterator.value}`);
+                        break;
+                    case "supplylinestatus":
+                        console.log(`supplylinestatusDelete: ${iterator.value}`);
                         break;
                     // TODO Add supplylinestatus delete key and logic!!!
                 }

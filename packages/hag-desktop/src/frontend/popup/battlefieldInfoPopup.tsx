@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { GetMissionDetailsResponse, Armyresourcecategory } from "../map/mapInterfaces";
 import { WarmapEventHandler } from "../warmapEventHandler";
 import Long from "long";
-import armyresourcecategory from "hag-network-client/jsondb/armyresourcecategory.json";
+import armyresourcecategory from "../data/armyresourcecategory.json";
 
 const armyresourcecategorys = new Map<string, Armyresourcecategory>();
 armyresourcecategory.forEach(element => {
@@ -20,6 +20,20 @@ const wrapperStyling: React.CSSProperties = {
     background: "#ffffff",
     boxShadow: "0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24)",
     zIndex: 10,
+};
+
+const containerStyling: React.CSSProperties = {
+    display: "grid",
+    gridTemplateColumns: "1fr 1fr",
+    gridTemplateRows: "1fr 1fr 1fr 1fr 1fr",
+    gap: "0px 0px",
+    gridTemplateAreas: `
+      "Title Status"
+      "Resources Players"
+      "Resources Players"
+      "Resources Players"
+      "Resources Players"
+    `
 };
 
 const BattlefieldInfoPopup = ({
@@ -43,20 +57,18 @@ const BattlefieldInfoPopup = ({
         setData(result);
     };
 
-    let displayData = null;
+
+    let titleContent = null;
+    let resourcesContent = null;
+    let statusContent = null;
+    let playersContent = null;
     if (data) {
         switch (data.response) {
             case 43:
-                displayData = <div>
-                    <h1>Battle information</h1>
-                    <h2>Battle not found...</h2>
-                </div>;
+                titleContent = <h2>Battle not found...</h2>;
                 break;
             case 44:
-                displayData = <div>
-                    <h1>Battle information</h1>
-                    <h2>Battle starting...</h2>
-                </div>;
+                titleContent = <h2>Battle starting...</h2>;
                 break;
             default:
                 const totalResources = data.armyResources.reduce<Map<number, Map<number, number>>>((prev, curr) => {
@@ -76,8 +88,7 @@ const BattlefieldInfoPopup = ({
                 const suFactionId = Number(warmapEventHandler.lookupFactionsByTemplateId.get("3").factionId);
                 console.log(totalResources);
 
-                displayData = <div>
-                    <h1>Battle information</h1>
+                resourcesContent = <>
                     <h2>Resources</h2>
                     <table>
                         <thead>
@@ -91,23 +102,51 @@ const BattlefieldInfoPopup = ({
                         <tbody>
                             {armyresourcecategory.map(element => {
                                 const id = Number(element.id);
-                                return <tr>
+                                return <tr key={id}>
                                     <td>{element.name}</td>
                                     <td>{totalResources?.get(usFactionId)?.get(id) || "0"}</td>
                                     <td>{totalResources?.get(geFactionId)?.get(id) || "0"}</td>
                                     <td>{totalResources?.get(suFactionId)?.get(id) || "0"}</td>
-                                </tr>
+                                </tr>;
                             })}
                         </tbody>
                     </table>
-                </div>;
+                </>;
+                const status = data?.info?.status;
+                if (status) {
+                    statusContent = <h2>Status: {status}</h2>;
+                }
+
+                playersContent = <>
+                    <h2>Players</h2>
+                    <div style={{ display: "flex" }}>
+                        {data?.factions?.map(value => <div key={value.factionId}>
+                            <h3>{warmapEventHandler.lookupFactions.get(value.factionId).factionTag}</h3>
+                            {value?.players?.map(player => <p key={player.gamerTag}>{player.gamerTag}</p>)}
+                        </div>)}
+                    </div>
+                </>;
                 break;
         }
     }
 
-
-
-    return <div style={wrapperStyling}>{displayData}</div>;
+    return <div style={wrapperStyling}>
+        <div style={containerStyling}>
+            <div style={{ gridArea: "Title" }}>
+                <h1>Battle information</h1>
+                {titleContent}
+            </div>
+            <div style={{ gridArea: "Status" }}>
+                {statusContent}
+            </div>
+            <div style={{ gridArea: "Resources" }}>
+                {resourcesContent}
+            </div>
+            <div style={{ gridArea: "Players" }}>
+                {playersContent}
+            </div>
+        </div>
+    </div>;
 };
 
 export default BattlefieldInfoPopup;

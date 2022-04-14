@@ -58,7 +58,7 @@ export class Client extends EventEmitter {
         try { this.con.end().destroy(); } catch (_) { }
     }
 
-    public sendPacket(className: string, payload?: any, callback?: (result: any) => void) {
+    public sendPacket(className: string, payload?: any, callback?: (result: any) => void): boolean {
         // Get data from class.
         const buffer = keyToClass.get(className)?.toBuffer?.(payload);
         // If class doesn't return any data, return failed.
@@ -80,7 +80,7 @@ export class Client extends EventEmitter {
         return true;                    // Return success.
     }
 
-    public async sendPacketAsync(className: string, payload?: any) {
+    public sendPacketAsync(className: string, payload?: any): Promise<any> {
         return new Promise<any>((resolve, reject) => {
             try {
                 this.sendPacket(className, payload, (result) => {
@@ -128,6 +128,7 @@ export class Client extends EventEmitter {
     private handleMessage(data: Buffer) {
         const element = new BufferCursor(data);
         const plen = element.readUInt32LE();
+        if (plen !== data.byteLength) console.log(`${plen} !== ${data.byteLength}`);
         element.move(4);
         const id = element.readUInt32LE();
 

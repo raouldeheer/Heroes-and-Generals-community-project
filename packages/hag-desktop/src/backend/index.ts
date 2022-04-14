@@ -25,9 +25,7 @@ ipcMain.on("startClient", (event, data) => {
   if (client) resubscribeClient();
 });
 
-ipcMain.handle("IsClientActive", () => {
-  return !!client;
-});
+ipcMain.handle("IsClientActive", () => !!client);
 
 ipcMain.handle("GetMissionDetailsRequest", (_, data) =>
   client.sendPacketAsync("GetMissionDetailsRequest", data));

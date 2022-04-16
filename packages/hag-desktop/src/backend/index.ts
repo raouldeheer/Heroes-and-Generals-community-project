@@ -25,10 +25,14 @@ ipcMain.on("startClient", (event, data) => {
 
 ipcMain.handle("IsClientActive", () => !!client);
 
-ipcMain.handle("GetMissionDetailsRequest", (_, data) =>
-  client.sendPacketAsync("GetMissionDetailsRequest", data));
-ipcMain.handle("query_war_catalogue_request", (_, data) =>
-  client.sendPacketAsync("query_war_catalogue_request", data));
+[
+  "GetMissionDetailsRequest",
+  "query_war_catalogue_request",
+].forEach(name => {
+  ipcMain.handle(name, (_, data) =>
+    client.sendPacketAsync(name, data));
+});
+
 ipcMain.on("join_war_request", async (_, data) => {
   const result = await client.sendPacketAsync("join_war_request", data);
   await unsubscribeClient();

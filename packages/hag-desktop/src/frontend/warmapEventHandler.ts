@@ -40,41 +40,27 @@ export class WarmapEventHandler extends EventEmitter {
     }
 
     private handleNewData(data: any) {
-        if (data?.set) {
-            for (const iterator of data.set) {
-                switch (iterator.key) {
-                    case "battle":
-                        this.emit(`battlesetmapEntityId${iterator.value.mapEntityId}`, iterator.value.id);
-                        break;
-                    case "battlefieldstatus":
-                        this.emit(`battlefield${iterator.value.battlefieldid}`, iterator.value.id);
-                        break;
-                    case "supplylinestatus":
-                        this.emit(`supplyline${iterator.value.supplylineid}`, iterator.value.id);
-                        break;
-                    case "war":
-                        if (iterator.value.sequelwarid !== "0") {
-                            console.log(`${iterator.value.id} ended, switching to: ${iterator.value.sequelwarid}`);
-                            this.emit("warEnding", iterator.value);
-                        }
-                        break;
-                }
+        for (const iterator of (data.set || [])) {
+            switch (iterator.key) {
+                case "battle":
+                    this.emit(`battlesetmapEntityId${iterator.value.mapEntityId}`, iterator.value.id);
+                    break;
+                case "battlefieldstatus":
+                    this.emit(`battlefield${iterator.value.battlefieldid}`, iterator.value.id);
+                    break;
+                case "supplylinestatus":
+                    this.emit(`supplyline${iterator.value.supplylineid}`, iterator.value.id);
+                    break;
+                case "war":
+                    if (iterator.value.sequelwarid !== "0") {
+                        console.log(`${iterator.value.id} ended, switching to: ${iterator.value.sequelwarid}`);
+                        this.emit("warEnding", iterator.value);
+                    }
+                    break;
             }
         }
-        if (data?.delete) {
-            for (const iterator of data.delete) {
-                switch (iterator.key) {
-                    case "battle":
-                        console.log(`battledelete${iterator.value}`);
-                        this.emit(`battledelete${iterator.value}`);
-                        break;
-                    case "supplylinestatus":
-                        console.log(`supplylinestatusDelete: ${iterator.value}`);
-                        break;
-                    // TODO Add supplylinestatus delete key and logic!!!
-                }
-            }
-        }
+        for (const iterator of (data.delete || []))
+            this.emit(`${iterator.key}delete${iterator.value}`);
     }
 
     public GetBattle = (battleId?: string): battle | null => battleId

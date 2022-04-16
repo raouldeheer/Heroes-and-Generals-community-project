@@ -29,6 +29,15 @@ ipcMain.handle("IsClientActive", () => !!client);
 
 ipcMain.handle("GetMissionDetailsRequest", (_, data) =>
   client.sendPacketAsync("GetMissionDetailsRequest", data));
+ipcMain.handle("query_war_catalogue_request", (_, data) =>
+  client.sendPacketAsync("query_war_catalogue_request", data));
+ipcMain.on("join_war_request", async (_, data) => {
+  const result = await client.sendPacketAsync("join_war_request", data);
+  if (result.msg == 1) app.exit();
+  console.log(result);
+  app.exit(1);
+});
+
 
 async function subscribeClient() {
   await client.sendPacketAsync("query_war_catalogue_request");
@@ -63,35 +72,7 @@ function attachToClient(webContents: Electron.WebContents) {
       console.error(`ERROR: ${data}`);
     }
   }).on("message", async (typetext, data) => {
-    if (typetext == "KeyValueChangeSet") {
-      webContents.send("KeyValueChangeSet", data);
-      if (data?.set) {
-        for (const iterator of data.set) {
-          // switch (iterator.key) {
-          //   case "war": //! TODO redo war ending logic
-          //     if (iterator.value.sequelwarid !== "0") {
-          //       // TODO make popup to ask user to switch.
-          //       console.log(`${iterator.value.id} ended, switching to: ${iterator.value.sequelwarid}`);
-          //       client.sendPacket("join_war_request", {
-          //         warid: Long.fromString(iterator.value.sequelwarid),
-          //         factionid: Long.ZERO,
-          //         playedFirstBlood: 0,
-          //       });
-          //     } //! TODO redo war ending logic
-          //     break;
-          // }
-        }
-      } else if (data?.delete) {
-        for (const iterator of data.delete) {
-          switch (iterator.key) {
-            case "battle":
-              console.log(`battledelete${iterator.value}`);
-              break;
-            // TODO Add supplylinestatus delete key and logic!!!
-          }
-        }
-      }
-    }
+    if (typetext == "KeyValueChangeSet") webContents.send("KeyValueChangeSet", data);
   }).on("LoginQueueUpdate", (pos) => {
     webContents.send("LoginQueueUpdate", pos);
   }).on("closed", () => {

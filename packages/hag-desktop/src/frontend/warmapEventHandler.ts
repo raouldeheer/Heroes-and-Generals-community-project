@@ -54,14 +54,14 @@ export class WarmapEventHandler extends EventEmitter {
                         break;
                     case "war":
                         if (iterator.value.sequelwarid !== "0") {
-                            // TODO make popup to ask user to switch.
                             console.log(`${iterator.value.id} ended, switching to: ${iterator.value.sequelwarid}`);
                             this.emit("warEnding", iterator.value);
                         }
                         break;
                 }
             }
-        } else if (data?.delete) {
+        }
+        if (data?.delete) {
             for (const iterator of data.delete) {
                 switch (iterator.key) {
                     case "battle":

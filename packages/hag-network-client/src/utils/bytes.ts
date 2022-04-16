@@ -9,16 +9,14 @@ export function bytesToString(source: Buffer | BufferCursor): string {
     return Buffer.from(bytes).toString("ascii");
 }
 
-export function parseGroups(source: Buffer | BufferCursor): Buffer[] {
-    const buf = source instanceof BufferCursor ? source : new BufferCursor(source);
+export function splitInGroups(buf: BufferCursor) {
     const groups = [];
-    const len = buf.readUInt32LE() - 4;
+    let partLen = 0;
     do {
-        const partLen = buf.readUInt32LE();
+        partLen = buf.readUInt32LE();
         if (partLen !== 0) {
             groups.push(buf.slice(partLen - 4));
-            if (buf.length - buf.tell() !== 0) buf.move(4);
         }
-    } while (len > buf.tell());
-    return groups.map(v => v.buffer);
+    } while (buf.tell() < buf.length);
+    return groups;
 }

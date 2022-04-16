@@ -53,7 +53,7 @@ export default class BattlefieldPoint extends Component<BattlefieldProps, Battle
     clicked = () => {
         if (this.state.battleId)
             this.warmapEventHandler.emit("BattlefieldInfoPopup_Show", this.state.battleId);
-    }
+    };
 
     render() {
         const status = this.warmapEventHandler.datastore
@@ -66,23 +66,23 @@ export default class BattlefieldPoint extends Component<BattlefieldProps, Battle
         const battle = this.warmapEventHandler.GetBattle(this.state.battleId);
 
         return <>
-        <Circle
-            x={this.props.battlefield.posx}
-            y={this.props.battlefield.posy}
-            radius={this.pointSize}
-            stroke={battle ? "orange" : "black"}
-            strokeWidth={2}
-            fill={color}
-            onClick={this.clicked}
-            transformsEnabled={"position"}
-        />
-        <Text
-            text={this.props.battlefield.bftitle}
-            x={this.props.battlefield.posx}
-            y={this.props.battlefield.posy + this.pointSize}
-            listening={false}
-            transformsEnabled={"position"}
-        />
-    </>;
+            <Circle
+                x={this.props.battlefield.posx}
+                y={this.props.battlefield.posy}
+                radius={this.pointSize}
+                stroke={battle ? "orange" : "black"}
+                strokeWidth={2}
+                fill={color}
+                onClick={this.clicked}
+                transformsEnabled={"position"}
+            />
+            <Text
+                text={this.props.battlefield.bftitle}
+                x={this.props.battlefield.posx}
+                y={this.props.battlefield.posy + this.pointSize}
+                listening={false}
+                transformsEnabled={"position"}
+            />
+        </>;
     }
 }

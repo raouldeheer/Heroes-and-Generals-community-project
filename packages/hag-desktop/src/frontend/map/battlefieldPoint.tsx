@@ -1,63 +1,88 @@
-import { useEffect, useState } from "react";
+import { Component } from "react";
 import { Circle, Text } from 'react-konva';
 import { WarmapEventHandler } from "../warmapEventHandler";
 import { Battlefield, battlefieldstatus } from "./mapInterfaces";
 
-const pointSize = 15;
-
-const BattlefieldPoint = ({
-    battlefield,
-    warmapEventHandler
-}: {
+interface BattlefieldProps {
     battlefield: Battlefield;
     warmapEventHandler: WarmapEventHandler;
-}): JSX.Element => {
-    const [battleId, setBattleId] = useState<string>(null);
-    const [battlefieldstatusId, setbattlefieldstatusId] = useState<string>(null);
+}
 
-    const color = battlefieldstatusId
-        ? warmapEventHandler.lookupFactions.get(
-            warmapEventHandler.datastore.GetData<battlefieldstatus>(
-                "battlefieldstatus", battlefieldstatusId
-            ).factionid
-        )?.color || "#888"
-        : "#888";
-    const battle = warmapEventHandler.GetBattle(battleId);
+interface BattlefieldState {
+    battleId: string;
+    battlefieldstatusId: string;
+}
 
-    useEffect(() => {
-        warmapEventHandler.on(`battlefield${battlefield.id}`, setbattlefieldstatusId);
-        warmapEventHandler.on(`battlesetmapEntityId${battlefield.id}`, (data: string) => {
-            setBattleId(data);
-            warmapEventHandler.on(`battledelete${data}`, () => {
-                console.log(`Deleting ${data}`);
-                setBattleId(null);
-            });
-        });
-    }, []);
+export default class BattlefieldPoint extends Component<BattlefieldProps, BattlefieldState> {
+    state: Readonly<BattlefieldState> = {
+        battleId: null,
+        battlefieldstatusId: null,
+    };
+    warmapEventHandler: WarmapEventHandler;
+    readonly pointSize = 15;
 
-    function clicked() {
-        if (battleId)
-            warmapEventHandler.emit("BattlefieldInfoPopup_Show", battleId);
+    constructor(props: BattlefieldProps) {
+        super(props);
+        this.warmapEventHandler = props.warmapEventHandler;
     }
-    return <>
+
+    statusCallback = (data: string) => {
+        this.setState(state => ({ ...state, battlefieldstatusId: data }));
+        this.warmapEventHandler.once(`battlefieldstatusdelete${data}`, () => {
+            this.setState(state => ({ ...state, battlefieldstatusId: null }));
+        });
+    };
+
+    battleCallback = (data: string) => {
+        this.setState(state => ({ ...state, battleId: data }));
+        this.warmapEventHandler.once(`battledelete${data}`, () => {
+            this.setState(state => ({ ...state, battleId: null }));
+        });
+    };
+
+    componentDidMount(): void {
+        this.warmapEventHandler.on(`battlefield${this.props.battlefield.id}`, this.statusCallback);
+        this.warmapEventHandler.on(`battlesetmapEntityId${this.props.battlefield.id}`, this.battleCallback);
+    }
+
+    componentWillUnmount(): void {
+        this.warmapEventHandler.removeListener(`battlefield${this.props.battlefield.id}`, this.statusCallback);
+        this.warmapEventHandler.removeListener(`battlesetmapEntityId${this.props.battlefield.id}`, this.battleCallback);
+    }
+
+    clicked = () => {
+        if (this.state.battleId)
+            this.warmapEventHandler.emit("BattlefieldInfoPopup_Show", this.state.battleId);
+    }
+
+    render() {
+        const status = this.warmapEventHandler.datastore
+            .GetData<battlefieldstatus>("battlefieldstatus", this.state.battlefieldstatusId);
+        let color = "#888";
+        if (this.state.battlefieldstatusId && status)
+            color = this.warmapEventHandler.lookupFactions
+                .get(status.factionid)?.color;
+
+        const battle = this.warmapEventHandler.GetBattle(this.state.battleId);
+
+        return <>
         <Circle
-            x={battlefield.posx}
-            y={battlefield.posy}
-            radius={pointSize}
+            x={this.props.battlefield.posx}
+            y={this.props.battlefield.posy}
+            radius={this.pointSize}
             stroke={battle ? "orange" : "black"}
             strokeWidth={2}
             fill={color}
-            onClick={clicked}
+            onClick={this.clicked}
             transformsEnabled={"position"}
         />
         <Text
-            text={battlefield.bftitle}
-            x={battlefield.posx}
-            y={battlefield.posy + pointSize}
+            text={this.props.battlefield.bftitle}
+            x={this.props.battlefield.posx}
+            y={this.props.battlefield.posy + this.pointSize}
             listening={false}
             transformsEnabled={"position"}
         />
     </>;
-};
-
-export default BattlefieldPoint;
+    }
+}

@@ -189,19 +189,17 @@ export class MapInteractionControlled extends Component<any, any> {
   realOnWheel(e: React.WheelEvent<HTMLElement>) {
     e.preventDefault();
     e.stopPropagation();
-    requestAnimationFrame(() => {
-      if (this.props.disableZoom) return;
+    if (this.props.disableZoom) return;
 
-      const scaleChange = 2 ** (e.deltaY * 0.002);
-      const newScale = clamp(
-        this.props.minScale,
-        this.props.value.scale + (1 - scaleChange),
-        this.props.maxScale
-      );
+    const scaleChange = 2 ** (e.deltaY * 0.002);
+    const newScale = clamp(
+      this.props.minScale,
+      this.props.value.scale + (1 - scaleChange),
+      this.props.maxScale
+    );
 
-      const mousePos = this.clientPosToTranslatedPos({ x: e.clientX, y: e.clientY });
-      this.scaleFromPoint(newScale, mousePos);
-    });
+    const mousePos = this.clientPosToTranslatedPos({ x: e.clientX, y: e.clientY });
+    this.scaleFromPoint(newScale, mousePos);
   }
 
   setPointerState(pointers?: string | any[] | globalThis.TouchList) {

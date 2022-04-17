@@ -1,11 +1,17 @@
 const electron = window.require("electron");
 import EventEmitter from "events";
 import { DataStore } from "hag-network-client/dist/datastore";
+import { IKeyValueChangeSetResult } from "hag-network-client/dist/protoclasses/keyValueChangeSet";
 import { battle } from "./map/mapInterfaces";
 
 export class WarmapEventHandler extends EventEmitter {
     public readonly lookupFactions: Map<string, any>;
     public readonly lookupFactionsByTemplateId: Map<string, any>;
+    private readonly tagToShort = new Map<string, string>([
+        ["Soviet Union", "SU"],
+        ["Germany", "GE"],
+        ["United States", "US"]
+    ]);
     public readonly datastore: DataStore;
     constructor() {
         super();
@@ -33,13 +39,13 @@ export class WarmapEventHandler extends EventEmitter {
                 this.lookupFactionsByTemplateId.set(element.factionTemplateId, element);
             });
         });
-        electron.ipcRenderer.on("KeyValueChangeSet", (_, data: any) => {
+        electron.ipcRenderer.on("KeyValueChangeSet", (_, data: IKeyValueChangeSetResult) => {
             this.datastore.SaveData(data);
             this.handleNewData(data);
         });
     }
 
-    private handleNewData(data: any) {
+    private handleNewData(data: IKeyValueChangeSetResult) {
         for (const iterator of (data.set || [])) {
             switch (iterator.key) {
                 case "battle":
@@ -66,4 +72,7 @@ export class WarmapEventHandler extends EventEmitter {
     public GetBattle = (battleId?: string): battle | null => battleId
         ? this.datastore.GetData<battle>("battle", battleId)
         : null;
+
+    public GetFactionShort = (id: string): string =>
+        this.tagToShort.get(this.lookupFactions.get(id).factionTag);
 }

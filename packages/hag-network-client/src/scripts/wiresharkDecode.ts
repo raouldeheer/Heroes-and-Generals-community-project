@@ -8,7 +8,7 @@ import { loadTemplate } from "../utils/assetLoading";
 import { bytesToString } from "../utils/bytes";
 import { toCanvasColored } from "../utils/canvas";
 
-const data = fs.readFileSync("./captures/capturetext11.txt", "utf-8");
+const data = fs.readFileSync("./captures/capturetext17.txt", "utf-8");
 
 /**
  * regex for finding client to server packets:

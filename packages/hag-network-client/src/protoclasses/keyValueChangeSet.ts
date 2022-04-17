@@ -55,6 +55,7 @@ export class KeyValueChangeSet {
                             case KeyValueChangeKey.air_transport:
                             case KeyValueChangeKey.PlayerPartnerInfo:
                             case KeyValueChangeKey.supplylinestatus:
+                            case KeyValueChangeKey.CommandNodeDefinition:
                                 returnObj.delete.push({
                                     key,
                                     value: value.readBigUint64LE().toString(),

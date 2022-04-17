@@ -351,3 +351,9 @@ export enum VirtualCurrencyType {
     Warfunds = 2,
     Gold = 3,
 }
+
+export enum MissionStatus {
+    MissionOpen = 1,
+    MissionRunning = 2,
+    MissionEnding = 3,
+}

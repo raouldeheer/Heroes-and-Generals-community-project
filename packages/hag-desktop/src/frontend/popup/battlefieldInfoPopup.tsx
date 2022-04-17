@@ -5,6 +5,7 @@ import { GetMissionDetailsResponse, Armyresourcecategory } from "../map/mapInter
 import { WarmapEventHandler } from "../warmapEventHandler";
 import Long from "long";
 import armyresourcecategory from "../data/armyresourcecategory.json";
+import { MissionStatus } from "hag-network-client/dist/protolinking/classKeys";
 
 const armyresourcecategorys = new Map<string, Armyresourcecategory>();
 armyresourcecategory.forEach(element => {
@@ -15,8 +16,6 @@ const wrapperStyling: React.CSSProperties = {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    width: "50vw",
-    minHeight: "20vh",
     background: "#ffffff",
     boxShadow: "0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24)",
     zIndex: 10,
@@ -28,12 +27,20 @@ const containerStyling: React.CSSProperties = {
     gridTemplateRows: "1fr 1fr 1fr 1fr 1fr",
     gap: "0px 0px",
     gridTemplateAreas: `
-      "Title Status"
+      "Title Title"
       "Resources Players"
       "Resources Players"
       "Resources Players"
       "Resources Players"
-    `
+    `,
+};
+
+const DivStyling: React.CSSProperties = {
+    paddingLeft: "50px",
+    paddingRight: "50px",
+    paddingTop: "5px",
+    paddingBottom: "5px",
+    border: "thin solid black",
 };
 
 const BattlefieldInfoPopup = ({
@@ -45,22 +52,20 @@ const BattlefieldInfoPopup = ({
 }): JSX.Element => {
     const [data, setData] = useState<GetMissionDetailsResponse>(null);
 
-    useEffect(() => {
-        if (!data) {
-            getData();
-        }
-    }, []);
-
     const getData = async () => {
         const result = await electron.ipcRenderer.invoke("GetMissionDetailsRequest", { missionId: 0, battleId: Long.fromString(battleId) });
         console.log(result);
         setData(result);
     };
 
+    useEffect(() => {
+        if (!data) {
+            getData();
+        }
+    }, []);
 
     let titleContent = null;
     let resourcesContent = null;
-    let statusContent = null;
     let playersContent = null;
     if (data) {
         switch (data.response) {
@@ -86,7 +91,6 @@ const BattlefieldInfoPopup = ({
                 const usFactionId = Number(warmapEventHandler.lookupFactionsByTemplateId.get("1").factionId);
                 const geFactionId = Number(warmapEventHandler.lookupFactionsByTemplateId.get("2").factionId);
                 const suFactionId = Number(warmapEventHandler.lookupFactionsByTemplateId.get("3").factionId);
-                console.log(totalResources);
 
                 resourcesContent = <>
                     <h2>Resources</h2>
@@ -112,17 +116,30 @@ const BattlefieldInfoPopup = ({
                         </tbody>
                     </table>
                 </>;
-                const status = data?.info?.status;
+                const status: MissionStatus = data?.info?.status;
                 if (status) {
-                    statusContent = <h2>Status: {status}</h2>;
+                    switch (status) {
+                        case MissionStatus.MissionOpen:
+                            titleContent = <h2>Battle is open.</h2>;
+                            break;
+                        case MissionStatus.MissionRunning:
+                            titleContent = <h2>Battle is running.</h2>;
+                            break;
+                        case MissionStatus.MissionEnding:
+                            titleContent = <h2>Battle is ending.</h2>;
+                            break;
+                        default:
+                            titleContent = <h2>Unknown status...</h2>;
+                            break;
+                    }
                 }
 
                 playersContent = <>
-                    <h2>Players</h2>
+                    <h2 style={{ marginBottom: 0 }}>Players</h2>
                     <div style={{ display: "flex" }}>
-                        {data?.factions?.map(value => <div key={value.factionId}>
-                            <h3>{warmapEventHandler.lookupFactions.get(value.factionId).factionTag}</h3>
-                            {value?.players?.map(player => <p key={player.gamerTag}>{player.gamerTag}</p>)}
+                        {data?.factions?.map(value => <div style={{ minWidth: "50px" }} key={value.factionId}>
+                            <h3 style={{ marginBottom: 0 }}>{warmapEventHandler.GetFactionShort(value.factionId)} {value?.players?.length || 0}</h3>
+                            {value?.players?.map(player => <p style={{ marginBottom: 0, marginTop: 0 }} key={player.gamerTag}>{player.gamerTag}</p>)}
                         </div>)}
                     </div>
                 </>;
@@ -132,19 +149,16 @@ const BattlefieldInfoPopup = ({
 
     return <div style={wrapperStyling}>
         <div style={containerStyling}>
-            <div style={{ gridArea: "Title" }}>
+            <div style={{ ...DivStyling, gridArea: "Title" }}>
                 <h1>Battle information</h1>
                 {titleContent}
             </div>
-            <div style={{ gridArea: "Status" }}>
-                {statusContent}
-            </div>
-            <div style={{ gridArea: "Resources" }}>
+            {resourcesContent ? <div style={{ ...DivStyling, gridArea: "Resources" }}>
                 {resourcesContent}
-            </div>
-            <div style={{ gridArea: "Players" }}>
+            </div> : null}
+            {playersContent ? <div style={{ ...DivStyling, gridArea: "Players" }}>
                 {playersContent}
-            </div>
+            </div> : null}
         </div>
     </div>;
 };

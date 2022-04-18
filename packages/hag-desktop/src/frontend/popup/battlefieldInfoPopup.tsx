@@ -16,21 +16,19 @@ const wrapperStyling: React.CSSProperties = {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
+    flexDirection: "column",
     background: "#ffffff",
     boxShadow: "0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24)",
-    zIndex: 10,
+    zIndex: 7,
+    borderRadius: "20px",
 };
 
 const containerStyling: React.CSSProperties = {
     display: "grid",
     gridTemplateColumns: "1fr 1fr",
-    gridTemplateRows: "1fr 1fr 1fr 1fr 1fr",
+    gridTemplateRows: "1fr",
     gap: "0px 0px",
     gridTemplateAreas: `
-      "Title Title"
-      "Resources Players"
-      "Resources Players"
-      "Resources Players"
       "Resources Players"
     `,
 };
@@ -40,7 +38,6 @@ const DivStyling: React.CSSProperties = {
     paddingRight: "50px",
     paddingTop: "5px",
     paddingBottom: "5px",
-    border: "thin solid black",
 };
 
 const BattlefieldInfoPopup = ({
@@ -148,11 +145,11 @@ const BattlefieldInfoPopup = ({
     }
 
     return <div style={wrapperStyling}>
+        <div style={DivStyling}>
+            <h1>Battle information</h1>
+            {titleContent}
+        </div>
         <div style={containerStyling}>
-            <div style={{ ...DivStyling, gridArea: "Title" }}>
-                <h1>Battle information</h1>
-                {titleContent}
-            </div>
             {resourcesContent ? <div style={{ ...DivStyling, gridArea: "Resources" }}>
                 {resourcesContent}
             </div> : null}

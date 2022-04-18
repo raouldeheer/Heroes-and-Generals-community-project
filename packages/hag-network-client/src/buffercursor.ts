@@ -129,6 +129,16 @@ export default class BufferCursor {
         this.move(4);
         return ret;
     }
+    readBigUint64LE(): bigint {
+        const ret = this.buffer.readBigUint64LE(this.pos);
+        this.move(8);
+        return ret;
+    }
+    readBigUint64BE(): bigint {
+        const ret = this.buffer.readBigUint64BE(this.pos);
+        this.move(8);
+        return ret;
+    }
     readFloatBE(): number {
         const ret = this.buffer.readFloatBE(this.pos);
         this.move(4);

@@ -45,30 +45,11 @@ export class KeyValueChangeSet {
                     sections.shift();
                     for (let i = 0; i < sections.length; i++) {
                         const [keyBuf, valueBuf] = splitInGroups(sections[i]);
-                        const key = bytesToString(keyBuf);
                         valueBuf.seek(4);
-                        const value = valueBuf.slice().buffer;
-                        switch (key) {
-                            case KeyValueChangeKey.battle:
-                            case KeyValueChangeKey.BattleInfo:
-                            case KeyValueChangeKey.transport_commandnode_segment:
-                            case KeyValueChangeKey.air_transport:
-                            case KeyValueChangeKey.PlayerPartnerInfo:
-                            case KeyValueChangeKey.supplylinestatus:
-                            case KeyValueChangeKey.CommandNodeDefinition:
-                                returnObj.delete.push({
-                                    key,
-                                    value: value.readBigUint64LE().toString(),
-                                });
-                                break;
-                            default:
-                                console.log(`New delete key: ${key}`);
-                                returnObj.delete.push({
-                                    key,
-                                    value: "New delete key",
-                                });
-                                break;
-                        }
+                        returnObj.delete.push({
+                            key: bytesToString(keyBuf),
+                            value: valueBuf.readBigUint64LE().toString(),
+                        });
                     }
                     break;
                 default:

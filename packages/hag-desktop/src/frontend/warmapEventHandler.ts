@@ -3,6 +3,8 @@ import EventEmitter from "events";
 import { DataStore } from "hag-network-client/dist/datastore";
 import { IKeyValueChangeSetResult } from "hag-network-client/dist/protoclasses/keyValueChangeSet";
 import { battle } from "./map/mapInterfaces";
+import battlefield from "hag-network-client/jsondb/battlefield.json";
+
 
 export class WarmapEventHandler extends EventEmitter {
     public readonly lookupFactions: Map<string, any>;
@@ -13,12 +15,17 @@ export class WarmapEventHandler extends EventEmitter {
         ["United States", "US"]
     ]);
     public readonly datastore: DataStore;
+    public userId: string;
     constructor() {
         super();
         this.lookupFactions = new Map<string, any>();
         this.lookupFactionsByTemplateId = new Map<string, any>();
         this.datastore = new DataStore;
+        battlefield.forEach((element: { id: string; }) => { this.datastore.SetData("battlefield", element.id, element); });
         electron.ipcRenderer.setMaxListeners(64);
+        electron.ipcRenderer.on("login2_result", (_, data) => {
+            this.userId = data.currentplayer.id;
+        });
         electron.ipcRenderer.on("warCatalogueFactions", (_, data: any[]) => {
             data.forEach(element => {
                 switch (element.factionTemplateId) {
@@ -48,6 +55,9 @@ export class WarmapEventHandler extends EventEmitter {
     private handleNewData(data: IKeyValueChangeSetResult) {
         for (const iterator of (data.set || [])) {
             switch (iterator.key) {
+                case "player":
+                    this.userId = iterator.value.id;
+                    break;
                 case "battle":
                     this.emit(`battlesetmapEntityId${iterator.value.mapEntityId}`, iterator.value.id);
                     break;
@@ -56,6 +66,9 @@ export class WarmapEventHandler extends EventEmitter {
                     break;
                 case "supplylinestatus":
                     this.emit(`supplyline${iterator.value.supplylineid}`, iterator.value.id);
+                    break;
+                case "CommandNodeWarInstance":
+                    this.emit("CommandNodeWarInstanceUpdate");
                     break;
                 case "war":
                     if (iterator.value.sequelwarid !== "0") {

@@ -44,10 +44,12 @@ ipcMain.on("join_war_request", async (_, data) => {
 async function subscribeClient() {
   await client.sendPacketAsync("query_war_catalogue_request");
   await client.sendPacketAsync("subscribewarmapview");
+  await client.sendPacketAsync("subscribecommandnodeview");
 }
 
 async function unsubscribeClient() {
   await client.sendPacketAsync("unsubscribewarmapview");
+  await client.sendPacketAsync("unsubscribecommandnodeview");
 }
 
 async function resubscribeClient() {
@@ -66,6 +68,8 @@ function attachToClient(webContents: Electron.WebContents) {
     webContents.send("warCatalogueFactions", data.warcataloguedata[0].warCatalogueFactions);
   }).on("message", async (typetext, data) => {
     if (typetext == "KeyValueChangeSet") webContents.send("KeyValueChangeSet", data);
+  }).on("login2_result", (data) => {
+    webContents.send("login2_result", data);
   }).on("LoginQueueUpdate", (pos) => {
     webContents.send("LoginQueueUpdate", pos);
   }).on("closed", () => {

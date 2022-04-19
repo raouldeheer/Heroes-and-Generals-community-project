@@ -155,3 +155,34 @@ export interface Armyresourcecategory {
     captureTransferMultiplierWar: number;
     captureTransferMultiplierStaged: number;
 }
+
+export interface CommandNodeWarInstance {
+    id: string;
+    commandNodeDefinitionId: string;
+    parentCommandNodeInstanceId: string;
+    factionId: string;
+    mapEntityId: string;
+    mapEntityTypeId: string;
+    warId: string;
+    morale: number;
+    lastReset: string;
+    isDeployed: number;
+    hasGottenSoldierResourcesForFree: boolean;
+    hasGottenVehicleResourcesForFree: boolean;
+    maxMorale: number;
+    moraleGainModifier: number;
+}
+
+export interface CommandNodeDefinition {
+    id: string;
+    name: string;
+    abbreviation: string;
+    ownerPlayerId: string;
+    factionTemplateId: string;
+    commandNodeTemplateId: string;
+    rank: number;
+    supplyResourceCategoryId?: string;
+    generalCharacterId: string;
+    statUpdateTimeStamp: string;
+    suppliedOnCreation: boolean;
+}

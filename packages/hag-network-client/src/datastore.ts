@@ -9,11 +9,7 @@ export class DataStore {
 
     public SaveData(data: IKeyValueChangeSetResult) {
         data.set?.forEach(pair => {
-            if (pair.value.id) {
-                const itemStore = this.mainStore.get(pair.key) || new Map;
-                itemStore.set(pair.value.id, pair.value);
-                this.mainStore.set(pair.key, itemStore);
-            }
+            if (pair.value.id) this.SetData(pair.key, pair.value.id, pair.value);
         });
         data.delete?.forEach(pair => {
             if (pair.value) {
@@ -31,6 +27,15 @@ export class DataStore {
 
     public GetData = <T = any>(itemStoreName: string, id: string): T =>
         this.mainStore.get(itemStoreName)?.get?.(id);
+
+    public SetData<T = any>(itemStoreName: string, id: string, data: T) {
+        const itemStore = this.mainStore.get(itemStoreName) || new Map;
+        itemStore.set(id, data);
+        this.mainStore.set(itemStoreName, itemStore);
+    }
+
+    public GetItemStore = <T = any>(itemStoreName: string): Map<string, T> | undefined =>
+        this.mainStore.get(itemStoreName);
 
     public ToObject() {
         const obj: any = {};

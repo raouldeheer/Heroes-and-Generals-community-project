@@ -178,6 +178,7 @@ export class Client extends EventEmitter {
                     this.sendPacket("login2_response", this.login(this.password, result));
                     break;
                 case "login2_result":
+                    this.emit("login2_result", result);
                     if (result.response == ResponseType.login_success) {
                         this.emit("loggedin");
                     } else {

@@ -48,10 +48,13 @@ const SideMenu = ({
         items = Array.from(CommandNodeWarInstances.values())
             .map(element => {
                 const CommandNodeDefinition: CommandNodeDefinition = warmapEventHandler.datastore.GetData("CommandNodeDefinition", element.commandNodeDefinitionId);
-                return CommandNodeDefinition?.ownerPlayerId == warmapEventHandler.userId && CommandNodeDefinition?.generalCharacterId != "0" ? {
-                    CommandNodeDefinition,
-                    CommandNodeWarInstance: element,
-                } : null;
+                return CommandNodeDefinition?.ownerPlayerId == warmapEventHandler.user.id
+                    && CommandNodeDefinition?.generalCharacterId != "0"
+                    && element.factionId == warmapEventHandler.user.factionid
+                    ? {
+                        CommandNodeDefinition,
+                        CommandNodeWarInstance: element,
+                    } : null;
             })
             .filter(e => e?.CommandNodeDefinition?.name)
             .sort((a, b) => a.CommandNodeDefinition.abbreviation.localeCompare(b.CommandNodeDefinition.abbreviation))
@@ -86,9 +89,7 @@ const SideMenu = ({
             </div>
         </>;
     } else {
-        return <>
-            <button style={{ ...buttonStyling, right: 0 }} onClick={() => { setIsVisible(true); }}>{"<"}</button>
-        </>;
+        return <button style={{ ...buttonStyling, right: 0 }} onClick={() => { setIsVisible(true); }}>{"<"}</button>;
     }
 };
 

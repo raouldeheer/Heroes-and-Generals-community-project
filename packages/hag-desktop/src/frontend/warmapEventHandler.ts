@@ -2,7 +2,7 @@ const electron = window.require("electron");
 import EventEmitter from "events";
 import { DataStore } from "hag-network-client/dist/datastore";
 import { IKeyValueChangeSetResult } from "hag-network-client/dist/protoclasses/keyValueChangeSet";
-import { battle } from "./map/mapInterfaces";
+import { battle, Player } from "./map/mapInterfaces";
 import battlefield from "hag-network-client/jsondb/battlefield.json";
 
 
@@ -15,7 +15,7 @@ export class WarmapEventHandler extends EventEmitter {
         ["United States", "US"]
     ]);
     public readonly datastore: DataStore;
-    public userId: string;
+    public user: Player;
     constructor() {
         super();
         this.lookupFactions = new Map<string, any>();
@@ -24,7 +24,7 @@ export class WarmapEventHandler extends EventEmitter {
         battlefield.forEach((element: { id: string; }) => { this.datastore.SetData("battlefield", element.id, element); });
         electron.ipcRenderer.setMaxListeners(64);
         electron.ipcRenderer.on("login2_result", (_, data) => {
-            this.userId = data.currentplayer.id;
+            this.user = data.currentplayer;
         });
         electron.ipcRenderer.on("warCatalogueFactions", (_, data: any[]) => {
             data.forEach(element => {
@@ -55,9 +55,6 @@ export class WarmapEventHandler extends EventEmitter {
     private handleNewData(data: IKeyValueChangeSetResult) {
         for (const iterator of (data.set || [])) {
             switch (iterator.key) {
-                case "player":
-                    this.userId = iterator.value.id;
-                    break;
                 case "battle":
                     this.emit(`battlesetmapEntityId${iterator.value.mapEntityId}`, iterator.value.id);
                     break;

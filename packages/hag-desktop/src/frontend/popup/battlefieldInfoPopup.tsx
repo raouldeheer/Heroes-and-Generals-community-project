@@ -113,7 +113,7 @@ const BattlefieldInfoPopup = ({
                         </tbody>
                     </table>
                 </>;
-                const status: MissionStatus = data?.info?.status;
+                const status = data?.info?.status;
                 if (status) {
                     switch (status) {
                         case MissionStatus.MissionOpen:

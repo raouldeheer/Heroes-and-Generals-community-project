@@ -64,7 +64,7 @@ export async function drawToCanvas(dataStore: DataStore, dataStore2: DataStore, 
     drawCapitals(dataStore2, dataStore, context);
 
     // Draw supplylines
-    drawSupplylines(dataStore, dataStore2, context, factionColorLookup);
+    drawSupplylines(dataStore2, dataStore, context, factionColorLookup);
 
     // Draw battlefields
     drawBattlefields(dataStore2, dataStore, context, factionColorLookup);
@@ -72,7 +72,7 @@ export async function drawToCanvas(dataStore: DataStore, dataStore2: DataStore, 
     return canvas;
 }
 
-function drawSupplylines(dataStore: DataStore, dataStore2: DataStore, context: CanvasRenderingContext2D, factionColorLookup: (id: string) => string) {
+function drawSupplylines(dataStore2: DataStore, dataStore: DataStore, context: CanvasRenderingContext2D, factionColorLookup: (id: string) => string) {
     context.lineWidth = 10;
     const supplylinestatus = dataStore2.ToObject().supplylinestatus;
     for (const infokey in supplylinestatus) {
@@ -118,6 +118,7 @@ function drawCapitals(dataStore2: DataStore, dataStore: DataStore, context: Canv
         if (capitals.hasOwnProperty(infokey)) {
             const element: { battlefieldId: string; } = capitals[infokey];
             const battlefield = dataStore.GetData("battlefield", element.battlefieldId);
+            if (!battlefield) continue;
 
             const numPoints = 5;
             const outerRadius = 80;

@@ -13,6 +13,7 @@
     "dev:build": "tsc -w",
     "wiresharkDecode": "nodemon dist/scripts/wiresharkDecode.js",
     "testcon": "node dist/scripts/testCon.js",
+    "warmapScreenshot": "node dist/scripts/warmapScreenshot.js",
     "jsonToMap": "node dist/scripts/jsonToMap.js",
     "protoToJson": "node dist/scripts/protoToJson.js",
     "supplyscript": "node dist/scripts/supplyscript.js"

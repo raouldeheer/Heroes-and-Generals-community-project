@@ -7,11 +7,12 @@ import morgan from "morgan";
 
 function cached<T>(threshold: number, action: () => Promise<T>): () => Promise<T> {
     let cachedData: T | null;
-    let cachedTime: number | null;
     return async () => {
-        if (!cachedTime || !cachedData || Date.now() - cachedTime >= threshold * 1000) {
+        if (!cachedData) {
             cachedData = await action();
-            cachedTime = Date.now();
+            setTimeout(() => {
+                cachedData = null;
+            }, threshold * 1000);
         }
         return cachedData;
     };
@@ -34,16 +35,13 @@ export async function startApp(datastore: DataStore, client: Client, lookupFacti
     app.use(compression());
 
     app.get("/status", (_, res) => {
-        res.sendStatus(client.connected? 200: 500);
+        res.sendStatus(client.connected ? 200 : 500);
     });
 
     app.get("/warmap", async (_, res) => {
         if (!client) res.sendStatus(500);
-        const t1 = Date.now();
         res.contentType("image/jpeg");
         res.send(await cachedBuffer());
-        const t2 = Date.now();
-        console.log(`t2-t1: ${t2 - t1}`);
     });
 
     app.listen(expressPort, () => {

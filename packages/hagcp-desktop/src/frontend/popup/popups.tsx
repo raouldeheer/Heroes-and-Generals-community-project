@@ -1,4 +1,3 @@
-const electron = window.require("electron");
 import { useEffect, useState } from "react";
 import { war } from "../map/mapInterfaces";
 import { WarmapEventHandler } from "../warmapEventHandler";

@@ -1,6 +1,5 @@
 import BattlefieldPoint from "./battlefieldPoint";
-import { Stage, Layer } from 'react-konva';
-const electron = window.require("electron");
+import { Stage, Layer } from "react-konva";
 import Supplyline from "./supplyline";
 import { WarmapEventHandler } from "../warmapEventHandler";
 import { useEffect } from "react";

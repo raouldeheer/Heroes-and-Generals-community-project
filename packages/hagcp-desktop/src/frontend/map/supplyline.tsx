@@ -1,5 +1,5 @@
 import { Component } from "react";
-import { Circle, Line } from 'react-konva';
+import { Circle, Line } from "react-konva";
 import { WarmapEventHandler } from "../warmapEventHandler";
 import { supplylinestatus, supplyline } from "./mapInterfaces";
 

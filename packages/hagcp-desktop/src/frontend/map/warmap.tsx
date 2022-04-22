@@ -3,9 +3,8 @@
 import image from "../imgs/background.png";
 import MapInteractionCSS from "./MapInteraction";
 import React from "react";
-const electron = window.require("electron");
-import battlefield from "hagcp-network-client/jsondb/battlefield.json";
-import supplyline from "hagcp-network-client/jsondb/supplyline.json";
+import battlefield from "hagcp-assets/json/battlefield.json";
+import supplyline from "hagcp-assets/json/supplyline.json";
 import { WarmapEventHandler } from "../warmapEventHandler";
 import MapSector from "./mapSector";
 

@@ -3,8 +3,7 @@ import EventEmitter from "events";
 import { DataStore } from "hagcp-network-client/dist/datastore";
 import { IKeyValueChangeSetResult } from "hagcp-network-client/dist/protoclasses/keyValueChangeSet";
 import { battle, Player } from "./map/mapInterfaces";
-import battlefield from "hagcp-network-client/jsondb/battlefield.json";
-
+import battlefield from "hagcp-assets/json/battlefield.json";
 
 export class WarmapEventHandler extends EventEmitter {
     public readonly lookupFactions: Map<string, any>;
@@ -21,7 +20,8 @@ export class WarmapEventHandler extends EventEmitter {
         this.lookupFactions = new Map<string, any>();
         this.lookupFactionsByTemplateId = new Map<string, any>();
         this.datastore = new DataStore;
-        battlefield.forEach((element: { id: string; }) => { this.datastore.SetData("battlefield", element.id, element); });
+        battlefield.forEach((element: { id: string; }) =>
+            this.datastore.SetData("battlefield", element.id, element));
         electron.ipcRenderer.setMaxListeners(64);
         electron.ipcRenderer.on("login2_result", (_, data) => {
             this.user = data.currentplayer;

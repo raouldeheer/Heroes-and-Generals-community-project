@@ -2,7 +2,7 @@
   "name": "hagcp-assets",
   "version": "0.0.1",
   "description": "",
-  "main": "dist/index.js",
+  "main": "dist/assetLoading.js",
   "devDependencies": {},
   "scripts": {
     "build": "tsc",

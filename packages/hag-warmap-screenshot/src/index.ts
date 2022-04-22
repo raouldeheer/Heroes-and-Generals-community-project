@@ -2,7 +2,6 @@ import { Client, DataStore, loadTemplate } from "hag-network-client";
 import { ip, port, password, userAgent, userName } from "hag-network-client/dist/env";
 import mylas from "mylas";
 import Long from "long";
-import { setTimeout } from "timers/promises";
 import { ResponseType } from "hag-network-client/dist/protolinking/classKeys";
 import express from "express";
 import compression from "compression";
@@ -18,11 +17,8 @@ const startTime = Date.now();
 let saveMapTimer: NodeJS.Timer;
 let warId: string | null = null;
 cl.once("loggedin", async () => {
-    cl.sendPacket("subscribewarmapview");
-    cl.sendPacket("query_war_catalogue_request");
-
-    await setTimeout(2000);
-
+    await cl.sendPacketAsync("query_war_catalogue_request");
+    await cl.sendPacketAsync("subscribewarmapview");
     saveMapTimer = setInterval(saveMapNow, 30000);
 }).on("query_war_catalogue_response", (data) => {
     data.warcataloguedata[0].warCatalogueFactions.forEach((element: { factionTemplateId: any; color: string; factionId: string; }) => {
@@ -47,10 +43,9 @@ cl.once("loggedin", async () => {
         if (data.redirectSrv) {
             console.log(`redirectSrv detected: ${data.redirectSrv}`);
         }
-        cl.sendPacket("unsubscribewarmapview");
-        await setTimeout(1000);
-        cl.sendPacket("subscribewarmapview");
-        cl.sendPacket("query_war_catalogue_request");
+        await cl.sendPacketAsync("unsubscribewarmapview");
+        await cl.sendPacketAsync("subscribewarmapview");
+        await cl.sendPacketAsync("query_war_catalogue_request");
     } else {
         console.error(`ERROR: ${data}`);
     }
@@ -64,9 +59,10 @@ cl.once("loggedin", async () => {
                     warId = value.id;
                     if (value.sequelwarid !== "0") {
                         saveMapNow();
-                        saveMapTimer.refresh();
+                        saveMapTimer?.refresh?.();
                         console.log(`${value.id} ended, switching to: ${value.sequelwarid}`);
                         dataStore.ResetData("battlefieldstatus");
+                        dataStore.ResetData("supplylinestatus");
                         cl.sendPacket("join_war_request", {
                             warid: Long.fromString(value.sequelwarid),
                             factionid: Long.ZERO,

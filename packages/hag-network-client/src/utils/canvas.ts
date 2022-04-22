@@ -61,7 +61,7 @@ export async function drawToCanvas(dataStore: DataStore, dataStore2: DataStore, 
     context.drawImage(image, 0, 0, image.width * 8, image.height * 8);
 
     // Draw capitals
-    drawCapitals(dataStore2, dataStore, context);
+    drawCapitals(dataStore, context);
 
     // Draw supplylines
     drawSupplylines(dataStore2, dataStore, context, factionColorLookup);
@@ -112,8 +112,8 @@ function drawBattlefields(dataStore2: DataStore, dataStore: DataStore, context: 
     }
 }
 
-function drawCapitals(dataStore2: DataStore, dataStore: DataStore, context: CanvasRenderingContext2D) {
-    const capitals = dataStore2.ToObject().capital;
+function drawCapitals(dataStore: DataStore, context: CanvasRenderingContext2D) {
+    const capitals = dataStore.ToObject().capital;
     for (const infokey in capitals) {
         if (capitals.hasOwnProperty(infokey)) {
             const element: { battlefieldId: string; } = capitals[infokey];

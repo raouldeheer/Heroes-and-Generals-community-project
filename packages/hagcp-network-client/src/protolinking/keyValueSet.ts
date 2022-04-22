@@ -67,7 +67,7 @@ export const enum KeyValueChangeKey {
     capital = "capital",
 }
 
-const Protos = protobuf.loadSync("../hag-network-client/src/protos/All.proto");
+const Protos = protobuf.loadSync("../hagcp-network-client/src/protos/All.proto");
 
 export const KeyProtoSet = new Map<string, protobuf.Type>([
     [KeyValueChangeKey.HostingCenterInfo, Protos.lookupType("HnG_States.HostingCenterInfo")],

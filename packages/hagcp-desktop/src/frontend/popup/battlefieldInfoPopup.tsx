@@ -5,7 +5,7 @@ import { GetMissionDetailsResponse, Armyresourcecategory } from "../map/mapInter
 import { WarmapEventHandler } from "../warmapEventHandler";
 import Long from "long";
 import armyresourcecategory from "../data/armyresourcecategory.json";
-import { MissionStatus } from "hag-network-client/dist/protolinking/classKeys";
+import { MissionStatus } from "hagcp-network-client/dist/protolinking/classKeys";
 
 const armyresourcecategorys = new Map<string, Armyresourcecategory>();
 armyresourcecategory.forEach(element => {

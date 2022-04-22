@@ -4,7 +4,7 @@ import protobuf from "protobufjs";
 import Long from "long";
 import { VirtualCurrencyType } from "../protolinking/classKeys";
 
-const Protos = protobuf.loadSync("../hag-network-client/src/protos/All.proto");
+const Protos = protobuf.loadSync("../hagcp-network-client/src/protos/All.proto");
 
 export class QueryServerInfoResponse {
     static proto = Protos.lookupType("HnG_States.QueryServerInfoResponse");

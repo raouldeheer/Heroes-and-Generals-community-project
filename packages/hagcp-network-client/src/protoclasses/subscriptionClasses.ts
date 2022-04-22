@@ -2,7 +2,7 @@ import protobuf from "protobufjs";
 import BufferCursor from "../buffercursor";
 import { BufToDecodedProto, ProtoToBuf } from "./proto";
 
-const Protos = protobuf.loadSync("../hag-network-client/src/protos/All.proto");
+const Protos = protobuf.loadSync("../hagcp-network-client/src/protos/All.proto");
 
 export class DummyClass {
     static proto = Protos.lookupType("Common.Dummy");

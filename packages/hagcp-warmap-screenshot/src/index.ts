@@ -1,4 +1,4 @@
-import { DataStore } from "hag-network-client";
+import { DataStore } from "hagcp-network-client";
 import { startApp } from "./app";
 import { startClient } from "./client";
 

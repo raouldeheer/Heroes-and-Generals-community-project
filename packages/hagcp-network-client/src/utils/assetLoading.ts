@@ -4,7 +4,7 @@ import { DataStore } from "../datastore";
 import { keyToClass } from "../protolinking/classKeys";
 
 export async function loadTemplate(dataStore: DataStore, name: string) {
-    const tempFile = await mylas.buf.load(`../hag-network-client/captures/${name}`);
+    const tempFile = await mylas.buf.load(`../hagcp-network-client/captures/${name}`);
     const element = new BufferCursor(tempFile);
 
     element.move(4);

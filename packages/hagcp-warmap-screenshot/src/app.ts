@@ -1,7 +1,7 @@
-import { Client, DataStore, loadTemplate } from "hag-network-client";
+import { Client, DataStore, loadTemplate } from "hagcp-network-client";
 import express from "express";
 import compression from "compression";
-import { drawToCanvas } from "hag-network-client/dist/utils/canvas";
+import { drawToCanvas } from "hagcp-network-client/dist/utils/canvas";
 import morgan from "morgan";
 
 

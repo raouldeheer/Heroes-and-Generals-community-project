@@ -1,8 +1,8 @@
-import { Client, DataStore } from "hag-network-client";
-import { ip, port, password, userAgent, userName } from "hag-network-client/dist/env";
+import { Client, DataStore } from "hagcp-network-client";
+import { ip, port, password, userAgent, userName } from "hagcp-network-client/dist/env";
 import mylas from "mylas";
 import Long from "long";
-import { ResponseType } from "hag-network-client/dist/protolinking/classKeys";
+import { ResponseType } from "hagcp-network-client/dist/protolinking/classKeys";
 
 
 export function startClient(datastore: DataStore, lookupFactions: Map<string, any>) {

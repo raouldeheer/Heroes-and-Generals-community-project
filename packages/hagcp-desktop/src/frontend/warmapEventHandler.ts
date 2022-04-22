@@ -1,9 +1,9 @@
 const electron = window.require("electron");
 import EventEmitter from "events";
-import { DataStore } from "hag-network-client/dist/datastore";
-import { IKeyValueChangeSetResult } from "hag-network-client/dist/protoclasses/keyValueChangeSet";
+import { DataStore } from "hagcp-network-client/dist/datastore";
+import { IKeyValueChangeSetResult } from "hagcp-network-client/dist/protoclasses/keyValueChangeSet";
 import { battle, Player } from "./map/mapInterfaces";
-import battlefield from "hag-network-client/jsondb/battlefield.json";
+import battlefield from "hagcp-network-client/jsondb/battlefield.json";
 
 
 export class WarmapEventHandler extends EventEmitter {

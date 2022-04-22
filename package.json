@@ -2,6 +2,12 @@
   "name": "hag-community-project",
   "version": "0.0.1",
   "description": "Heroes and Generals community project",
+  "scripts": {
+    "build:networkClient": "npm run build --workspace=\"hagcp-network-client\"",
+    "build:assets": "npm run build --workspace=\"hagcp-assets\"",
+    "build:warmapScreenshot": "npm run build --workspace=\"hagcp-warmap-screenshot\"",
+    "compile:warmapScreenshot": "npm run build:networkClient && npm run build:assets && npm run build:warmapScreenshot"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/raouldeheer/Heroes-and-Generals-community-project.git"

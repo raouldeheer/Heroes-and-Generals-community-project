@@ -1,0 +1,24 @@
+{
+  "name": "hagcp-assets",
+  "version": "0.0.1",
+  "description": "",
+  "main": "dist/index.js",
+  "devDependencies": {},
+  "scripts": {
+    "build": "tsc",
+    "dev:build": "tsc -w",
+    "protoToJson": "node dist/scripts/protoToJson.js",
+    "supplyscript": "node dist/scripts/supplyscript.js",
+    "generate": "npm run protoToJson && npm run supplyscript"
+  },
+  "author": "Raoul de Heer",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/raouldeheer/Heroes-and-Generals-community-project.git"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/raouldeheer/Heroes-and-Generals-community-project/issues"
+  },
+  "homepage": "https://github.com/raouldeheer/Heroes-and-Generals-community-project#readme"
+}

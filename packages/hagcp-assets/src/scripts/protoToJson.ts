@@ -1,6 +1,6 @@
 import { DataStore } from "hagcp-network-client";
 import { Json } from "mylas";
-import { loadTemplate } from "../assetLoading";
+import { loadTemplate } from "..";
 
 async function toJsonDB(name:string) {
     const dataStore = new DataStore;

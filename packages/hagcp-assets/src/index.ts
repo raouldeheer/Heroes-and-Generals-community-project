@@ -2,10 +2,10 @@ import mylas from "mylas";
 import BufferCursor from "hagcp-network-client/dist/buffercursor";
 import { DataStore } from "hagcp-network-client/dist/datastore";
 import { keyToClass } from "hagcp-network-client/dist/protolinking/classKeys";
+import { join } from "path";
 
 export async function loadTemplate(dataStore: DataStore, name: string) {
-    const tempFile = await mylas.buf.load(`./assets/${name}`);
-    const element = new BufferCursor(tempFile);
+    const element = new BufferCursor(await mylas.buf.load(join(__filename, `../../assets/${name}`)));
 
     element.move(4);
     const typeLength = element.readUInt32LE() - 4;

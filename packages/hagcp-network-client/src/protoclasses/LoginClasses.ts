@@ -1,5 +1,4 @@
 import BufferCursor from "../buffercursor";
-import { userAgent, userName, uuid } from "../env";
 import { BufToDecodedProto, ProtoToBuf } from "./proto";
 import protobuf from "protobufjs";
 
@@ -80,8 +79,8 @@ export class QueryBannedMachineRequest {
         machineIdentifier: string,
         machineIdentifierOld: string,
     } = {
-        machineIdentifier: uuid,
-        machineIdentifierOld: uuid,
+        machineIdentifier: "e92e36b9-e761-4fe8-bbca-a287577ba81f",
+        machineIdentifierOld: "e92e36b9-e761-4fe8-bbca-a287577ba81f",
     }): Buffer => ProtoToBuf(this.proto, payload);
 }
 

@@ -41,6 +41,7 @@
   },
   "dependencies": {
     "canvas": "^2.9.0",
+    "dotenv": "^16.0.0",
     "long": "^5.2.0",
     "mylas": "^2.1.9",
     "protobufjs": "^6.11.2",

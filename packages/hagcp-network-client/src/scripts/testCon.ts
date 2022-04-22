@@ -1,14 +1,19 @@
 import { Client } from "../client";
 import { DataStore } from "../datastore";
-import { ip, port } from "../env";
 import mylas from "mylas";
 import Long from "long";
 import { setTimeout } from "timers/promises";
 import { ResponseType } from "../protolinking/classKeys";
-import { password, userAgent, userName } from "../env";
+import dotenv from "dotenv";
+dotenv.config();
 
 const dataStore = new DataStore;
-const cl = new Client(ip, port, userAgent, userName, password);
+const cl = new Client(
+    String(process.env.HAG_IP),
+    Number(process.env.HAG_PORT),
+    String(process.env.HAG_USERAGENT),
+    String(process.env.HAG_USERNAME),
+    String(process.env.HAG_PASSWORD));
 const startTime = Date.now();
 let saveMapTimer: NodeJS.Timer;
 let warId: string | null = null;

@@ -1,12 +1,17 @@
 import { Client, DataStore } from "hagcp-network-client";
-import { ip, port, password, userAgent, userName } from "hagcp-network-client/dist/env";
 import mylas from "mylas";
 import Long from "long";
 import { ResponseType } from "hagcp-network-client/dist/protolinking/classKeys";
-
+import dotenv from "dotenv";
+dotenv.config();
 
 export function startClient(datastore: DataStore, lookupFactions: Map<string, any>) {
-    const client = new Client(ip, port, userAgent, userName, password);
+    const client = new Client(
+        String(process.env.HAG_IP),
+        Number(process.env.HAG_PORT),
+        String(process.env.HAG_USERAGENT),
+        String(process.env.HAG_USERNAME),
+        String(process.env.HAG_PASSWORD));
     const startTime = Date.now();
     let saveMapTimer: NodeJS.Timer;
     let warId: string | null = null;

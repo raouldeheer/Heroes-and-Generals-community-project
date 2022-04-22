@@ -1,11 +1,11 @@
 import { Client } from "../client";
 import { DataStore } from "../datastore";
-import { ip, port } from "../env";
-import { password, userAgent, userName } from "../env";
 import { drawToCanvas } from "../utils/canvas";
 import { loadTemplate } from "../utils/assetLoading";
 import fs from "fs";
 import { pipeline } from "stream/promises";
+import dotenv from "dotenv";
+dotenv.config();
 
 (async () => {
     const dataStore = new DataStore;
@@ -15,7 +15,12 @@ import { pipeline } from "stream/promises";
     await loadTemplate(dataStore, "accesspoint");
     await loadTemplate(dataStore, "capital");
 
-    const cl = new Client(ip, port, userAgent, userName, password);
+    const cl = new Client(
+        String(process.env.HAG_IP),
+        Number(process.env.HAG_PORT),
+        String(process.env.HAG_USERAGENT),
+        String(process.env.HAG_USERNAME),
+        String(process.env.HAG_PASSWORD));
     const startTime = Date.now();
     const lookupFactions = new Map<string, any>();
 

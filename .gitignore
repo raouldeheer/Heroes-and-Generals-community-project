@@ -91,7 +91,7 @@ total.txt
 testConLog.txt
 total.jsonc
 infos.jsonc
-packages/hag-network-client/src/env.ts
+packages/hagcp-network-client/src/env.ts
 screenshot.jpg
 warmap.png
 

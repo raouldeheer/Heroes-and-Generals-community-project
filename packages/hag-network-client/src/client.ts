@@ -11,6 +11,7 @@ export class Client extends EventEmitter {
     private con: Socket;
     private idNumber;
     private rest: Buffer | undefined;
+    public connected: boolean;
     constructor(
         host: string,
         port: number,
@@ -19,10 +20,12 @@ export class Client extends EventEmitter {
         private readonly password: string
     ) {
         super();
+        this.connected = false;
         this.idNumber = 0;
         this.con = createConnection({ host, port });
 
         this.con.on("close", err => {
+            this.connected = false;
             console.log(`closed and ${err ? "had" : "no"} error`);
             this.emit("closed");
         });
@@ -48,6 +51,7 @@ export class Client extends EventEmitter {
         });
 
         this.con.on("connect", () => {
+            this.connected = true;
             writeFileSync("./testConLog.txt", "", "utf8");
             // connected to server with tcp
             this.sendPacket("QueryServerInfo");
@@ -55,6 +59,7 @@ export class Client extends EventEmitter {
     }
 
     public close() {
+        this.connected = false;
         try { this.con.end().destroy(); } catch (_) { }
     }
 

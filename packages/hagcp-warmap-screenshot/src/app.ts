@@ -20,7 +20,7 @@ function cached<T>(threshold: number, action: () => Promise<T>): () => Promise<T
 }
 
 export async function startApp(datastore: DataStore, client: Client, lookupFactions: Map<string, any>, expressPort: number) {
-    const cachedBuffer = cached(300, async () => {
+    const cachedBuffer = cached(60 * 15, async () => {
         const canvas = await drawToCanvas(expressDatastore, datastore, id => lookupFactions.get(id).color);
         return canvas.toBuffer("image/jpeg");
     });
@@ -36,7 +36,7 @@ export async function startApp(datastore: DataStore, client: Client, lookupFacti
     app.use(compression());
 
     app.get("/status", (_, res) => {
-        res.set("Cache-control", "no-store")
+        res.set("Cache-control", "no-store");
         res.sendStatus(client.connected ? 200 : 500);
     });
 

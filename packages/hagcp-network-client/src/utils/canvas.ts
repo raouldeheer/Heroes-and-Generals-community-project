@@ -18,14 +18,15 @@ export async function toCanvasColored(dataStore: DataStore, dataStore2: DataStor
     await pipeline(canvas.createJPEGStream(), fs.createWriteStream(imageName));
 }
 
+const multiplier = 2;
 
 export async function drawToCanvas(dataStore: DataStore, dataStore2: DataStore, factionColorLookup: (id: string) => string) {
-    const canvas = createCanvas(2048 * 8, 1440 * 8);
+    const canvas = createCanvas(2048 * multiplier, 1440 * multiplier);
     const context = canvas.getContext("2d");
 
     // Draw background
     const image = await loadImage("./background.png");
-    context.drawImage(image, 0, 0, image.width * 8, image.height * 8);
+    context.drawImage(image, 0, 0, image.width * multiplier, image.height * multiplier);
 
     // Draw capitals
     drawCapitals(dataStore, context);
@@ -40,7 +41,7 @@ export async function drawToCanvas(dataStore: DataStore, dataStore2: DataStore, 
 }
 
 function drawSupplylines(dataStore2: DataStore, dataStore: DataStore, context: CanvasRenderingContext2D, factionColorLookup: (id: string) => string) {
-    context.lineWidth = 10;
+    context.lineWidth = 1.25 * multiplier;
     const supplylinestatus = dataStore2.ToObject().supplylinestatus;
     for (const infokey in supplylinestatus) {
         if (supplylinestatus.hasOwnProperty(infokey)) {
@@ -53,15 +54,15 @@ function drawSupplylines(dataStore2: DataStore, dataStore: DataStore, context: C
             const battlefield2 = dataStore.GetData("battlefield", accesspoint2.battlefield);
 
             context.beginPath();
-            context.moveTo(battlefield1.posx, battlefield1.posy);
-            context.lineTo(battlefield2.posx, battlefield2.posy);
+            context.moveTo(battlefield1.posx / (8 / multiplier), battlefield1.posy / (8 / multiplier));
+            context.lineTo(battlefield2.posx / (8 / multiplier), battlefield2.posy / (8 / multiplier));
             context.stroke();
         }
     }
 }
 
 function drawBattlefields(dataStore2: DataStore, dataStore: DataStore, context: CanvasRenderingContext2D, factionColorLookup: (id: string) => string) {
-    const dotSize = 16;
+    const dotSize = 2 * multiplier;
     const battlefieldstatus = dataStore2.ToObject().battlefieldstatus;
     for (const infokey in battlefieldstatus) {
         if (battlefieldstatus.hasOwnProperty(infokey)) {
@@ -71,8 +72,8 @@ function drawBattlefields(dataStore2: DataStore, dataStore: DataStore, context: 
 
             context.beginPath();
             context.arc(
-                (battlefield.posx) - (dotSize / 2),
-                (battlefield.posy) - (dotSize / 2),
+                (battlefield.posx / (8 / multiplier)) - (dotSize / 2),
+                (battlefield.posy / (8 / multiplier)) - (dotSize / 2),
                 dotSize, 0, 2 * Math.PI);
             context.fill();
         }
@@ -88,11 +89,11 @@ function drawCapitals(dataStore: DataStore, context: CanvasRenderingContext2D) {
             if (!battlefield) continue;
 
             const numPoints = 5;
-            const outerRadius = 80;
-            const innerRadius = 25;
+            const outerRadius = 10 * multiplier;
+            const innerRadius = 3 * multiplier;
 
             // set centerpoint
-            context.lineWidth = 5;
+            context.lineWidth = 0.625 * multiplier;
             context.strokeStyle = "#000";
 
             // start the path
@@ -102,8 +103,8 @@ function drawCapitals(dataStore: DataStore, context: CanvasRenderingContext2D) {
             const draw = (radius: number, angle: number, action: string) => {
                 // @ts-ignore
                 context[action](
-                    battlefield.posx + radius * Math.cos(angle),
-                    battlefield.posy + radius * Math.sin(angle)
+                    battlefield.posx / (8 / multiplier) + radius * Math.cos(angle),
+                    battlefield.posy / (8 / multiplier) + radius * Math.sin(angle)
                 );
             };
 

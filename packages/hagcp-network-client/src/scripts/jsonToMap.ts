@@ -24,7 +24,6 @@ async function jsonToMap(filename: string, imageName: string, dataStore: DataSto
     } else {
         await toCanvasColored(dataStore, dataStore2, imageName);
     }
-    console.log(`saved: ${imageName}`);
 }
 
 (async () => {
@@ -37,11 +36,11 @@ async function jsonToMap(filename: string, imageName: string, dataStore: DataSto
     const warId = "7772518062970218736";
     if (!existsSync(`./saves/${warId}`)) mylas.dir.mkS(`./saves/${warId}`);
     if (!existsSync(`./savesMap/${warId}`)) mylas.dir.mkS(`./savesMap/${warId}`);
-    for (const iterator of await readdir(`./saves/${warId}`)) {
-        await jsonToMap(
-            `./saves/${warId}/${iterator}`,
-            `./savesMap/${warId}/${iterator.replace("jsonc", "jpg")}`,
-            dataStore);
+    const files = await readdir(`./saves/${warId}`);
+    for (let i = 0; i < files.length; i++) {
+        const imageName = `./savesMap/${warId}/${files[i].replace("jsonc", "jpg")}`;
+        await jsonToMap(`./saves/${warId}/${files[i]}`, imageName, dataStore);
+        console.log(`saved: ${imageName} (${i + 1}/${files.length})`);
     }
     console.log("Done");
 })();

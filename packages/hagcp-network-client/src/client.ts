@@ -6,6 +6,40 @@ import { keyToClass, ResponseType } from "./protolinking/classKeys";
 import { ProtoToString } from "./protoclasses/proto";
 import { gunzipSync } from "zlib";
 import { appendFileSync, writeFileSync } from "fs";
+import fetch from "node-fetch";
+
+interface Settings {
+    web_entrance: string[];
+    account_url: string;
+    flash_dynhttp: string[];
+    hngtitle: string;
+    distribution: string;
+    retoxdistribution: string;
+    version: string;
+    releasename: string;
+    ircserver: string;
+    uniqueversionfilename: string;
+    unique_file_server1: string;
+    unique_file_server2: string;
+    unique_file_servers: string;
+    uniqueflashfile: string;
+    tileserver: string;
+    locale_cs: string;
+    locale_de: string;
+    locale_en: string;
+    locale_es: string;
+    locale_fr: string;
+    locale_pl: string;
+    locale_ru: string;
+    locale_tr: string;
+    locale_pt: string;
+    locale_zh: string;
+    locale_ko: string;
+    locale_ja: string;
+    lang_string: string;
+    sitetrackerid: string;
+    extensionid: string;
+}
 
 export class Client extends EventEmitter {
     private con: Socket;
@@ -56,6 +90,33 @@ export class Client extends EventEmitter {
             // connected to server with tcp
             this.sendPacket("QueryServerInfo");
         });
+    }
+
+    public static async connectToHQ(userAgent: string, userName: string, password: string) {
+        const status = await fetch("http://game.heroesandgenerals.com/status");
+        if (status.status !== 200) {
+            console.log(`status.status: ${status.status}`);
+            return null;
+        }
+
+        const items = (await (await fetch("http://game.heroesandgenerals.com/settings.js")).text())
+            .split(";\r\n")
+            .filter(e => e)
+            .map(e => e.split("="))
+            .reduce<Settings>((prev: any, curr) => {
+                if (curr[1].includes(",")) {
+                    prev[curr[0]] = curr[1].substring(1, curr[1].length - 1).split(",");
+                } else {
+                    prev[curr[0]] = curr[1].substring(1, curr[1].length - 1);
+                }
+                return prev;
+            }, {} as Settings);
+
+        const randomServer = items.web_entrance[Math.floor(Math.random() * items.web_entrance.length)];
+        console.log(randomServer);
+
+        const [host, port] = randomServer.split(":");
+        return new this(host, Number(port), userAgent, userName, password);
     }
 
     public close() {

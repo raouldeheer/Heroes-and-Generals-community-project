@@ -29,6 +29,7 @@
   "homepage": "https://github.com/raouldeheer/Heroes-and-Generals-community-project#readme",
   "devDependencies": {
     "@types/node": "^17.0.5",
+    "@types/node-fetch": "^2.6.1",
     "nodemon": "^2.0.15",
     "typescript": "^4.6.2"
   },
@@ -44,6 +45,7 @@
     "dotenv": "^16.0.0",
     "long": "^5.2.0",
     "mylas": "^2.1.9",
+    "node-fetch": "^2.6.7",
     "protobufjs": "^6.11.2",
     "tslib": "^2.3.1"
   },

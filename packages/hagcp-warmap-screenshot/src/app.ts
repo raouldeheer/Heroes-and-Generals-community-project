@@ -45,7 +45,7 @@ export async function startApp(datastore: DataStore, client: Client, lookupFacti
         res.sendStatus(client.connected ? 200 : 500);
     });
 
-    app.get("/warmap", async (_, res) => {
+    app.get("/warmap.jpeg", async (_, res) => {
         if (!client) res.sendStatus(500);
         res.contentType("image/jpeg");
         const result = await cachedBuffer();

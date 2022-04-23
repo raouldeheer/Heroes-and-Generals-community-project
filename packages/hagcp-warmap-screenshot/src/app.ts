@@ -37,10 +37,11 @@ export async function startApp(datastore: DataStore, client: Client, lookupFacti
     await loadTemplate(expressDatastore, "accesspoint");
     await loadTemplate(expressDatastore, "capital");
 
-    app.use(morgan('tiny'));
+    app.use(morgan("tiny"));
     app.use(compression());
 
     app.get("/status", (_, res) => {
+        res.set("Cache-control", "no-store")
         res.sendStatus(client.connected ? 200 : 500);
     });
 

@@ -2,7 +2,7 @@ import { DataStore } from "hagcp-network-client";
 import { startApp } from "./app";
 import { startClient } from "./client";
 
-const expressPort = 3000;
+const expressPort = 4269;
 const lookupFactions = new Map<string, any>();
 const datastore = new DataStore;
 

@@ -20,7 +20,7 @@ export function startClient(datastore: DataStore, lookupFactions: Map<string, an
     function saveMapNow() {
         const date = (new Date).toISOString().replace(/[-:.]/g, "");
         if (warId) {
-            const dir = __filename.replace("dist/client.js", "");
+            const dir = __filename.slice(0, __filename.length - "dist/client.js".length);
             const outDir = join(dir, `./saves/${warId}/${date}.jsonc`);
             console.log(`saving to: ${outDir}`);
             const obj = datastore.ToObject();

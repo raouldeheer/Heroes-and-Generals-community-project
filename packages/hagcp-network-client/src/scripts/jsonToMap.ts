@@ -33,12 +33,14 @@ async function jsonToMap(filename: string, imageName: string, dataStore: DataSto
     await loadTemplate(dataStore, "supplyline");
     await loadTemplate(dataStore, "accesspoint");
     console.log("Loaded template");
-    const warId = "7772518062970218736";
+    const warId = process.argv[2];
+    console.log(`Loading ${warId}`);
+    if (!warId) return;
     if (!existsSync(`./saves/${warId}`)) mylas.dir.mkS(`./saves/${warId}`);
     if (!existsSync(`./savesMap/${warId}`)) mylas.dir.mkS(`./savesMap/${warId}`);
     const files = await readdir(`./saves/${warId}`);
     for (let i = 0; i < files.length; i++) {
-        const imageName = `./savesMap/${warId}/${files[i].replace("jsonc", "jpg")}`;
+        const imageName = `./savesMap/${warId}/image_${(i + 1).toString().padStart(5, "0")}.jpg`;
         await jsonToMap(`./saves/${warId}/${files[i]}`, imageName, dataStore);
         console.log(`saved: ${imageName} (${i + 1}/${files.length})`);
     }

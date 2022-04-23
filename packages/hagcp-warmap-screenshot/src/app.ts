@@ -4,7 +4,7 @@ import express from "express";
 import compression from "compression";
 import { drawToCanvas } from "hagcp-network-client/dist/utils/canvas";
 import morgan from "morgan";
-
+import ip from "ip";
 
 function cached<T>(threshold: number, action: () => Promise<T>): () => Promise<T> {
     let cachedData: T | null;
@@ -45,7 +45,7 @@ export async function startApp(datastore: DataStore, client: Client, lookupFacti
         res.send(await cachedBuffer());
     });
 
-    app.listen(expressPort, "0:0:0:0", () => {
+    app.listen(expressPort, ip.address(), () => {
         console.log(`Listing on http://localhost:${expressPort}`);
     });
 

@@ -45,7 +45,7 @@ export async function startApp(datastore: DataStore, client: Client, lookupFacti
         res.send(await cachedBuffer());
     });
 
-    app.listen(expressPort, () => {
+    app.listen(expressPort, "0:0:0:0", () => {
         console.log(`Listing on http://localhost:${expressPort}`);
     });
 

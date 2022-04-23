@@ -1,5 +1,6 @@
 import { Client, DataStore } from "hagcp-network-client";
 import mylas from "mylas";
+import { join } from "path";
 import Long from "long";
 import { ResponseType } from "hagcp-network-client/dist/protolinking/classKeys";
 import dotenv from "dotenv";
@@ -19,9 +20,11 @@ export function startClient(datastore: DataStore, lookupFactions: Map<string, an
     function saveMapNow() {
         const date = (new Date).toISOString().replace(/[-:.]/g, "");
         if (warId) {
-            console.log(`saving to: ./saves/${warId}/${date}.jsonc`);
+            const dir = __filename.replace("dist/client.js", "");
+            const outDir = join(dir, `./saves/${warId}/${date}.jsonc`);
+            console.log(`saving to: ${outDir}`);
             const obj = datastore.ToObject();
-            mylas.json.saveS(`./saves/${warId}/${date}.jsonc`, {
+            mylas.json.saveS(outDir, {
                 battlefieldstatus: obj.battlefieldstatus,
                 supplylinestatus: obj.supplylinestatus,
             });

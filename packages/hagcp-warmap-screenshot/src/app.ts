@@ -6,16 +6,21 @@ import { drawToCanvas } from "hagcp-network-client/dist/utils/canvas";
 import morgan from "morgan";
 import ip from "ip";
 
-function cached<T>(threshold: number, action: () => Promise<T>): () => Promise<T> {
+function cached<T>(threshold: number, action: () => Promise<T>): () => Promise<{ data: T, ttl: number; }> {
     let cachedData: T | null;
+    let cachedTime: number;
     return async () => {
         if (!cachedData) {
             cachedData = await action();
+            cachedTime = Date.now();
             setTimeout(() => {
                 cachedData = null;
             }, threshold * 1000);
         }
-        return cachedData;
+        return {
+            data: cachedData,
+            ttl: threshold - Math.floor((Date.now() - cachedTime) / 1000),
+        };
     };
 }
 
@@ -42,11 +47,13 @@ export async function startApp(datastore: DataStore, client: Client, lookupFacti
     app.get("/warmap", async (_, res) => {
         if (!client) res.sendStatus(500);
         res.contentType("image/jpeg");
-        res.send(await cachedBuffer());
+        const result = await cachedBuffer();
+        res.set("Cache-control", `public, max-age=${result.ttl}`)
+        res.send(result.data);
     });
 
     app.listen(expressPort, ip.address(), () => {
-        console.log(`Listing on http://localhost:${expressPort}`);
+        console.log(`Listing on http://${ip.address()}:${expressPort}`);
     });
 
     return app;

@@ -3,39 +3,6 @@ import fs from "fs";
 import { pipeline } from "stream/promises";
 import { DataStore } from '../datastore';
 
-export function toCanvas(dataStore: DataStore) {
-    interface InfoT {
-        id: string;
-        posX: number;
-        posY: number;
-    }
-    const BattleInfo: { [key: string]: InfoT; } = dataStore.ToObject().BattleInfo;
-    const infos: InfoT[] = [];
-
-    for (const infokey in BattleInfo)
-        if (Object.prototype.hasOwnProperty.call(BattleInfo, infokey))
-            infos.push(BattleInfo[infokey]);
-
-    const width = 2048;
-    const height = 1440;
-
-    const canvas = createCanvas(width, height);
-    const context = canvas.getContext("2d");
-
-    loadImage("./background.png").then(image => {
-        // Draw background
-        context.drawImage(image, 0, 0, image.width, image.height);
-
-        // Draw battles
-        context.fillStyle = "#fff";
-        infos.forEach(e => context.fillRect(e.posX / 8, e.posY / 8, 10, 10));
-
-        // Save output to file
-        fs.writeFileSync("./warmap.png", canvas.toBuffer("image/png"));
-    });
-
-}
-
 export async function toCanvasColored(dataStore: DataStore, dataStore2: DataStore, imageName = "./warmap.png") {
     const colors = ["#f00", "#0f0", "#00f", "#000", "#fff", "#888"];
     const factions: string[] = [];

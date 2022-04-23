@@ -1,19 +1,29 @@
 import mylas from "mylas";
 import { DataStore } from "../datastore";
 import { readdir } from "fs/promises";
-import { existsSync } from "fs";
-import { toCanvasColored } from "../utils/canvas";
+import { existsSync, createWriteStream } from "fs";
+import { drawToCanvas, toCanvasColored } from "../utils/canvas";
 import { loadTemplate } from "../utils/assetLoading";
+import { pipeline } from "stream/promises";
 
 async function jsonToMap(filename: string, imageName: string, dataStore: DataStore) {
-    const data = await mylas.json.load(filename);
+    const { factions, ...data } = await mylas.json.load(filename);
     const dataStore2 = new DataStore;
 
     for (const key in data) if (data.hasOwnProperty(key))
         for (const key2 in data[key]) if (data[key].hasOwnProperty(key2))
             dataStore2.SaveData({ set: [{ key, value: data[key][key2] }] });
-    
-    await toCanvasColored(dataStore, dataStore2, imageName);
+
+    if (factions) {
+        const lookupFactions = new Map<string, any>();
+        factions.forEach((element: any) => {
+            lookupFactions.set(element.factionId, element);
+        });
+        const canvas = await drawToCanvas(dataStore, dataStore2, id => lookupFactions.get(id).color);
+        await pipeline(canvas.createJPEGStream(), createWriteStream(imageName));
+    } else {
+        await toCanvasColored(dataStore, dataStore2, imageName);
+    }
     console.log(`saved: ${imageName}`);
 }
 

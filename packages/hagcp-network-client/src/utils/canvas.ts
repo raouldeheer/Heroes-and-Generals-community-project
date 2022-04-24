@@ -53,7 +53,7 @@ export async function drawToCanvas(dataStore: DataStore, dataStore2: DataStore, 
             const faction = templateToFaction.get(id);
             if (!faction) return;
             context.fillStyle = faction.color;
-            context.font = "50px serif";
+            context.font = "50px sans-serif, segoe-ui-emoji";
             context.fillText(`${name} ${"⭐".repeat(faction.ownedMajorCities.length)}`, 50, 1440 * multiplier - y);
             context.stroke();
         };

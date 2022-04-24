@@ -20,7 +20,7 @@ export async function toCanvasColored(dataStore: DataStore, dataStore2: DataStor
 
 const multiplier = 2;
 
-export async function drawToCanvas(dataStore: DataStore, dataStore2: DataStore, factionColorLookup: (id: string) => string) {
+export async function drawToCanvas(dataStore: DataStore, dataStore2: DataStore, factionColorLookup: (id: string) => string, factions?: Map<string, any>) {
     const canvas = createCanvas(2048 * multiplier, 1440 * multiplier);
     const context = canvas.getContext("2d");
 
@@ -36,6 +36,32 @@ export async function drawToCanvas(dataStore: DataStore, dataStore2: DataStore, 
 
     // Draw battlefields
     drawBattlefields(dataStore2, dataStore, context, factionColorLookup);
+
+    if (factions) {
+        const templateToFaction = new Map<string, any>();
+        Array.from(factions.values()).forEach(e => {
+            templateToFaction.set(e.factionTemplateId, e);
+        });
+
+        context.beginPath();
+        context.fillStyle = "#000";
+        context.fillRect(0, 1440 * multiplier - 100 * multiplier, 600 * multiplier, 100 * multiplier);
+        context.stroke();
+
+        const drawFaction = (name: string, id: string, y: number) => {
+            context.beginPath();
+            const faction = templateToFaction.get(id);
+            if (!faction) return;
+            context.fillStyle = faction.color;
+            context.font = "50px serif";
+            context.fillText(`${name} ${"⭐".repeat(faction.ownedMajorCities.length)}`, 50, 1440 * multiplier - y);
+            context.stroke();
+        };
+
+        drawFaction("US", "1", 150);
+        drawFaction("GE", "2", 100);
+        drawFaction("SU", "3", 50);
+    }
 
     return canvas;
 }
@@ -127,4 +153,3 @@ function drawCapitals(dataStore: DataStore, context: CanvasRenderingContext2D) {
         }
     }
 }
-

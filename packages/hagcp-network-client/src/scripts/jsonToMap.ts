@@ -19,7 +19,7 @@ async function jsonToMap(filename: string, imageName: string, dataStore: DataSto
         factions.forEach((element: any) => {
             lookupFactions.set(element.factionId, element);
         });
-        const canvas = await drawToCanvas(dataStore, dataStore2, id => lookupFactions.get(id).color);
+        const canvas = await drawToCanvas(dataStore, dataStore2, id => lookupFactions.get(id).color, lookupFactions);
         await pipeline(canvas.createJPEGStream(), createWriteStream(imageName));
     } else {
         await toCanvasColored(dataStore, dataStore2, imageName);
@@ -32,6 +32,7 @@ async function jsonToMap(filename: string, imageName: string, dataStore: DataSto
     await loadTemplate(dataStore, "battlefield");
     await loadTemplate(dataStore, "supplyline");
     await loadTemplate(dataStore, "accesspoint");
+    await loadTemplate(dataStore, "capital");
     console.log("Loaded template");
     const warId = process.argv[2];
     console.log(`Loading ${warId}`);

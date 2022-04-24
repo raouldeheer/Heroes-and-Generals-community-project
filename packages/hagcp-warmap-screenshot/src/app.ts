@@ -21,7 +21,7 @@ function cached<T>(threshold: number, action: () => Promise<T>): () => Promise<T
 
 export async function startApp(datastore: DataStore, client: Client, lookupFactions: Map<string, any>, expressPort: number) {
     const cachedBuffer = cached(60 * 15, async () => {
-        const canvas = await drawToCanvas(expressDatastore, datastore, id => lookupFactions.get(id).color);
+        const canvas = await drawToCanvas(expressDatastore, datastore, id => lookupFactions.get(id).color, lookupFactions);
         return canvas.toBuffer("image/jpeg");
     });
 

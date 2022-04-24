@@ -1,8 +1,8 @@
 import { Client, DataStore } from "hagcp-network-client";
 import mylas from "mylas";
-import { existsSync } from "fs";
 import Long from "long";
 import { ResponseType } from "hagcp-network-client/dist/protolinking/classKeys";
+import { setTimeout } from "timers/promises";
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -17,9 +17,11 @@ export function startClient(datastore: DataStore, lookupFactions: Map<string, an
     let saveMapTimer: NodeJS.Timer;
     let warId: string | null = null;
 
-    function saveMapNow() {
+    async function saveMapNow() {
         const date = (new Date).toISOString().replace(/[-:.]/g, "");
         if (warId) {
+            await client.sendPacketAsync("query_war_catalogue_request");
+            await setTimeout(100, true);
             const outDir = `./saves`;
             console.log(`saving to: ${outDir}/${warId}/${date}.jsonc`);
             const obj = datastore.ToObject();

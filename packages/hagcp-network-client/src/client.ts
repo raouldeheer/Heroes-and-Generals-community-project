@@ -257,9 +257,9 @@ export class Client extends EventEmitter {
                     this.sendPacket("keepalive", { value: 8374 });
                     break;
                 default:
-                    this.emit(`id${id}`, result);
-                    this.emit(typeText, result);
                     this.emit("message", typeText, result);
+                    this.emit(typeText, result);
+                    this.emit(`id${id}`, result);
                     break;
             }
             if (typeof result == "object") result = ProtoToString(result);

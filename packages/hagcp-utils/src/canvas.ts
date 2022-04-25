@@ -25,7 +25,7 @@ export async function drawToCanvas(dataStore: DataStore, dataStore2: DataStore, 
     const context = canvas.getContext("2d");
 
     // Draw background
-    const image = await loadImage("./background.png");
+    const image = await loadImage("../hagcp-assets/images/background.png");
     context.drawImage(image, 0, 0, image.width * multiplier, image.height * multiplier);
 
     // Draw capitals

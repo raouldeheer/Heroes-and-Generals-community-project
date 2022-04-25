@@ -7,15 +7,8 @@
     "dist/"
   ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc",
-    "dev:build": "tsc -w",
-    "wiresharkDecode": "nodemon dist/scripts/wiresharkDecode.js",
-    "testcon": "node dist/scripts/testCon.js",
-    "warmapScreenshot": "node dist/scripts/warmapScreenshot.js",
-    "jsonToMap": "node dist/scripts/jsonToMap.js",
-    "protoToJson": "node dist/scripts/protoToJson.js",
-    "supplyscript": "node dist/scripts/supplyscript.js"
+    "dev:build": "tsc -w"
   },
   "repository": {
     "type": "git",
@@ -30,7 +23,6 @@
   "devDependencies": {
     "@types/node": "^17.0.5",
     "@types/node-fetch": "^2.6.1",
-    "nodemon": "^2.0.15",
     "typescript": "^4.6.2"
   },
   "engines": {
@@ -41,13 +33,10 @@
     "url": "https://github.com/sponsors/raouldeheer"
   },
   "dependencies": {
-    "canvas": "^2.9.0",
-    "dotenv": "^16.0.0",
+    "hagcp-utils": "^0.0.1",
     "long": "^5.2.0",
-    "mylas": "^2.1.9",
-    "node-fetch": "^2.6.7",
-    "protobufjs": "^6.11.2",
-    "tslib": "^2.3.1"
+    "node-fetch": "^3.2.3",
+    "protobufjs": "^6.11.2"
   },
   "description": ""
 }

@@ -69,9 +69,8 @@
     "forceConsistentCasingInFileNames": true        /* Disallow inconsistently-cased references to the same file. */
   }, "include": [
     "./src"
-, "../hagcp-utils/src/buffercursor.ts"  ], "exclude": [
+  ], "exclude": [
     "./node_modules",
-    "./dist",
-    "./captures"
+    "./dist"
   ]
 }

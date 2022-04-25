@@ -7,7 +7,6 @@
   "files": [
     "dist/"
   ],
-  "devDependencies": {},
   "scripts": {
     "build": "tsc",
     "dev:build": "tsc -w"
@@ -21,5 +20,8 @@
   "bugs": {
     "url": "https://github.com/raouldeheer/Heroes-and-Generals-community-project/issues"
   },
-  "homepage": "https://github.com/raouldeheer/Heroes-and-Generals-community-project#readme"
+  "homepage": "https://github.com/raouldeheer/Heroes-and-Generals-community-project#readme",
+  "dependencies": {
+    "canvas": "^2.9.1"
+  }
 }

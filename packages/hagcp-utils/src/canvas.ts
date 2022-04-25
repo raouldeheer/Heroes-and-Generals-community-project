@@ -1,7 +1,7 @@
 import { CanvasRenderingContext2D, createCanvas, loadImage } from "canvas";
 import fs from "fs";
 import { pipeline } from "stream/promises";
-import { DataStore } from "hagcp-utils";
+import { DataStore } from "./datastore";
 
 export async function toCanvasColored(dataStore: DataStore, dataStore2: DataStore, imageName = "./warmap.png") {
     const colors = ["#f00", "#0f0", "#00f", "#000", "#fff", "#888"];

@@ -17,7 +17,6 @@
     "protoToJson": "node dist/protoToJson.js",
     "supplyscript": "node dist/supplyscript.js"
   },
-  "devDependencies": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/raouldeheer/Heroes-and-Generals-community-project.git"
@@ -27,5 +26,13 @@
   "bugs": {
     "url": "https://github.com/raouldeheer/Heroes-and-Generals-community-project/issues"
   },
-  "homepage": "https://github.com/raouldeheer/Heroes-and-Generals-community-project#readme"
+  "homepage": "https://github.com/raouldeheer/Heroes-and-Generals-community-project#readme",
+  "dependencies": {
+    "dotenv": "^16.0.0",
+    "hagcp-assets": "^0.0.1",
+    "hagcp-network-client": "^0.1.0",
+    "hagcp-utils": "^0.0.1",
+    "long": "^5.2.0",
+    "mylas": "^2.1.9"
+  }
 }

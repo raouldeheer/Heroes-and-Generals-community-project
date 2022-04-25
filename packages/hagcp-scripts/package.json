@@ -1,0 +1,31 @@
+{
+  "name": "hagcp-scripts",
+  "version": "0.0.1",
+  "description": "",
+  "main": "dist/index.js",
+  "typings": "dist/index",
+  "files": [
+    "dist/"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "dev:build": "tsc -w",
+    "wiresharkDecode": "nodemon dist/wiresharkDecode.js",
+    "testcon": "node dist/testCon.js",
+    "warmapScreenshot": "node dist/warmapScreenshot.js",
+    "jsonToMap": "node dist/jsonToMap.js",
+    "protoToJson": "node dist/protoToJson.js",
+    "supplyscript": "node dist/supplyscript.js"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/raouldeheer/Heroes-and-Generals-community-project.git"
+  },
+  "author": "Raoul de Heer",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/raouldeheer/Heroes-and-Generals-community-project/issues"
+  },
+  "homepage": "https://github.com/raouldeheer/Heroes-and-Generals-community-project#readme"
+}

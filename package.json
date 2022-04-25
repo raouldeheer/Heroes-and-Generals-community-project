@@ -27,5 +27,9 @@
   },
   "workspaces": [
     "./packages/*"
-  ]
+  ],
+  "dependencies": {
+    "node-fetch": "^2.6.7",
+    "tslib": "^2.4.0"
+  }
 }

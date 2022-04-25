@@ -1,5 +1,6 @@
 {
   "name": "hagcp-network-client",
+  "description": "",
   "version": "0.1.0",
   "main": "dist/index.js",
   "typings": "dist/index",
@@ -35,8 +36,6 @@
   "dependencies": {
     "hagcp-utils": "^0.0.1",
     "long": "^5.2.0",
-    "node-fetch": "^3.2.3",
     "protobufjs": "^6.11.2"
-  },
-  "description": ""
+  }
 }

@@ -6,13 +6,12 @@ import { setTimeout } from "timers/promises";
 import dotenv from "dotenv";
 dotenv.config();
 
-export function startClient(datastore: DataStore, lookupFactions: Map<string, any>) {
-    const client = new Client(
-        String(process.env.HAG_IP),
-        Number(process.env.HAG_PORT),
+export async function startClient(datastore: DataStore, lookupFactions: Map<string, any>) {
+    const client = await Client.connectToHQ(
         String(process.env.HAG_USERAGENT),
         String(process.env.HAG_USERNAME),
         String(process.env.HAG_PASSWORD));
+    if (!client) return;
     const startTime = Date.now();
     let saveMapTimer: NodeJS.Timer;
     let warId: string | null = null;
@@ -20,6 +19,7 @@ export function startClient(datastore: DataStore, lookupFactions: Map<string, an
     async function saveMapNow() {
         const date = (new Date).toISOString().replace(/[-:.]/g, "");
         if (warId) {
+            if (!client) return;
             await client.sendPacketAsync("query_war_catalogue_request");
             await setTimeout(100, true);
             const outDir = `./saves`;

@@ -6,5 +6,8 @@ const expressPort = 4269;
 const lookupFactions = new Map<string, any>();
 const datastore = new DataStore;
 
-const client = startClient(datastore, lookupFactions);
-startApp(datastore, client, lookupFactions, expressPort);
+(async () => {
+    const client = await startClient(datastore, lookupFactions);
+    if (!client) return;
+    await startApp(datastore, client, lookupFactions, expressPort);
+})();

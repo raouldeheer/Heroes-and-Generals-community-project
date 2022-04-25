@@ -1,5 +1,6 @@
 {
   "name": "hagcp-warmap-screenshot",
+  "description": "",
   "version": "0.0.1",
   "main": "dist/index.js",
   "scripts": {
@@ -14,7 +15,13 @@
     "compression": "^1.7.4",
     "dotenv": "^16.0.0",
     "express": "^4.17.3",
-    "morgan": "^1.10.0"
+    "hagcp-assets": "^0.0.1",
+    "hagcp-network-client": "^0.1.0",
+    "hagcp-utils": "^0.0.1",
+    "ip": "^1.1.5",
+    "long": "^5.2.0",
+    "morgan": "^1.10.0",
+    "mylas": "^2.1.9"
   },
   "devDependencies": {
     "@types/compression": "^1.7.2",
@@ -28,6 +35,5 @@
   "bugs": {
     "url": "https://github.com/raouldeheer/Heroes-and-Generals-community-project/issues"
   },
-  "homepage": "https://github.com/raouldeheer/Heroes-and-Generals-community-project#readme",
-  "description": ""
+  "homepage": "https://github.com/raouldeheer/Heroes-and-Generals-community-project#readme"
 }

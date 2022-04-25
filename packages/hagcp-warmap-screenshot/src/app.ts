@@ -48,7 +48,7 @@ export async function startApp(datastore: DataStore, client: Client, lookupFacti
     });
 
     app.listen(expressPort, ip.address(), () => {
-        console.log(`Listing on http://${ip.address()}:${expressPort}`);
+        console.log(`Listing on http://${ip.address()}:${expressPort}/warmap.jpeg`);
     });
 
     return app;

@@ -1,5 +1,5 @@
 import protobuf from "protobufjs";
-import BufferCursor from "../buffercursor";
+import { BufferCursor } from "hagcp-utils";
 import { BufToDecodedProto, ProtoToBuf } from "./proto";
 
 const Protos = protobuf.loadSync("../hagcp-network-client/src/protos/All.proto");

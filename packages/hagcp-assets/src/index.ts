@@ -1,7 +1,6 @@
 import mylas from "mylas";
-import BufferCursor from "hagcp-network-client/dist/buffercursor";
-import { DataStore } from "hagcp-network-client/dist/datastore";
-import { keyToClass } from "hagcp-network-client/dist/protolinking/classKeys";
+import { BufferCursor, DataStore } from "hagcp-utils";
+import { keyToClass } from "hagcp-network-client";
 import { join } from "path";
 
 export async function loadTemplate(dataStore: DataStore, name: string) {

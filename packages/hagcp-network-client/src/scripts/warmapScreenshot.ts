@@ -1,5 +1,5 @@
-import { Client } from "../client";
-import { DataStore } from "../datastore";
+import { Client } from "..";
+import { DataStore } from "hagcp-utils";
 import { drawToCanvas } from "../utils/canvas";
 import { loadTemplate } from "../utils/assetLoading";
 import fs from "fs";

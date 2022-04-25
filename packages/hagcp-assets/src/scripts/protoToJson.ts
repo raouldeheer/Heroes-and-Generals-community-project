@@ -1,4 +1,4 @@
-import { DataStore } from "hagcp-network-client";
+import { DataStore } from "hagcp-utils";
 import { Json } from "mylas";
 import { loadTemplate } from "..";
 

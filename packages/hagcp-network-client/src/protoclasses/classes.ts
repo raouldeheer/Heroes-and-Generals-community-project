@@ -1,4 +1,4 @@
-import BufferCursor from "../buffercursor";
+import { BufferCursor } from "hagcp-utils";
 import { BufToDecodedProto, ProtoToBuf } from "./proto";
 import protobuf from "protobufjs";
 import Long from "long";

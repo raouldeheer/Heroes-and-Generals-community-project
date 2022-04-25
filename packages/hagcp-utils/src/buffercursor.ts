@@ -1,4 +1,4 @@
-export default class BufferCursor {
+export class BufferCursor {
     private pos: number;
     buffer: Buffer;
     length: number;

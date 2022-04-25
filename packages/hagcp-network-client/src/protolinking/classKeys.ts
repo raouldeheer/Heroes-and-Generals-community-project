@@ -2,7 +2,7 @@ import * as all from "../protoclasses/classes";
 import * as login from "../protoclasses/LoginClasses";
 import { DummyClass, unsubscriberesponse } from "../protoclasses/subscriptionClasses";
 import { KeyValueChangeSet } from "../protoclasses/keyValueChangeSet";
-import BufferCursor from "../buffercursor";
+import { BufferCursor } from "hagcp-utils";
 
 export interface packetClassParser {
     parse: (buf: BufferCursor) => void | object | Function;

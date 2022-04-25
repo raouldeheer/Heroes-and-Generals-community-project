@@ -1,5 +1,5 @@
 import mylas from "mylas";
-import { DataStore } from "../datastore";
+import { DataStore } from "hagcp-utils";
 import { readdir } from "fs/promises";
 import { existsSync, createWriteStream } from "fs";
 import { drawToCanvas, toCanvasColored } from "../utils/canvas";

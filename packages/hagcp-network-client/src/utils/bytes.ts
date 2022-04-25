@@ -1,4 +1,4 @@
-import BufferCursor from "../buffercursor";
+import { BufferCursor } from "hagcp-utils";
 
 export function bytesToString(source: Buffer | BufferCursor): string {
     const buf = source instanceof BufferCursor ? source.buffer : source;

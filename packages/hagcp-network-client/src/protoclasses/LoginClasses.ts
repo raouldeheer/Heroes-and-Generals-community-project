@@ -1,4 +1,4 @@
-import BufferCursor from "../buffercursor";
+import { BufferCursor } from "hagcp-utils";
 import { BufToDecodedProto, ProtoToBuf } from "./proto";
 import protobuf from "protobufjs";
 
@@ -79,9 +79,9 @@ export class QueryBannedMachineRequest {
         machineIdentifier: string,
         machineIdentifierOld: string,
     } = {
-        machineIdentifier: "e92e36b9-e761-4fe8-bbca-a287577ba81f",
-        machineIdentifierOld: "e92e36b9-e761-4fe8-bbca-a287577ba81f",
-    }): Buffer => ProtoToBuf(this.proto, payload);
+            machineIdentifier: "e92e36b9-e761-4fe8-bbca-a287577ba81f",
+            machineIdentifierOld: "e92e36b9-e761-4fe8-bbca-a287577ba81f",
+        }): Buffer => ProtoToBuf(this.proto, payload);
 }
 
 export class QueryBannedMachineResponse {

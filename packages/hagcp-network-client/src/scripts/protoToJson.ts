@@ -1,4 +1,5 @@
-import { DataStore, loadTemplate } from "..";
+import { loadTemplate } from "..";
+import { DataStore } from "hagcp-utils";
 import { Json } from "mylas";
 
 async function toJsonDB(name:string) {

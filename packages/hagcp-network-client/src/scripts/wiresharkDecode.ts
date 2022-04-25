@@ -1,7 +1,6 @@
 import fs from "fs";
-import BufferCursor from "../buffercursor";
+import { BufferCursor, DataStore } from "hagcp-utils";
 import { gunzipSync } from "zlib";
-import { DataStore } from "../datastore";
 import { ProtoToString } from "../protoclasses/proto";
 import { keyToClass } from "../protolinking/classKeys";
 import { loadTemplate } from "../utils/assetLoading";

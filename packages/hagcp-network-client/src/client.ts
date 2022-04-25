@@ -1,7 +1,7 @@
 import { EventEmitter } from "events";
 import { Socket, createConnection } from "net";
 import { createHash, createHmac } from 'crypto';
-import BufferCursor from "./buffercursor";
+import { BufferCursor } from "hagcp-utils";
 import { keyToClass, ResponseType } from "./protolinking/classKeys";
 import { ProtoToString } from "./protoclasses/proto";
 import { gunzipSync } from "zlib";

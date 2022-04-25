@@ -1,6 +1,5 @@
 import mylas from "mylas";
-import BufferCursor from "../buffercursor";
-import { DataStore } from "../datastore";
+import { BufferCursor, DataStore } from "hagcp-utils";
 import { keyToClass } from "../protolinking/classKeys";
 
 export async function loadTemplate(dataStore: DataStore, name: string) {

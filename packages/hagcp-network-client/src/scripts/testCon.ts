@@ -1,9 +1,8 @@
-import { Client } from "../client";
-import { DataStore } from "../datastore";
+import { DataStore } from "hagcp-utils";
 import mylas from "mylas";
 import Long from "long";
 import { setTimeout } from "timers/promises";
-import { ResponseType } from "../protolinking/classKeys";
+import { ResponseType, Client } from "..";
 import dotenv from "dotenv";
 dotenv.config();
 

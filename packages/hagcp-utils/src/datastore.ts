@@ -1,4 +1,8 @@
-import { IKeyValueChangeSetResult } from "./protoclasses/keyValueChangeSet";
+export type KeyValue = { key: string, value: any; };
+export interface IKeyValueChangeSetResult {
+    set?: KeyValue[],
+    delete?: KeyValue[],
+}
 
 export class DataStore {
     private readonly mainStore: Map<string, Map<string, any>>;

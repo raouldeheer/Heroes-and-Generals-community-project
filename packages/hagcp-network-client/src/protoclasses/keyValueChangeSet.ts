@@ -1,13 +1,7 @@
-import BufferCursor from "../buffercursor";
+import { IKeyValueChangeSetResult, BufferCursor } from "hagcp-utils";
 import { BufToDecodedProto } from "./proto";
-import { KeyValueChangeKey, KeyValueOp, KeyProtoSet } from "../protolinking/keyValueSet";
+import { KeyValueOp, KeyProtoSet } from "../protolinking/keyValueSet";
 import { bytesToString, splitInGroups } from "../utils/bytes";
-
-export type KeyValue = { key: string, value: any; };
-export interface IKeyValueChangeSetResult {
-    set?: KeyValue[],
-    delete?: KeyValue[],
-}
 
 export class KeyValueChangeSet {
     static parse(buf: BufferCursor) {

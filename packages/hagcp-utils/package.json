@@ -1,0 +1,25 @@
+{
+  "name": "hagcp-utils",
+  "version": "0.0.1",
+  "description": "",
+  "main": "dist/index.js",
+  "typings": "dist/index",
+  "files": [
+    "dist/"
+  ],
+  "devDependencies": {},
+  "scripts": {
+    "build": "tsc",
+    "dev:build": "tsc -w"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/raouldeheer/Heroes-and-Generals-community-project.git"
+  },
+  "author": "Raoul de Heer",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/raouldeheer/Heroes-and-Generals-community-project/issues"
+  },
+  "homepage": "https://github.com/raouldeheer/Heroes-and-Generals-community-project#readme"
+}

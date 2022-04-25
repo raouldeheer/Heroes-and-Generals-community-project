@@ -9,5 +9,5 @@ const datastore = new DataStore;
 (async () => {
     const client = await startClient(datastore, lookupFactions);
     if (!client) return;
-    startApp(datastore, client, lookupFactions, expressPort);
+    await startApp(datastore, client, lookupFactions, expressPort);
 })();

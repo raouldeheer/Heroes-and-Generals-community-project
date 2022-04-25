@@ -1,4 +1,5 @@
-import { Client, DataStore } from "hagcp-network-client";
+import { Client } from "hagcp-network-client";
+import { DataStore } from "hagcp-utils";
 import mylas from "mylas";
 import Long from "long";
 import { ResponseType } from "hagcp-network-client/dist/protolinking/classKeys";

@@ -15,12 +15,11 @@ dotenv.config();
     await loadTemplate(dataStore, "accesspoint");
     await loadTemplate(dataStore, "capital");
 
-    const cl = new Client(
-        String(process.env.HAG_IP),
-        Number(process.env.HAG_PORT),
+    const cl = await Client.connectToHQ(
         String(process.env.HAG_USERAGENT),
         String(process.env.HAG_USERNAME),
         String(process.env.HAG_PASSWORD));
+    if (!cl) return;
     const startTime = Date.now();
     const lookupFactions = new Map<string, any>();
 
@@ -28,7 +27,7 @@ dotenv.config();
         cl.sendPacket("subscribewarmapview");
         cl.sendPacket("query_war_catalogue_request");
         setTimeout(async () => {
-            const canvas = await drawToCanvas(dataStore, dataStore, id => lookupFactions.get(id).color)
+            const canvas = await drawToCanvas(dataStore, dataStore, id => lookupFactions.get(id).color);
             await pipeline(canvas.createJPEGStream(), fs.createWriteStream("./screenshot.jpg"));
             cl.close();
         }, 5000);

@@ -346,13 +346,13 @@ export const enum ResponseType {
     voucher_expired = 280,
 }
 
-export enum VirtualCurrencyType {
+export const enum VirtualCurrencyType {
     Credits = 1,
     Warfunds = 2,
     Gold = 3,
 }
 
-export enum MissionStatus {
+export const enum MissionStatus {
     MissionOpen = 1,
     MissionRunning = 2,
     MissionEnding = 3,

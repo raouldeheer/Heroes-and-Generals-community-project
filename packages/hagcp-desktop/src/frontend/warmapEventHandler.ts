@@ -1,7 +1,6 @@
 const electron = window.require("electron");
 import EventEmitter from "events";
-import { DataStore } from "hagcp-network-client/dist/datastore";
-import { IKeyValueChangeSetResult } from "hagcp-network-client/dist/protoclasses/keyValueChangeSet";
+import { DataStore, IKeyValueChangeSetResult } from "hagcp-utils";
 import { battle, Player } from "./map/mapInterfaces";
 import battlefield from "hagcp-assets/json/battlefield.json";
 

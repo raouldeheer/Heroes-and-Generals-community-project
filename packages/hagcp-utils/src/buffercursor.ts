@@ -9,8 +9,8 @@ export class BufferCursor {
     }
     public move(step: number): void {
         const pos = this.pos + step;
-        if (pos < 0) throw new RangeError('Cannot seek before start of buffer');
-        if (pos > this.length) throw new RangeError('Trying to seek beyond buffer');
+        if (pos < 0) throw new RangeError("Cannot seek before start of buffer");
+        if (pos > this.length) throw new RangeError("Trying to seek beyond buffer");
         this.pos = pos;
     }
     private checkWrite(size: number): void {
@@ -23,8 +23,8 @@ export class BufferCursor {
         return result;
     }
     seek(pos: number): this {
-        if (pos < 0) throw new RangeError('Cannot seek before start of buffer');
-        if (pos > this.length) throw new RangeError('Trying to seek beyond buffer');
+        if (pos < 0) throw new RangeError("Cannot seek before start of buffer");
+        if (pos > this.length) throw new RangeError("Trying to seek beyond buffer");
         this.pos = pos;
         return this;
     }
@@ -42,7 +42,7 @@ export class BufferCursor {
 
         return buf;
     }
-    toString(encoding: BufferEncoding = 'utf8', length?: number): string {
+    toString(encoding: BufferEncoding = "utf8", length?: number): string {
         const end = length === undefined ? this.length : this.pos + length;
 
         const ret = this.buffer.toString(encoding, this.pos, end);
@@ -248,7 +248,7 @@ export class BufferCursor {
 export class BufferCursorOverflow extends Error {
     constructor(length: number, pos: number, size: number) {
         super(`BufferCursorOverflow: length ${length}, position ${pos}, size ${size}`);
-        this.name = 'BufferCursorOverflow';
+        this.name = "BufferCursorOverflow";
         this.message = `BufferCursorOverflow: length ${length}, position ${pos}, size ${size}`;
     }
 }

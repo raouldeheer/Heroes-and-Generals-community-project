@@ -1,5 +1,5 @@
 import { Component } from "react";
-import { Circle, Text } from 'react-konva';
+import { Circle, Text } from "react-konva";
 import { WarmapEventHandler } from "../warmapEventHandler";
 import { Battlefield, battlefieldstatus } from "./mapInterfaces";
 

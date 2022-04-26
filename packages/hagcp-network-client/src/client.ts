@@ -146,8 +146,8 @@ export class Client extends EventEmitter {
         return true;                    // Return success.
     }
 
-    public sendPacketAsync(className: string, payload?: any): Promise<any> {
-        return new Promise<any>((resolve, reject) => {
+    public sendPacketAsync<T = any>(className: string, payload?: any): Promise<T> {
+        return new Promise<T>((resolve, reject) => {
             try {
                 this.sendPacket(className, payload, (result) => {
                     resolve(result);
@@ -174,7 +174,7 @@ export class Client extends EventEmitter {
         const sessionid = Buffer.from(tempSessionid, "base64");
         // Concat buffers and createHash.
         const sha1concat = (d1: Buffer, d2: Buffer) =>
-            createHash('sha1').update(Buffer.concat([d1, d2])).digest();
+            createHash("sha1").update(Buffer.concat([d1, d2])).digest();
         // Create loginHash.
         const loginkeyhash = sha1concat(sha1concat(
             Buffer.from(password, "latin1"),
@@ -183,7 +183,7 @@ export class Client extends EventEmitter {
 
         return {
             // Create Hmac with encryptedSessionkey and loginhash.
-            digest: createHmac('sha1', Buffer.from(encryptedSessionkey, "base64")
+            digest: createHmac("sha1", Buffer.from(encryptedSessionkey, "base64")
                 .map((value, i) => value ^ loginkeyhash[i % loginkeyhash.length]))
                 .update(sessionid)
                 .digest("base64"),

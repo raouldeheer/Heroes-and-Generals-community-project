@@ -61,7 +61,7 @@ function attachToClient(webContents: Electron.WebContents) {
     webContents.send("loggedin");
     subscribeClient();
   }).on("loginFailed", () => {
-    webContents.mainFrame.executeJavaScript("alert('Login failed!');");
+    webContents.mainFrame.executeJavaScript("alert(\"Login failed!\");");
     // TODO Add try again logic
   }).on("query_war_catalogue_response", (data) => {
     webContents.send("warCatalogueFactions", data.warcataloguedata[0].warCatalogueFactions);

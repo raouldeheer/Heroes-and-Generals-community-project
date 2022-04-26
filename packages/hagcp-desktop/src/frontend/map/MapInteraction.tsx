@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import { throttle } from "lodash";
 
 type Pos = { x: number; y: number; };
@@ -90,38 +90,38 @@ export class MapInteractionControlled extends Component<any, any> {
   componentDidMount() {
     const passiveOption = makePassiveEventOption(false);
 
-    this.getContainerNode().addEventListener('wheel', this.onWheel, passiveOption);
+    this.getContainerNode().addEventListener("wheel", this.onWheel, passiveOption);
     /*
       Setup events for the gesture lifecycle: start, move, end touch
     */
 
     // start gesture
-    this.getContainerNode().addEventListener('touchstart', this.onTouchStart, passiveOption);
-    this.getContainerNode().addEventListener('mousedown', this.onMouseDown, passiveOption);
+    this.getContainerNode().addEventListener("touchstart", this.onTouchStart, passiveOption);
+    this.getContainerNode().addEventListener("mousedown", this.onMouseDown, passiveOption);
 
     // move gesture
-    window.addEventListener('touchmove', this.onTouchMove, passiveOption);
-    window.addEventListener('mousemove', this.onMouseMove, passiveOption);
+    window.addEventListener("touchmove", this.onTouchMove, passiveOption);
+    window.addEventListener("mousemove", this.onMouseMove, passiveOption);
 
     // end gesture
     if (typeof passiveOption == "boolean") return;
     const touchAndMouseEndOptions = { capture: true, ...passiveOption };
-    window.addEventListener('touchend', this.onTouchEnd, touchAndMouseEndOptions);
-    window.addEventListener('mouseup', this.onMouseUp, touchAndMouseEndOptions);
+    window.addEventListener("touchend", this.onTouchEnd, touchAndMouseEndOptions);
+    window.addEventListener("mouseup", this.onMouseUp, touchAndMouseEndOptions);
   }
 
   componentWillUnmount() {
-    this.getContainerNode().removeEventListener('wheel', this.onWheel);
+    this.getContainerNode().removeEventListener("wheel", this.onWheel);
 
     // Remove touch events
-    this.getContainerNode().removeEventListener('touchstart', this.onTouchStart);
-    window.removeEventListener('touchmove', this.onTouchMove);
-    window.removeEventListener('touchend', this.onTouchEnd);
+    this.getContainerNode().removeEventListener("touchstart", this.onTouchStart);
+    window.removeEventListener("touchmove", this.onTouchMove);
+    window.removeEventListener("touchend", this.onTouchEnd);
 
     // Remove mouse events
-    this.getContainerNode().removeEventListener('mousedown', this.onMouseDown);
-    window.removeEventListener('mousemove', this.onMouseMove);
-    window.removeEventListener('mouseup', this.onMouseUp);
+    this.getContainerNode().removeEventListener("mousedown", this.onMouseDown);
+    window.removeEventListener("mousemove", this.onMouseMove);
+    window.removeEventListener("mouseup", this.onMouseUp);
   }
 
   onMouseDown(e: MouseEvent) {
@@ -370,10 +370,10 @@ export class MapInteractionControlled extends Component<any, any> {
           this.containerNode = node;
         }}
         style={{
-          height: '100%',
-          width: '100%',
-          position: 'relative', // for absolutely positioned children
-          touchAction: 'none'
+          height: "100%",
+          width: "100%",
+          position: "relative", // for absolutely positioned children
+          touchAction: "none"
         }}
         onClickCapture={handleEventCapture}
         onTouchEndCapture={handleEventCapture}
@@ -496,21 +496,21 @@ const MapInteractionCSS = (props: any) => {
           const transform = `translate(${translation.x}px, ${translation.y}px) scale(${scale})`;
           return (
             <div style={{
-              height: '100%',
-              width: '100%',
-              position: 'relative', // for absolutely positioned children
-              overflow: 'hidden',
-              touchAction: 'none', // Not supported in Safari :(
-              msTouchAction: 'none',
-              cursor: 'all-scroll',
-              WebkitUserSelect: 'none',
-              MozUserSelect: 'none',
-              msUserSelect: 'none'
+              height: "100%",
+              width: "100%",
+              position: "relative", // for absolutely positioned children
+              overflow: "hidden",
+              touchAction: "none", // Not supported in Safari :(
+              msTouchAction: "none",
+              cursor: "all-scroll",
+              WebkitUserSelect: "none",
+              MozUserSelect: "none",
+              msUserSelect: "none"
             }}>
               <div style={{
-                display: 'inline-block', // size to content
+                display: "inline-block", // size to content
                 transform: transform,
-                transformOrigin: '0 0 '
+                transformOrigin: "0 0 "
               }}>
                 {props.children}
               </div>

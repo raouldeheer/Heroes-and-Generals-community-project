@@ -7,6 +7,14 @@
   "files": [
     "dist/"
   ],
+  "exports": {
+    ".": {
+      "default": "./dist/index.js"
+    },
+    "./canvas": {
+      "default": "./dist/canvas.js"
+    }
+  },
   "scripts": {
     "build": "tsc",
     "dev:build": "tsc -w"

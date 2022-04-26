@@ -1,5 +1,6 @@
 import { Client } from "hagcp-network-client";
-import { DataStore, drawToCanvas } from "hagcp-utils";
+import { DataStore } from "hagcp-utils";
+import { drawToCanvas } from "hagcp-utils/canvas";
 import { loadTemplate } from "hagcp-assets";
 import fs from "fs";
 import { pipeline } from "stream/promises";

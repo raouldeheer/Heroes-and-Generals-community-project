@@ -1,5 +1,6 @@
 import mylas from "mylas";
-import { DataStore, drawToCanvas, toCanvasColored } from "hagcp-utils";
+import { DataStore } from "hagcp-utils";
+import { drawToCanvas, toCanvasColored } from "hagcp-utils/canvas";
 import { readdir } from "fs/promises";
 import { existsSync, createWriteStream } from "fs";
 import { loadTemplate } from "hagcp-assets";

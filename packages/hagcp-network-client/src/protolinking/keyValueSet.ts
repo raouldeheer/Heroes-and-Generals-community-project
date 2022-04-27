@@ -1,4 +1,5 @@
 import protobuf from "protobufjs";
+import { Protos } from "../protoclasses/proto";
 
 export const enum KeyValueOp {
     set = "set",
@@ -66,8 +67,6 @@ export const enum KeyValueChangeKey {
     CommandNodeMorale = "CommandNodeMorale",
     capital = "capital",
 }
-
-const Protos = protobuf.loadSync("../hagcp-network-client/src/protos/All.proto");
 
 export const KeyProtoSet = new Map<string, protobuf.Type>([
     [KeyValueChangeKey.HostingCenterInfo, Protos.lookupType("HnG_States.HostingCenterInfo")],

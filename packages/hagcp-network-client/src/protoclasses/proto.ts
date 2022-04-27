@@ -2,7 +2,7 @@ import { BufferCursor } from "hagcp-utils";
 import { Type, loadSync } from "protobufjs";
 import { join } from "path";
 
-export const Protos = loadSync(join(__filename, "../../src/protos/All.proto"));
+export const Protos = loadSync(join(__filename, "../protos/All.proto"));
 
 export function ProtoToString(result: object, prefix = `${" ".repeat(16)}`): string {
     return "\n" +

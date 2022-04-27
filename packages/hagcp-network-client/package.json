@@ -40,7 +40,7 @@
     "url": "https://github.com/sponsors/raouldeheer"
   },
   "dependencies": {
-    "hagcp-utils": "^1.0.0",
+    "hagcp-utils": "^1.0.1",
     "long": "^5.2.0",
     "protobufjs": "^6.11.2"
   }

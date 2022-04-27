@@ -26,6 +26,6 @@
   "homepage": "https://github.com/raouldeheer/Heroes-and-Generals-community-project#readme",
   "dependencies": {
     "hagcp-network-client": "^1.0.1",
-    "hagcp-utils": "^1.0.0"
+    "hagcp-utils": "^1.0.1"
   }
 }

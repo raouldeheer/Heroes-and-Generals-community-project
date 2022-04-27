@@ -1,4 +1,5 @@
 import { BufferCursor } from "hagcp-utils";
+import { Type } from "protobufjs";
 
 export function ProtoToString(result: object, prefix = `${" ".repeat(16)}`): string {
     return "\n" +
@@ -11,14 +12,14 @@ export function ProtoToString(result: object, prefix = `${" ".repeat(16)}`): str
                 ((i == length - 1) ? "" : "\n"), "");
 }
 
-export const BufToDecodedProto = (proto: protobuf.Type, buf: Buffer) =>
+export const BufToDecodedProto = (proto: Type, buf: Buffer) =>
     proto.toObject(proto.decode(buf), {
         longs: String,
         enums: Number,
         bytes: Buffer,
     });
 
-export function ProtoToBuf(proto: protobuf.Type, payload: object): Buffer {
+export function ProtoToBuf(proto: Type, payload: object): Buffer {
     const errMsg = proto.verify(payload);
     if (errMsg) throw Error(errMsg);
     const encoded = proto.encode(

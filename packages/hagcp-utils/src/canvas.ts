@@ -1,5 +1,7 @@
 import { CanvasRenderingContext2D, createCanvas, loadImage } from "canvas";
 import fs from "fs";
+import mylas from "mylas";
+import { join } from "path";
 import { pipeline } from "stream/promises";
 import { DataStore } from "./datastore";
 
@@ -25,8 +27,15 @@ export async function drawToCanvas(dataStore: DataStore, dataStore2: DataStore, 
     const context = canvas.getContext("2d");
 
     // Draw background
-    const image = await loadImage("../hagcp-assets/images/background.png");
-    context.drawImage(image, 0, 0, image.width * multiplier, image.height * multiplier);
+    const fileLocation = mylas.dir.nodeModules().reduce<string | null>((prev, curr) => {
+        if (prev) return prev;
+        const result = join(curr, "hagcp-assets/images/background.png");
+        return fs.existsSync(result) ? result : null;
+    }, null);
+    if (fileLocation) {
+        const image = await loadImage(fileLocation);
+        context.drawImage(image, 0, 0, image.width * multiplier, image.height * multiplier);
+    }
 
     // Draw capitals
     drawCapitals(dataStore, context);

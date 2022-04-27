@@ -9,10 +9,14 @@
   ],
   "exports": {
     ".": {
-      "default": "./dist/index.js"
+      "default": "./dist/index.js",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
     },
     "./canvas": {
-      "default": "./dist/canvas.js"
+      "default": "./dist/canvas.js",
+      "import": "./dist/canvas.mjs",
+      "require": "./dist/canvas.js"
     }
   },
   "scripts": {

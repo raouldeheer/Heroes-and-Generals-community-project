@@ -29,7 +29,7 @@
     "dotenv": "^16.0.0",
     "hagcp-assets": "^0.0.1",
     "hagcp-network-client": "^0.1.0",
-    "hagcp-utils": "^0.0.1",
+    "hagcp-utils": "^1.0.0",
     "long": "^5.2.0",
     "mylas": "^2.1.9"
   }

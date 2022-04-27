@@ -1,7 +1,7 @@
 {
   "name": "hagcp-assets",
-  "version": "0.0.1",
-  "description": "",
+  "version": "1.0.0",
+  "description": "This package is made for hagcp, the Heroes and Generals Community Project. This package contains the frequently used assets.",
   "main": "dist/index.js",
   "typings": "dist/index",
   "files": [

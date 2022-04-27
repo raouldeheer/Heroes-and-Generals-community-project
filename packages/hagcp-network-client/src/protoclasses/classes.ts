@@ -1,10 +1,7 @@
 import { BufferCursor } from "hagcp-utils";
-import { BufToDecodedProto, ProtoToBuf } from "./proto";
-import protobuf from "protobufjs";
+import { BufToDecodedProto, Protos, ProtoToBuf } from "./proto";
 import Long from "long";
 import { VirtualCurrencyType } from "../protolinking/classKeys";
-
-const Protos = protobuf.loadSync("../hagcp-network-client/src/protos/All.proto");
 
 export class QueryServerInfoResponse {
     static proto = Protos.lookupType("HnG_States.QueryServerInfoResponse");

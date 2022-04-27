@@ -1,8 +1,5 @@
 import { BufferCursor } from "hagcp-utils";
-import { BufToDecodedProto, ProtoToBuf } from "./proto";
-import protobuf from "protobufjs";
-
-const Protos = protobuf.loadSync("../hagcp-network-client/src/protos/All.proto");
+import { BufToDecodedProto, Protos, ProtoToBuf } from "./proto";
 
 export class LoginQueueUpdate {
     static proto = Protos.lookupType("HnG_States.LoginQueueUpdate");

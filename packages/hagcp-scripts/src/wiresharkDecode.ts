@@ -2,8 +2,7 @@ import fs from "fs";
 import { BufferCursor, DataStore, bytesToString } from "hagcp-utils";
 import { toCanvasColored } from "hagcp-utils/canvas";
 import { gunzipSync } from "zlib";
-import { ProtoToString } from "hagcp-network-client/dist/protoclasses/proto";
-import { keyToClass } from "hagcp-network-client";
+import { keyToClass, ProtoToString } from "hagcp-network-client";
 import { loadTemplate } from "hagcp-assets";
 
 const data = fs.readFileSync("./captures/capturetext17.txt", "utf-8");

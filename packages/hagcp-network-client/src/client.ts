@@ -46,7 +46,8 @@ export class Client extends EventEmitter {
     private idNumber;
     private rest: Buffer | undefined;
     public connected: boolean;
-    constructor(
+
+    private constructor(
         host: string,
         port: number,
         private readonly userAgent: string,
@@ -92,6 +93,13 @@ export class Client extends EventEmitter {
         });
     }
 
+    /**
+     * connectToHQ creates a client and checks server status.
+     * @param userAgent the useragent that is used.
+     * @param userName the username of the user to connect with.
+     * @param password the password of the user.
+     * @returns a new client
+     */
     public static async connectToHQ(userAgent: string, userName: string, password: string) {
         const status = await fetch("http://game.heroesandgenerals.com/status");
         if (status.status !== 200) {

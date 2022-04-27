@@ -1,15 +1,22 @@
 {
   "name": "hagcp-network-client",
-  "description": "",
-  "version": "0.1.0",
+  "description": "This package is made for hagcp, the Hero and Generals Community Project. This package contains the network client used to connect to the game.",
+  "version": "1.0.0",
   "main": "dist/index.js",
   "typings": "dist/index",
   "files": [
     "dist/"
   ],
+  "exports": {
+    ".": {
+      "default": "./dist/index.js",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  },
   "scripts": {
-    "build": "tsc",
-    "dev:build": "tsc -w"
+    "build": "tsup",
+    "dev:build": "tsup --watch"
   },
   "repository": {
     "type": "git",

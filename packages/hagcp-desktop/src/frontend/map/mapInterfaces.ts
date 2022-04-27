@@ -1,4 +1,4 @@
-import { MissionStatus, ResponseType } from "hagcp-network-client/dist/protolinking/classKeys";
+import { MissionStatus, ResponseType } from "hagcp-network-client";
 
 export interface Battlefield {
     id: string;

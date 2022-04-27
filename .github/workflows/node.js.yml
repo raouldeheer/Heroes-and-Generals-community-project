@@ -39,6 +39,7 @@ jobs:
 
       - run: npm i npm@latest -g
       - run: npm i -ws --force
+      - run: npm i tsup -g
       - name: Test compiling
         run: |
           npm run build:utils

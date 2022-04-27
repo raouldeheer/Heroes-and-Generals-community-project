@@ -67,9 +67,9 @@ jobs:
           npm run build:assets
       - name: Publish all packages
         run: |
-          npm publish --access public --workspace="hagcp-utils" --dry-run
-          npm publish --access public --workspace="hagcp-network-client" --dry-run
-          npm publish --access public --workspace="hagcp-assets" --dry-run
+          npm publish --access public --workspace="hagcp-utils"
+          npm publish --access public --workspace="hagcp-network-client"
+          npm publish --access public --workspace="hagcp-assets"
         env:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}
 

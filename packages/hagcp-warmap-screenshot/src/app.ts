@@ -1,4 +1,4 @@
-import { ClassKeys, Client } from "hagcp-network-client";
+import { ClassKeys, Client, KeyValueChangeKey } from "hagcp-network-client";
 import { DataStore } from "hagcp-utils";
 import { drawToCanvas } from "hagcp-utils/canvas";
 import { loadTemplate } from "hagcp-assets";
@@ -86,6 +86,19 @@ export async function startApp(datastore: DataStore, client: Client, lookupFacti
                     missionId: 0,
                     battleId: Long.fromString(battleId),
                 }));
+                return;
+            }
+        }
+        res.sendStatus(412);
+    });
+
+    app.get("/api/hostingcenter", async (req, res) => {
+        if (!client) res.sendStatus(500);
+        res.set("Cache-control", "public, max-age=60");
+        if (req.query.hostingCenterId) {
+            const hostingCenterId = String(req.query.hostingCenterId);
+            if (/^\d+$/.test(hostingCenterId)) {
+                res.json(datastore.GetData(KeyValueChangeKey.HostingCenterInfo, hostingCenterId));
                 return;
             }
         }

@@ -43,6 +43,7 @@ export async function startClient(datastore: DataStore, lookupFactions: Map<stri
     client.once("loggedin", async () => {
         await client.sendPacketAsync(ClassKeys.query_war_catalogue_request);
         await client.sendPacketAsync(ClassKeys.subscribewarmapview);
+        await client.sendPacketAsync(ClassKeys.SubscribeHostingCenterInfoView);
         saveMapTimer = setInterval(saveMapNow, 30000);
     }).on(ClassKeys.query_war_catalogue_response, (data) => {
         data.warcataloguedata[0].warCatalogueFactions.forEach((element: { factionTemplateId: any; color: string; factionId: string; }) => {

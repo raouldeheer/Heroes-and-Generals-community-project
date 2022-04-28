@@ -57,4 +57,11 @@ export class DataStore {
     public GetMap() {
         return this.mainStore;
     }
+
+    public ItemstoreToKeyValueSet(itemStoreName: string): IKeyValueChangeSetResult {
+        const itemStore = this.mainStore.get(itemStoreName);
+        const result: IKeyValueChangeSetResult = { set: [] };
+        if (itemStore) for (const item of itemStore) result.set?.push({key: itemStoreName, value: item[1]});
+        return result;
+    }
 }

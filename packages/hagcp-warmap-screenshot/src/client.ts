@@ -1,6 +1,7 @@
-import { Client, ResponseType } from "hagcp-network-client";
+import { Client, keyToClass, ResponseType } from "hagcp-network-client";
 import { DataStore } from "hagcp-utils";
 import mylas from "mylas";
+import { gzipSync } from "zlib";
 import Long from "long";
 import { setTimeout } from "timers/promises";
 import dotenv from "dotenv";
@@ -21,13 +22,19 @@ export async function startClient(datastore: DataStore, lookupFactions: Map<stri
         if (warId) {
             if (!client) return;
             await client.sendPacketAsync("query_war_catalogue_request");
-            await setTimeout(100, true);
+            await setTimeout(1000, true);
             const outDir = `./saves`;
             console.log(`saving to: ${outDir}/${warId}/${date}.jsonc`);
-            const obj = datastore.ToObject();
+            await mylas.buf.save(`${outDir}/${warId}/${date}.protodata`,
+                gzipSync(keyToClass.get("KeyValueChangeSet")!.toBuffer!({
+                    set: [
+                        ...datastore.ItemstoreToKeyValueSet("battlefieldstatus").set!,
+                        ...datastore.ItemstoreToKeyValueSet("supplylinestatus").set!,
+                    ]
+                }))
+            );
+
             mylas.json.saveS(`${outDir}/${warId}/${date}.jsonc`, {
-                battlefieldstatus: obj.battlefieldstatus,
-                supplylinestatus: obj.supplylinestatus,
                 factions: Array.from(lookupFactions.values()),
             });
         }

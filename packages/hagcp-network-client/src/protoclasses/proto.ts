@@ -1,6 +1,7 @@
 import { BufferCursor } from "hagcp-utils";
 import { Type, loadSync } from "protobufjs";
 import { join } from "path";
+import Long from "long";
 
 export const Protos = loadSync(join(__filename, "../protos/All.proto"));
 
@@ -22,12 +23,13 @@ export const BufToDecodedProto = (proto: Type, buf: Buffer) =>
         bytes: Buffer,
     });
 
+export const bufFromDecodedProto = (proto: Type, value: any) =>
+    Buffer.from(proto.encode(proto.fromObject(value)).finish());
+
 export function ProtoToBuf(proto: Type, payload: object): Buffer {
     const errMsg = proto.verify(payload);
     if (errMsg) throw Error(errMsg);
-    const encoded = proto.encode(
-        proto.create(payload)
-    ).finish() as Buffer;
+    const encoded = bufFromDecodedProto(proto, payload);
     const result = new BufferCursor(Buffer.allocUnsafe(encoded.byteLength + 8));
     result.writeUInt32LE(encoded.byteLength + 8);
     result.writeUInt32LE(encoded.byteLength + 4);

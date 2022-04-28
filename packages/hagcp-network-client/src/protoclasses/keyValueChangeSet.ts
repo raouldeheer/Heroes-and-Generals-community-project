@@ -1,5 +1,5 @@
-import { IKeyValueChangeSetResult, BufferCursor, bytesToString, splitInGroups } from "hagcp-utils";
-import { BufToDecodedProto } from "./proto";
+import { IKeyValueChangeSetResult, BufferCursor, bytesToString, splitInGroups, prefixJoin } from "hagcp-utils";
+import { bufFromDecodedProto, BufToDecodedProto } from "./proto";
 import { KeyValueOp, KeyProtoSet } from "../protolinking/keyValueSet";
 
 export class KeyValueChangeSet {
@@ -51,5 +51,27 @@ export class KeyValueChangeSet {
             }
         });
         return returnObj;
+    }
+    static toBuffer(payload: IKeyValueChangeSetResult): Buffer {
+        if (!payload.set) return Buffer.alloc(0);
+        return prefixJoin([
+            prefixJoin([
+                Buffer.from(KeyValueOp.set, "utf8"),
+                ...payload.set.map(({ key, value }) => {
+                    if (KeyProtoSet.has(key)) {
+                        const proto = KeyProtoSet.get(key)!;
+                        const encoded = bufFromDecodedProto(proto, value);
+                        const result = new BufferCursor(Buffer.allocUnsafe(encoded.byteLength + key.length + 12));
+                        result.writeUInt32LE(key.length + 4);
+                        result.write(key, key.length);
+                        result.writeUInt32LE(encoded.byteLength + 8);
+                        result.writeUInt32LE(encoded.byteLength + 4);
+                        result.writeBuff(encoded, encoded.length);
+                        return result.buffer;
+                    }
+                    return Buffer.allocUnsafe(0);
+                }).filter(e => e.length !== 0)
+            ])
+        ]);
     }
 }

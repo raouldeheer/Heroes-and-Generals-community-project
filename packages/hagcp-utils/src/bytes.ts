@@ -20,3 +20,11 @@ export function splitInGroups(buf: BufferCursor) {
     } while (buf.tell() < buf.length);
     return groups;
 }
+
+export const prefixJoin = (buffers: Buffer[]) =>
+    Buffer.concat(buffers.map(v => {
+        const buf = Buffer.allocUnsafe(4);
+        buf.writeUint32LE(v.byteLength + 4);
+        return Buffer.concat([buf, v]);
+    }));
+

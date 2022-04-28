@@ -1,6 +1,6 @@
 {
   "name": "hag-community-project",
-  "version": "0.0.1",
+  "version": "1.0.3",
   "description": "Heroes and Generals community project",
   "scripts": {
     "build:assets": "npm run build --workspace=\"hagcp-assets\"",

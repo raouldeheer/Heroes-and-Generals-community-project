@@ -7,7 +7,7 @@ import { setTimeout } from "timers/promises";
 import dotenv from "dotenv";
 dotenv.config();
 
-export async function startClient(datastore: DataStore, lookupFactions: Map<string, any>) {
+export async function startClient(datastore: DataStore, lookupFactions: Map<string, any>, lookupTemplateFaction: Map<string, any>) {
     const client = await Client.connectToHQ(
         String(process.env.HAG_USERAGENT),
         String(process.env.HAG_USERNAME),
@@ -61,6 +61,7 @@ export async function startClient(datastore: DataStore, lookupFactions: Map<stri
                     break;
             }
             lookupFactions.set(element.factionId, element);
+            lookupTemplateFaction.set(element.factionTemplateId, element);
         });
     }).on(ClassKeys.join_war_response, async (data: { msg: ResponseType, redirectSrv?: string; }) => {
         if (data.msg === ResponseType.ok) {

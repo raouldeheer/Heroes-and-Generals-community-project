@@ -2,7 +2,7 @@ import { EventEmitter } from "events";
 import { Socket, createConnection } from "net";
 import { createHash, createHmac } from "crypto";
 import { BufferCursor } from "hagcp-utils";
-import { keyToClass, ResponseType } from "./protolinking/classKeys";
+import { ClassKeys, keyToClass, ResponseType } from "./protolinking/classKeys";
 import { ProtoToString } from "./protoclasses/proto";
 import { gunzipSync } from "zlib";
 import { appendFileSync, writeFileSync } from "fs";
@@ -89,7 +89,7 @@ export class Client extends EventEmitter {
             this.connected = true;
             writeFileSync("./testConLog.txt", "", "utf8");
             // connected to server with tcp
-            this.sendPacket("QueryServerInfo");
+            this.sendPacket(ClassKeys.QueryServerInfo);
         });
     }
 
@@ -132,7 +132,7 @@ export class Client extends EventEmitter {
         try { this.con.end().destroy(); } catch (_) { }
     }
 
-    public sendPacket(className: string, payload?: any, callback?: (result: any) => void): boolean {
+    public sendPacket(className: ClassKeys, payload?: any, callback?: (result: any) => void): boolean {
         // Get data from class.
         const buffer = keyToClass.get(className)?.toBuffer?.(payload);
         // If class doesn't return any data, return failed.
@@ -154,7 +154,7 @@ export class Client extends EventEmitter {
         return true;                    // Return success.
     }
 
-    public sendPacketAsync<T = any>(className: string, payload?: any): Promise<T> {
+    public sendPacketAsync<T = any>(className: ClassKeys, payload?: any): Promise<T> {
         return new Promise<T>((resolve, reject) => {
             try {
                 this.sendPacket(className, payload, (result) => {
@@ -208,7 +208,7 @@ export class Client extends EventEmitter {
 
         const size = element.readUInt32LE() - 4;
         const typeLength = element.readUInt32LE() - 4;
-        const typeText = element.slice(typeLength).toString();
+        const typeText = element.slice(typeLength).toString() as ClassKeys;
         if (size - typeLength == 4) return;
 
         const DataBuf = element.slice();
@@ -228,20 +228,20 @@ export class Client extends EventEmitter {
                     }
                     break;
                 case "QueryServerInfoResponse":
-                    this.sendPacket("QueryBannedMachineRequest");
+                    this.sendPacket(ClassKeys.QueryBannedMachineRequest);
                     break;
                 case "QueryBannedMachineResponse":
                     if (result.isBanned) {
                         console.error("Player banned");
                         this.close();
                     } else {
-                        this.sendPacket("StartLogin");
+                        this.sendPacket(ClassKeys.StartLogin);
                     }
                     break;
                 case "LoginQueueUpdate":
                     this.emit("LoginQueueUpdate", result.positionInQueue);
                     console.info(`Queue: ${result.positionInQueue}`);
-                    if (result.mayProceed) this.sendPacket("login2_begin", {
+                    if (result.mayProceed) this.sendPacket(ClassKeys.login2_begin, {
                         username: this.userName,
                         deviceid: this.userAgent,
                         acceptingPrivacyPolicy: false,
@@ -249,7 +249,7 @@ export class Client extends EventEmitter {
                     });
                     break;
                 case "login2_challenge":
-                    this.sendPacket("login2_response", this.login(this.password, result));
+                    this.sendPacket(ClassKeys.login2_response, this.login(this.password, result));
                     break;
                 case "login2_result":
                     this.emit("login2_result", result);
@@ -262,7 +262,7 @@ export class Client extends EventEmitter {
                     break;
                 case "keepaliverequest":
                     // TODO Find out what 8374 means.
-                    this.sendPacket("keepalive", { value: 8374 });
+                    this.sendPacket(ClassKeys.keepalive, { value: 8374 });
                     break;
                 default:
                     this.emit("message", typeText, result);

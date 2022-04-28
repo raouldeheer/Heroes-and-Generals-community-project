@@ -1,4 +1,4 @@
-import { Client, keyToClass, ResponseType } from "hagcp-network-client";
+import { ClassKeys, Client, keyToClass, ResponseType } from "hagcp-network-client";
 import { DataStore } from "hagcp-utils";
 import mylas from "mylas";
 import { gzipSync } from "zlib";
@@ -21,12 +21,12 @@ export async function startClient(datastore: DataStore, lookupFactions: Map<stri
         const date = (new Date).toISOString().replace(/[-:.]/g, "");
         if (warId) {
             if (!client) return;
-            await client.sendPacketAsync("query_war_catalogue_request");
+            await client.sendPacketAsync(ClassKeys.query_war_catalogue_request);
             await setTimeout(1000, true);
             const outDir = `./saves`;
             console.log(`saving to: ${outDir}/${warId}/${date}.jsonc`);
             await mylas.buf.save(`${outDir}/${warId}/${date}.protodata`,
-                gzipSync(keyToClass.get("KeyValueChangeSet")!.toBuffer!({
+                gzipSync(keyToClass.get(ClassKeys.KeyValueChangeSet)!.toBuffer!({
                     set: [
                         ...datastore.ItemstoreToKeyValueSet("battlefieldstatus").set!,
                         ...datastore.ItemstoreToKeyValueSet("supplylinestatus").set!,
@@ -41,10 +41,10 @@ export async function startClient(datastore: DataStore, lookupFactions: Map<stri
     }
 
     client.once("loggedin", async () => {
-        await client.sendPacketAsync("query_war_catalogue_request");
-        await client.sendPacketAsync("subscribewarmapview");
+        await client.sendPacketAsync(ClassKeys.query_war_catalogue_request);
+        await client.sendPacketAsync(ClassKeys.subscribewarmapview);
         saveMapTimer = setInterval(saveMapNow, 30000);
-    }).on("query_war_catalogue_response", (data) => {
+    }).on(ClassKeys.query_war_catalogue_response, (data) => {
         data.warcataloguedata[0].warCatalogueFactions.forEach((element: { factionTemplateId: any; color: string; factionId: string; }) => {
             switch (element.factionTemplateId) {
                 case "1":
@@ -62,19 +62,19 @@ export async function startClient(datastore: DataStore, lookupFactions: Map<stri
             }
             lookupFactions.set(element.factionId, element);
         });
-    }).on("join_war_response", async (data: { msg: ResponseType, redirectSrv?: string; }) => {
+    }).on(ClassKeys.join_war_response, async (data: { msg: ResponseType, redirectSrv?: string; }) => {
         if (data.msg === ResponseType.ok) {
             if (data.redirectSrv) {
                 console.log(`redirectSrv detected: ${data.redirectSrv}`);
             }
-            await client.sendPacketAsync("unsubscribewarmapview");
-            await client.sendPacketAsync("subscribewarmapview");
-            await client.sendPacketAsync("query_war_catalogue_request");
+            await client.sendPacketAsync(ClassKeys.unsubscribewarmapview);
+            await client.sendPacketAsync(ClassKeys.subscribewarmapview);
+            await client.sendPacketAsync(ClassKeys.query_war_catalogue_request);
         } else {
             console.error(`ERROR: ${data}`);
         }
     }).on("message", async (typetext, data) => {
-        if (typetext == "KeyValueChangeSet") {
+        if (typetext == ClassKeys.KeyValueChangeSet) {
             datastore.SaveData(data);
             if (data?.set) {
                 for (const iterator of data.set) {
@@ -87,7 +87,7 @@ export async function startClient(datastore: DataStore, lookupFactions: Map<stri
                             console.log(`${value.id} ended, switching to: ${value.sequelwarid}`);
                             datastore.ResetData("battlefieldstatus");
                             datastore.ResetData("supplylinestatus");
-                            client.sendPacket("join_war_request", {
+                            client.sendPacket(ClassKeys.join_war_request, {
                                 warid: Long.fromString(value.sequelwarid),
                                 factionid: Long.ZERO,
                                 playedFirstBlood: 0,

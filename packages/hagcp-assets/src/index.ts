@@ -1,6 +1,6 @@
 import mylas from "mylas";
 import { BufferCursor, DataStore } from "hagcp-utils";
-import { keyToClass } from "hagcp-network-client";
+import { ClassKeys, keyToClass } from "hagcp-network-client";
 import { join } from "path";
 
 export async function loadTemplate(dataStore: DataStore, name: string) {
@@ -8,7 +8,7 @@ export async function loadTemplate(dataStore: DataStore, name: string) {
 
     element.move(4);
     const typeLength = element.readUInt32LE() - 4;
-    const typeText = element.slice(typeLength).toString("ascii");
+    const typeText = element.slice(typeLength).toString() as ClassKeys;
 
     const DataBuf = element.slice();
     DataBuf.seek(0);

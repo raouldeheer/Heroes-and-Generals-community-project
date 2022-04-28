@@ -1,7 +1,6 @@
 import { BufferCursor } from "hagcp-utils";
 import { Type, loadSync } from "protobufjs";
 import { join } from "path";
-import Long from "long";
 
 export const Protos = loadSync(join(__filename, "../protos/All.proto"));
 

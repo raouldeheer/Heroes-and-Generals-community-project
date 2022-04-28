@@ -2,7 +2,7 @@ import fs from "fs";
 import { BufferCursor, DataStore, bytesToString } from "hagcp-utils";
 import { toCanvasColored } from "hagcp-utils/canvas";
 import { gunzipSync } from "zlib";
-import { keyToClass, ProtoToString } from "hagcp-network-client";
+import { ClassKeys, keyToClass, ProtoToString } from "hagcp-network-client";
 import { loadTemplate } from "hagcp-assets";
 
 const data = fs.readFileSync("./captures/capturetext17.txt", "utf-8");
@@ -77,7 +77,7 @@ const parse = (element: BufferCursor) => {
 
     const size = element.readUInt32LE() - 4;
     const typeLength = element.readUInt32LE() - 4;
-    const typeText = element.slice(typeLength).toString("ascii");
+    const typeText = element.slice(typeLength).toString() as ClassKeys;
 
     if (size - typeLength == 4) return;
 
@@ -98,7 +98,7 @@ const parse = (element: BufferCursor) => {
                 return;
             }
             if (typeof result == "object") {
-                if (typeText == "KeyValueChangeSet") dataStore.SaveData(result);
+                if (typeText == ClassKeys.KeyValueChangeSet) dataStore.SaveData(result);
                 result = ProtoToString(result);
             }
         } catch (error) {

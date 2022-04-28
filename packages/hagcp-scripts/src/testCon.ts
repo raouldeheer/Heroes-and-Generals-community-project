@@ -2,7 +2,7 @@ import { DataStore } from "hagcp-utils";
 import mylas from "mylas";
 import Long from "long";
 import { setTimeout } from "timers/promises";
-import { ResponseType, Client } from "hagcp-network-client";
+import { ResponseType, Client, ClassKeys } from "hagcp-network-client";
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -17,21 +17,21 @@ Client.connectToHQ(
     if (!cl) return;
     const startTime = Date.now();
     cl.once("loggedin", async () => {
-        // cl.sendPacket("subscribewarmapview");
-        // cl.sendPacket("query_war_catalogue_request");
+        // cl.sendPacket(ClassKeys.subscribewarmapview);
+        // cl.sendPacket(ClassKeys.query_war_catalogue_request);
 
         await setTimeout(2000);
 
         saveMapTimer = setInterval(saveMapNow, 30000);
-    }).on("join_war_response", async (data: { msg: ResponseType, redirectSrv?: string; }) => {
+    }).on(ClassKeys.join_war_response, async (data: { msg: ResponseType, redirectSrv?: string; }) => {
         if (data.msg === ResponseType.ok) {
             if (data.redirectSrv) {
                 console.log(`redirectSrv detected: ${data.redirectSrv}`);
             }
-            cl.sendPacket("unsubscribewarmapview");
+            cl.sendPacket(ClassKeys.unsubscribewarmapview);
             await setTimeout(1000);
-            cl.sendPacket("subscribewarmapview");
-            cl.sendPacket("query_war_catalogue_request");
+            cl.sendPacket(ClassKeys.subscribewarmapview);
+            cl.sendPacket(ClassKeys.query_war_catalogue_request);
         } else {
             console.error(`ERROR: ${data}`);
         }
@@ -48,7 +48,7 @@ Client.connectToHQ(
                             saveMapTimer.refresh();
                             console.log(`${value.id} ended, switching to: ${value.sequelwarid}`);
                             dataStore.ResetData("battlefieldstatus");
-                            cl.sendPacket("join_war_request", {
+                            cl.sendPacket(ClassKeys.join_war_request, {
                                 warid: Long.fromString(value.sequelwarid),
                                 factionid: Long.ZERO,
                                 playedFirstBlood: 0,

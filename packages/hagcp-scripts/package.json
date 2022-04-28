@@ -12,7 +12,6 @@
     "dev:build": "tsc -w",
     "wiresharkDecode": "nodemon dist/wiresharkDecode.js",
     "testcon": "node dist/testCon.js",
-    "warmapScreenshot": "node dist/warmapScreenshot.js",
     "jsonToMap": "node dist/jsonToMap.js"
   },
   "repository": {

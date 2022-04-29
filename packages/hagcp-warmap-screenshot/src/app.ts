@@ -73,14 +73,6 @@ export async function startApp(datastore: DataStore, client: Client, lookupFacti
         const canvas = await drawToCanvas(expressDatastore, datastore, id => lookupFactions.get(id).color, lookupFactions);
         return canvas.toBuffer("image/jpeg");
     });
-    const cachedBattles = (id: string) => cached(60 * 5, async () => Promise.all(
-        Array.from<Battle>(datastore.GetItemStore(KeyValueChangeKey.battle)?.values()!)
-            .filter(e => e.excludedFactionId !== lookupTemplateFaction.get(id).factionId)
-            .map(async value => ({
-                ...value,
-                MissionDetails: await client.sendPacketAsync(ClassKeys.GetMissionDetailsRequest, { missionId: 0, battleId: Long.fromString(value.id) }),
-            }))
-    ));
 
     const resolveTitle = (bftitle: string): MapPoint => {
         if (bftitle.includes(" - ")) {
@@ -140,7 +132,14 @@ export async function startApp(datastore: DataStore, client: Client, lookupFacti
         if (req.query.factionTemplateId) {
             const factionTemplateId = String(req.query.factionTemplateId);
             if (/^\d+$/.test(factionTemplateId)) {
-                res.json(await cachedBattles(factionTemplateId)());
+                res.json(await Promise.all(
+                    Array.from<Battle>(datastore.GetItemStore(KeyValueChangeKey.battle)?.values()!)
+                        .filter(e => e.excludedFactionId !== lookupTemplateFaction.get(factionTemplateId).factionId)
+                        .map(async value => ({
+                            ...value,
+                            MissionDetails: await client.sendPacketAsync(ClassKeys.GetMissionDetailsRequest, { missionId: 0, battleId: Long.fromString(value.id) }),
+                        }))
+                ));
                 return;
             }
         }

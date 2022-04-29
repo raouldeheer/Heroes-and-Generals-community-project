@@ -55,6 +55,29 @@ interface Supplyline extends MapPoint {
     supplylinetemplateid: string;
 }
 
+interface Faction {
+    factionId: string;
+    factionTemplateId: string;
+    factionTag: string;
+    factionVictoryPoints: number;
+    factionPlayerCount: number;
+    factionMinPlayerCount: number;
+    factionMaxPlayerCount: number;
+    factionPlayerOnlineCount: number;
+    factionBonus: number;
+    factionDeployedCommandPointsInfantry: number;
+    factionDeployedCommandPointsArmor: number;
+    factionDeployedCommandPointsAir: number;
+    factionControlledBattlefields: number;
+    battlesWon: number;
+    battlesLost: number;
+    infantryLost: number;
+    vehiclesLost: number;
+    tanksLost: number;
+    planesLost: number;
+    ownedMajorCities: string[];
+}
+
 function cached<T>(threshold: number, action: () => Promise<T>): () => Promise<T> {
     let cachedData: T | null;
     return async () => {
@@ -229,6 +252,35 @@ export async function startApp(datastore: DataStore, client: Client, lookupFacti
                     return;
                 }
                 res.json(result);
+                return;
+            }
+        }
+        res.sendStatus(412);
+    });
+
+    app.get("/api/faction", async (req, res) => {
+        if (!client) res.sendStatus(500);
+        res.set("Cache-control", "public, max-age=60");
+        if (req.query.factionId) {
+            const factionId = String(req.query.factionId);
+            if (/^\d+$/.test(factionId)) {
+                const faction: Faction = lookupFactions.get(factionId);
+                if (!faction) {
+                    res.sendStatus(404);
+                    return;
+                }
+                res.json(faction);
+                return;
+            }
+        } else if (req.query.factionTemplateId) {
+            const factionTemplateId = String(req.query.factionTemplateId);
+            if (/^\d+$/.test(factionTemplateId)) {
+                const faction: Faction = lookupTemplateFaction.get(factionTemplateId);
+                if (!faction) {
+                    res.sendStatus(404);
+                    return;
+                }
+                res.json(faction);
                 return;
             }
         }

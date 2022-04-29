@@ -142,7 +142,7 @@ export async function startApp(datastore: DataStore, client: Client, lookupFacti
 
     app.get("/api/missiondetails", async (req, res) => {
         if (!client) res.sendStatus(500);
-        res.set("Cache-control", "public, max-age=60");
+        res.set("Cache-control", "no-store");
         if (req.query.bftitle) {
             try {
                 const mapPoint = resolveTitle(String(req.query.bftitle));

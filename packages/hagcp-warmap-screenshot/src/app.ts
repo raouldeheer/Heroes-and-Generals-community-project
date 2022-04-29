@@ -82,6 +82,34 @@ export async function startApp(datastore: DataStore, client: Client, lookupFacti
             }))
     ));
 
+    const resolveTitle = (bftitle: string): MapPoint => {
+        if (bftitle.includes(" - ")) {
+            const battlefield = Array.from(expressDatastore.GetItemStore<Battlefield>(KeyValueChangeKey.battlefield)?.values()!)
+                .find(value => value.bftitle === bftitle.split(" - ")[0]);
+            if (!battlefield) throw 404;
+
+            const accesspoint = Array.from(expressDatastore.GetItemStore<Accesspoint>(KeyValueChangeKey.accesspoint)?.values()!)
+                .find(value => {
+                    if (value.battlefield === battlefield.id) {
+                        const template = expressDatastore.GetData<AccesspointTemplate>(KeyValueChangeKey.accesspointtemplate, value.template);
+                        return bftitle === `${battlefield.bftitle} - ${template.abbr}`;
+                    }
+                    return false;
+                });
+            if (!accesspoint) throw 404;
+
+            const supplyline = Array.from(expressDatastore.GetItemStore<Supplyline>(KeyValueChangeKey.supplyline)?.values()!)
+                .find(value => (value.accesspoint1Id === accesspoint.id) || (value.accesspoint2Id === accesspoint.id));
+            if (!supplyline) throw 404;
+            return supplyline;
+        } else {
+            const battlefield = Array.from(expressDatastore.GetItemStore<Battlefield>(KeyValueChangeKey.battlefield)?.values()!)
+                .find(value => value.bftitle === bftitle);
+            if (!battlefield) throw 404;
+            return battlefield;
+        }
+    }
+
     const app = express();
     const expressDatastore = new DataStore;
     await loadTemplate(expressDatastore, "battlefield");
@@ -151,46 +179,13 @@ export async function startApp(datastore: DataStore, client: Client, lookupFacti
                 return;
             }
         } else if (req.query.bftitle) {
-            const bftitle = String(req.query.bftitle);
-            if (bftitle.includes(" - ")) {
-                const battlefield = Array.from(expressDatastore.GetItemStore<Battlefield>(KeyValueChangeKey.battlefield)?.values()!)
-                    .find(value => value.bftitle === bftitle.split(" - ")[0]);
-                if (!battlefield) {
-                    res.sendStatus(404);
-                    return;
-                }
-
-                const accesspoint = Array.from(expressDatastore.GetItemStore<Accesspoint>(KeyValueChangeKey.accesspoint)?.values()!)
-                    .find(value => {
-                        if (value.battlefield === battlefield.id) {
-                            const template = expressDatastore.GetData<AccesspointTemplate>(KeyValueChangeKey.accesspointtemplate, value.template);
-                            return bftitle === `${battlefield.bftitle} - ${template.abbr}`;
-                        }
-                        return false;
-                    });
-                if (!accesspoint) {
-                    res.sendStatus(404);
-                    return;
-                }
-
-                const supplyline = Array.from(expressDatastore.GetItemStore<Supplyline>(KeyValueChangeKey.supplyline)?.values()!)
-                    .find(value => (value.accesspoint1Id === accesspoint.id) || (value.accesspoint2Id === accesspoint.id));
-                if (!supplyline) {
-                    res.sendStatus(404);
-                } else {
-                    res.json(supplyline);
-                }
-                return;
-            } else {
-                const battlefield = Array.from(expressDatastore.GetItemStore<Battlefield>(KeyValueChangeKey.battlefield)?.values()!)
-                    .find(value => value.bftitle === bftitle);
-                if (!battlefield) {
-                    res.sendStatus(404);
-                    return;
-                }
-                res.json(battlefield);
-                return;
+            try {
+                const mapPoint = resolveTitle(String(req.query.bftitle));
+                res.json(mapPoint);
+            } catch (error) {
+                res.sendStatus(error as number);
             }
+            return;
         }
         res.sendStatus(412);
     });

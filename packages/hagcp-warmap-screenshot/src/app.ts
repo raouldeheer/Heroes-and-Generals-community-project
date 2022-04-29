@@ -108,7 +108,7 @@ export async function startApp(datastore: DataStore, client: Client, lookupFacti
             if (!battlefield) throw 404;
             return battlefield;
         }
-    }
+    };
 
     const app = express();
     const expressDatastore = new DataStore;
@@ -143,7 +143,23 @@ export async function startApp(datastore: DataStore, client: Client, lookupFacti
     app.get("/api/missiondetails", async (req, res) => {
         if (!client) res.sendStatus(500);
         res.set("Cache-control", "public, max-age=60");
-        if (req.query.battleId) {
+        if (req.query.bftitle) {
+            try {
+                const mapPoint = resolveTitle(String(req.query.bftitle));
+
+                const battle = Array.from(datastore.GetItemStore<Battle>(KeyValueChangeKey.battle)?.values()!)
+                    .find(value => value.mapEntityId === mapPoint.id);
+                if (!battle) throw 404;
+                
+                res.json(await client.sendPacketAsync(ClassKeys.GetMissionDetailsRequest, {
+                    missionId: 0,
+                    battleId: Long.fromString(battle.id),
+                }));
+            } catch (error) {
+                if (typeof error == "number") res.sendStatus(error);
+            }
+            return;
+        } else if (req.query.battleId) {
             const battleId = String(req.query.battleId);
             if (/^\d+$/.test(battleId)) {
                 res.json(await client.sendPacketAsync(ClassKeys.GetMissionDetailsRequest, {
@@ -183,7 +199,7 @@ export async function startApp(datastore: DataStore, client: Client, lookupFacti
                 const mapPoint = resolveTitle(String(req.query.bftitle));
                 res.json(mapPoint);
             } catch (error) {
-                res.sendStatus(error as number);
+                if (typeof error == "number") res.sendStatus(error);
             }
             return;
         }

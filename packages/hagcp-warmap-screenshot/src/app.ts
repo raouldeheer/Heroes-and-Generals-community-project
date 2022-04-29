@@ -105,6 +105,24 @@ export async function startApp(datastore: DataStore, client: Client, lookupFacti
         res.sendStatus(412);
     });
 
+    app.get("/api/battlefield", async (req, res) => {
+        if (!client) res.sendStatus(500);
+        res.set("Cache-control", "public, max-age=60");
+        if (req.query.id) {
+            const id = String(req.query.id);
+            if (/^\d+$/.test(id)) {
+                res.json(expressDatastore.GetData(KeyValueChangeKey.battlefield, id));
+                return;
+            }
+        } else if (req.query.bftitle) {
+            const bftitle = String(req.query.bftitle);
+            res.json(Array.from(expressDatastore.GetItemStore(KeyValueChangeKey.battlefield)?.values()!)
+                .find(value => value.bftitle === bftitle));
+            return;
+        }
+        res.sendStatus(412);
+    });
+
     app.listen(expressPort, ip.address(), () => {
         console.log(`Listing on http://${ip.address()}:${expressPort}/warmap.jpeg`);
     });

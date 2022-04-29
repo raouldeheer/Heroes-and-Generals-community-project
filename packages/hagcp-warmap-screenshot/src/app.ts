@@ -197,7 +197,13 @@ export async function startApp(datastore: DataStore, client: Client, lookupFacti
         if (req.query.id) {
             const id = String(req.query.id);
             if (/^\d+$/.test(id)) {
-                res.json(expressDatastore.GetData(KeyValueChangeKey.battlefield, id));
+                let result = expressDatastore.GetData(KeyValueChangeKey.battlefield, id);
+                if (!result) result = expressDatastore.GetData(KeyValueChangeKey.supplyline, id);
+                if (!result) {
+                    res.sendStatus(404);
+                    return;
+                }
+                res.json(result);
                 return;
             }
         } else if (req.query.bftitle) {

@@ -74,7 +74,7 @@ export async function startApp(datastore: DataStore, client: Client, lookupFacti
         return canvas.toBuffer("image/jpeg");
     });
     const cachedBattles = cached(60 * 5, async () => Promise.all(
-        Array.from<Battle>(datastore.GetItemStore("battle")?.values()!)
+        Array.from<Battle>(datastore.GetItemStore(KeyValueChangeKey.battle)?.values()!)
             .filter(e => e.excludedFactionId !== lookupTemplateFaction.get("1").id)
             .map(async value => ({
                 ...value,

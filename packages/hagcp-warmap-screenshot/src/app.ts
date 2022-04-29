@@ -73,9 +73,9 @@ export async function startApp(datastore: DataStore, client: Client, lookupFacti
         const canvas = await drawToCanvas(expressDatastore, datastore, id => lookupFactions.get(id).color, lookupFactions);
         return canvas.toBuffer("image/jpeg");
     });
-    const cachedBattles = cached(60 * 5, async () => Promise.all(
+    const cachedBattles = (id: string) => cached(60 * 5, async () => Promise.all(
         Array.from<Battle>(datastore.GetItemStore(KeyValueChangeKey.battle)?.values()!)
-            .filter(e => e.excludedFactionId !== lookupTemplateFaction.get("1").id)
+            .filter(e => e.excludedFactionId !== lookupTemplateFaction.get(id).id)
             .map(async value => ({
                 ...value,
                 MissionDetails: await client.sendPacketAsync(ClassKeys.GetMissionDetailsRequest, { missionId: 0, battleId: Long.fromString(value.id) }),
@@ -134,10 +134,17 @@ export async function startApp(datastore: DataStore, client: Client, lookupFacti
         res.send(await cachedBuffer());
     });
 
-    app.get("/api/battles", async (_, res) => {
+    app.get("/api/battles", async (req, res) => {
         if (!client) res.sendStatus(500);
         res.set("Cache-control", "public, max-age=60");
-        res.json(await cachedBattles());
+        if (req.query.factionTemplateId) {
+            const factionTemplateId = String(req.query.factionTemplateId);
+            if (/^\d+$/.test(factionTemplateId)) {
+                res.json(await cachedBattles(factionTemplateId)());
+                return;
+            }
+        }
+        res.sendStatus(412);
     });
 
     app.get("/api/missiondetails", async (req, res) => {

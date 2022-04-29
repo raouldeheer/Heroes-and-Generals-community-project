@@ -198,7 +198,6 @@ export async function startApp(datastore: DataStore, client: Client, lookupFacti
             const id = String(req.query.id);
             if (/^\d+$/.test(id)) {
                 let result = expressDatastore.GetData(KeyValueChangeKey.battlefield, id);
-                if (!result) result = expressDatastore.GetData(KeyValueChangeKey.supplyline, id);
                 if (!result) {
                     res.sendStatus(404);
                     return;
@@ -214,6 +213,24 @@ export async function startApp(datastore: DataStore, client: Client, lookupFacti
                 if (typeof error == "number") res.sendStatus(error);
             }
             return;
+        }
+        res.sendStatus(412);
+    });
+
+    app.get("/api/supplyline", async (req, res) => {
+        if (!client) res.sendStatus(500);
+        res.set("Cache-control", "public, max-age=60");
+        if (req.query.id) {
+            const id = String(req.query.id);
+            if (/^\d+$/.test(id)) {
+                let result = expressDatastore.GetData(KeyValueChangeKey.supplyline, id);
+                if (!result) {
+                    res.sendStatus(404);
+                    return;
+                }
+                res.json(result);
+                return;
+            }
         }
         res.sendStatus(412);
     });

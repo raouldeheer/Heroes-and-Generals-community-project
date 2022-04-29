@@ -75,7 +75,7 @@ export async function startApp(datastore: DataStore, client: Client, lookupFacti
     });
     const cachedBattles = (id: string) => cached(60 * 5, async () => Promise.all(
         Array.from<Battle>(datastore.GetItemStore(KeyValueChangeKey.battle)?.values()!)
-            .filter(e => e.excludedFactionId !== lookupTemplateFaction.get(id).id)
+            .filter(e => e.excludedFactionId !== lookupTemplateFaction.get(id).factionId)
             .map(async value => ({
                 ...value,
                 MissionDetails: await client.sendPacketAsync(ClassKeys.GetMissionDetailsRequest, { missionId: 0, battleId: Long.fromString(value.id) }),

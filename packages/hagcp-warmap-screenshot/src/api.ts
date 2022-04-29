@@ -32,7 +32,27 @@ export async function startAPI(datastore: DataStore, client: Client, lookupFacti
             return battlefield;
         }
     };
-    
+
+    const toBFTitle = (id: string) => {
+        const result = expressDatastore.GetData<Battlefield>(KeyValueChangeKey.battlefield, id)?.bftitle;
+        if (result) return result;
+        const supplyline = expressDatastore.GetData<Supplyline>(KeyValueChangeKey.supplyline, id);
+        if (!supplyline) throw 404;
+        const ap1 = expressDatastore.GetData<Accesspoint>(KeyValueChangeKey.accesspoint, supplyline.accesspoint1Id);
+        if (!ap1) throw 404;
+        const ap2 = expressDatastore.GetData<Accesspoint>(KeyValueChangeKey.accesspoint, supplyline.accesspoint2Id);
+        if (!ap2) throw 404;
+        const apt1 = expressDatastore.GetData<AccesspointTemplate>(KeyValueChangeKey.accesspointtemplate, ap1.template);
+        if (!apt1) throw 404;
+        const apt2 = expressDatastore.GetData<AccesspointTemplate>(KeyValueChangeKey.accesspointtemplate, ap2.template);
+        if (!apt2) throw 404;
+        const apb1 = expressDatastore.GetData<Battlefield>(KeyValueChangeKey.battlefield, ap1.battlefield);
+        if (!apb1) throw 404;
+        const apb2 = expressDatastore.GetData<Battlefield>(KeyValueChangeKey.battlefield, ap2.battlefield);
+        if (!apb2) throw 404;
+        return `${apb1.bftitle} - ${apt1.abbr} or ${apb2.bftitle} - ${apt2.abbr}`;
+    };
+
     const app = express();
     app.get("/battles", async (req, res) => {
         if (!client) res.sendStatus(500);
@@ -105,7 +125,7 @@ export async function startAPI(datastore: DataStore, client: Client, lookupFacti
         if (req.query.id) {
             const id = String(req.query.id);
             if (/^\d+$/.test(id)) {
-                let result = expressDatastore.GetData(KeyValueChangeKey.battlefield, id);
+                let result = expressDatastore.GetData<Battlefield>(KeyValueChangeKey.battlefield, id);
                 if (!result) {
                     res.sendStatus(404);
                     return;
@@ -131,7 +151,7 @@ export async function startAPI(datastore: DataStore, client: Client, lookupFacti
         if (req.query.id) {
             const id = String(req.query.id);
             if (/^\d+$/.test(id)) {
-                let result = expressDatastore.GetData(KeyValueChangeKey.supplyline, id);
+                let result = expressDatastore.GetData<Supplyline>(KeyValueChangeKey.supplyline, id);
                 if (!result) {
                     res.sendStatus(404);
                     return;
@@ -166,6 +186,24 @@ export async function startAPI(datastore: DataStore, client: Client, lookupFacti
                     return;
                 }
                 res.json(faction);
+                return;
+            }
+        }
+        res.sendStatus(412);
+    });
+
+    app.get("/bftitle", async (req, res) => {
+        if (!client) res.sendStatus(500);
+        res.set("Cache-control", "public, max-age=60");
+        if (req.query.id) {
+            const id = String(req.query.id);
+            if (/^\d+$/.test(id)) {
+                try {
+                    const mapPoint = toBFTitle(id);
+                    res.json(mapPoint);
+                } catch (error) {
+                    if (typeof error == "number") res.sendStatus(error);
+                }
                 return;
             }
         }

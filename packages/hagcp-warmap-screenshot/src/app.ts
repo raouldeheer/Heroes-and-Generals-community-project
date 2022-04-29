@@ -150,7 +150,7 @@ export async function startApp(datastore: DataStore, client: Client, lookupFacti
                 const battle = Array.from(datastore.GetItemStore<Battle>(KeyValueChangeKey.battle)?.values()!)
                     .find(value => value.mapEntityId === mapPoint.id);
                 if (!battle) throw 404;
-                
+
                 res.json(await client.sendPacketAsync(ClassKeys.GetMissionDetailsRequest, {
                     missionId: 0,
                     battleId: Long.fromString(battle.id),

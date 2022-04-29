@@ -1,0 +1,498 @@
+[
+    {
+        "id": "1",
+        "gamemap": "11",
+        "posx": -7719,
+        "posy": -1939,
+        "abbr": "A",
+        "actionid": 11
+    },
+    {
+        "id": "10",
+        "gamemap": "19",
+        "posx": -901,
+        "posy": 2216,
+        "abbr": "A",
+        "actionid": 10
+    },
+    {
+        "id": "100000000",
+        "gamemap": "685556198",
+        "posx": 1806,
+        "posy": 2152,
+        "abbr": "A",
+        "actionid": 100000000
+    },
+    {
+        "id": "101",
+        "gamemap": "201",
+        "posx": 5061,
+        "posy": -8072,
+        "abbr": "A",
+        "actionid": 101
+    },
+    {
+        "id": "102",
+        "gamemap": "201",
+        "posx": 8345,
+        "posy": 1435,
+        "abbr": "B",
+        "actionid": 102
+    },
+    {
+        "id": "103",
+        "gamemap": "201",
+        "posx": -114,
+        "posy": 5707,
+        "abbr": "C",
+        "actionid": 103
+    },
+    {
+        "id": "104",
+        "gamemap": "201",
+        "posx": -4361,
+        "posy": 3887,
+        "abbr": "D",
+        "actionid": 104
+    },
+    {
+        "id": "105",
+        "gamemap": "201",
+        "posx": -7946,
+        "posy": -8431,
+        "abbr": "E",
+        "actionid": 105
+    },
+    {
+        "id": "11",
+        "gamemap": "19",
+        "posx": 808,
+        "posy": -1460,
+        "abbr": "B",
+        "actionid": 11
+    },
+    {
+        "id": "1164235",
+        "gamemap": "204",
+        "posx": 4456,
+        "posy": -7540,
+        "abbr": "A",
+        "actionid": 1164235
+    },
+    {
+        "id": "118",
+        "gamemap": "15",
+        "posx": -7905,
+        "posy": -2363,
+        "abbr": "D",
+        "actionid": 118
+    },
+    {
+        "id": "12",
+        "gamemap": "20",
+        "posx": 40,
+        "posy": -4435,
+        "abbr": "A",
+        "actionid": 12
+    },
+    {
+        "id": "127",
+        "gamemap": "15",
+        "posx": 4599,
+        "posy": -8468,
+        "abbr": "A",
+        "actionid": 127
+    },
+    {
+        "id": "13",
+        "gamemap": "20",
+        "posx": 924,
+        "posy": 4857,
+        "abbr": "B",
+        "actionid": 13
+    },
+    {
+        "id": "1337",
+        "gamemap": "672315463",
+        "posx": -1420,
+        "posy": 1881,
+        "abbr": "A",
+        "actionid": 1337
+    },
+    {
+        "id": "1338",
+        "gamemap": "672315463",
+        "posx": -1324,
+        "posy": -2144,
+        "abbr": "B",
+        "actionid": 1338
+    },
+    {
+        "id": "1339",
+        "gamemap": "12",
+        "posx": 673,
+        "posy": 1198,
+        "abbr": "A",
+        "actionid": 1339
+    },
+    {
+        "id": "1340",
+        "gamemap": "12",
+        "posx": -1175,
+        "posy": -1264,
+        "abbr": "B",
+        "actionid": 1340
+    },
+    {
+        "id": "14",
+        "gamemap": "18",
+        "posx": -4870,
+        "posy": 5625,
+        "abbr": "A",
+        "actionid": 14
+    },
+    {
+        "id": "15",
+        "gamemap": "13",
+        "posx": 6,
+        "posy": 2296,
+        "abbr": "B",
+        "actionid": 15
+    },
+    {
+        "id": "18",
+        "gamemap": "203",
+        "posx": -2045,
+        "posy": 1960,
+        "abbr": "C",
+        "actionid": 18
+    },
+    {
+        "id": "19",
+        "gamemap": "14",
+        "posx": -98,
+        "posy": -2064,
+        "abbr": "B",
+        "actionid": 19
+    },
+    {
+        "id": "2",
+        "gamemap": "11",
+        "posx": -3502,
+        "posy": 3878,
+        "abbr": "A",
+        "actionid": 11
+    },
+    {
+        "id": "200",
+        "gamemap": "205",
+        "posx": -8974,
+        "posy": -1385,
+        "abbr": "A",
+        "actionid": 200
+    },
+    {
+        "id": "201",
+        "gamemap": "205",
+        "posx": -2060,
+        "posy": 6522,
+        "abbr": "B",
+        "actionid": 201
+    },
+    {
+        "id": "202",
+        "gamemap": "205",
+        "posx": 7261,
+        "posy": 651,
+        "abbr": "C",
+        "actionid": 202
+    },
+    {
+        "id": "203",
+        "gamemap": "205",
+        "posx": 1047,
+        "posy": -7535,
+        "abbr": "D",
+        "actionid": 203
+    },
+    {
+        "id": "24",
+        "gamemap": "14",
+        "posx": -200,
+        "posy": 2318,
+        "abbr": "A",
+        "actionid": 24
+    },
+    {
+        "id": "244428445",
+        "gamemap": "276230698",
+        "posx": -1440,
+        "posy": 2400,
+        "abbr": "A",
+        "actionid": 244428445
+    },
+    {
+        "id": "2466225",
+        "gamemap": "203",
+        "posx": 7682,
+        "posy": -1788,
+        "abbr": "B",
+        "actionid": 2466225
+    },
+    {
+        "id": "2512653",
+        "gamemap": "203",
+        "posx": 428,
+        "posy": -7341,
+        "abbr": "A",
+        "actionid": 2512653
+    },
+    {
+        "id": "2717391",
+        "gamemap": "204",
+        "posx": -7367,
+        "posy": -2966,
+        "abbr": "C",
+        "actionid": 2717391
+    },
+    {
+        "id": "28",
+        "gamemap": "17",
+        "posx": 935,
+        "posy": -1378,
+        "abbr": "B",
+        "actionid": 28
+    },
+    {
+        "id": "2881042",
+        "gamemap": "204",
+        "posx": 1047,
+        "posy": 7594,
+        "abbr": "B",
+        "actionid": 2881042
+    },
+    {
+        "id": "29",
+        "gamemap": "17",
+        "posx": 460,
+        "posy": 1557,
+        "abbr": "A",
+        "actionid": 29
+    },
+    {
+        "id": "2988167",
+        "gamemap": "70439",
+        "posx": -7370,
+        "posy": -2301,
+        "abbr": "D",
+        "actionid": 2988167
+    },
+    {
+        "id": "3",
+        "gamemap": "11",
+        "posx": 6013,
+        "posy": 3590,
+        "abbr": "A",
+        "actionid": 11
+    },
+    {
+        "id": "3386581",
+        "gamemap": "204",
+        "posx": 193,
+        "posy": -8534,
+        "abbr": "D",
+        "actionid": 3386581
+    },
+    {
+        "id": "3604760",
+        "gamemap": "70439",
+        "posx": -5883,
+        "posy": 8448,
+        "abbr": "C",
+        "actionid": 3604760
+    },
+    {
+        "id": "39823009",
+        "gamemap": "574445087",
+        "posx": 2160,
+        "posy": 1951,
+        "abbr": "B",
+        "actionid": 39823009
+    },
+    {
+        "id": "4",
+        "gamemap": "11",
+        "posx": 7779,
+        "posy": 408,
+        "abbr": "D",
+        "actionid": 11
+    },
+    {
+        "id": "432282112",
+        "gamemap": "276230698",
+        "posx": -460,
+        "posy": -2370,
+        "abbr": "B",
+        "actionid": 432282112
+    },
+    {
+        "id": "46195652",
+        "gamemap": "685556199",
+        "posx": 2048,
+        "posy": -2247,
+        "abbr": "B",
+        "actionid": 46195652
+    },
+    {
+        "id": "481419054",
+        "gamemap": "193659169",
+        "posx": 2000,
+        "posy": 3100,
+        "abbr": "A",
+        "actionid": 481419054
+    },
+    {
+        "id": "52",
+        "gamemap": "0",
+        "posx": 0,
+        "posy": 0,
+        "abbr": "0",
+        "actionid": 0
+    },
+    {
+        "id": "58149920",
+        "gamemap": "549659036",
+        "posx": -1850,
+        "posy": -1500,
+        "abbr": "A",
+        "actionid": 58149920
+    },
+    {
+        "id": "587657",
+        "gamemap": "70439",
+        "posx": 6364,
+        "posy": -7729,
+        "abbr": "A",
+        "actionid": 587657
+    },
+    {
+        "id": "7",
+        "gamemap": "574445087",
+        "posx": -1792,
+        "posy": -1993,
+        "abbr": "A",
+        "actionid": 7
+    },
+    {
+        "id": "7065217",
+        "gamemap": "685556199",
+        "posx": -2549,
+        "posy": -1755,
+        "abbr": "A",
+        "actionid": 7065217
+    },
+    {
+        "id": "736164135",
+        "gamemap": "549659036",
+        "posx": 2520,
+        "posy": -890,
+        "abbr": "B",
+        "actionid": 736164135
+    },
+    {
+        "id": "76",
+        "gamemap": "18",
+        "posx": 5364,
+        "posy": -4997,
+        "abbr": "B",
+        "actionid": 76
+    },
+    {
+        "id": "7775326",
+        "gamemap": "70439",
+        "posx": 7274,
+        "posy": 7849,
+        "abbr": "B",
+        "actionid": 7775326
+    },
+    {
+        "id": "8",
+        "gamemap": "13",
+        "posx": -23,
+        "posy": -1605,
+        "abbr": "A",
+        "actionid": 8
+    },
+    {
+        "id": "802733705",
+        "gamemap": "193659169",
+        "posx": -1900,
+        "posy": -3100,
+        "abbr": "B",
+        "actionid": 802733705
+    },
+    {
+        "id": "8528212",
+        "gamemap": "70439",
+        "posx": -2568,
+        "posy": -8545,
+        "abbr": "E",
+        "actionid": 8528212
+    },
+    {
+        "id": "9",
+        "gamemap": "19",
+        "posx": 817,
+        "posy": 1999,
+        "abbr": "A",
+        "actionid": 9
+    },
+    {
+        "id": "90",
+        "gamemap": "0",
+        "posx": 0,
+        "posy": 0,
+        "abbr": "0",
+        "actionid": 0
+    },
+    {
+        "id": "90000000",
+        "gamemap": "685556198",
+        "posx": -1741,
+        "posy": -188,
+        "abbr": "B",
+        "actionid": 90000000
+    },
+    {
+        "id": "91",
+        "gamemap": "0",
+        "posx": 0,
+        "posy": 0,
+        "abbr": "0",
+        "actionid": 0
+    },
+    {
+        "id": "93",
+        "gamemap": "203",
+        "posx": -3375,
+        "posy": -3034,
+        "abbr": "D",
+        "actionid": 93
+    },
+    {
+        "id": "95",
+        "gamemap": "15",
+        "posx": -5055,
+        "posy": 8010,
+        "abbr": "C",
+        "actionid": 95
+    },
+    {
+        "id": "96",
+        "gamemap": "15",
+        "posx": 8649,
+        "posy": 5882,
+        "abbr": "B",
+        "actionid": 96
+    }
+]

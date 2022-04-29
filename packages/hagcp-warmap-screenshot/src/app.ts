@@ -20,6 +20,41 @@ interface Battle {
     activationTimeStamp: string;
 }
 
+interface MapPoint {
+    id: string;
+    mapid: string;
+}
+
+interface Battlefield extends MapPoint {
+    bftitle: string;
+    sector: string;
+    posx: number;
+    posy: number;
+    gamemap: string;
+}
+
+interface Accesspoint {
+    id: string;
+    mapid: string;
+    template: string;
+    battlefield: string;
+}
+
+interface AccesspointTemplate {
+    id: string;
+    gamemap: string;
+    posx: number;
+    posy: number;
+    abbr: string;
+    actionid: number;
+}
+
+interface Supplyline extends MapPoint {
+    accesspoint1Id: string;
+    accesspoint2Id: string;
+    supplylinetemplateid: string;
+}
+
 function cached<T>(threshold: number, action: () => Promise<T>): () => Promise<T> {
     let cachedData: T | null;
     return async () => {
@@ -52,6 +87,7 @@ export async function startApp(datastore: DataStore, client: Client, lookupFacti
     await loadTemplate(expressDatastore, "battlefield");
     await loadTemplate(expressDatastore, "supplyline");
     await loadTemplate(expressDatastore, "accesspoint");
+    await loadTemplate(expressDatastore, "accesspointtemplate");
     await loadTemplate(expressDatastore, "capital");
 
     app.use(morgan("tiny"));
@@ -116,9 +152,45 @@ export async function startApp(datastore: DataStore, client: Client, lookupFacti
             }
         } else if (req.query.bftitle) {
             const bftitle = String(req.query.bftitle);
-            res.json(Array.from(expressDatastore.GetItemStore(KeyValueChangeKey.battlefield)?.values()!)
-                .find(value => value.bftitle === bftitle));
-            return;
+            if (bftitle.includes(" - ")) {
+                const battlefield = Array.from(expressDatastore.GetItemStore<Battlefield>(KeyValueChangeKey.battlefield)?.values()!)
+                    .find(value => value.bftitle === bftitle.split(" - ")[0]);
+                if (!battlefield) {
+                    res.sendStatus(404);
+                    return;
+                }
+
+                const accesspoint = Array.from(expressDatastore.GetItemStore<Accesspoint>(KeyValueChangeKey.accesspoint)?.values()!)
+                    .find(value => {
+                        if (value.battlefield === battlefield.id) {
+                            const template = expressDatastore.GetData<AccesspointTemplate>(KeyValueChangeKey.accesspointtemplate, value.template);
+                            return bftitle === `${battlefield.bftitle} - ${template.abbr}`;
+                        }
+                        return false;
+                    });
+                if (!accesspoint) {
+                    res.sendStatus(404);
+                    return;
+                }
+
+                const supplyline = Array.from(expressDatastore.GetItemStore<Supplyline>(KeyValueChangeKey.supplyline)?.values()!)
+                    .find(value => (value.accesspoint1Id === accesspoint.id) || (value.accesspoint2Id === accesspoint.id));
+                if (!supplyline) {
+                    res.sendStatus(404);
+                } else {
+                    res.json(supplyline);
+                }
+                return;
+            } else {
+                const battlefield = Array.from(expressDatastore.GetItemStore<Battlefield>(KeyValueChangeKey.battlefield)?.values()!)
+                    .find(value => value.bftitle === bftitle);
+                if (!battlefield) {
+                    res.sendStatus(404);
+                    return;
+                }
+                res.json(battlefield);
+                return;
+            }
         }
         res.sendStatus(412);
     });

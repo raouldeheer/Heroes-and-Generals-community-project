@@ -9,6 +9,7 @@ async function toJson(name:string) {
 }
 
 (async () => {
+    await toJson("accesspointtemplate");
     await toJson("battlefield");
     await toJson("supplyline");
     await toJson("accesspoint");

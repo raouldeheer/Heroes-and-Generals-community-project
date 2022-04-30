@@ -75,7 +75,7 @@ jobs:
       - name: Publish package
         run: |
           cd ./packages/${{ github.event.inputs.package }}
-          npm version ${{ github.event.inputs.tag }}
+          npm version ${{ github.event.inputs.tag }} --force
           npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}

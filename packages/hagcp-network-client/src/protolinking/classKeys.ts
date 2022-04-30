@@ -85,6 +85,10 @@ export const enum ClassKeys {
     join_war_request = "join_war_request",
     DeployCommandNodeRequest = "DeployCommandNodeRequest",
     DeployCommandNodeResponse = "DeployCommandNodeResponse",
+    SearchPlayerDetailRequest = "SearchPlayerDetailRequest",
+    SearchPlayerDetailResponse = "SearchPlayerDetailResponse",
+    QueryGamertagRequest = "QueryGamertagRequest",
+    QueryGamertagResponse = "QueryGamertagResponse",
 }
 
 const keyToClass = new Map<ClassKeys, packetClassParser>([
@@ -163,6 +167,10 @@ const keyToClass = new Map<ClassKeys, packetClassParser>([
     [ClassKeys.join_war_request, all.join_war_request],
     [ClassKeys.DeployCommandNodeRequest, all.DeployCommandNodeRequest],
     [ClassKeys.DeployCommandNodeResponse, all.DeployCommandNodeResponse],
+    [ClassKeys.SearchPlayerDetailRequest, all.SearchPlayerDetailRequest],
+    [ClassKeys.SearchPlayerDetailResponse, all.SearchPlayerDetailResponse],
+    [ClassKeys.QueryGamertagRequest, all.QueryGamertagRequest],
+    [ClassKeys.QueryGamertagResponse, all.QueryGamertagResponse],
 ]);
 
 export { keyToClass };

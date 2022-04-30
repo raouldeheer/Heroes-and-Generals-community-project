@@ -261,3 +261,34 @@ export class DeployCommandNodeResponse {
     static parse = (buf: BufferCursor) =>
         BufToDecodedProto(this.proto, buf.buffer.slice(8));
 }
+
+export class SearchPlayerDetailRequest {
+    static proto = Protos.lookupType("HnG_States.SearchPlayerDetailRequest");
+    static parse = (buf: BufferCursor) =>
+        BufToDecodedProto(this.proto, buf.buffer.slice(8));
+    static toBuffer = (payload: {
+        playerGamerTag: String,
+    }): Buffer => ProtoToBuf(this.proto, payload);
+}
+
+export class SearchPlayerDetailResponse {
+    static proto = Protos.lookupType("HnG_States.SearchPlayerDetailResponse");
+    static parse = (buf: BufferCursor) =>
+        BufToDecodedProto(this.proto, buf.buffer.slice(8));
+}
+
+export class QueryGamertagRequest {
+    static proto = Protos.lookupType("HnG_States.QueryGamertagRequest");
+    static parse = (buf: BufferCursor) =>
+        BufToDecodedProto(this.proto, buf.buffer.slice(8));
+    static toBuffer = (payload: {
+        playerId: Long,
+    }): Buffer => ProtoToBuf(this.proto, payload);
+}
+
+export class QueryGamertagResponse {
+    static proto = Protos.lookupType("HnG_States.QueryGamertagResponse");
+    static parse = (buf: BufferCursor) =>
+        BufToDecodedProto(this.proto, buf.buffer.slice(8));
+}
+

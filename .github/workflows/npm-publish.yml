@@ -73,7 +73,10 @@ jobs:
           npm run build:networkClient
           npm run build:assets
       - name: Publish package
-        run: .github/publish.sh ${{ github.event.inputs.package }} ${{ github.event.inputs.tag }}
+        run: |
+          cd ./packages/${{ github.event.inputs.package }}
+          npm version ${{ github.event.inputs.tag }}
+          npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}
 

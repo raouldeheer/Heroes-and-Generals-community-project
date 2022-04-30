@@ -7,8 +7,7 @@
     "build:networkClient": "npm run build --workspace=\"hagcp-network-client\"",
     "build:scripts": "npm run build --workspace=\"hagcp-scripts\"",
     "build:utils": "npm run build --workspace=\"hagcp-utils\"",
-    "build:warmapScreenshot": "npm run build --workspace=\"hagcp-warmap-screenshot\"",
-    "compile:warmapScreenshot": "npm run build:utils && npm run build:networkClient && npm run build:assets && npm run build:warmapScreenshot",
+    "build:all": "npm run build:utils && npm run build:networkClient && npm run build:assets",
     "test": "echo \"Error: no test specified\" && exit 0"
   },
   "repository": {

@@ -46,7 +46,6 @@ jobs:
           npm run build:networkClient
           npm run build:assets
           npm run build:scripts
-          npm run build:warmapScreenshot
 
       - name: Run tests
         run: npm test

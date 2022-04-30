@@ -88,6 +88,13 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}
 
+      - name: Commit version
+        run: |
+          git config --global user.name 'raouldeheer'
+          git config --global user.email 'raouldeheer@users.noreply.github.com'
+          git commit -am "Automated version"
+          git push
+
       - name: Create release
         uses: softprops/action-gh-release@v1
         with:

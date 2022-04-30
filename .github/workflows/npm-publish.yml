@@ -4,8 +4,16 @@
 name: Node.js Package
 
 on:
-  release:
-    types: [created]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Release tag'     
+        required: true
+        default: '0.0.0'
+      package:
+        description: 'Package name'     
+        required: true
+        default: 'hagcp-'
 
 jobs:
   build:
@@ -64,11 +72,8 @@ jobs:
           npm run build:utils
           npm run build:networkClient
           npm run build:assets
-      - name: Publish all packages
-        run: |
-          npm publish --access public --workspace="hagcp-utils"
-          npm publish --access public --workspace="hagcp-network-client"
-          npm publish --access public --workspace="hagcp-assets"
+      - name: Publish package
+        run: .github/publish.sh ${{ github.event.inputs.package }} ${{ github.event.inputs.tag }}
         env:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}
 

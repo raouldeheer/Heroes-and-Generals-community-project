@@ -87,7 +87,7 @@ export class Client extends EventEmitter {
 
         this.con.on("connect", () => {
             this.connected = true;
-            writeFileSync("./testConLog.txt", "", "utf8");
+            // writeFileSync("./testConLog.txt", "", "utf8");
             // connected to server with tcp
             this.sendPacket(ClassKeys.QueryServerInfo);
         });
@@ -275,10 +275,10 @@ export class Client extends EventEmitter {
             console.log(`unsupported message: ${typeText}`);
         }
 
-        const startString = `${plen.toString().padEnd(5)} ${id.toString().padEnd(5)} ${typeText.padEnd(35)}`;
-        const midString = `${DataLen.toString().padEnd(5)}`;
-        const outputStr = `${startString} ${result ? result : midString}`;
+        // const startString = `${plen.toString().padEnd(5)} ${id.toString().padEnd(5)} ${typeText.padEnd(35)}`;
+        // const midString = `${DataLen.toString().padEnd(5)}`;
+        // const outputStr = `${startString} ${result ? result : midString}`;
         // console.log(outputStr);
-        appendFileSync("./testConLog.txt", outputStr + "\n", "utf8");
+        // appendFileSync("./testConLog.txt", outputStr + "\n", "utf8");
     }
 }

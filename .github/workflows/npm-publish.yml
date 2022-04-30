@@ -88,4 +88,10 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}
 
+      - name: Create release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: "v${{ github.event.inputs.tag }}"
+          name: "${{ github.event.inputs.package }} ${{ github.event.inputs.tag }}"
+          generate_release_notes: true
 

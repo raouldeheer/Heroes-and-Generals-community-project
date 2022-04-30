@@ -7,13 +7,21 @@ on:
   workflow_dispatch:
     inputs:
       tag:
-        description: 'Release tag'     
+        type: choice
+        description: "Major/Minor/Patch"
         required: true
-        default: '0.0.0'
+        options: 
+        - major
+        - minor
+        - patch
       package:
-        description: 'Package name'     
+        type: choice
+        description: "Package name"     
         required: true
-        default: 'hagcp-'
+        options: 
+        - hagcp-assets
+        - hagcp-network-client
+        - hagcp-utils
 
 jobs:
   build:

@@ -8,9 +8,11 @@
     "dist/"
   ],
   "exports": {
-    "default": "./dist/index.js",
-    "import": "./dist/index.mjs",
-    "require": "./dist/index.js"
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
   },
   "scripts": {
     "build": "tsup && cp -r ./src/protos/ ./dist/",

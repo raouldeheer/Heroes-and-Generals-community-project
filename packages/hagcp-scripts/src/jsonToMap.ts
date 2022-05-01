@@ -49,7 +49,12 @@ async function jsonToMap(filename: string, imageName: string, dataStore: DataSto
     const files = await globby(`./saves/${warId}/*.jsonc`);
     for (let i = 0; i < files.length; i++) {
         const imageName = `./savesMap/${warId}/image_${(i + 1).toString().padStart(5, "0")}.jpg`;
-        await jsonToMap(files[i], imageName, dataStore);
+        try {
+            await jsonToMap(files[i], imageName, dataStore);
+        } catch (error) {
+            console.log(error);
+            console.log(`Error in file: ${files[i]}`);
+        }
         console.log(`saved: ${imageName} (${i + 1}/${files.length})`);
     }
     console.log("Done");

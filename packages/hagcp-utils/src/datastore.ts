@@ -32,6 +32,9 @@ export class DataStore {
     public GetData = <T = any>(itemStoreName: string, id: string): T =>
         this.mainStore.get(itemStoreName)?.get?.(id);
 
+    public HasData = (itemStoreName: string, id: string) =>
+        this.mainStore.get(itemStoreName)?.has(id);
+
     public SetData<T = any>(itemStoreName: string, id: string, data: T) {
         const itemStore = this.mainStore.get(itemStoreName) || new Map;
         itemStore.set(id, data);
@@ -61,7 +64,7 @@ export class DataStore {
     public ItemstoreToKeyValueSet(itemStoreName: string): IKeyValueChangeSetResult {
         const itemStore = this.mainStore.get(itemStoreName);
         const result: IKeyValueChangeSetResult = { set: [] };
-        if (itemStore) for (const item of itemStore) result.set?.push({key: itemStoreName, value: item[1]});
+        if (itemStore) for (const item of itemStore) result.set?.push({ key: itemStoreName, value: item[1] });
         return result;
     }
 }

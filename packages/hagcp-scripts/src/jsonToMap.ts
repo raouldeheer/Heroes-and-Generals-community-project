@@ -41,21 +41,32 @@ async function jsonToMap(filename: string, imageName: string, dataStore: DataSto
     await loadTemplate(dataStore, "accesspoint");
     await loadTemplate(dataStore, "capital");
     console.log("Loaded template");
+
     const warId = process.argv[2];
     console.log(`Loading ${warId}`);
     if (!warId) return;
     if (!existsSync(`./saves/${warId}`)) mylas.dir.mkS(`./saves/${warId}`);
     if (!existsSync(`./savesMap/${warId}`)) mylas.dir.mkS(`./savesMap/${warId}`);
+
     const files = await globby(`./saves/${warId}/*.jsonc`);
+    const latestTimes: number[] = [];
     for (let i = 0; i < files.length; i++) {
+        const startTime = Date.now();
         const imageName = `./savesMap/${warId}/image_${(i + 1).toString().padStart(5, "0")}.jpg`;
         try {
-            await jsonToMap(files[i], imageName, dataStore);
+            if (!existsSync(imageName))
+                await jsonToMap(files[i], imageName, dataStore);
         } catch (error) {
             console.log(error);
             console.log(`Error in file: ${files[i]}`);
         }
-        console.log(`saved: ${imageName} (${i + 1}/${files.length})`);
+        const timeDiff = Date.now() - startTime;
+        if (latestTimes.length > 5) latestTimes.shift();
+        latestTimes.push(timeDiff);
+        const diff = latestTimes.reduce((prev, curr) => (prev + curr) / 2);
+        console.log(`saved: ${imageName} (${i + 1}/${files.length}) ` +
+            `${Math.floor(((files.length - i) * diff) / 60000).toString().padStart(2, "0")}m ` +
+            `${(Math.floor(((files.length - i) * diff) / 1000) % 60).toString().padStart(2, "0")}s`);
     }
     console.log("Done");
 })();

@@ -52,18 +52,17 @@ export async function drawToCanvas(dataStore: DataStore, dataStore2: DataStore, 
             templateToFaction.set(e.factionTemplateId, e);
         });
 
-        context.beginPath();
-        context.fillStyle = "#000";
-        context.fillRect(0, 1440 * multiplier - 100 * multiplier, 600 * multiplier, 100 * multiplier);
-        context.stroke();
-
         const drawFaction = (name: string, id: string, y: number) => {
             context.beginPath();
             const faction = templateToFaction.get(id);
             if (!faction) return;
             context.fillStyle = faction.color;
             context.font = "50px sans-serif, segoe-ui-emoji";
-            context.fillText(`${name} ${"⭐".repeat(faction.ownedMajorCities.length)}`, 50, 1440 * multiplier - y);
+            const infPoint = faction.factionDeployedCommandPointsInfantry.toString().padStart(5, "_") + " Inf - ";
+            const armorPoint = faction.factionDeployedCommandPointsArmor.toString().padStart(5, "_") + " Armor - ";
+            const airPoint = faction.factionDeployedCommandPointsAir.toString().padStart(5, "_") + " Air | ";
+            const points = infPoint + armorPoint + airPoint;
+            context.fillText(`${name} | ${faction.factionPlayerCount.toString().padStart(4, "_")} players - ${points} ${"⭐".repeat(faction.factionVictoryPoints)}`, 50, 1440 * multiplier - y);
             context.stroke();
         };
 

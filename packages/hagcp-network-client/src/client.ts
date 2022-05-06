@@ -103,7 +103,7 @@ export class Client extends EventEmitter {
     public static async connectToHQ(userAgent: string, userName: string, password: string) {
         const status = await fetch("http://game.heroesandgenerals.com/status");
         if (status.status !== 200) {
-            console.log(`status.status: ${status.status}`);
+            console.log(`Servers are down ${status.status}`);
             return null;
         }
 
@@ -121,7 +121,7 @@ export class Client extends EventEmitter {
             }, {} as Settings);
 
         const randomServer = items.web_entrance[Math.floor(Math.random() * items.web_entrance.length)];
-        console.log(randomServer);
+        console.log(`connecting to gameserver: ${randomServer}`);
 
         const [host, port] = randomServer.split(":");
         return new this(host, Number(port), userAgent, userName, password);

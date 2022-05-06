@@ -14,4 +14,5 @@ async function toJson(name:string) {
     await toJson("supplyline");
     await toJson("accesspoint");
     await toJson("armyresourcecategory");
+    await toJson("CapturepointTemplate");
 })();

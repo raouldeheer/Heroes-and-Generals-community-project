@@ -1,7 +1,7 @@
 {
-  "name": "hagcp-utils",
-  "version": "1.0.7",
-  "description": "This package is made for hagcp, the Hero and Generals Community Project. This package contains utils like a buffercursor, datastore and some byte functions. It also has some canvas utils",
+  "name": "hagcp-canvas",
+  "version": "0.0.0",
+  "description": "",
   "main": "dist/index.js",
   "typings": "dist/index",
   "files": [
@@ -29,6 +29,8 @@
   },
   "homepage": "https://github.com/raouldeheer/Heroes-and-Generals-community-project#readme",
   "dependencies": {
-    "canvas": "^2.9.1"
+    "canvas": "^2.9.1",
+    "hagcp-utils": "^1.0.7",
+    "mylas": "^2.1.9"
   }
 }

@@ -4,10 +4,11 @@
   "description": "Heroes and Generals community project",
   "scripts": {
     "build:assets": "npm run build --workspace=\"hagcp-assets\"",
+    "build:canvas": "npm run build --workspace=\"hagcp-canvas\"",
     "build:networkClient": "npm run build --workspace=\"hagcp-network-client\"",
     "build:scripts": "npm run build --workspace=\"hagcp-scripts\"",
     "build:utils": "npm run build --workspace=\"hagcp-utils\"",
-    "build:all": "npm run build:utils && npm run build:networkClient && npm run build:assets && npm run build:scripts",
+    "build:all": "npm run build:utils && npm run build:canvas && npm run build:networkClient && npm run build:assets && npm run build:scripts",
     "test": "echo \"Error: no test specified\" && exit 0"
   },
   "repository": {

@@ -1,6 +1,6 @@
 import fs from "fs";
 import { BufferCursor, DataStore, bytesToString } from "hagcp-utils";
-import { toCanvasColored } from "hagcp-utils/canvas";
+import { toCanvasColored } from "hagcp-canvas";
 import { gunzipSync } from "zlib";
 import { ClassKeys, keyToClass, ProtoToString } from "hagcp-network-client";
 import { loadTemplate } from "hagcp-assets";

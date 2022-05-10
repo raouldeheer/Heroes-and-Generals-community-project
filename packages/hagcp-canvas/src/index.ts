@@ -3,7 +3,7 @@ import fs from "fs";
 import mylas from "mylas";
 import { join } from "path";
 import { pipeline } from "stream/promises";
-import { DataStore } from "./datastore";
+import { DataStore } from "hagcp-utils";
 
 export async function toCanvasColored(dataStore: DataStore, dataStore2: DataStore, imageName = "./warmap.png") {
     const colors = ["#f00", "#0f0", "#00f", "#000", "#fff", "#888"];

@@ -1,6 +1,6 @@
 import mylas from "mylas";
 import { BufferCursor, DataStore, IKeyValueChangeSetResult } from "hagcp-utils";
-import { drawToCanvas, toCanvasColored } from "hagcp-utils/canvas";
+import { drawToCanvas, toCanvasColored } from "hagcp-canvas";
 import { existsSync, createWriteStream } from "fs";
 import { loadTemplate } from "hagcp-assets";
 import { pipeline } from "stream/promises";

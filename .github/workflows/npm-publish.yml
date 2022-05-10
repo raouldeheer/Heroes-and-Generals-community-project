@@ -22,6 +22,7 @@ on:
         - hagcp-assets
         - hagcp-network-client
         - hagcp-utils
+        - hagcp-canvas
 
 jobs:
   build:

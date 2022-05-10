@@ -1,6 +1,8 @@
 import { DataStore } from "hagcp-utils";
 import { Json } from "mylas";
 import { loadTemplate } from "..";
+import { readdir } from "fs/promises";
+import { join } from "path";
 
 async function toJson(name:string) {
     const dataStore = new DataStore;
@@ -9,12 +11,6 @@ async function toJson(name:string) {
 }
 
 (async () => {
-    await toJson("accesspointtemplate");
-    await toJson("battlefield");
-    await toJson("supplyline");
-    await toJson("accesspoint");
-    await toJson("armyresourcecategory");
-    await toJson("CapturepointTemplate");
-    await toJson("gamemap");
-    await toJson("capital");
+    const files = await readdir(join(__filename, "../../../assets"));
+    await Promise.all(files.map(toJson));
 })();

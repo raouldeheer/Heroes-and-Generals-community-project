@@ -38,8 +38,8 @@ jobs:
             ${{ runner.os }}-
 
       - run: npm i npm@latest -g
-      - run: npm i -ws --force
-      - run: npm i tsup -D --force
+      - run: npm i -ws
+      - run: npm i
       - name: Test compiling
         run: npm run build:all
 

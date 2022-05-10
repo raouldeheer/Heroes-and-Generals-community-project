@@ -22,6 +22,7 @@ on:
         - hagcp-assets
         - hagcp-network-client
         - hagcp-utils
+        - hagcp-canvas
 
 jobs:
   build:
@@ -51,14 +52,10 @@ jobs:
             ${{ runner.os }}-
 
       - run: npm i npm@latest -g
-      - run: npm i -ws --force
-      - run: npm i tsup -D --force
+      - run: npm i -ws
+      - run: npm i
       - name: Test compiling
-        run: |
-          npm run build:utils
-          npm run build:networkClient
-          npm run build:assets
-          npm run build:scripts
+        run: npm run build:all
 
       - name: Run tests
         run: npm test
@@ -73,17 +70,14 @@ jobs:
           node-version: 16
           registry-url: https://registry.npmjs.org/
       - run: npm i npm@latest -g
-      - run: npm i -ws --force
-      - run: npm i tsup -D --force
+      - run: npm i -ws
+      - run: npm i
       - name: Compile all packages
-        run: |
-          npm run build:utils
-          npm run build:networkClient
-          npm run build:assets
+        run: npm run build:all
       - name: Publish package
         run: |
           cd ./packages/${{ github.event.inputs.package }}
-          npm version ${{ github.event.inputs.tag }} --force
+          npm version ${{ github.event.inputs.tag }}
           npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}

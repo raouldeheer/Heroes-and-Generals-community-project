@@ -1,6 +1,6 @@
 {
   "name": "hagcp-assets",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "This package is made for hagcp, the Heroes and Generals Community Project. This package contains the frequently used assets.",
   "main": "dist/index.js",
   "typings": "dist/index",
@@ -28,7 +28,12 @@
   },
   "homepage": "https://github.com/raouldeheer/Heroes-and-Generals-community-project#readme",
   "dependencies": {
-    "hagcp-network-client": "^1.0.6",
-    "hagcp-utils": "^1.0.5"
+    "hagcp-network-client": "^1.0.10",
+    "hagcp-utils": "^1.0.8",
+    "tslib": "^2.4.0"
+  },
+  "devDependencies": {
+    "tsup": "^5.12.7",
+    "typescript": "^4.6.4"
   }
 }

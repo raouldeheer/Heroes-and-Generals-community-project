@@ -28,9 +28,15 @@
     "dotenv": "^16.0.0",
     "globby": "^13.1.1",
     "hagcp-assets": "^1.0.5",
+    "hagcp-canvas": "^1.0.0",
     "hagcp-network-client": "^1.0.6",
     "hagcp-utils": "^1.0.5",
     "long": "^5.2.0",
-    "mylas": "^2.1.9"
+    "mylas": "^2.1.9",
+    "tslib": "^2.4.0"
+  },
+  "devDependencies": {
+    "tsup": "^5.12.7",
+    "typescript": "^4.6.4"
   }
 }

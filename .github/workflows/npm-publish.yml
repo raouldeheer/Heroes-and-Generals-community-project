@@ -55,11 +55,7 @@ jobs:
       - run: npm i -ws --force
       - run: npm i tsup -D --force
       - name: Test compiling
-        run: |
-          npm run build:utils
-          npm run build:networkClient
-          npm run build:assets
-          npm run build:scripts
+        run: npm run build:all
 
       - name: Run tests
         run: npm test

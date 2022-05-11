@@ -6,6 +6,7 @@ import { loadTemplate } from "hagcp-assets";
 import { pipeline } from "stream/promises";
 import { gunzipSync } from "zlib";
 import { ClassKeys, keyToClass } from "hagcp-network-client";
+import globby from "globby";
 
 async function jsonToMap(filename: string, imageName: string, dataStore: DataStore) {
     const { factions, ...data } = await mylas.json.load(filename);
@@ -34,7 +35,6 @@ async function jsonToMap(filename: string, imageName: string, dataStore: DataSto
 
 (async () => {
     const dataStore = new DataStore;
-    const { globby } = await import("globby");
 
     await loadTemplate(dataStore, "battlefield");
     await loadTemplate(dataStore, "supplyline");

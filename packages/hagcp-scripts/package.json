@@ -26,7 +26,7 @@
   "homepage": "https://github.com/raouldeheer/Heroes-and-Generals-community-project#readme",
   "dependencies": {
     "dotenv": "^16.0.0",
-    "globby": "^13.1.1",
+    "globby": "^11.0.4",
     "hagcp-assets": "^1.0.5",
     "hagcp-canvas": "^1.0.0",
     "hagcp-network-client": "^1.0.6",

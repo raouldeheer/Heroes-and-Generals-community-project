@@ -40,6 +40,7 @@ async function jsonToMap(filename: string, imageName: string, dataStore: DataSto
     await loadTemplate(dataStore, "supplyline");
     await loadTemplate(dataStore, "accesspoint");
     await loadTemplate(dataStore, "capital");
+    await loadTemplate(dataStore, "factiontemplate");
     console.log("Loaded template");
 
     const warId = process.argv[2];
@@ -68,7 +69,75 @@ async function jsonToMap(filename: string, imageName: string, dataStore: DataSto
             `${Math.floor(((files.length - i) * diff) / 60000).toString().padStart(2, "0")}m ` +
             `${(Math.floor(((files.length - i) * diff) / 1000) % 60).toString().padStart(2, "0")}s`);
     }
+    if (files) {
+        let total = "00:00:00 War start\n";
+        const first = mylas.json.loadS(files[0]);
+        const lookupFactions = new Map<string, any>();
+        first.factions.forEach((element: any) => {
+            lookupFactions.set(element.factionId, element);
+        });
+
+        files.reduce((prev: Map<string, Faction>, element: string, i: number) => {
+            const data: SaveData = mylas.json.loadS(element);
+
+            const lookupFactions = new Map<string, Faction>();
+            data.factions.forEach((element: any) => {
+                lookupFactions.set(element.factionId, element);
+            });
+
+            lookupFactions.forEach(faction => {
+                if (faction.ownedMajorCities.length > (prev.get(faction.factionId)?.ownedMajorCities.length || Infinity)) {
+                    const diff = faction.ownedMajorCities.filter(city => !prev.get(faction.factionId)!.ownedMajorCities.includes(city));
+                    if (diff.length > 0) {
+                        diff.forEach(newCity => {
+                            const factionAbbr = dataStore.GetData("factiontemplate", faction.factionTemplateId).abbreviation;
+                            total += `${frameToTime(i)} ${factionAbbr} - ${dataStore.GetData("battlefield", newCity).bftitle}\n`;
+                        });
+                    }
+                }
+            });
+            return lookupFactions;
+        }, lookupFactions);
+        mylas.saveS(`./savesMap/${warId}/timestamps.txt`, total);
+        console.log(total);
+    }
     console.log("Done");
 })();
 
+function frameToTime(frame: number) {
+    const sec = Math.floor(frame / 30);
 
+    const hours = Math.floor(sec / 3600);
+    const minutes = Math.floor((sec - hours * 3600) / 60);
+    const seconds = Math.floor(sec - hours * 3600 - minutes * 60);
+
+    return `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+}
+
+interface SaveData {
+    factions: Faction[];
+}
+
+interface Faction {
+    factionId: string;
+    factionTemplateId: string;
+    factionTag: string;
+    factionVictoryPoints: number;
+    factionPlayerCount: number;
+    factionMinPlayerCount: number;
+    factionMaxPlayerCount: number;
+    factionPlayerOnlineCount: number;
+    factionBonus: number;
+    factionDeployedCommandPointsInfantry: number;
+    factionDeployedCommandPointsArmor: number;
+    factionDeployedCommandPointsAir: number;
+    factionControlledBattlefields: number;
+    battlesWon: number;
+    battlesLost: number;
+    infantryLost: number;
+    vehiclesLost: number;
+    tanksLost: number;
+    planesLost: number;
+    ownedMajorCities: string[];
+    color: string;
+}

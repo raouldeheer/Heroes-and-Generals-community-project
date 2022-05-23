@@ -72,8 +72,8 @@ async function jsonToMap(filename: string, imageName: string, dataStore: DataSto
     if (files) {
         let total = "00:00:00 War start\n";
         const first = mylas.json.loadS(files[0]);
-        const lookupFactions = new Map<string, any>();
-        first.factions.forEach((element: any) => {
+        const lookupFactions = new Map<string, Faction>();
+        first.factions.forEach((element: Faction) => {
             lookupFactions.set(element.factionId, element);
         });
 
@@ -81,7 +81,7 @@ async function jsonToMap(filename: string, imageName: string, dataStore: DataSto
             const data: SaveData = mylas.json.loadS(element);
 
             const lookupFactions = new Map<string, Faction>();
-            data.factions.forEach((element: any) => {
+            data.factions.forEach((element: Faction) => {
                 lookupFactions.set(element.factionId, element);
             });
 

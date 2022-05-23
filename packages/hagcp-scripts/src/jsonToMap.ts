@@ -91,7 +91,7 @@ async function jsonToMap(filename: string, imageName: string, dataStore: DataSto
                     if (diff.length > 0) {
                         diff.forEach(newCity => {
                             const factionAbbr = dataStore.GetData("factiontemplate", faction.factionTemplateId).abbreviation;
-                            total += `${frameToTime(i)} ${factionAbbr} - ${dataStore.GetData("battlefield", newCity).bftitle}\n`;
+                            if (i > 150) total += `${frameToTime(i)} ${factionAbbr} - ${dataStore.GetData("battlefield", newCity).bftitle}\n`;
                         });
                     }
                 }

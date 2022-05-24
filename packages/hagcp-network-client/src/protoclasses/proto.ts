@@ -35,3 +35,9 @@ export function ProtoToBuf(proto: Type, payload: object): Buffer {
     result.writeBuff(encoded, encoded.length);
     return result.buffer;
 };
+
+export const getDefaultClass = (protoName: string, defaults: any = {}) => ({
+    parse: (buf: BufferCursor) =>
+        BufToDecodedProto(Protos.lookupType(protoName), buf.buffer.slice(8)),
+    toBuffer: (payload: any = defaults): Buffer => ProtoToBuf(Protos.lookupType(protoName), payload),
+});

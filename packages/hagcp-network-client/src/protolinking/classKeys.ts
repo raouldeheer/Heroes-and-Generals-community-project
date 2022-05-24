@@ -1,11 +1,11 @@
-import * as all from "../protoclasses/classes";
-import * as login from "../protoclasses/LoginClasses";
-import { DummyClass, unsubscriberesponse } from "../protoclasses/subscriptionClasses";
 import { KeyValueChangeSet } from "../protoclasses/keyValueChangeSet";
 import { BufferCursor } from "hagcp-utils";
+import { loginClasses } from "../protoclasses/LoginClasses";
+import { requestClasses } from "../protoclasses/requestClasses";
+import { getDefaultClass } from "../protoclasses/proto";
 
 export interface packetClassParser {
-    parse: (buf: BufferCursor) => void | object | Function;
+    parse: (buf: BufferCursor) => void | object;
     toBuffer?: (payload?: any) => Buffer;
 }
 
@@ -91,89 +91,46 @@ export const enum ClassKeys {
     QueryGamertagResponse = "QueryGamertagResponse",
 }
 
-const keyToClass = new Map<ClassKeys, packetClassParser>([
-    [ClassKeys.StartLogin, DummyClass],
-    [ClassKeys.zipchunk, all.zipchunk],
-    [ClassKeys.login2_begin, login.login2_begin],
-    [ClassKeys.QueryServerInfo, DummyClass],
-    [ClassKeys.login2_challenge, login.login2_challenge],
-    [ClassKeys.login2_response, login.login2_response],
-    [ClassKeys.login2_result, login.login2_result],
-    [ClassKeys.subscribeplayerview, DummyClass],
-    [ClassKeys.unsubscribeplayerview, DummyClass],
-    [ClassKeys.subscribecommandnodeview, DummyClass],
-    [ClassKeys.SubscribeHostingCenterInfoView, DummyClass],
-    [ClassKeys.subscribefriendview, DummyClass],
-    [ClassKeys.SubscribeShopView, DummyClass],
-    [ClassKeys.subscribeignoredplayerview, DummyClass],
-    [ClassKeys.SubscribeMessageView, DummyClass],
-    [ClassKeys.subscribewarmaplightview, DummyClass],
-    [ClassKeys.subscribebattlesview, DummyClass],
-    [ClassKeys.subscriberesourceview, DummyClass],
-    [ClassKeys.QueryShopWarBondItemsRequest, DummyClass],
-    [ClassKeys.QueryShopWarBondItemsResponse, all.QueryShopWarBondItemsResponse],
-    [ClassKeys.GetChatChannelsSubscribedRequest, DummyClass],
-    [ClassKeys.GetChatChannelsSubscribedResponse, all.GetChatChannelsSubscribedResponse],
-    [ClassKeys.RequestReadCharacterStats, all.RequestReadCharacterStats],
-    [ClassKeys.GetAssaultTeamStatsRequest, all.GetAssaultTeamStatsRequest],
-    [ClassKeys.GetAssaultTeamStatsResponse, all.GetAssaultTeamStatsResponse],
-    [ClassKeys.LoginQueueUpdate, login.LoginQueueUpdate],
-    [ClassKeys.subscriberesponse, DummyClass],
-    [ClassKeys.KeyValueChangeSet, KeyValueChangeSet],
-    [ClassKeys.QueryServerInfoResponse, all.QueryServerInfoResponse],
-    [ClassKeys.QueryBannedMachineRequest, login.QueryBannedMachineRequest],
-    [ClassKeys.QueryBannedMachineResponse, login.QueryBannedMachineResponse],
-    [ClassKeys.SubscribePlayerMissionViewRequest, DummyClass],
-    [ClassKeys.query_war_catalogue_request, all.query_war_catalogue_request],
-    [ClassKeys.query_war_catalogue_response, all.query_war_catalogue_response],
-    [ClassKeys.login2_postlogin, login.login2_postlogin],
-    [ClassKeys.login2_postlogin_result, login.login2_postlogin_result],
-    [ClassKeys.subscribesoldierview, DummyClass],
-    [ClassKeys.QueryVoucherPacksRequest, all.QueryVoucherPacksRequest],
-    [ClassKeys.QueryVoucherPacksResponse, all.QueryVoucherPacksResponse],
-    [ClassKeys.SteamQueryBundlesRequest, all.SteamQueryBundlesRequest],
-    [ClassKeys.SteamQueryBundlesResponse, all.SteamQueryBundlesResponse],
-    [ClassKeys.QueryActiveSurveyRequest, all.QueryActiveSurveyRequest],
-    [ClassKeys.QueryActiveSurveyResponse, all.QueryActiveSurveyResponse],
-    [ClassKeys.RedeemDailyLoginRewardRequest, login.RedeemDailyLoginRewardRequest],
-    [ClassKeys.RedeemDailyLoginRewardResponse, login.RedeemDailyLoginRewardResponse],
-    [ClassKeys.unsubscribecommandnodeview, DummyClass],
-    [ClassKeys.unsubscribewarmapview, DummyClass],
-    [ClassKeys.unsubscriberesourceview, DummyClass],
-    [ClassKeys.UnsubscribePlayerMissionViewRequest, DummyClass],
-    [ClassKeys.unsubscribebattlesview, DummyClass],
-    [ClassKeys.unsubscriberesponse, unsubscriberesponse],
-    [ClassKeys.unsubscribewarmaplightview, DummyClass],
-    [ClassKeys.subscribewarmapview, DummyClass],
-    [ClassKeys.GetMissionDetailsRequest, all.GetMissionDetailsRequest],
-    [ClassKeys.GetMissionDetailsResponse, all.GetMissionDetailsResponse],
-    [ClassKeys.transport_commandnode, all.transport_commandnode],
-    [ClassKeys.transport_commandnode_response, all.transport_commandnode_response],
-    [ClassKeys.keepaliverequest, all.keepaliverequest],
-    [ClassKeys.keepalive, all.keepalive],
-    [ClassKeys.keepaliveresponse, all.keepaliveresponse],
-    [ClassKeys.query_commandnode_owner, all.query_commandnode_owner],
-    [ClassKeys.query_commandnode_owner_response, all.query_commandnode_owner_response],
-    [ClassKeys.GetGoldPricesRequest, all.GetGoldPricesRequest],
-    [ClassKeys.GetGoldPricesResponse, all.GetGoldPricesResponse],
-    [ClassKeys.JoinMatchMakingRequest, all.JoinMatchMakingRequest],
-    [ClassKeys.JoinMatchMakingResponse, all.JoinMatchMakingResponse],
-    [ClassKeys.CancelJoinMatchMakingRequest, all.CancelJoinMatchMakingRequest],
-    [ClassKeys.CancelJoinMatchMakingResponse, all.CancelJoinMatchMakingResponse],
-    [ClassKeys.ResponseReadCharacterStats, all.ResponseReadCharacterStats],
-    [ClassKeys.GetBattleReportRequest, all.GetBattleReportRequest],
-    [ClassKeys.GetBattleReportResponse, all.GetBattleReportResponse],
-    [ClassKeys.join_war_response, all.join_war_response],
-    [ClassKeys.join_war_request, all.join_war_request],
-    [ClassKeys.DeployCommandNodeRequest, all.DeployCommandNodeRequest],
-    [ClassKeys.DeployCommandNodeResponse, all.DeployCommandNodeResponse],
-    [ClassKeys.SearchPlayerDetailRequest, all.SearchPlayerDetailRequest],
-    [ClassKeys.SearchPlayerDetailResponse, all.SearchPlayerDetailResponse],
-    [ClassKeys.QueryGamertagRequest, all.QueryGamertagRequest],
-    [ClassKeys.QueryGamertagResponse, all.QueryGamertagResponse],
-]);
+const dummyClass = getDefaultClass("Common.Dummy", { dummy: 0 });
+const dummyClasses: Iterable<readonly [ClassKeys, packetClassParser]> = [
+    ClassKeys.StartLogin,
+    ClassKeys.QueryServerInfo,
+    ClassKeys.subscribeplayerview,
+    ClassKeys.unsubscribeplayerview,
+    ClassKeys.subscribecommandnodeview,
+    ClassKeys.SubscribeHostingCenterInfoView,
+    ClassKeys.subscribefriendview,
+    ClassKeys.SubscribeShopView,
+    ClassKeys.subscribeignoredplayerview,
+    ClassKeys.SubscribeMessageView,
+    ClassKeys.subscribewarmaplightview,
+    ClassKeys.subscribebattlesview,
+    ClassKeys.subscriberesourceview,
+    ClassKeys.QueryShopWarBondItemsRequest,
+    ClassKeys.GetChatChannelsSubscribedRequest,
+    ClassKeys.subscriberesponse,
+    ClassKeys.SubscribePlayerMissionViewRequest,
+    ClassKeys.subscribesoldierview,
+    ClassKeys.unsubscribecommandnodeview,
+    ClassKeys.unsubscribewarmapview,
+    ClassKeys.unsubscriberesourceview,
+    ClassKeys.UnsubscribePlayerMissionViewRequest,
+    ClassKeys.unsubscribebattlesview,
+    ClassKeys.unsubscribewarmaplightview,
+    ClassKeys.subscribewarmapview,
+].map(key => ([key, dummyClass]));
 
-export { keyToClass };
+export const keyToClass = new Map<ClassKeys, packetClassParser>([
+    ...loginClasses,
+    ...requestClasses,
+    ...dummyClasses,
+    [ClassKeys.zipchunk, getDefaultClass("netsysmessages.zipchunk")],
+    [ClassKeys.QueryShopWarBondItemsResponse, getDefaultClass("HnG_States.QueryShopWarBondItemsResponse")],
+    [ClassKeys.GetChatChannelsSubscribedResponse, getDefaultClass("HnG_States.GetChatChannelsSubscribedResponse")],
+    [ClassKeys.QueryServerInfoResponse, getDefaultClass("HnG_States.QueryServerInfoResponse")],
+    [ClassKeys.unsubscriberesponse, getDefaultClass("Common.unsubscriberesponse", { reply: "ok" })],
+    [ClassKeys.KeyValueChangeSet, KeyValueChangeSet],
+]);
 
 export const enum ResponseType {
     fail = 0,

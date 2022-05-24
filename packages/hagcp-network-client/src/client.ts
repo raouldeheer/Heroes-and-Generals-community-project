@@ -101,37 +101,50 @@ export class Client extends EventEmitter {
      * @returns a new client
      */
     public static async connectToHQ(userAgent: string, userName: string, password: string) {
+        // Get server status
         const status = await fetch("http://game.heroesandgenerals.com/status");
         if (status.status !== 200) {
             console.log(`Servers are down ${status.status}`);
             return null;
         }
 
-        const items = (await (await fetch("http://game.heroesandgenerals.com/settings.js")).text())
-            .split(";\r\n")
-            .filter(e => e)
-            .map(e => e.split("="))
-            .reduce<Settings>((prev: any, curr) => {
-                if (curr[1].includes(",")) {
-                    prev[curr[0]] = curr[1].substring(1, curr[1].length - 1).split(",");
-                } else {
-                    prev[curr[0]] = curr[1].substring(1, curr[1].length - 1);
-                }
-                return prev;
-            }, {} as Settings);
+        // Get server settings
+        const items = await fetch("http://game.heroesandgenerals.com/settings.js")
+            .then(e => e.text())
+            .then(data => data
+                .split(";\r\n")
+                .filter(e => e)
+                .map(e => e.split("=") as [keyof Settings, string])
+                .reduce<Settings>((prev, curr) => {
+                    const value = curr[1].substring(1, curr[1].length - 1);
+                    Reflect.set(prev, curr[0], curr[1].includes(",") ? value.split(",") : value);
+                    return prev;
+                }, {} as Settings));
 
+        // Select random server to connect to
         const randomServer = items.web_entrance[Math.floor(Math.random() * items.web_entrance.length)];
         console.log(`connecting to gameserver: ${randomServer}`);
 
+        // Connect to server
         const [host, port] = randomServer.split(":");
         return new this(host, Number(port), userAgent, userName, password);
     }
 
+    /**
+     * Close connection
+     */
     public close() {
         this.connected = false;
         try { this.con.end().destroy(); } catch (_) { }
     }
 
+    /**
+     * sendPacket sends a packet to the server
+     * @param className name of class to send
+     * @param payload payload to send
+     * @param callback callback for response
+     * @returns if sending was succesfull
+     */
     public sendPacket(className: ClassKeys, payload?: any, callback?: (result: any) => void): boolean {
         // Get data from class.
         const buffer = keyToClass.get(className)?.toBuffer?.(payload);
@@ -154,18 +167,29 @@ export class Client extends EventEmitter {
         return true;                    // Return success.
     }
 
+    /**
+     * sendPacketAsync sends a packet to the server and return a promise with the data of the response packet
+     * @param className name of class to send
+     * @param payload payload to send
+     * @returns data of response packet
+     */
     public sendPacketAsync<T = any>(className: ClassKeys, payload?: any): Promise<T> {
         return new Promise<T>((resolve, reject) => {
             try {
-                this.sendPacket(className, payload, (result) => {
-                    resolve(result);
-                });
+                if (!this.sendPacket(className, payload, resolve))
+                    throw new Error("Packet not send, class was probably not found");
             } catch (error) {
                 reject(error);
             }
         });
     }
 
+    /**
+     * login logs the user in with a password
+     * @param password the password string to use to login
+     * @param challengeData the data of the challenge 
+     * @returns the response of the challenge
+     */
     private login(
         password: string,
         {
@@ -199,18 +223,27 @@ export class Client extends EventEmitter {
         };
     }
 
-    private handleMessage(data: Buffer) {
+    /**
+     * handleMessage handles incoming messages
+     * @param data rawBuffer of response
+     */
+    private handleMessage(data: Buffer): void {
         const element = new BufferCursor(data);
         const plen = element.readUInt32LE();
+        // Check if tcpPacket length is correct
         if (plen !== data.byteLength) console.log(`${plen} !== ${data.byteLength}`);
-        element.move(4);
+        element.move(4); //! Id is limited to UInt32 here
         const id = element.readUInt32LE();
 
+        // Get size of packet
         const size = element.readUInt32LE() - 4;
         const typeLength = element.readUInt32LE() - 4;
+        // Parse typeClassName
         const typeText = element.slice(typeLength).toString() as ClassKeys;
+        // Return if no data is present
         if (size - typeLength == 4) return;
 
+        // Slice data part of rawBuffer
         const DataBuf = element.slice();
         const DataLen = DataBuf.readUInt32LE() - 4;
         DataBuf.seek(0);
@@ -221,16 +254,13 @@ export class Client extends EventEmitter {
             const klas = keyToClass.get(typeText)!;
             result = klas.parse(DataBuf) as any;
             switch (typeText) {
-                case "zipchunk":
-                    if (typeof result == "function") {
-                        this.handleMessage(gunzipSync(result().data));
-                        return;
-                    }
+                case ClassKeys.zipchunk:
+                    this.handleMessage(gunzipSync(result.data));
                     break;
-                case "QueryServerInfoResponse":
+                case ClassKeys.QueryServerInfoResponse:
                     this.sendPacket(ClassKeys.QueryBannedMachineRequest);
                     break;
-                case "QueryBannedMachineResponse":
+                case ClassKeys.QueryBannedMachineResponse:
                     if (result.isBanned) {
                         console.error("Player banned");
                         this.close();
@@ -238,8 +268,8 @@ export class Client extends EventEmitter {
                         this.sendPacket(ClassKeys.StartLogin);
                     }
                     break;
-                case "LoginQueueUpdate":
-                    this.emit("LoginQueueUpdate", result.positionInQueue);
+                case ClassKeys.LoginQueueUpdate:
+                    this.emit(ClassKeys.LoginQueueUpdate, result.positionInQueue);
                     console.info(`Queue: ${result.positionInQueue}`);
                     if (result.mayProceed) this.sendPacket(ClassKeys.login2_begin, {
                         username: this.userName,
@@ -248,10 +278,10 @@ export class Client extends EventEmitter {
                         acceptingBattlEyePolicy: false,
                     });
                     break;
-                case "login2_challenge":
+                case ClassKeys.login2_challenge:
                     this.sendPacket(ClassKeys.login2_response, this.login(this.password, result));
                     break;
-                case "login2_result":
+                case ClassKeys.login2_result:
                     this.emit("login2_result", result);
                     if (result.response == ResponseType.login_success) {
                         this.emit("loggedin");
@@ -260,7 +290,7 @@ export class Client extends EventEmitter {
                         this.emit("loginFailed");
                     }
                     break;
-                case "keepaliverequest":
+                case ClassKeys.keepaliverequest:
                     // TODO Find out what 8374 means.
                     this.sendPacket(ClassKeys.keepalive, { value: 8374 });
                     break;

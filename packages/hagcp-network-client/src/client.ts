@@ -5,7 +5,7 @@ import { BufferCursor } from "hagcp-utils";
 import { ClassKeys, ResponseType } from "./protolinking/classKeys";
 import { ProtoToString } from "./protoclasses/proto";
 import { gunzipSync } from "zlib";
-import { appendFileSync, writeFileSync } from "fs";
+// import { appendFileSync, writeFileSync } from "fs";
 import fetch from "node-fetch";
 import { keyToClass } from "./protolinking/linking";
 
@@ -136,7 +136,7 @@ export class Client extends EventEmitter {
      */
     public close() {
         this.connected = false;
-        try { this.con.end().destroy(); } catch (_) { }
+        try { this.con.end().destroy(); } catch (_) { /**/ }
     }
 
     /**
@@ -146,7 +146,7 @@ export class Client extends EventEmitter {
      * @param callback callback for response
      * @returns if sending was succesfull
      */
-    public sendPacket(className: ClassKeys, payload?: any, callback?: (result: any) => void): boolean {
+    public sendPacket<T, Y>(className: ClassKeys, payload?: T, callback?: (result: Y) => void): boolean {
         // Get data from class.
         const buffer = keyToClass.get(className)?.toBuffer?.(payload);
         // If class doesn't return any data, return failed.
@@ -174,8 +174,8 @@ export class Client extends EventEmitter {
      * @param payload payload to send
      * @returns data of response packet
      */
-    public sendPacketAsync<T = any>(className: ClassKeys, payload?: any): Promise<T> {
-        return new Promise<T>((resolve, reject) => {
+    public sendPacketAsync<T, Y>(className: ClassKeys, payload?: T): Promise<Y> {
+        return new Promise<Y>((resolve, reject) => {
             try {
                 if (!this.sendPacket(className, payload, resolve))
                     throw new Error("Packet not send, class was probably not found");
@@ -246,14 +246,16 @@ export class Client extends EventEmitter {
 
         // Slice data part of rawBuffer
         const DataBuf = element.slice();
-        const DataLen = DataBuf.readUInt32LE() - 4;
+        // const DataLen = DataBuf.readUInt32LE() - 4;
         DataBuf.seek(0);
 
-        let result;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        let result: any;
         if (keyToClass.has(typeText)) {
             // Find class to parse packet with.
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             const klas = keyToClass.get(typeText)!;
-            result = klas.parse(DataBuf) as any;
+            result = klas.parse(DataBuf);
             switch (typeText) {
                 case ClassKeys.zipchunk:
                     this.handleMessage(gunzipSync(result.data));

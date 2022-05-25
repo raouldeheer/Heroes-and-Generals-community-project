@@ -5,6 +5,7 @@ import { ClassKeys } from "./classKeys";
 
 export interface packetClassParser {
     parse: (buf: BufferCursor) => void | object;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     toBuffer: (payload?: any) => Buffer;
 }
 

@@ -34,7 +34,7 @@ export function ProtoToBuf<T>(proto: Type, payload: T): Buffer {
     result.writeUInt32LE(encoded.byteLength + 4);
     result.writeBuff(encoded, encoded.length);
     return result.buffer;
-};
+}
 
 export const getDefaultClass = <T>(protoName: string, defaults: T = {} as T) => ({
     parse: (buf: BufferCursor): T => BufToDecodedProto(Protos.lookupType(protoName), buf.buffer.slice(8)),

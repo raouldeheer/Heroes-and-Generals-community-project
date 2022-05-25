@@ -1,3 +1,5 @@
+/* eslint-disable no-prototype-builtins */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { CanvasRenderingContext2D, createCanvas, loadImage } from "canvas";
 import fs from "fs";
 import mylas from "mylas";
@@ -135,8 +137,7 @@ function drawCapitals(dataStore: DataStore, context: CanvasRenderingContext2D) {
 
             // write a function called drawLine.
             const draw = (radius: number, angle: number, action: string) => {
-                // @ts-ignore
-                context[action](
+                Reflect.get(context, action)(
                     battlefield.posx / (8 / multiplier) + radius * Math.cos(angle),
                     battlefield.posy / (8 / multiplier) + radius * Math.sin(angle)
                 );

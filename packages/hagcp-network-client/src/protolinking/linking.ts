@@ -1,6 +1,12 @@
+import { BufferCursor } from "hagcp-utils";
 import { KeyValueChangeSet } from "../protoclasses/keyValueChangeSet";
 import { getDefaultClass } from "../protoclasses/proto";
-import { ClassKeys, packetClassParser } from "./classKeys";
+import { ClassKeys } from "./classKeys";
+
+export interface packetClassParser {
+    parse: (buf: BufferCursor) => void | object;
+    toBuffer: (payload?: any) => Buffer;
+}
 
 const dummyClass = getDefaultClass("Common.Dummy", { dummy: 0 });
 const dummyClasses: Iterable<readonly [ClassKeys, packetClassParser]> = [

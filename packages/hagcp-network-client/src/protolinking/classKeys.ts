@@ -1,10 +1,3 @@
-import { BufferCursor } from "hagcp-utils";
-
-export interface packetClassParser {
-    parse: (buf: BufferCursor) => void | object;
-    toBuffer: (payload?: any) => Buffer;
-}
-
 export const enum ClassKeys {
     StartLogin = "StartLogin",
     zipchunk = "zipchunk",

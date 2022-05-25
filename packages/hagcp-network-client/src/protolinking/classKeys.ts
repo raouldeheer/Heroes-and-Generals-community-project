@@ -1,12 +1,8 @@
-import { KeyValueChangeSet } from "../protoclasses/keyValueChangeSet";
 import { BufferCursor } from "hagcp-utils";
-import { loginClasses } from "../protoclasses/LoginClasses";
-import { requestClasses } from "../protoclasses/requestClasses";
-import { getDefaultClass } from "../protoclasses/proto";
 
 export interface packetClassParser {
     parse: (buf: BufferCursor) => void | object;
-    toBuffer?: (payload?: any) => Buffer;
+    toBuffer: (payload?: any) => Buffer;
 }
 
 export const enum ClassKeys {
@@ -90,47 +86,6 @@ export const enum ClassKeys {
     QueryGamertagRequest = "QueryGamertagRequest",
     QueryGamertagResponse = "QueryGamertagResponse",
 }
-
-const dummyClass = getDefaultClass("Common.Dummy", { dummy: 0 });
-const dummyClasses: Iterable<readonly [ClassKeys, packetClassParser]> = [
-    ClassKeys.StartLogin,
-    ClassKeys.QueryServerInfo,
-    ClassKeys.subscribeplayerview,
-    ClassKeys.unsubscribeplayerview,
-    ClassKeys.subscribecommandnodeview,
-    ClassKeys.SubscribeHostingCenterInfoView,
-    ClassKeys.subscribefriendview,
-    ClassKeys.SubscribeShopView,
-    ClassKeys.subscribeignoredplayerview,
-    ClassKeys.SubscribeMessageView,
-    ClassKeys.subscribewarmaplightview,
-    ClassKeys.subscribebattlesview,
-    ClassKeys.subscriberesourceview,
-    ClassKeys.QueryShopWarBondItemsRequest,
-    ClassKeys.GetChatChannelsSubscribedRequest,
-    ClassKeys.subscriberesponse,
-    ClassKeys.SubscribePlayerMissionViewRequest,
-    ClassKeys.subscribesoldierview,
-    ClassKeys.unsubscribecommandnodeview,
-    ClassKeys.unsubscribewarmapview,
-    ClassKeys.unsubscriberesourceview,
-    ClassKeys.UnsubscribePlayerMissionViewRequest,
-    ClassKeys.unsubscribebattlesview,
-    ClassKeys.unsubscribewarmaplightview,
-    ClassKeys.subscribewarmapview,
-].map(key => ([key, dummyClass]));
-
-export const keyToClass = new Map<ClassKeys, packetClassParser>([
-    ...loginClasses,
-    ...requestClasses,
-    ...dummyClasses,
-    [ClassKeys.zipchunk, getDefaultClass("netsysmessages.zipchunk")],
-    [ClassKeys.QueryShopWarBondItemsResponse, getDefaultClass("HnG_States.QueryShopWarBondItemsResponse")],
-    [ClassKeys.GetChatChannelsSubscribedResponse, getDefaultClass("HnG_States.GetChatChannelsSubscribedResponse")],
-    [ClassKeys.QueryServerInfoResponse, getDefaultClass("HnG_States.QueryServerInfoResponse")],
-    [ClassKeys.unsubscriberesponse, getDefaultClass("Common.unsubscriberesponse", { reply: "ok" })],
-    [ClassKeys.KeyValueChangeSet, KeyValueChangeSet],
-]);
 
 export const enum ResponseType {
     fail = 0,

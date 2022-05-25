@@ -2,11 +2,12 @@ import { EventEmitter } from "events";
 import { Socket, createConnection } from "net";
 import { createHash, createHmac } from "crypto";
 import { BufferCursor } from "hagcp-utils";
-import { ClassKeys, keyToClass, ResponseType } from "./protolinking/classKeys";
+import { ClassKeys, ResponseType } from "./protolinking/classKeys";
 import { ProtoToString } from "./protoclasses/proto";
 import { gunzipSync } from "zlib";
 import { appendFileSync, writeFileSync } from "fs";
 import fetch from "node-fetch";
+import { keyToClass } from "./protolinking/linking";
 
 interface Settings {
     web_entrance: string[];

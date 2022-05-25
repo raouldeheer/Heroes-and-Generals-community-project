@@ -15,17 +15,17 @@ export function ProtoToString(result: object, prefix = `${" ".repeat(16)}`): str
                 ((i == length - 1) ? "" : "\n"), "");
 }
 
-export const BufToDecodedProto = (proto: Type, buf: Buffer) =>
+export const BufToDecodedProto = <T>(proto: Type, buf: Buffer): T =>
     proto.toObject(proto.decode(buf), {
         longs: String,
         enums: Number,
         bytes: Buffer,
-    });
+    }) as T;
 
-export const bufFromDecodedProto = (proto: Type, value: any) =>
+export const bufFromDecodedProto = <T>(proto: Type, value: T): Buffer =>
     Buffer.from(proto.encode(proto.fromObject(value)).finish());
 
-export function ProtoToBuf(proto: Type, payload: object): Buffer {
+export function ProtoToBuf<T>(proto: Type, payload: T): Buffer {
     const errMsg = proto.verify(payload);
     if (errMsg) throw Error(errMsg);
     const encoded = bufFromDecodedProto(proto, payload);
@@ -36,8 +36,7 @@ export function ProtoToBuf(proto: Type, payload: object): Buffer {
     return result.buffer;
 };
 
-export const getDefaultClass = (protoName: string, defaults: any = {}) => ({
-    parse: (buf: BufferCursor) =>
-        BufToDecodedProto(Protos.lookupType(protoName), buf.buffer.slice(8)),
-    toBuffer: (payload: any = defaults): Buffer => ProtoToBuf(Protos.lookupType(protoName), payload),
+export const getDefaultClass = <T>(protoName: string, defaults: T = {} as T) => ({
+    parse: (buf: BufferCursor): T => BufToDecodedProto(Protos.lookupType(protoName), buf.buffer.slice(8)),
+    toBuffer: (payload = defaults): Buffer => ProtoToBuf(Protos.lookupType(protoName), payload),
 });

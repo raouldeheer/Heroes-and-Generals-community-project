@@ -17,7 +17,7 @@ export class BufferCursor {
         if ((size > this.length) || (this.length - this.pos < size))
             throw new BufferCursorOverflow(this.length, this.pos, size);
     }
-    getBuffer(offset: number = 0): Buffer {
+    getBuffer(offset = 0): Buffer {
         const result = Buffer.allocUnsafe(this.pos);
         this.buffer.copy(result, offset, 0, this.pos);
         return result;

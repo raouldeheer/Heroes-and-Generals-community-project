@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export type KeyValue = { key: string, value: any; };
 export interface IKeyValueChangeSetResult {
     set?: KeyValue[],

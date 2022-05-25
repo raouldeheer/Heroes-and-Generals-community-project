@@ -7,6 +7,7 @@ import { join } from "path";
 async function toJson(name:string) {
     const dataStore = new DataStore;
     await loadTemplate(dataStore, name);
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     await Json.save(`./json/${name}.json`, Array.from(dataStore.GetItemStore(name)!.values()));
 }
 

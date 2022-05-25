@@ -17,7 +17,8 @@ export async function loadTemplate(dataStore: DataStore, name: string) {
     if (keyToClass.has(typeText)) {
         try {
             // Find class to parse packet with.
-            const klas = keyToClass.get(typeText)!;
+            const klas = keyToClass.get(typeText);
+            if (!klas) return;
             result = klas.parse(DataBuf);
             if (typeof result == "object") {
                 if (typeText == "KeyValueChangeSet")

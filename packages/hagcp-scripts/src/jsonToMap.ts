@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable no-prototype-builtins */
 import mylas from "mylas";
 import { BufferCursor, DataStore, IKeyValueChangeSetResult } from "hagcp-utils";
 import { drawToCanvas, toCanvasColored } from "hagcp-canvas";

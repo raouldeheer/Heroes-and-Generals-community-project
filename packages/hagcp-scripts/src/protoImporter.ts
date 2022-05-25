@@ -1,7 +1,7 @@
 import fs from "fs";
 
 const fileToProto = (file: string) => file
-    ?.split(/      private static function InitDescriptors\(\) : void\r\n/g)[1]
+    ?.split(/ {6}private static function InitDescriptors\(\) : void\r\n/g)[1]
     ?.split(/[{}]/g)[1]
     ?.replace(/\s/g, "")
     ?.split(/;/g)
@@ -9,11 +9,11 @@ const fileToProto = (file: string) => file
     ?.map(e => e.split(/[()]/g)[1].split(/,/g))
     ?.filter(e => e.join(""))
     ?.map(e => {
-        let [name, messageName, type, label, id] = e;
+        const [name, messageName, type, label, id] = e;
         return `${label.replace("Descriptor.LABEL_", "").toLowerCase()
-            } ${messageName.replace(/\"/g, "")
+            } ${messageName.replace(/"/g, "")
             || (type.replace("Descriptor.", "").toLowerCase()=="enum"? "Common.Response" :type.replace("Descriptor.", "").toLowerCase())
-            } ${name.replace(/\"/g, "")} = ${id};`;
+            } ${name.replace(/"/g, "")} = ${id};`;
     })?.join("\r\n");
 
 const scripts = fs.readdirSync("./game/scripts");

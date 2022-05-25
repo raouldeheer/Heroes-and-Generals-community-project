@@ -18,6 +18,7 @@ const dataLines = data
     .filter(e => e)                                     // filter only lines with data
     .map(e => e.match(/\w{4}\s{2}(\w{2}\s)+\s+.+/g))    // Match dataLine format
     .filter(e => e)                                     // filter only dataLines
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     .map(e => Buffer.from(e!                            // parse dataLine to buffer
         .map(v => v.substr(6, 50).trim())               // select only byte chars
         .join(" ")                                      // join lines with space
@@ -85,15 +86,16 @@ const parse = (element: BufferCursor) => {
     const DataLen = DataBuf.readUInt32LE() - 4;
     DataBuf.seek(0);
 
-    let result;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    let result: any;
     if (keyToClass.has(typeText)) {
         try {
             // Find class to parse packet with.
-            const klas = keyToClass.get(typeText)!;
+            const klas = keyToClass.get(typeText);
+            if (!klas) return;
             result = klas.parse(DataBuf);
-            if (typeof result == "function" && typeText == "zipchunk") {
-                // @ts-ignore
-                const gunzipped = new BufferCursor(gunzipSync(result().data));
+            if (typeText == "zipchunk") {
+                const gunzipped = new BufferCursor(gunzipSync(result.data));
                 parse(gunzipped);
                 return;
             }

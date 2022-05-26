@@ -70,6 +70,10 @@ export class Client extends EventEmitter {
         this.addHandlers();
     }
 
+    public get connected() : boolean {
+        return this.con.connected;
+    }
+
     /**
      * connectToHQ creates a client and checks server status.
      * @param userAgent the useragent that is used.

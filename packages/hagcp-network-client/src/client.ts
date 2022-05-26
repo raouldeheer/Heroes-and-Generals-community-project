@@ -118,7 +118,7 @@ export class Client extends EventEmitter {
      * @param callback callback for response
      * @returns if sending was succesfull
      */
-    public sendPacket<InputType, ReturnType>(className: ClassKeys, payload?: InputType, callback?: (result: ReturnType) => void): boolean {
+    public sendPacket<InputType = undefined, ReturnType = undefined>(className: ClassKeys, payload?: InputType, callback?: (result: ReturnType) => void): boolean {
         return this.con.sendPacket<InputType, ReturnType>(className, payload, callback);
     }
 
@@ -128,7 +128,7 @@ export class Client extends EventEmitter {
      * @param payload payload to send
      * @returns data of response packet
      */
-    public sendPacketAsync<InputType, ReturnType>(className: ClassKeys, payload?: InputType): Promise<ReturnType> {
+    public sendPacketAsync<InputType = undefined, ReturnType = undefined>(className: ClassKeys, payload?: InputType): Promise<ReturnType> {
         return this.con.sendPacketAsync<InputType, ReturnType>(className, payload);
     }
 

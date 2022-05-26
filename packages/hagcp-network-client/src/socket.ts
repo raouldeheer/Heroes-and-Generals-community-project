@@ -65,7 +65,7 @@ export class Socket extends EventEmitter {
      * @param callback callback for response
      * @returns if sending was succesfull
      */
-    public sendPacket<T, Y>(className: ClassKeys, payload?: T, callback?: (result: Y) => void): boolean {
+    public sendPacket<InputType, ReturnType>(className: ClassKeys, payload?: InputType, callback?: (result: ReturnType) => void): boolean {
         // Get data from class.
         const buffer = keyToClass.get(className)?.toBuffer?.(payload);
         // If class doesn't return any data, return failed.
@@ -93,8 +93,8 @@ export class Socket extends EventEmitter {
      * @param payload payload to send
      * @returns data of response packet
      */
-    public sendPacketAsync<T, Y>(className: ClassKeys, payload?: T): Promise<Y> {
-        return new Promise<Y>((resolve, reject) => {
+    public sendPacketAsync<InputType, ReturnType>(className: ClassKeys, payload?: InputType): Promise<ReturnType> {
+        return new Promise<ReturnType>((resolve, reject) => {
             try {
                 if (!this.sendPacket(className, payload, resolve))
                     throw new Error("Packet not send, class was probably not found");

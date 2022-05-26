@@ -118,8 +118,8 @@ export class Client extends EventEmitter {
      * @param callback callback for response
      * @returns if sending was succesfull
      */
-    public sendPacket<T, Y>(className: ClassKeys, payload?: T, callback?: (result: Y) => void): boolean {
-        return this.con.sendPacket(className, payload, callback);
+    public sendPacket<InputType, ReturnType>(className: ClassKeys, payload?: InputType, callback?: (result: ReturnType) => void): boolean {
+        return this.con.sendPacket<InputType, ReturnType>(className, payload, callback);
     }
 
     /**
@@ -128,8 +128,8 @@ export class Client extends EventEmitter {
      * @param payload payload to send
      * @returns data of response packet
      */
-    public sendPacketAsync<T, Y>(className: ClassKeys, payload?: T): Promise<Y> {
-        return this.con.sendPacketAsync(className, payload);
+    public sendPacketAsync<InputType, ReturnType>(className: ClassKeys, payload?: InputType): Promise<ReturnType> {
+        return this.con.sendPacketAsync<InputType, ReturnType>(className, payload);
     }
 
     /**

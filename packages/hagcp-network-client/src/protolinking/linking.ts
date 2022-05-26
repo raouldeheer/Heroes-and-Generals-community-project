@@ -72,7 +72,7 @@ export const keyToClass = new Map<ClassKeys, packetClassParser>([
     [ClassKeys.transport_commandnode, getDefaultClass("HnG_States.transport_commandnode")],
     [ClassKeys.transport_commandnode_response, getDefaultClass("HnG_States.transport_commandnode_response")],
     [ClassKeys.keepaliverequest, getDefaultClass("netsysmessages.keepaliverequest")],
-    [ClassKeys.keepalive, getDefaultClass("netsysmessages.keepalive")],
+    [ClassKeys.keepalive, getDefaultClass("netsysmessages.keepalive", { value: 8374 })],
     [ClassKeys.keepaliveresponse, getDefaultClass("netsysmessages.keepaliveresponse")],
     [ClassKeys.query_commandnode_owner, getDefaultClass("HnG_States.query_commandnode_owner")],
     [ClassKeys.query_commandnode_owner_response, getDefaultClass("HnG_States.query_commandnode_owner_response")],

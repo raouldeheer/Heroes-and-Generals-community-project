@@ -1,7 +1,7 @@
 {
   "name": "hagcp-network-client",
   "description": "This package is made for hagcp, the Heroes and Generals Community Project. This package contains the network client used to connect to the game.",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "main": "dist/index.js",
   "typings": "dist/index",
   "files": [

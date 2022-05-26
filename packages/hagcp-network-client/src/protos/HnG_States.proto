@@ -3510,10 +3510,10 @@ required string playerGamerTag = 1;
 
 message SearchPlayerDetailResponse {
 required Common.Response response = 1;
-required int64 playerId = 2;
-required string gamertag = 3;
-required int64 factiontemplateid = 4;
-required string warName = 5;
+optional int64 playerId = 2;
+optional string gamertag = 3;
+optional int64 factiontemplateid = 4;
+optional string warName = 5;
 }
 
 message SearchPlayersRequest {

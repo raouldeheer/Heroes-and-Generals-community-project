@@ -82,6 +82,7 @@ async function jsonToMap(filename: string, imageName: string, dataStore: DataSto
 
         files.reduce((prev: Map<string, Faction>, element: string, i: number) => {
             const data: SaveData = mylas.json.loadS(element);
+            if (!data?.factions) return prev;
 
             const lookupFactions = new Map<string, Faction>();
             data.factions.forEach((element: Faction) => {

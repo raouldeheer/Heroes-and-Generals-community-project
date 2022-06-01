@@ -1,11 +1,13 @@
 import fs from "fs";
+import mylas from "mylas";
 import { BufferCursor, DataStore, bytesToString } from "hagcp-utils";
 import { toCanvasColored } from "hagcp-canvas";
 import { gunzipSync } from "zlib";
 import { ClassKeys, keyToClass, ProtoToString } from "hagcp-network-client";
 import { loadTemplate } from "hagcp-assets";
 
-const data = fs.readFileSync("./captures/capturetext17.txt", "utf-8");
+if (!process.argv[2]) throw new Error("No file");
+const data = mylas.loadS(process.argv[2]);
 
 /**
  * regex for finding client to server packets:
@@ -115,7 +117,7 @@ const parse = (element: BufferCursor) => {
         ? result // Print bytes when class didn't give any results.
         : `${DataLen.toString().padEnd(5)} ${bytesToString(element).substr(20 + typeLength, 50)}`
         }`;
-    // console.log(outputStr);
+    console.log(outputStr);
     totalString += `${outputStr}\n`;
 
     // When packet doesn't match packet size print sizes.

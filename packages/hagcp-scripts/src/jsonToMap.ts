@@ -102,6 +102,23 @@ async function jsonToMap(filename: string, imageName: string, dataStore: DataSto
             });
             return lookupFactions;
         }, lookupFactions);
+        const last = files.pop();
+        if (last) {
+            const data: SaveData = await mylas.json.load(last);
+            const winner = data.factions.reduce((prev, curr) => prev.factionVictoryPoints > curr.factionVictoryPoints ? prev : curr);
+            
+            const factionMap = new Map<string, Faction>();
+            data.factions.forEach(element => {
+                factionMap.set(element.factionTemplateId, element);
+            });
+
+            const factionToAbbr = (faction: Faction) => dataStore.GetData("factiontemplate", faction.factionTemplateId).abbreviation;
+            const factionToString = (faction: Faction) => `${factionToAbbr(faction)}: ${faction.infantryLost} Inf, ${faction.vehiclesLost} Vehicles, ${faction.tanksLost} Tanks, ${faction.planesLost} Planes`;
+            
+            const totalEnding = `${factionToAbbr(winner)} won the war\n\nLosses:\n${factionToString(factionMap.get("1")!)}\n${factionToString(factionMap.get("2")!)}\n${factionToString(factionMap.get("3")!)}`;
+
+            console.log(totalEnding);
+        }
         mylas.saveS(`./savesMap/${warId}/timestamps.txt`, total);
         console.log(total);
     }

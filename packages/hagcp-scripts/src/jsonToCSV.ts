@@ -1,6 +1,10 @@
 import mylas from "mylas";
 import { existsSync } from "fs";
 import globby from "globby";
+import { pLimit } from 'plimit-lit';
+
+const fileLimit = pLimit(100);
+const openFile = (file: string): Promise<SaveData> => fileLimit((name: string) => mylas.json.load<SaveData>(name), file);
 
 const idToAbbr = new Map<string, FactionName>([
     ["1", "US"],
@@ -19,7 +23,7 @@ const OutputOptionsList: OutputOptions[] = ["victoryPoints", "playerCount", "dep
 
     const files = await globby(`./saves/${warId}/*.jsonc`);
     if (files) {
-        const data = await Promise.all(files.map(file => mylas.json.load<SaveData>(file)));
+        const data = await Promise.all(files.map(openFile));
         const outputData = data
             .filter(v => v.factions.length === 3)
             .map(savedData => savedData.factions

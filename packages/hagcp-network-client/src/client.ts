@@ -172,9 +172,9 @@ export class Client extends EventEmitter {
     }
 
     private addHandlers() {
-        this.con.on(ClassKeys.QueryServerInfoResponse, () => {
+        this.con.once(ClassKeys.QueryServerInfoResponse, () => {
             this.sendPacket(ClassKeys.QueryBannedMachineRequest);
-        }).on(ClassKeys.QueryBannedMachineResponse, result => {
+        }).once(ClassKeys.QueryBannedMachineResponse, result => {
             if (result.isBanned) {
                 console.error("Player banned");
                 this.close();

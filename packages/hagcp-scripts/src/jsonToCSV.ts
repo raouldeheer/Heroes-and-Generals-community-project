@@ -26,33 +26,36 @@ const OutputOptionsList: OutputOptions[] = ["victoryPoints", "playerCount", "dep
         const data = await Promise.all(files.map(openFile));
         const outputData = data
             .filter(v => v.factions.length === 3)
-            .map(savedData => savedData.factions
-                .sort((a, b) => Number(a.factionTemplateId) - Number(b.factionTemplateId))
-                .map<FactionOutput>(raw => ({
-                    id: raw.factionTemplateId,
-                    victoryPoints: raw.factionVictoryPoints,
-                    playerCount: raw.factionPlayerCount,
-                    deployedCommandPointsInfantry: raw.factionDeployedCommandPointsInfantry,
-                    deployedCommandPointsArmor: raw.factionDeployedCommandPointsArmor,
-                    deployedCommandPointsAir: raw.factionDeployedCommandPointsAir,
-                    controlledBattlefields: raw.factionControlledBattlefields,
-                    battlesWon: raw.battlesWon,
-                    battlesLost: raw.battlesLost,
-                    infantryLost: raw.infantryLost,
-                    vehiclesLost: raw.vehiclesLost,
-                    tanksLost: raw.tanksLost,
-                    planesLost: raw.planesLost,
-                }))
-            )
+            .map(savedData => ({
+                factions: savedData.factions
+                    .sort((a, b) => Number(a.factionTemplateId) - Number(b.factionTemplateId))
+                    .map<FactionOutput>(raw => ({
+                        id: raw.factionTemplateId,
+                        victoryPoints: raw.factionVictoryPoints,
+                        playerCount: raw.factionPlayerCount,
+                        deployedCommandPointsInfantry: raw.factionDeployedCommandPointsInfantry,
+                        deployedCommandPointsArmor: raw.factionDeployedCommandPointsArmor,
+                        deployedCommandPointsAir: raw.factionDeployedCommandPointsAir,
+                        controlledBattlefields: raw.factionControlledBattlefields,
+                        battlesWon: raw.battlesWon,
+                        battlesLost: raw.battlesLost,
+                        infantryLost: raw.infantryLost,
+                        vehiclesLost: raw.vehiclesLost,
+                        tanksLost: raw.tanksLost,
+                        planesLost: raw.planesLost,
+                    })),
+                onlineplayers: savedData?.queryServerInfo?.onlineplayers ?? 0,
+            }))
             .map(data => {
                 // @ts-expect-error key
                 const result: { [key: OutputFactionOptions]: never; } = {};
-                data.forEach(faction => {
+                data.factions.forEach(faction => {
                     for (const key in faction) {
                         if (key !== "id" && Reflect.has(faction, key))
                             Reflect.set(result, `${idToAbbr.get(faction.id)}_${key}`, Reflect.get(faction, key));
                     }
                 });
+                Reflect.set(result, "onlineplayers", data.onlineplayers);
                 return result;
             })
             .map(data => {
@@ -62,6 +65,7 @@ const OutputOptionsList: OutputOptions[] = ["victoryPoints", "playerCount", "dep
                         result.push(Reflect.get(data, `${factionName}_${outputName}`));
                     }
                 }
+                result.push(Reflect.get(data, "onlineplayers"));
                 return result.map(String).join(",");
             })
             .join("\n");
@@ -73,6 +77,7 @@ const OutputOptionsList: OutputOptions[] = ["victoryPoints", "playerCount", "dep
                 header.push(`${factionName}_${outputName}`);
             }
         }
+        header.push("onlineplayers");
         await mylas.save(`./savesCSV/${warId}.csv`, header.join(",") + "\n" + outputData);
     }
     console.log("Done");
@@ -80,6 +85,9 @@ const OutputOptionsList: OutputOptions[] = ["victoryPoints", "playerCount", "dep
 
 interface SaveData {
     factions: Faction[];
+    queryServerInfo?: {
+        onlineplayers: number;
+    };
 }
 
 interface Faction {

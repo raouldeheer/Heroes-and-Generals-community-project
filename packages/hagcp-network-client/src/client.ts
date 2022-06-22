@@ -186,8 +186,8 @@ export class Client extends EventEmitter {
             if (result.mayProceed) this.sendPacket(ClassKeys.login2_begin, {
                 username: this.userName,
                 deviceid: this.userAgent,
-                acceptingPrivacyPolicy: false,
-                acceptingBattlEyePolicy: false,
+                acceptingPrivacyPolicy: true,
+                acceptingBattlEyePolicy: true,
             });
         }).on(ClassKeys.login2_challenge, result => {
             this.sendPacket(ClassKeys.login2_response, this.login(this.password, result));

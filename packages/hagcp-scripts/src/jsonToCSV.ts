@@ -25,7 +25,7 @@ const OutputOptionsList: OutputOptions[] = ["victoryPoints", "playerCount", "dep
     if (files) {
         const data = await Promise.all(files.map(openFile));
         const outputData = data
-            .filter(v => v.factions.length === 3)
+            .filter(v => v.factions?.length === 3)
             .map(savedData => ({
                 factions: savedData.factions
                     .sort((a, b) => Number(a.factionTemplateId) - Number(b.factionTemplateId))

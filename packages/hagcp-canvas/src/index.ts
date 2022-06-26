@@ -137,7 +137,10 @@ function drawCapitals(dataStore: DataStore, context: CanvasRenderingContext2D) {
 
             // write a function called drawLine.
             const draw = (radius: number, angle: number, action: string) => {
-                Reflect.get(context, action)(
+                /* Reflect.get(context, action) */
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
+                context[action](
                     battlefield.posx / (8 / multiplier) + radius * Math.cos(angle),
                     battlefield.posy / (8 / multiplier) + radius * Math.sin(angle)
                 );

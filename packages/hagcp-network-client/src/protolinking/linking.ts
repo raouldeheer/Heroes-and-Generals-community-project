@@ -36,6 +36,7 @@ const dummyClasses: Iterable<readonly [ClassKeys, packetClassParser]> = [
     ClassKeys.unsubscribebattlesview,
     ClassKeys.unsubscribewarmaplightview,
     ClassKeys.subscribewarmapview,
+    ClassKeys.ChangeTierRequest,
 ].map(key => ([key, dummyClass]));
 
 export const keyToClass = new Map<ClassKeys, packetClassParser>([
@@ -107,5 +108,28 @@ export const keyToClass = new Map<ClassKeys, packetClassParser>([
      */
     [ClassKeys.zipchunk, getDefaultClass("netsysmessages.zipchunk")],
     [ClassKeys.KeyValueChangeSet, KeyValueChangeSet],
+    [ClassKeys.AdminToolPlayerStatRequest, getDefaultClass("HnG_States.AdminToolPlayerStatRequest")],
+    [ClassKeys.AdminToolPlayerStatResponse, getDefaultClass("HnG_States.AdminToolPlayerStatResponse")],
+    [ClassKeys.AdminToolGetDbInfoRequest, getDefaultClass("HnG_States.AdminToolGetDbInfoRequest")],
+    [ClassKeys.RequestEarnings, getDefaultClass("statrequests.RequestEarnings")],
+    [ClassKeys.ResponseEarnings, getDefaultClass("statrequests.ResponseEarnings")],
+    [ClassKeys.GetHandlerTypes, getDefaultClass("netsysmessages.GetHandlerTypes")],
+    [ClassKeys.ResponseHandlerTypes, getDefaultClass("netsysmessages.ResponseHandlerTypes")],
+    [ClassKeys.AddMembershipRequest, getDefaultClass("HnG_States.AddMembershipRequest")],
+    [ClassKeys.AddMembershipResponse, getDefaultClass("HnG_States.AddMembershipResponse")],
+    [ClassKeys.ChangeTierResponse, getDefaultClass("HnG_States.ChangeTierResponse")],
+    [ClassKeys.DebugGetWarCatalogueRequest, getDefaultClass("HnG_States.DebugGetWarCatalogueRequest")],
+    [ClassKeys.MonitorLoadRequest, getDefaultClass("HnG_States.MonitorLoadRequest")],
+    [ClassKeys.MonitorLoadResponse, getDefaultClass("HnG_States.MonitorLoadResponse")],
+    [ClassKeys.war_create_request, getDefaultClass("HnG_States.war_create_request")],
+    [ClassKeys.war_create_response, getDefaultClass("HnG_States.war_create_response")],
+    [ClassKeys.delete_mission, getDefaultClass("HnG_States.delete_mission")],
+    [ClassKeys.delete_mission_response, getDefaultClass("HnG_States.delete_mission_response")],
+    [ClassKeys.EndMissionRequest, getDefaultClass("HnG_States.EndMissionRequest")],
+    [ClassKeys.EndMissionResponse, getDefaultClass("HnG_States.EndMissionResponse")],
+    [ClassKeys.SetSquadMatchMakingFlagRequest, getDefaultClass("HnG_States.SetSquadMatchMakingFlagRequest")],
+    [ClassKeys.SetSquadMatchMakingFlagResponse, getDefaultClass("HnG_States.SetSquadMatchMakingFlagResponse")],
+    [ClassKeys.GetBattlePassSeasonRequest, getDefaultClass("HnG_States.GetBattlePassSeasonRequest")],
+    [ClassKeys.GetBattlePassSeasonResponse, getDefaultClass("HnG_States.GetBattlePassSeasonResponse")],
     ...dummyClasses,
 ]);

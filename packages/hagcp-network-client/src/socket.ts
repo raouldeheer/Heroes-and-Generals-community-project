@@ -67,6 +67,7 @@ export class Socket extends EventEmitter {
      * @returns if sending was succesfull
      */
     public sendPacket<InputType, ReturnType>(className: ClassKeys, payload?: InputType, callback?: (result: ReturnType) => void): boolean {
+        if (this.isDebug) console.log(`sending: ${className}`);
         // Get data from class.
         const buffer = keyToClass.get(className)?.toBuffer?.(payload);
         // If class doesn't return any data, return failed.
@@ -149,7 +150,7 @@ export class Socket extends EventEmitter {
             console.log(`unsupported message: ${typeText}`);
         }
 
-        if (this.isDebug) {
+        if (this.isDebug && typeText !== ClassKeys.zipchunk) {
             const startString = `${plen.toString().padEnd(5)} ${id.toString().padEnd(5)} ${typeText.padEnd(35)}`;
             const midString = `${DataLen.toString().padEnd(5)}`;
             const outputStr = `${startString} ${result ? result : midString}`;

@@ -87,9 +87,8 @@ out/
 
 dist
 captures
-total.txt
+results
 testConLog.txt
-total.jsonc
 infos.jsonc
 packages/hagcp-network-client/src/env.ts
 screenshot.jpg

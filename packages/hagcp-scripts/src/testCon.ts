@@ -12,14 +12,15 @@ let warId: string | null = null;
 Client.connectToHQ(
     String(process.env.HAG_USERAGENT),
     String(process.env.HAG_USERNAME),
-    String(process.env.HAG_PASSWORD)
+    String(process.env.HAG_PASSWORD),
+    true
 ).then(cl => {
     if (!cl) return;
     const startTime = Date.now();
     cl.once("loggedin", async () => {
-        // cl.sendPacket(ClassKeys.subscribewarmapview);
+        // cl.sendPacket(ClassKeys.subscribesoldierview);
+        // cl.sendPacket(ClassKeys.subscribecommandnodeview);
         // cl.sendPacket(ClassKeys.query_war_catalogue_request);
-
         await setTimeout(2000);
 
         saveMapTimer = setInterval(saveMapNow, 30000);
@@ -34,6 +35,7 @@ Client.connectToHQ(
             cl.sendPacket(ClassKeys.query_war_catalogue_request);
         } else {
             console.error(`ERROR: ${data}`);
+            console.error(data);
         }
     }).on("message", async (typetext, data) => {
         if (typetext == "KeyValueChangeSet") {

@@ -102,6 +102,8 @@ export const enum ClassKeys {
     SetSquadMatchMakingFlagResponse = "SetSquadMatchMakingFlagResponse",
     GetBattlePassSeasonRequest = "GetBattlePassSeasonRequest",
     GetBattlePassSeasonResponse = "GetBattlePassSeasonResponse",
+    SetNotificationsReadRequest = "SetNotificationsReadRequest",
+    SetNotificationsReadResponse = "SetNotificationsReadResponse",
 }
 
 export const enum ResponseType {

@@ -87,6 +87,7 @@ out/
 
 dist
 captures
+images
 results
 testConLog.txt
 infos.jsonc

@@ -133,5 +133,11 @@ export const keyToClass = new Map<ClassKeys, packetClassParser>([
     [ClassKeys.GetBattlePassSeasonResponse, getDefaultClass("HnG_States.GetBattlePassSeasonResponse")],
     [ClassKeys.SetNotificationsReadRequest, getDefaultClass("HnG_States.SetNotificationsReadRequest")],
     [ClassKeys.SetNotificationsReadResponse, getDefaultClass("HnG_States.SetNotificationsReadResponse")],
+    [ClassKeys.DeleteCharacterRequest, getDefaultClass("HnG_States.DeleteCharacterRequest")],
+    [ClassKeys.DeleteCharacterResponse, getDefaultClass("HnG_States.DeleteCharacterResponse")],
+    [ClassKeys.GetMissionListRequest, getDefaultClass("HnG_States.GetMissionListRequest")],
+    [ClassKeys.GetMissionListResponse, getDefaultClass("HnG_States.GetMissionListResponse")],
+    [ClassKeys.GreenlightMissionRequest, getDefaultClass("HnG_States.GreenlightMissionRequest")],
+    [ClassKeys.GreenlightMissionResponse, getDefaultClass("HnG_States.GreenlightMissionResponse")],
     ...dummyClasses,
 ]);

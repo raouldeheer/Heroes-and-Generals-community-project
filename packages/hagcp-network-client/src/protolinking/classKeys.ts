@@ -104,6 +104,12 @@ export const enum ClassKeys {
     GetBattlePassSeasonResponse = "GetBattlePassSeasonResponse",
     SetNotificationsReadRequest = "SetNotificationsReadRequest",
     SetNotificationsReadResponse = "SetNotificationsReadResponse",
+    DeleteCharacterRequest = "DeleteCharacterRequest",
+    DeleteCharacterResponse = "DeleteCharacterResponse",
+    GetMissionListRequest = "GetMissionListRequest",
+    GetMissionListResponse = "GetMissionListResponse",
+    GreenlightMissionRequest = "GreenlightMissionRequest",
+    GreenlightMissionResponse = "GreenlightMissionResponse",
 }
 
 export const enum ResponseType {

@@ -10,6 +10,7 @@
   "scripts": {
     "build": "tsc",
     "dev:build": "tsc -w",
+    "downloadMap": "node dist/downloadMap.js",
     "wiresharkDecode": "nodemon dist/wiresharkDecode.js",
     "testcon": "node dist/testCon.js",
     "jsonToMap": "node dist/jsonToMap.js",
@@ -34,7 +35,7 @@
     "hagcp-utils": "^1.0.5",
     "long": "^5.2.0",
     "mylas": "^2.1.9",
-    "plimit-lit": "^1.2.6",
+    "plimit-lit": "^1.2.7",
     "tslib": "^2.4.0"
   },
   "devDependencies": {

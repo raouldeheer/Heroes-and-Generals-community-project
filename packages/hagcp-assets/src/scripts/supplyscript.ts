@@ -19,8 +19,10 @@ const result = sups.map(id => {
     const battlefield2 = battlefields.get(accesspoints.get(sup.accesspoint2Id).battlefield);
     return {
         ...sup,
+        bf1: battlefield1.id,
         posx1: battlefield1.posx,
         posy1: battlefield1.posy,
+        bf2: battlefield2.id,
         posx2: battlefield2.posx,
         posy2: battlefield2.posy
     };

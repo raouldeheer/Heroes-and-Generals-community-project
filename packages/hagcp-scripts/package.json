@@ -29,7 +29,7 @@
   "dependencies": {
     "dotenv": "^16.0.0",
     "globby": "^11.0.4",
-    "hagcp-assets": "^1.1.1",
+    "hagcp-assets": "^1.1.2",
     "hagcp-canvas": "^1.0.2",
     "hagcp-network-client": "^1.1.9",
     "hagcp-utils": "^1.0.9",

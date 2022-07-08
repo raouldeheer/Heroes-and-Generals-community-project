@@ -29,17 +29,17 @@
   "dependencies": {
     "dotenv": "^16.0.0",
     "globby": "^11.0.4",
-    "hagcp-assets": "^1.0.5",
-    "hagcp-canvas": "^1.0.0",
-    "hagcp-network-client": "^1.0.6",
-    "hagcp-utils": "^1.0.5",
+    "hagcp-assets": "^1.1.1",
+    "hagcp-canvas": "^1.0.2",
+    "hagcp-network-client": "^1.1.9",
+    "hagcp-utils": "^1.0.9",
     "long": "^5.2.0",
     "mylas": "^2.1.9",
     "plimit-lit": "^1.2.7",
     "tslib": "^2.4.0"
   },
   "devDependencies": {
-    "tsup": "^5.12.7",
-    "typescript": "^4.6.4"
+    "tsup": "^6.1.3",
+    "typescript": "^4.7.4"
   }
 }

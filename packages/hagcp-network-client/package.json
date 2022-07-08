@@ -44,8 +44,8 @@
   "dependencies": {
     "hagcp-utils": "^1.0.9",
     "long": "^5.2.0",
+    "node-fetch": "2.6.7",
     "protobufjs": "^6.11.3",
-    "node-fetch": "^3.2.6",
     "tslib": "^2.4.0"
   }
 }

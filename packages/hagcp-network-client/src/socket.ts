@@ -66,7 +66,7 @@ export class Socket extends EventEmitter {
      * @param callback callback for response
      * @returns if sending was succesfull
      */
-    public sendPacket<InputType, ReturnType>(className: ClassKeys, payload?: InputType, callback?: (result: ReturnType) => void): boolean {
+    public sendPacket<InputType, ReturnType>(className: ClassKeys, payload?: InputType, callback?: (result: ReturnType) => void, id?: number): boolean {
         if (this.isDebug) console.log(`sending: ${className}`);
         // Get data from class.
         const buffer = keyToClass.get(className)?.toBuffer?.(payload);
@@ -78,9 +78,10 @@ export class Socket extends EventEmitter {
         const result = new BufferCursor(Buffer.allocUnsafe(20 + totalLength));
         result.writeUInt32LE(20 + totalLength);             // Write TotalLen.
         result.writeUInt32LE(8);                            // Write IDLen.
-        result.writeUInt32LE(++this.idNumber);              // Write ID.
+        const packetId = id ? id : ++this.idNumber;
+        result.writeUInt32LE(packetId);                     // Write ID.
         // Set listener for callback.
-        if (callback) this.once(`id${this.idNumber}`, callback);
+        if (callback) this.once(`id${packetId}`, callback);
         result.writeUInt32LE(8 + totalLength);              // Write Size.
         result.writeUInt32LE(4 + className.length);         // Write HLen.
         result.write(className, className.length, "ascii"); // Write Header.
@@ -141,8 +142,8 @@ export class Socket extends EventEmitter {
             if (typeText === ClassKeys.zipchunk) {
                 this.handleMessage(gunzipSync(result.data));
             } else {
-                this.emit("message", typeText, result);
-                this.emit(typeText, result);
+                this.emit("message", typeText, result, id);
+                this.emit(typeText, result, id);
                 this.emit(`id${id}`, result);
             }
             if (typeof result == "object") result = ProtoToString(result);

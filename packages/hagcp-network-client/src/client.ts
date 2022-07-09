@@ -41,7 +41,7 @@ interface Settings {
 export class Client extends EventEmitter {
     private con: Socket;
 
-    private constructor(
+    constructor(
         host: string,
         port: number,
         private readonly userAgent: string,

@@ -1,5 +1,5 @@
 import { EventEmitter } from "events";
-import { createConnection, createServer, Socket as NetSocket, Server as NetServer } from "net";
+import { createServer, Socket as NetSocket, Server as NetServer } from "net";
 import { createHash, createHmac, Hmac } from "crypto";
 import { ClassKeys, ResponseType } from "./protolinking/classKeys";
 import { Socket } from "./socket";
@@ -88,7 +88,7 @@ export class Server {
                         positionInQueue: 1,
                         mayProceed: true,
                         originalId: item.originalId,
-                        result: 1,
+                        result: ResponseType.ok,
                     });
                 }
             }
@@ -99,7 +99,7 @@ export class Server {
                     positionInQueue: index + 1,
                     mayProceed: false,
                     originalId: item.originalId,
-                    result: 1,
+                    result: ResponseType.ok,
                 });
             });
         }, 2000);

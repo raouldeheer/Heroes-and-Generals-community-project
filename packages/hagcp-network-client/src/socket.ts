@@ -69,15 +69,16 @@ export class Socket extends EventEmitter {
     public sendPacket<InputType, ReturnType>(className: ClassKeys, payload?: InputType, callback?: (result: ReturnType) => void): boolean {
         if (this.isDebug) console.log(`sending: ${className}`);
         // Get data from class.
-        const buffer = keyToClass.get(className)?.toBuffer?.(payload);
-        // If class doesn't return any data, return failed.
-        if (!buffer) return false;
+        const packetClass = keyToClass.get(className);
+        // If class doesn't exist, return failed.
+        if (!packetClass) return false;
+        const buffer = packetClass.toBuffer(payload);
         // Get total length of packet.
         const totalLength = buffer.byteLength + className.length;
         // Construct BufferCursor.
         const result = new BufferCursor(Buffer.allocUnsafe(20 + totalLength));
         result.writeUInt32LE(20 + totalLength);             // Write TotalLen.
-        result.writeUInt32LE(8);                            // Write IDLen.
+        result.writeUInt32LE(8);                            // Write IDLen. //! Id is limited to UInt32 here
         result.writeUInt32LE(++this.idNumber);              // Write ID.
         // Set listener for callback.
         if (callback) this.once(`id${this.idNumber}`, callback);
@@ -96,7 +97,7 @@ export class Socket extends EventEmitter {
      * @returns data of response packet
      */
     public sendPacketAsync<InputType, ReturnType>(className: ClassKeys, payload?: InputType): Promise<ReturnType> {
-        return new Promise<ReturnType>((resolve, reject) => {
+        return new Promise((resolve, reject) => {
             try {
                 if (!this.sendPacket(className, payload, resolve))
                     throw new Error("Packet not send, class was probably not found");

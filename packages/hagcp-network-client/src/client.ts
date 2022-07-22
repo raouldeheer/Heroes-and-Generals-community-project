@@ -84,7 +84,7 @@ export class Client extends EventEmitter {
     public static async connectToHQ(userAgent: string, userName: string, password: string, isDebug = false) {
         // Get server status
         const status = await fetch("http://game.heroesandgenerals.com/status");
-        if (status.status !== 200) {
+        if (!status.ok) {
             console.log(`Servers are down ${status.status}`);
             return null;
         }

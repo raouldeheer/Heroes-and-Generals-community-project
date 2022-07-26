@@ -98,6 +98,15 @@ export interface ActivateBoosterResponse {
     response: ResponseType;
 }
 
+export interface ActivateTimedTicketRequest {
+    ticketTimedId: Long;
+    playerId: Long;
+}
+
+export interface ActivateTimedTicketResponse {
+    response: ResponseType;
+}
+
 export interface ActivateVariousBoosterRequest {
     boosterId: Long;
 }
@@ -228,6 +237,18 @@ export interface AddRibbonLevelRequest {
 
 export interface AddRibbonLevelResponse {
     result: ResponseType;
+}
+
+export interface AddTicketRequest {
+    templateId: Long;
+    isTimedTicket: boolean;
+    pricingId: Long;
+    discountId: Long;
+    paymentCurrency: VirtualCurrencyType;
+}
+
+export interface AddTicketResponse {
+    response: ResponseType;
 }
 
 export interface AddToFriendsListRequest {
@@ -938,6 +959,7 @@ export interface ClientBattleReportCharacter {
     ribbons: ClientBattleReportRibbon[];
     xpAnyFactionQuickplay: number;
     xpQuickplay: number;
+    xpWarBonus: number;
 }
 
 export interface ClientBattleReportEarnings {
@@ -1809,6 +1831,10 @@ export enum EStatRequirementProcessorType {
 
 }
 
+export enum ETicketType {
+
+}
+
 export enum EUniformPartType {
 
 }
@@ -1899,6 +1925,13 @@ export interface factiontemplate {
     id: Long;
     name: string;
     abbreviation: string;
+}
+
+export interface FactionWinningWarStreak {
+    id: Long;
+    factionTemplateId: Long;
+    winningStreak: number;
+    aTDeployCostPercentageIncrease: number;
 }
 
 export interface friendinfo {
@@ -2122,6 +2155,13 @@ export interface JoinFactionBonusOfferResponse {
     bonusFactionIds: Long[];
 }
 
+export interface JoinMatchmakingGameMode {
+    id: Long;
+    playerId: Long;
+    isQuickplay: boolean;
+    isQuickplaySelectedFaction: boolean;
+}
+
 export interface JoinMatchMakingRequest {
     characterId: Long;
     missionId: Long;
@@ -2196,6 +2236,7 @@ export interface LinkedLoginSelectAccountNameRequest {
     wantsMarketingMails: boolean;
     email: string;
     checkIfUsernameExists: boolean;
+    promoCode?: string;
 }
 
 export interface LinkedLoginSelectAccountNameResponse {
@@ -2753,6 +2794,7 @@ export interface PlayerBattleReportCharacter {
     ribbons: PlayerBattleReportRibbon[];
     xpAnyFactionQuickplay: number;
     xpQuickplay: number;
+    xpWarBonus: number;
 }
 
 export interface PlayerBattleReportEarnings {
@@ -2954,6 +2996,17 @@ export interface PlayerVerificationStatusRequest {
 
 export interface PlayerVerificationStatusResponse {
     msg: ResponseType;
+}
+
+export interface PlayerWarBonus {
+    id: Long;
+    playerId: Long;
+    validWarId: Long;
+    soldierXPPercent: number;
+    aTXPPercent: number;
+    previousFactionId: Long;
+    pendingWarfund: number;
+    pendingWarfundWarIds: string;
 }
 
 export interface Price {
@@ -3710,7 +3763,6 @@ export interface SetTracerEffectRequest {
     pricingId: Long;
     storeDiscountId: Long;
     paymentCurrency: VirtualCurrencyType;
-    isUnequip: boolean;
     tracerEffectId: Long;
 }
 
@@ -3999,8 +4051,6 @@ export interface SquadMemberSession {
     playerTier: number;
     squadCustomizationPoints: number;
     wasInvited: boolean;
-    isQuickplay: boolean;
-    isQuickplaySelectedFaction: boolean;
 }
 
 export enum SquadMemberSessionStatus {
@@ -4220,6 +4270,7 @@ export interface StoreDiscount {
     virtualCurrencyType: number;
     discountValue: number;
     campaignId: Long;
+    excludedObjectId?: string;
 }
 
 export interface subscribeassaultteamview {
@@ -4331,6 +4382,35 @@ export interface testsmallobjectsubdata {
     stringdata: string;
 }
 
+export interface Ticket {
+    id: Long;
+    ticketTemplateId: Long;
+    playerId: Long;
+    earnedTicket: Long;
+    consumedTicket: Long;
+}
+
+export interface TicketTemplate {
+    id: Long;
+    type: number;
+}
+
+export interface TicketTimed {
+    id: Long;
+    expiredDatetime: string;
+    playerId: Long;
+    ticketTimedTemplateId: Long;
+    earnedTimedTicket: Long;
+    consumedTimedTicket: Long;
+}
+
+export interface TicketTimedTemplate {
+    id: Long;
+    durationInHours: number;
+    storeDiscountId: Long;
+    storeCampaignId: Long;
+}
+
 export interface TracerEffect {
     id: Long;
     tracerEffectTemplateId: Long;
@@ -4422,6 +4502,7 @@ export interface UniformPartTemplate {
     isDefault: boolean;
     linkedUniformPartTemplateId?: string;
     factionTemplateId: number;
+    parentCharacterTemplateId: Long;
 }
 
 export interface UniformVariant {
@@ -4891,6 +4972,14 @@ export interface war {
     moraleGainedPerWin: number;
     moraleGainedPerMinute: number;
     moraleSurrenderLimit: number;
+}
+
+export interface WarBonusTemplate {
+    id: Long;
+    warfundBonus: number;
+    xpBonusPercent: number;
+    aTDeployCostPercent: number;
+    isActive: boolean;
 }
 
 export interface war_catalogue {

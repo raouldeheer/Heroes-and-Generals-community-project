@@ -98,6 +98,15 @@ message ActivateBoosterResponse {
 required Common.Response response = 1;
 }
 
+message ActivateTimedTicketRequest {
+required int64 ticketTimedId = 1;
+required int64 playerId = 2;
+}
+
+message ActivateTimedTicketResponse {
+required Common.Response response = 1;
+}
+
 message ActivateVariousBoosterRequest {
 required int64 boosterId = 1;
 }
@@ -228,6 +237,18 @@ required VirtualCurrencyType paymentCurrency = 5;
 
 message AddRibbonLevelResponse {
 required Common.Response result = 1;
+}
+
+message AddTicketRequest {
+required int64 templateId = 1;
+required bool isTimedTicket = 2;
+required int64 pricingId = 3;
+required int64 discountId = 4;
+required Common.Response paymentCurrency = 5;
+}
+
+message AddTicketResponse {
+required Common.Response response = 1;
 }
 
 message AddToFriendsListRequest {
@@ -938,6 +959,7 @@ repeated ClientBattleStatRequirement xpStatValues = 12;
 repeated ClientBattleReportRibbon ribbons = 13;
 required int32 xpAnyFactionQuickplay = 14;
 required int32 xpQuickplay = 15;
+required int32 xpWarBonus = 16;
 }
 
 message ClientBattleReportEarnings {
@@ -1809,6 +1831,10 @@ message EStatRequirementProcessorType {
 
 }
 
+message ETicketType {
+
+}
+
 message EUniformPartType {
 
 }
@@ -1899,6 +1925,13 @@ message factiontemplate {
 required int64 id = 1;
 required string name = 2;
 required string abbreviation = 3;
+}
+
+message FactionWinningWarStreak {
+required int64 id = 1;
+required int64 factionTemplateId = 2;
+required int32 winningStreak = 3;
+required int32 aTDeployCostPercentageIncrease = 4;
 }
 
 message friendinfo {
@@ -2122,6 +2155,13 @@ required int64 bonusOfferId = 2;
 repeated int64 bonusFactionIds = 3;
 }
 
+message JoinMatchmakingGameMode {
+required int64 id = 1;
+required int64 playerId = 2;
+required bool isQuickplay = 3;
+required bool isQuickplaySelectedFaction = 4;
+}
+
 message JoinMatchMakingRequest {
 required int64 characterId = 1;
 required int64 missionId = 2;
@@ -2196,6 +2236,7 @@ required string tempSessionid = 2;
 required bool wantsMarketingMails = 3;
 required string email = 4;
 required bool checkIfUsernameExists = 5;
+optional string promoCode = 6;
 }
 
 message LinkedLoginSelectAccountNameResponse {
@@ -2757,6 +2798,7 @@ repeated PlayerBattleReportStatRequirement xpStatValues = 12;
 repeated PlayerBattleReportRibbon ribbons = 13;
 required int32 xpAnyFactionQuickplay = 14;
 required int32 xpQuickplay = 15;
+required int32 xpWarBonus = 16;
 }
 
 message PlayerBattleReportEarnings {
@@ -2958,6 +3000,17 @@ optional int32 dummy = 1;
 
 message PlayerVerificationStatusResponse {
 required Common.Response msg = 1;
+}
+
+message PlayerWarBonus {
+required int64 id = 1;
+required int64 playerId = 2;
+required int64 validWarId = 3;
+required int32 soldierXPPercent = 4;
+required int32 aTXPPercent = 5;
+required int64 previousFactionId = 6;
+required int32 pendingWarfund = 7;
+required string pendingWarfundWarIds = 8;
 }
 
 message Price {
@@ -3718,8 +3771,7 @@ required int64 weaponId = 4;
 required int64 pricingId = 5;
 required int64 storeDiscountId = 6;
 required VirtualCurrencyType paymentCurrency = 7;
-required bool isUnequip = 8;
-required int64 tracerEffectId = 9;
+required int64 tracerEffectId = 8;
 }
 
 message SetTracerEffectResponse {
@@ -4007,8 +4059,6 @@ required int64 playerSessionId = 15;
 required int32 playerTier = 16;
 required int32 squadCustomizationPoints = 17;
 required bool wasInvited = 18;
-required bool isQuickplay = 19;
-required bool isQuickplaySelectedFaction = 20;
 }
 
 message SquadMemberSessionStatus {
@@ -4215,6 +4265,7 @@ required string callToAction = 4;
 required string iconType = 5;
 required string activeFromTime = 6;
 required string activeToTime = 7;
+optional string name = 8;
 }
 
 message StoreCampaignType {
@@ -4228,6 +4279,7 @@ required int64 objectId = 3;
 required int32 virtualCurrencyType = 4;
 required float discountValue = 5;
 required int64 campaignId = 6;
+optional string excludedObjectId = 7;
 }
 
 message subscribeassaultteamview {
@@ -4339,6 +4391,35 @@ required int32 intdata = 1;
 required string stringdata = 2;
 }
 
+message Ticket {
+required int64 id = 1;
+required int64 ticketTemplateId = 2;
+required int64 playerId = 3;
+required int64 earnedTicket = 4;
+required int64 consumedTicket = 5;
+}
+
+message TicketTemplate {
+required int64 id = 1;
+required int32 type = 2;
+}
+
+message TicketTimed {
+required int64 id = 1;
+required string expiredDatetime = 2;
+required int64 playerId = 3;
+required int64 ticketTimedTemplateId = 4;
+required int64 earnedTimedTicket = 5;
+required int64 consumedTimedTicket = 6;
+}
+
+message TicketTimedTemplate {
+required int64 id = 1;
+required int32 durationInHours = 2;
+required int64 storeDiscountId = 3;
+required int64 storeCampaignId = 4;
+}
+
 message TracerEffect {
 required int64 id = 1;
 required int64 tracerEffectTemplateId = 2;
@@ -4430,6 +4511,7 @@ required int32 variantType = 7;
 required bool isDefault = 8;
 optional string linkedUniformPartTemplateId = 9;
 required int32 factionTemplateId = 10;
+required int64 parentCharacterTemplateId = 11;
 }
 
 message UniformVariant {
@@ -4905,6 +4987,14 @@ required uint32 moraleLostPerBattle = 26;
 required uint32 moraleGainedPerWin = 27;
 required float moraleGainedPerMinute = 28;
 required uint32 moraleSurrenderLimit = 29;
+}
+
+message WarBonusTemplate {
+required int64 id = 1;
+required int32 warfundBonus = 2;
+required int32 xpBonusPercent = 3;
+required int32 aTDeployCostPercent = 4;
+required bool isActive = 5;
 }
 
 message war_catalogue {

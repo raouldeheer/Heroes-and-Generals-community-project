@@ -103,6 +103,8 @@ export const keyToClass = new Map<ClassKeys, packetClassParser>([
     [ClassKeys.GetChatChannelsSubscribedResponse, getDefaultClass("HnG_States.GetChatChannelsSubscribedResponse")],
     [ClassKeys.QueryServerInfoResponse, getDefaultClass("HnG_States.QueryServerInfoResponse")],
     [ClassKeys.unsubscriberesponse, getDefaultClass("Common.unsubscriberesponse", { reply: "ok" })],
+    [ClassKeys.RedeemVoucherRequest, getDefaultClass("HnG_States.RedeemVoucherRequest")],
+    [ClassKeys.RedeemVoucherResponse, getDefaultClass("HnG_States.RedeemVoucherResponse")],
     /*
      * Other classes 
      */

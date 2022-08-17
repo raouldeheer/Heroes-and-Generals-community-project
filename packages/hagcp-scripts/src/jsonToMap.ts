@@ -85,8 +85,8 @@ async function jsonToMap(filename: string, imageName: string, dataStore: DataSto
             if (!data?.factions) return prev;
 
             const lookupFactions = new Map<string, Faction>();
-            data.factions.forEach((element: Faction) => {
-                lookupFactions.set(element.factionId, element);
+            data.factions.forEach((element: Faction, i) => {
+                if (i < 3) lookupFactions.set(element.factionId, element);
             });
 
             lookupFactions.forEach(faction => {
@@ -106,7 +106,7 @@ async function jsonToMap(filename: string, imageName: string, dataStore: DataSto
         if (last) {
             const data: SaveData = await mylas.json.load(last);
             const winner = data.factions.reduce((prev, curr) => prev.factionVictoryPoints > curr.factionVictoryPoints ? prev : curr);
-            
+
             const factionMap = new Map<string, Faction>();
             data.factions.forEach(element => {
                 factionMap.set(element.factionTemplateId, element);
@@ -114,7 +114,7 @@ async function jsonToMap(filename: string, imageName: string, dataStore: DataSto
 
             const factionToAbbr = (faction: Faction) => dataStore.GetData("factiontemplate", faction.factionTemplateId).abbreviation;
             const factionToString = (faction: Faction) => `${factionToAbbr(faction)}: ${faction.infantryLost} Inf, ${faction.vehiclesLost} Vehicles, ${faction.tanksLost} Tanks, ${faction.planesLost} Planes`;
-            
+
             const totalEnding = `${factionToAbbr(winner)} won the war\n\nLosses:\n${factionToString(factionMap.get("1")!)}\n${factionToString(factionMap.get("2")!)}\n${factionToString(factionMap.get("3")!)}`;
 
             console.log(totalEnding);

@@ -109,6 +109,7 @@ async function jsonToMap(filename: string, imageName: string, dataStore: DataSto
 
             const factionMap = new Map<string, Faction>();
             data.factions.forEach(element => {
+                if (data.factions.length !== 3 && element.battlesWon <= 10) return;
                 factionMap.set(element.factionTemplateId, element);
             });
 

@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-prototype-builtins */
+import { createCanvas, loadImage } from "canvas";
 import mylas from "mylas";
 import { BufferCursor, DataStore, IKeyValueChangeSetResult } from "hagcp-utils";
 import { drawToCanvas, toCanvasColored } from "hagcp-canvas";
@@ -119,6 +120,31 @@ async function jsonToMap(filename: string, imageName: string, dataStore: DataSto
             const totalEnding = `${factionToAbbr(winner)} won the war\n\nLosses:\n${factionToString(factionMap.get("1")!)}\n${factionToString(factionMap.get("2")!)}\n${factionToString(factionMap.get("3")!)}`;
 
             console.log(totalEnding);
+
+            {
+                // Create canvas
+                const [x, y] = [1920, 1080];
+                const canvas = createCanvas(x, y);
+                const context = canvas.getContext("2d");
+
+                // Draw background
+                const image = await loadImage("./images/thumbnail.png");
+                context.drawImage(image, 0, 0, image.width, image.height);
+
+                // Draw war number
+                context.beginPath();
+                context.fillStyle = "#000";
+                context.font = "200px sans-serif, segoe-ui-emoji";
+                context.fillText(`#${data.warName.slice(data.warName.length-4) || "0000"}`, 1300, 200);
+                context.stroke();
+
+                // Draw winner image
+                const winnerImage = await loadImage(`./images/${"USSR" || factionToAbbr(winner)}.png`);
+                context.drawImage(winnerImage, (x / 2) - ((winnerImage.width * 2) / 2), (y / 2) - ((winnerImage.height * 2) / 2), winnerImage.width * 2, winnerImage.height * 2);
+
+                // Save thumbnail
+                await pipeline(canvas.createJPEGStream(), createWriteStream(`./savesMap/${warId}/thumbnail.jpg`));
+            }
         }
         mylas.saveS(`./savesMap/${warId}/timestamps.txt`, total);
         console.log(total);
@@ -137,7 +163,16 @@ function frameToTime(frame: number) {
 }
 
 interface SaveData {
+    warName: string;
     factions: Faction[];
+    queryServerInfo: {
+        servertime: string;
+        playersInWar: number;
+        onlineplayers: number;
+        version: string;
+        metricsUrl: string;
+        redShiftUrl: string;
+    };
 }
 
 interface Faction {

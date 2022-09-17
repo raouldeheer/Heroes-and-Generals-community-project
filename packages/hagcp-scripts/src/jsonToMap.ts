@@ -139,7 +139,7 @@ async function jsonToMap(filename: string, imageName: string, dataStore: DataSto
                 context.stroke();
 
                 // Draw winner image
-                const winnerImage = await loadImage(`./images/${"USSR" || factionToAbbr(winner)}.png`);
+                const winnerImage = await loadImage(`./images/${factionToAbbr(winner)}.png`);
                 context.drawImage(winnerImage, (x / 2) - ((winnerImage.width * 2) / 2), (y / 2) - ((winnerImage.height * 2) / 2), winnerImage.width * 2, winnerImage.height * 2);
 
                 // Save thumbnail

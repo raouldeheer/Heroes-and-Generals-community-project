@@ -1,6 +1,6 @@
 import mylas from "mylas";
 import { BufferCursor, DataStore } from "hagcp-utils";
-import { ClassKeys, keyToClass } from "hagcp-network-client";
+import { ClassKeys, PacketClass } from "hagcp-network-client";
 import { join } from "path";
 
 export async function loadTemplate(dataStore: DataStore, name: string) {
@@ -14,10 +14,10 @@ export async function loadTemplate(dataStore: DataStore, name: string) {
     DataBuf.seek(0);
 
     let result;
-    if (keyToClass.has(typeText)) {
+    if (Reflect.has(PacketClass, typeText)) {
         try {
             // Find class to parse packet with.
-            const klas = keyToClass.get(typeText);
+            const klas = Reflect.get(PacketClass, typeText);
             if (!klas) return;
             result = klas.parse(DataBuf);
             if (typeof result == "object") {

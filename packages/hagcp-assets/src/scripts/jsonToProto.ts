@@ -1,4 +1,4 @@
-import { ClassKeys, keyToClass } from "hagcp-network-client";
+import { PacketClass } from "hagcp-network-client";
 import { BufferCursor, IKeyValueChangeSetResult } from "hagcp-utils";
 import { Json, Buf } from "mylas";
 
@@ -7,7 +7,7 @@ import { Json, Buf } from "mylas";
 
     const assets = await Json.load(`./json/${assetType}.json`);
 
-    const klas = keyToClass.get(ClassKeys.KeyValueChangeSet);
+    const klas = PacketClass.KeyValueChangeSet;
     if (!klas) return;
 
     const returnObj: IKeyValueChangeSetResult = {

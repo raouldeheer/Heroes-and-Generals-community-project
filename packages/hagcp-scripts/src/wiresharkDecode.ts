@@ -3,7 +3,7 @@ import mylas from "mylas";
 import { BufferCursor, DataStore, bytesToString } from "hagcp-utils";
 import { toCanvasColored } from "hagcp-canvas";
 import { gunzipSync } from "zlib";
-import { ClassKeys, keyToClass, ProtoToString } from "hagcp-network-client";
+import { ClassKeys, PacketClass, ProtoToString } from "hagcp-network-client";
 import { loadTemplate } from "hagcp-assets";
 
 if (!process.argv[2]) throw new Error("No file");
@@ -90,10 +90,10 @@ const parse = (element: BufferCursor) => {
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let result: any;
-    if (keyToClass.has(typeText)) {
+    if (Reflect.has(PacketClass, typeText)) {
         try {
             // Find class to parse packet with.
-            const klas = keyToClass.get(typeText);
+            const klas = Reflect.get(PacketClass, typeText);
             if (!klas) return;
             result = klas.parse(DataBuf);
             if (typeText == "zipchunk") {

@@ -2,7 +2,7 @@ import { DataStore } from "hagcp-utils";
 import mylas from "mylas";
 import Long from "long";
 import { setTimeout } from "timers/promises";
-import { ResponseType, Client, ClassKeys } from "hagcp-network-client";
+import { ResponseType, Client, ClassKeys, PacketClass } from "hagcp-network-client";
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -18,49 +18,47 @@ Client.connectToHQ(
     if (!cl) return;
     const startTime = Date.now();
     cl.once("loggedin", async () => {
-        // cl.sendPacket(ClassKeys.subscribesoldierview);
-        // cl.sendPacket(ClassKeys.subscribecommandnodeview);
-        // cl.sendPacket(ClassKeys.query_war_catalogue_request);
+        // cl.sendClass(PacketClass.subscribesoldierview);
+        // cl.sendClass(PacketClass.subscribecommandnodeview);
+        // cl.sendClass(PacketClass.query_war_catalogue_request);
         await setTimeout(2000);
 
         saveMapTimer = setInterval(saveMapNow, 30000);
-    }).on(ClassKeys.join_war_response, async (data: { msg: ResponseType, redirectSrv?: string; }) => {
+    }).on(ClassKeys.join_war_response, async (data) => {
         if (data.msg === ResponseType.ok) {
             if (data.redirectSrv) {
                 console.log(`redirectSrv detected: ${data.redirectSrv}`);
             }
-            cl.sendPacket(ClassKeys.unsubscribewarmapview);
+            cl.sendClass(PacketClass.unsubscribewarmapview);
             await setTimeout(1000);
-            cl.sendPacket(ClassKeys.subscribewarmapview);
-            cl.sendPacket(ClassKeys.query_war_catalogue_request);
+            cl.sendClass(PacketClass.subscribewarmapview);
+            cl.sendClass(PacketClass.query_war_catalogue_request);
         } else {
             console.error(`ERROR: ${data}`);
             console.error(data);
         }
-    }).on("message", async (typetext, data) => {
-        if (typetext == "KeyValueChangeSet") {
-            dataStore.SaveData(data);
-            if (data?.set) {
-                for (const iterator of data.set) {
-                    if (iterator.key == "war") {
-                        const value = iterator.value;
-                        warId = value.id;
-                        if (value.sequelwarid !== "0") {
-                            saveMapNow();
-                            saveMapTimer.refresh();
-                            console.log(`${value.id} ended, switching to: ${value.sequelwarid}`);
-                            dataStore.ResetData("battlefieldstatus");
-                            cl.sendPacket(ClassKeys.join_war_request, {
-                                warid: Long.fromString(value.sequelwarid),
-                                factionid: Long.ZERO,
-                                playedFirstBlood: 0,
-                            });
-                        }
+    }).on(ClassKeys.KeyValueChangeSet, async (data) => {
+        dataStore.SaveData(data);
+        if (data?.set) {
+            for (const iterator of data.set) {
+                if (iterator.key == "war") {
+                    const value = iterator.value;
+                    warId = value.id;
+                    if (value.sequelwarid !== "0") {
+                        saveMapNow();
+                        saveMapTimer.refresh();
+                        console.log(`${value.id} ended, switching to: ${value.sequelwarid}`);
+                        dataStore.ResetData("battlefieldstatus");
+                        cl.sendClass(PacketClass.join_war_request, {
+                            warid: Long.fromString(value.sequelwarid),
+                            factionid: Long.ZERO,
+                            playedFirstBlood: 0,
+                        });
                     }
                 }
             }
         }
-    }).on("closed", () => {
+    }).on("close", () => {
         console.log("Socket closed!");
         console.log(`After ${Date.now() - startTime}ms`);
         clearInterval(saveMapTimer);

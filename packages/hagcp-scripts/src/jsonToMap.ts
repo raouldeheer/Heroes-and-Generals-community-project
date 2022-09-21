@@ -3,13 +3,13 @@
 /* eslint-disable no-prototype-builtins */
 import { createCanvas, loadImage } from "canvas";
 import mylas from "mylas";
-import { BufferCursor, DataStore, IKeyValueChangeSetResult } from "hagcp-utils";
+import { BufferCursor, DataStore } from "hagcp-utils";
 import { drawToCanvas, toCanvasColored } from "hagcp-canvas";
 import { existsSync, createWriteStream } from "fs";
 import { loadTemplate } from "hagcp-assets";
 import { pipeline } from "stream/promises";
 import { gunzipSync } from "zlib";
-import { ClassKeys, keyToClass } from "hagcp-network-client";
+import { PacketClass } from "hagcp-network-client";
 import globby from "globby";
 
 async function jsonToMap(filename: string, imageName: string, dataStore: DataStore) {
@@ -18,7 +18,7 @@ async function jsonToMap(filename: string, imageName: string, dataStore: DataSto
 
     if (existsSync(filename.replace(".jsonc", ".protodata"))) {
         const buf = gunzipSync(await mylas.buf.load(filename.replace(".jsonc", ".protodata")));
-        dataStore2.SaveData(keyToClass.get(ClassKeys.KeyValueChangeSet)?.parse(new BufferCursor(buf)) as IKeyValueChangeSetResult);
+        dataStore2.SaveData(PacketClass.KeyValueChangeSet.parse(new BufferCursor(buf)));
     } else {
         for (const key in data) if (data.hasOwnProperty(key))
             for (const key2 in data[key]) if (data[key].hasOwnProperty(key2))

@@ -1,10 +1,30 @@
 import { EventEmitter } from "events";
 import { BufferCursor } from "hagcp-utils";
 import { Socket as NetSocket } from "net";
-import { gunzipSync } from "zlib";
+import { gunzip } from "zlib";
 import { ProtoToString } from "./protoclasses/proto";
 import { ClassKeys } from "./protolinking/classKeys";
-import { keyToClass } from "./protolinking/linking";
+import { PacketClass, PacketClassKeys, packetClassParser } from "./protolinking/linking";
+
+export interface Socket {
+    on(event: "connect", listener: () => void): this;
+    on(event: "close", listener: () => void): this;
+    on(event: "error", listener: (error: Error) => void): this;
+    on<ClassType extends PacketClassKeys>(event: ClassType, listener: (result: ReturnType<(typeof PacketClass)[ClassType]["parse"]>) => void): this;
+    on<ClassType extends PacketClassKeys>(event: "message", listener: (typeText: ClassType, result: ReturnType<(typeof PacketClass)[ClassType]["parse"]>) => void): this;
+
+    once(event: "connect", listener: () => void): this;
+    once(event: "close", listener: () => void): this;
+    once(event: "error", listener: (error: Error) => void): this;
+    once<ClassType extends PacketClassKeys>(event: ClassType, listener: (result: ReturnType<(typeof PacketClass)[ClassType]["parse"]>) => void): this;
+    once<ClassType extends PacketClassKeys>(event: "message", listener: (typeText: ClassType, result: ReturnType<(typeof PacketClass)[ClassType]["parse"]>) => void): this;
+
+    off(event: "connect", listener: () => void): this;
+    off(event: "close", listener: () => void): this;
+    off(event: "error", listener: (error: Error) => void): this;
+    off<ClassType extends PacketClassKeys>(event: ClassType, listener: (result: ReturnType<(typeof PacketClass)[ClassType]["parse"]>) => void): this;
+    off<ClassType extends PacketClassKeys>(event: "message", listener: (typeText: ClassType, result: ReturnType<(typeof PacketClass)[ClassType]["parse"]>) => void): this;
+}
 
 export class Socket extends EventEmitter {
     private idNumber;
@@ -32,6 +52,7 @@ export class Socket extends EventEmitter {
                 this.emit("close");
             } else {
                 console.error(error);
+                this.emit("error", error);
             }
         });
 
@@ -60,34 +81,63 @@ export class Socket extends EventEmitter {
     }
 
     /**
-     * send sends a packet to the server
-     * @param className name of class to send
+     * sendClass sends a packet to the server
+     * @param packetClass class to send
      * @param payload payload to send
      * @param callback callback for response
-     * @returns if sending was succesfull
+     * @returns true if sending was succesfull
      */
-    public sendPacket<InputType, ReturnType>(className: ClassKeys, payload?: InputType, callback?: (result: ReturnType) => void): boolean {
-        if (this.isDebug) console.log(`sending: ${className}`);
-        // Get data from class.
-        const packetClass = keyToClass.get(className);
+    public sendClass<
+        T extends packetClassParser,
+        RType
+    >(
+        packetClass: T,
+        payload?: Parameters<T["toBuffer"]>[0],
+        callback?: (result: RType) => void,
+    ): boolean {
         // If class doesn't exist, return failed.
         if (!packetClass) return false;
+        if (this.isDebug) console.log(`sending: ${packetClass.name}`);
         const buffer = packetClass.toBuffer(payload);
         // Get total length of packet.
-        const totalLength = buffer.byteLength + className.length;
+        const totalLength = buffer.byteLength + packetClass.name.length;
         // Construct BufferCursor.
         const result = new BufferCursor(Buffer.allocUnsafe(20 + totalLength));
         result.writeUInt32LE(20 + totalLength);             // Write TotalLen.
         result.writeUInt32LE(8);                            // Write IDLen. //! Id is limited to UInt32 here
         result.writeUInt32LE(++this.idNumber);              // Write ID.
         // Set listener for callback.
+        // @ts-expect-error id${this.idNumber} is not an exported type of the EventEmitter
         if (callback) this.once(`id${this.idNumber}`, callback);
         result.writeUInt32LE(8 + totalLength);              // Write Size.
-        result.writeUInt32LE(4 + className.length);         // Write HLen.
-        result.write(className, className.length, "ascii"); // Write Header.
+        result.writeUInt32LE(4 + packetClass.name.length);         // Write HLen.
+        result.write(packetClass.name, packetClass.name.length, "ascii"); // Write Header.
         result.writeBuff(buffer, buffer.byteLength);        // Write Data.
         this.con.write(result.buffer);  // Write packet to tcp.
         return true;                    // Return success.
+    }
+
+    /**
+     * sendPacket sends a packet to the server
+     * @param className name of class to send
+     * @param payload payload to send
+     * @param callback callback for response
+     * @returns true if sending was succesfull
+     */
+    public sendPacket<
+        ClassType extends PacketClassKeys,
+        IType = Parameters<(typeof PacketClass)[ClassType]["toBuffer"]>[0],
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        RType = any
+    >(
+        className: ClassType,
+        payload?: IType,
+        callback?: (result: RType) => void,
+    ): boolean {
+        // Get packetClass from list
+        const packetClass = Reflect.get(PacketClass, className);
+        // Send packet with packetClass
+        return this.sendClass(packetClass, payload, callback);
     }
 
     /**
@@ -134,13 +184,15 @@ export class Socket extends EventEmitter {
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         let result: any;
-        if (keyToClass.has(typeText)) {
+        if (Reflect.has(PacketClass, typeText)) {
             // Find class to parse packet with.
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            const klas = keyToClass.get(typeText)!;
+            const klas = Reflect.get(PacketClass, typeText);
             result = klas.parse(DataBuf);
             if (typeText === ClassKeys.zipchunk) {
-                this.handleMessage(gunzipSync(result.data));
+                gunzip(result.data, (err, data) => {
+                    if (err) console.error(err);
+                    else this.handleMessage(data);
+                });
             } else {
                 this.emit("message", typeText, result);
                 this.emit(typeText, result);

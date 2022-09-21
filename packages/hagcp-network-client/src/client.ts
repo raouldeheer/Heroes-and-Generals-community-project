@@ -4,6 +4,7 @@ import { createHash, createHmac } from "crypto";
 import { ClassKeys, ResponseType } from "./protolinking/classKeys";
 import fetch from "node-fetch";
 import { Socket } from "./socket";
+import { PacketClass, PacketClassKeys, packetClassParser } from "./protolinking/linking";
 
 interface Settings {
     web_entrance: string[];
@@ -38,6 +39,29 @@ interface Settings {
     extensionid: string;
 }
 
+export interface Client {
+    on(event: "loggedin", listener: () => void): this;
+    on(event: "loginFailed", listener: () => void): this;
+    on(event: "close", listener: () => void): this;
+    on(event: "error", listener: (error: Error) => void): this;
+    on<ClassType extends PacketClassKeys>(event: ClassType, listener: (result: ReturnType<(typeof PacketClass)[ClassType]["parse"]>) => void): this;
+    on<ClassType extends PacketClassKeys>(event: "message", listener: (typeText: ClassType, result: ReturnType<(typeof PacketClass)[ClassType]["parse"]>) => void): this;
+
+    once(event: "loggedin", listener: () => void): this;
+    once(event: "loginFailed", listener: () => void): this;
+    once(event: "close", listener: () => void): this;
+    once(event: "error", listener: (error: Error) => void): this;
+    once<ClassType extends PacketClassKeys>(event: ClassType, listener: (result: ReturnType<(typeof PacketClass)[ClassType]["parse"]>) => void): this;
+    once<ClassType extends PacketClassKeys>(event: "message", listener: (typeText: ClassType, result: ReturnType<(typeof PacketClass)[ClassType]["parse"]>) => void): this;
+
+    off(event: "loggedin", listener: () => void): this;
+    off(event: "loginFailed", listener: () => void): this;
+    off(event: "close", listener: () => void): this;
+    off(event: "error", listener: (error: Error) => void): this;
+    off<ClassType extends PacketClassKeys>(event: ClassType, listener: (result: ReturnType<(typeof PacketClass)[ClassType]["parse"]>) => void): this;
+    off<ClassType extends PacketClassKeys>(event: "message", listener: (typeText: ClassType, result: ReturnType<(typeof PacketClass)[ClassType]["parse"]>) => void): this;
+}
+
 export class Client extends EventEmitter {
     private con: Socket;
 
@@ -57,11 +81,14 @@ export class Client extends EventEmitter {
             this.emit(typeText, result);
         });
 
-        this.con.on("close", err => {
-            this.emit("close", err);
+        this.con.on("close", () => {
+            this.emit("close");
         });
 
-        this.con.on("error", console.error);
+        this.con.on("error", (error) => {
+            console.error(error);
+            this.emit("error", error);
+        });
 
         this.con.on("connect", () => {
             this.sendPacket(ClassKeys.QueryServerInfo);
@@ -70,7 +97,7 @@ export class Client extends EventEmitter {
         this.addHandlers();
     }
 
-    public get connected() : boolean {
+    public get connected(): boolean {
         return this.con.connected;
     }
 
@@ -113,13 +140,40 @@ export class Client extends EventEmitter {
 
     /**
      * sendPacket sends a packet to the server
+     * @param packetClass class to send
+     * @param payload payload to send
+     * @param callback callback for response
+     * @returns true if sending was succesfull
+     */
+    public sendClass<
+        T extends packetClassParser,
+        RType
+    >(
+        packetClass: T,
+        payload?: Parameters<T["toBuffer"]>[0],
+        callback?: (result: RType) => void,
+    ): boolean {
+        return this.con.sendClass<T, RType>(packetClass, payload, callback);
+    }
+
+    /**
+     * sendPacket sends a packet to the server
      * @param className name of class to send
      * @param payload payload to send
      * @param callback callback for response
-     * @returns if sending was succesfull
+     * @returns true if sending was succesfull
      */
-    public sendPacket<InputType = undefined, ReturnType = undefined>(className: ClassKeys, payload?: InputType, callback?: (result: ReturnType) => void): boolean {
-        return this.con.sendPacket<InputType, ReturnType>(className, payload, callback);
+    public sendPacket<
+        ClassType extends PacketClassKeys,
+        IType = Parameters<(typeof PacketClass)[ClassType]["toBuffer"]>[0],
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        RType = any
+    >(
+        className: ClassType,
+        payload?: IType,
+        callback?: (result: RType) => void
+    ): boolean {
+        return this.con.sendPacket<ClassType, IType, RType>(className, payload, callback);
     }
 
     /**
@@ -192,7 +246,6 @@ export class Client extends EventEmitter {
         }).on(ClassKeys.login2_challenge, result => {
             this.sendPacket(ClassKeys.login2_response, this.login(this.password, result));
         }).on(ClassKeys.login2_result, result => {
-            this.emit("login2_result", result);
             if (result.response == ResponseType.login_success) {
                 this.emit("loggedin");
             } else {

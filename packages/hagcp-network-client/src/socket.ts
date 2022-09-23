@@ -10,20 +10,20 @@ export interface Socket {
     on(event: "connect", listener: () => void): this;
     on(event: "close", listener: () => void): this;
     on(event: "error", listener: (error: Error) => void): this;
-    on<ClassType extends PacketClassKeys>(event: ClassType, listener: (result: ReturnType<(typeof PacketClass)[ClassType]["parse"]>) => void): this;
-    on<ClassType extends PacketClassKeys>(event: "message", listener: (typeText: ClassType, result: ReturnType<(typeof PacketClass)[ClassType]["parse"]>) => void): this;
+    on<ClassType extends PacketClassKeys>(event: ClassType, listener: (result: ReturnType<(typeof PacketClass)[ClassType]["parse"]>, id: number) => void): this;
+    on<ClassType extends PacketClassKeys>(event: "message", listener: (typeText: ClassType, result: ReturnType<(typeof PacketClass)[ClassType]["parse"]>, id: number) => void): this;
 
     once(event: "connect", listener: () => void): this;
     once(event: "close", listener: () => void): this;
     once(event: "error", listener: (error: Error) => void): this;
-    once<ClassType extends PacketClassKeys>(event: ClassType, listener: (result: ReturnType<(typeof PacketClass)[ClassType]["parse"]>) => void): this;
-    once<ClassType extends PacketClassKeys>(event: "message", listener: (typeText: ClassType, result: ReturnType<(typeof PacketClass)[ClassType]["parse"]>) => void): this;
+    once<ClassType extends PacketClassKeys>(event: ClassType, listener: (result: ReturnType<(typeof PacketClass)[ClassType]["parse"]>, id: number) => void): this;
+    once<ClassType extends PacketClassKeys>(event: "message", listener: (typeText: ClassType, result: ReturnType<(typeof PacketClass)[ClassType]["parse"]>, id: number) => void): this;
 
     off(event: "connect", listener: () => void): this;
     off(event: "close", listener: () => void): this;
     off(event: "error", listener: (error: Error) => void): this;
-    off<ClassType extends PacketClassKeys>(event: ClassType, listener: (result: ReturnType<(typeof PacketClass)[ClassType]["parse"]>) => void): this;
-    off<ClassType extends PacketClassKeys>(event: "message", listener: (typeText: ClassType, result: ReturnType<(typeof PacketClass)[ClassType]["parse"]>) => void): this;
+    off<ClassType extends PacketClassKeys>(event: ClassType, listener: (result: ReturnType<(typeof PacketClass)[ClassType]["parse"]>, id: number) => void): this;
+    off<ClassType extends PacketClassKeys>(event: "message", listener: (typeText: ClassType, result: ReturnType<(typeof PacketClass)[ClassType]["parse"]>, id: number) => void): this;
 }
 
 export class Socket extends EventEmitter {
@@ -135,11 +135,12 @@ export class Socket extends EventEmitter {
         className: ClassType,
         payload?: IType,
         callback?: (result: RType) => void,
+        id?: number,
     ): boolean {
         // Get packetClass from list
         const packetClass = Reflect.get(PacketClass, className);
         // Send packet with packetClass
-        return this.sendClass(packetClass, payload, callback);
+        return this.sendClass(packetClass, payload, callback, id);
     }
 
     /**

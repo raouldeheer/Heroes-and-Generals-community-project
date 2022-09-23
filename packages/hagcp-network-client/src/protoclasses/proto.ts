@@ -36,8 +36,8 @@ export function ProtoToBuf<T>(proto: Type, payload: T): Buffer {
     return result.buffer;
 }
 
-export const getDefaultClass = <T>(protoName: string, defaults: T = {} as T) => ({
-    name: protoName,
+export const getDefaultClass = <T>(protoName: string, defaults: T = {} as T, name = protoName.match(/\w+$/g)?.pop() || "") => ({
+    name,
     parse: (buf: BufferCursor): T => BufToDecodedProto(Protos.lookupType(protoName), buf.buffer.slice(8)),
     toBuffer: (payload = defaults): Buffer => ProtoToBuf(Protos.lookupType(protoName), payload),
 });

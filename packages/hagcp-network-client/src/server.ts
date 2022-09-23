@@ -1,6 +1,6 @@
 import { EventEmitter } from "events";
 import { createServer, Socket as NetSocket, Server as NetServer } from "net";
-import { createHash, createHmac, Hmac, randomBytes } from "crypto";
+import { createHash, createHmac, randomBytes } from "crypto";
 import { ClassKeys, ResponseType } from "./protolinking/classKeys";
 import { Socket } from "./socket";
 import { PacketClass, PacketClassKeys, packetClassParser } from "./protolinking/linking";
@@ -8,10 +8,12 @@ import { PacketClass, PacketClassKeys, packetClassParser } from "./protolinking/
 export class ClientHandler extends EventEmitter {
     private con: Socket;
     private server: Server;
+    private auth: boolean;
 
     constructor(socket: NetSocket, parent: Server) {
         super();
         console.log("New socket opened");
+        this.auth = false;
         this.server = parent;
         this.con = new Socket(socket, true);
 
@@ -87,7 +89,7 @@ export class ClientHandler extends EventEmitter {
         this.con.on(ClassKeys.login2_begin, (result, id) => {
             //! THIS IS FOR TESTING ONLY, DO NOT USE IN PRODUCTION
             const username = result.username;
-            const password = username;
+            const password = username; // TODO implement correct auth method with encrypted password
             const salt = randomBytes(8).toString("base64");
             const tempSessionid = randomBytes(19).toString("base64");
             const encryptedSessionkey = randomBytes(16).toString("base64");
@@ -96,7 +98,7 @@ export class ClientHandler extends EventEmitter {
                 tempSessionid,
                 salt,
                 responseCode: ResponseType.challenge,
-            });
+            }, id);
             this.con.once(ClassKeys.login2_response, (result, id) => {
                 // Decoded sessionid.
                 const sessionid = Buffer.from(tempSessionid, "base64");
@@ -114,19 +116,17 @@ export class ClientHandler extends EventEmitter {
                     .update(sessionid)
                     .digest("base64");
 
-                if (result.tempSessionid === tempSessionid && result.digest === correctResult) {
-                    // CORRECT
-                    console.log("Password correct");
-                    
-                } else {
-                    // FAIL
-                    console.log("Password incorrect");
-                    
+                const loginSuccesfull = result.tempSessionid === tempSessionid && result.digest === correctResult;
+                if (loginSuccesfull) this.auth = true;
 
-                }
-
+                this.sendClass(PacketClass.login2_result, {
+                    time: new Date().getTime().toString(),
+                    response: loginSuccesfull
+                        ? ResponseType.login_success
+                        : ResponseType.wrong_password,
+                    username,
+                }, id);
             });
-            // TODO handle login
         });
         // TODO handle messages.
     }

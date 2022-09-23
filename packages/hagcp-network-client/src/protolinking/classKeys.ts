@@ -110,6 +110,8 @@ export const enum ClassKeys {
     GetMissionListResponse = "GetMissionListResponse",
     GreenlightMissionRequest = "GreenlightMissionRequest",
     GreenlightMissionResponse = "GreenlightMissionResponse",
+    RedeemVoucherRequest = "RedeemVoucherRequest",
+    RedeemVoucherResponse = "RedeemVoucherResponse",
 }
 
 export const enum ResponseType {

@@ -1,10 +1,9 @@
 import { EventEmitter } from "events";
 import { createServer, Socket as NetSocket, Server as NetServer } from "net";
-import { createHash, createHmac, Hmac } from "crypto";
+import { createHash, createHmac, Hmac, randomBytes } from "crypto";
 import { ClassKeys, ResponseType } from "./protolinking/classKeys";
 import { Socket } from "./socket";
-
-type Unused = undefined;
+import { PacketClass, PacketClassKeys, packetClassParser } from "./protolinking/linking";
 
 export class ClientHandler extends EventEmitter {
     private con: Socket;
@@ -16,8 +15,8 @@ export class ClientHandler extends EventEmitter {
         this.server = parent;
         this.con = new Socket(socket, true);
 
-        this.con.on("close", err => {
-            this.emit("close", err);
+        this.con.on("close", () => {
+            this.emit("close");
         });
 
         this.con.on("error", console.error);
@@ -25,13 +24,48 @@ export class ClientHandler extends EventEmitter {
         this.addHandlers();
     }
 
-    public sendPacket<InputType = undefined>(className: ClassKeys, payload?: InputType, id = 0): boolean {
-        return this.con.sendPacket<InputType, undefined>(className, payload, undefined, id);
+
+    /**
+     * sendClass sends a packet to the server
+     * @param packetClass class to send
+     * @param payload payload to send
+     * @param callback callback for response
+     * @returns true if sending was succesfull
+     */
+    public sendClass<
+        T extends packetClassParser,
+        RType
+    >(
+        packetClass: T,
+        payload?: Parameters<T["toBuffer"]>[0],
+        id = 0,
+    ): boolean {
+        return this.con.sendClass<T, RType>(packetClass, payload, undefined, id);
+    }
+
+    /**
+     * sendPacket sends a packet to the server
+     * @param className name of class to send
+     * @param payload payload to send
+     * @param callback callback for response
+     * @returns true if sending was succesfull
+     */
+    public sendPacket<
+        ClassType extends PacketClassKeys,
+        IType = Parameters<(typeof PacketClass)[ClassType]["toBuffer"]>[0],
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        RType = any
+    >(
+        className: ClassType,
+        payload?: IType,
+        id = 0,
+    ): boolean {
+        return this.con.sendPacket<ClassType, IType, RType>(className, payload, undefined, id);
     }
 
     private addHandlers() {
-        this.con.on(ClassKeys.QueryServerInfo, (result: Unused, id: number) => {
-            this.sendPacket(ClassKeys.QueryServerInfoResponse, {
+        this.con.on(ClassKeys.QueryServerInfo, (result, id) => {
+            this.sendClass(PacketClass.QueryServerInfoResponse, {
                 servertime: "1656617936172",
                 playersInWar: 420,
                 onlineplayers: 6969,
@@ -41,8 +75,8 @@ export class ClientHandler extends EventEmitter {
                 engageUrl: "",
             }, id);
         });
-        this.con.on(ClassKeys.QueryBannedMachineRequest, (result: { machineIdentifier: string, machineIdentifierOld: string; }, id: number) => {
-            this.sendPacket(ClassKeys.QueryBannedMachineResponse, {
+        this.con.on(ClassKeys.QueryBannedMachineRequest, (result, id) => {
+            this.sendClass(PacketClass.QueryBannedMachineResponse, {
                 isBanned: false,
                 banReason: "",
             }, id);
@@ -50,7 +84,48 @@ export class ClientHandler extends EventEmitter {
         this.con.on(ClassKeys.StartLogin, () => {
             this.server.addToLoginQueue(this);
         });
-        this.con.on(ClassKeys.login2_begin, (result: { username: string; }, id: number) => {
+        this.con.on(ClassKeys.login2_begin, (result, id) => {
+            //! THIS IS FOR TESTING ONLY, DO NOT USE IN PRODUCTION
+            const username = result.username;
+            const password = username;
+            const salt = randomBytes(8).toString("base64");
+            const tempSessionid = randomBytes(19).toString("base64");
+            const encryptedSessionkey = randomBytes(16).toString("base64");
+            this.sendClass(PacketClass.login2_challenge, {
+                encryptedSessionkey,
+                tempSessionid,
+                salt,
+                responseCode: ResponseType.challenge,
+            });
+            this.con.once(ClassKeys.login2_response, (result, id) => {
+                // Decoded sessionid.
+                const sessionid = Buffer.from(tempSessionid, "base64");
+                // Concat buffers and createHash.
+                const sha1concat = (d1: Buffer, d2: Buffer) =>
+                    createHash("sha1").update(Buffer.concat([d1, d2])).digest();
+                // Create loginHash.
+                const loginkeyhash = sha1concat(sha1concat(
+                    Buffer.from(password, "latin1"),
+                    Buffer.from(salt, "base64")
+                ), sessionid);
+
+                const correctResult = createHmac("sha1", Buffer.from(encryptedSessionkey, "base64")
+                    .map((value, i) => value ^ loginkeyhash[i % loginkeyhash.length]))
+                    .update(sessionid)
+                    .digest("base64");
+
+                if (result.tempSessionid === tempSessionid && result.digest === correctResult) {
+                    // CORRECT
+                    console.log("Password correct");
+                    
+                } else {
+                    // FAIL
+                    console.log("Password incorrect");
+                    
+
+                }
+
+            });
             // TODO handle login
         });
         // TODO handle messages.
@@ -84,7 +159,7 @@ export class Server {
             if (this.loginQueue.length >= 1 && !this.loginSlowDown) {
                 const item = this.loginQueue.shift();
                 if (item) {
-                    item.client.sendPacket(ClassKeys.LoginQueueUpdate, {
+                    item.client.sendClass(PacketClass.LoginQueueUpdate, {
                         positionInQueue: 1,
                         mayProceed: true,
                         originalId: item.originalId,
@@ -95,7 +170,7 @@ export class Server {
         }, 5000);
         setInterval(() => {
             this.loginQueue.forEach((item, index) => {
-                item.client.sendPacket(ClassKeys.LoginQueueUpdate, {
+                item.client.sendClass(PacketClass.LoginQueueUpdate, {
                     positionInQueue: index + 1,
                     mayProceed: false,
                     originalId: item.originalId,

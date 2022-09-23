@@ -12,7 +12,7 @@ export interface packetClassParser<T = string, Y = any> {
     toBuffer: (payload?: Y) => Buffer;
 }
 
-const dummyClass = getDefaultClass<{ dummy?: number; }>("Common.Dummy", { dummy: 0 });
+const dummyClass = (name: string) => getDefaultClass<{ dummy?: number; }>("Common.Dummy", { dummy: 0 }, name);
 
 export type PacketClassKeys = keyof typeof PacketClass;
 export const PacketClass = {
@@ -120,30 +120,30 @@ export const PacketClass = {
     /*
      * Dummy classes 
      */
-    [ClassKeys.StartLogin]: dummyClass,
-    [ClassKeys.QueryServerInfo]: dummyClass,
-    [ClassKeys.subscribeplayerview]: dummyClass,
-    [ClassKeys.unsubscribeplayerview]: dummyClass,
-    [ClassKeys.subscribecommandnodeview]: dummyClass,
-    [ClassKeys.SubscribeHostingCenterInfoView]: dummyClass,
-    [ClassKeys.subscribefriendview]: dummyClass,
-    [ClassKeys.SubscribeShopView]: dummyClass,
-    [ClassKeys.subscribeignoredplayerview]: dummyClass,
-    [ClassKeys.SubscribeMessageView]: dummyClass,
-    [ClassKeys.subscribewarmaplightview]: dummyClass,
-    [ClassKeys.subscribebattlesview]: dummyClass,
-    [ClassKeys.subscriberesourceview]: dummyClass,
-    [ClassKeys.QueryShopWarBondItemsRequest]: dummyClass,
-    [ClassKeys.GetChatChannelsSubscribedRequest]: dummyClass,
-    [ClassKeys.subscriberesponse]: dummyClass,
-    [ClassKeys.SubscribePlayerMissionViewRequest]: dummyClass,
-    [ClassKeys.subscribesoldierview]: dummyClass,
-    [ClassKeys.unsubscribecommandnodeview]: dummyClass,
-    [ClassKeys.unsubscribewarmapview]: dummyClass,
-    [ClassKeys.unsubscriberesourceview]: dummyClass,
-    [ClassKeys.UnsubscribePlayerMissionViewRequest]: dummyClass,
-    [ClassKeys.unsubscribebattlesview]: dummyClass,
-    [ClassKeys.unsubscribewarmaplightview]: dummyClass,
-    [ClassKeys.subscribewarmapview]: dummyClass,
-    [ClassKeys.ChangeTierRequest]: dummyClass,
+    [ClassKeys.StartLogin]: dummyClass(ClassKeys.StartLogin),
+    [ClassKeys.QueryServerInfo]: dummyClass(ClassKeys.QueryServerInfo),
+    [ClassKeys.subscribeplayerview]: dummyClass(ClassKeys.subscribeplayerview),
+    [ClassKeys.unsubscribeplayerview]: dummyClass(ClassKeys.unsubscribeplayerview),
+    [ClassKeys.subscribecommandnodeview]: dummyClass(ClassKeys.subscribecommandnodeview),
+    [ClassKeys.SubscribeHostingCenterInfoView]: dummyClass(ClassKeys.SubscribeHostingCenterInfoView),
+    [ClassKeys.subscribefriendview]: dummyClass(ClassKeys.subscribefriendview),
+    [ClassKeys.SubscribeShopView]: dummyClass(ClassKeys.SubscribeShopView),
+    [ClassKeys.subscribeignoredplayerview]: dummyClass(ClassKeys.subscribeignoredplayerview),
+    [ClassKeys.SubscribeMessageView]: dummyClass(ClassKeys.SubscribeMessageView),
+    [ClassKeys.subscribewarmaplightview]: dummyClass(ClassKeys.subscribewarmaplightview),
+    [ClassKeys.subscribebattlesview]: dummyClass(ClassKeys.subscribebattlesview),
+    [ClassKeys.subscriberesourceview]: dummyClass(ClassKeys.subscriberesourceview),
+    [ClassKeys.QueryShopWarBondItemsRequest]: dummyClass(ClassKeys.QueryShopWarBondItemsRequest),
+    [ClassKeys.GetChatChannelsSubscribedRequest]: dummyClass(ClassKeys.GetChatChannelsSubscribedRequest),
+    [ClassKeys.subscriberesponse]: dummyClass(ClassKeys.subscriberesponse),
+    [ClassKeys.SubscribePlayerMissionViewRequest]: dummyClass(ClassKeys.SubscribePlayerMissionViewRequest),
+    [ClassKeys.subscribesoldierview]: dummyClass(ClassKeys.subscribesoldierview),
+    [ClassKeys.unsubscribecommandnodeview]: dummyClass(ClassKeys.unsubscribecommandnodeview),
+    [ClassKeys.unsubscribewarmapview]: dummyClass(ClassKeys.unsubscribewarmapview),
+    [ClassKeys.unsubscriberesourceview]: dummyClass(ClassKeys.unsubscriberesourceview),
+    [ClassKeys.UnsubscribePlayerMissionViewRequest]: dummyClass(ClassKeys.UnsubscribePlayerMissionViewRequest),
+    [ClassKeys.unsubscribebattlesview]: dummyClass(ClassKeys.unsubscribebattlesview),
+    [ClassKeys.unsubscribewarmaplightview]: dummyClass(ClassKeys.unsubscribewarmaplightview),
+    [ClassKeys.subscribewarmapview]: dummyClass(ClassKeys.subscribewarmapview),
+    [ClassKeys.ChangeTierRequest]: dummyClass(ClassKeys.ChangeTierRequest),
 };

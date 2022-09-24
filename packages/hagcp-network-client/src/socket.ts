@@ -39,7 +39,6 @@ export class Socket extends EventEmitter {
         this.idNumber = 0;
 
         this.con.on("close", err => {
-            this.connected = false;
             this.close();
             console.log(`closed and ${err ? "had" : "no"} errors`);
             if (err) console.error(err);
@@ -191,7 +190,12 @@ export class Socket extends EventEmitter {
         if (Reflect.has(PacketClass, typeText)) {
             // Find class to parse packet with.
             const klas = Reflect.get(PacketClass, typeText);
-            result = klas.parse(DataBuf);
+            try {
+                result = klas.parse(DataBuf);
+            } catch (error) {
+                console.error(error);
+                return;
+            }
             if (typeText === ClassKeys.zipchunk) {
                 gunzip(result.data, (err, data) => {
                     if (err) console.error(err);
@@ -202,12 +206,12 @@ export class Socket extends EventEmitter {
                 this.emit(typeText, result, id);
                 this.emit(`id${id}`, result);
             }
-            if (typeof result == "object") result = ProtoToString(result);
         } else {
             console.log(`unsupported message: ${typeText}`);
         }
 
         if (this.isDebug && typeText !== ClassKeys.zipchunk) {
+            if (typeof result == "object") result = ProtoToString(result);
             const startString = `${plen.toString().padEnd(5)} ${id.toString().padEnd(5)} ${typeText.padEnd(35)}`;
             const midString = `${DataLen.toString().padEnd(5)}`;
             const outputStr = `${startString} ${result ? result : midString}`;

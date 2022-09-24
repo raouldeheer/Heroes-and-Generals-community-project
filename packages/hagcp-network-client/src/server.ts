@@ -3,7 +3,7 @@ import { createServer, Socket as NetSocket, Server as NetServer } from "net";
 import { createHash, createHmac, randomBytes } from "crypto";
 import { ClassKeys, ResponseType } from "./protolinking/classKeys";
 import { Socket } from "./socket";
-import { PacketClass, PacketClassKeys, packetClassParser } from "./protolinking/linking";
+import { PacketClass, packetClassParser } from "./protolinking/linking";
 
 export class ClientHandler extends EventEmitter {
     public address: string;
@@ -34,38 +34,15 @@ export class ClientHandler extends EventEmitter {
      * sendClass sends a packet to the server
      * @param packetClass class to send
      * @param payload payload to send
-     * @param callback callback for response
+     * @param id response id
      * @returns true if sending was succesfull
      */
-    public sendClass<
-        T extends packetClassParser,
-        RType
-    >(
+    public sendClass<T extends packetClassParser>(
         packetClass: T,
         payload?: Parameters<T["toBuffer"]>[0],
         id = 0,
     ): boolean {
-        return this.con.sendClass<T, RType>(packetClass, payload, undefined, id);
-    }
-
-    /**
-     * sendPacket sends a packet to the server
-     * @param className name of class to send
-     * @param payload payload to send
-     * @param callback callback for response
-     * @returns true if sending was succesfull
-     */
-    public sendPacket<
-        ClassType extends PacketClassKeys,
-        IType = Parameters<(typeof PacketClass)[ClassType]["toBuffer"]>[0],
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        RType = any
-    >(
-        className: ClassType,
-        payload?: IType,
-        id = 0,
-    ): boolean {
-        return this.con.sendPacket<ClassType, IType, RType>(className, payload, undefined, id);
+        return this.con.sendClass<T, undefined>(packetClass, payload, undefined, id);
     }
 
     private addHandlers() {

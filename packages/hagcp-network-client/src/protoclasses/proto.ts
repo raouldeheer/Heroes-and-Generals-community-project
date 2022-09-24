@@ -27,7 +27,7 @@ export const bufFromDecodedProto = <T>(proto: Type, value: T): Buffer =>
 
 export function ProtoToBuf<T>(proto: Type, payload: T): Buffer {
     const errMsg = proto.verify(payload);
-    if (errMsg) throw Error(errMsg);
+    if (errMsg) throw new Error(errMsg);
     const encoded = bufFromDecodedProto(proto, payload);
     const result = new BufferCursor(Buffer.allocUnsafe(encoded.byteLength + 8));
     result.writeUInt32LE(encoded.byteLength + 8);

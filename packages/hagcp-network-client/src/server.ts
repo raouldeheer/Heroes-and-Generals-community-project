@@ -6,6 +6,7 @@ import { Socket } from "./socket";
 import { PacketClass, PacketClassKeys, packetClassParser } from "./protolinking/linking";
 
 export class ClientHandler extends EventEmitter {
+    public address: string;
     private con: Socket;
     private server: Server;
     private auth: boolean;
@@ -13,6 +14,8 @@ export class ClientHandler extends EventEmitter {
     constructor(socket: NetSocket, parent: Server) {
         super();
         console.log("New socket opened");
+        if (!socket.remoteAddress) throw new Error("remoteAddress undefined!");
+        this.address = socket.remoteAddress;
         this.auth = false;
         this.server = parent;
         this.con = new Socket(socket, true);
@@ -66,15 +69,12 @@ export class ClientHandler extends EventEmitter {
     }
 
     private addHandlers() {
-        this.con.on(ClassKeys.QueryServerInfo, (result, id) => {
+        this.con.on(ClassKeys.QueryServerInfo, (_, id) => {
             this.sendClass(PacketClass.QueryServerInfoResponse, {
-                servertime: "1656617936172",
+                servertime: new Date().getTime().toString(),
                 playersInWar: 420,
                 onlineplayers: 6969,
                 version: "QQ 170947",
-                metricsUrl: "",
-                redShiftUrl: "",
-                engageUrl: "",
             }, id);
         });
         this.con.on(ClassKeys.QueryBannedMachineRequest, (result, id) => {
@@ -143,16 +143,24 @@ interface ClientOnQueue {
 
 export class Server {
     private readonly tcpServer: NetServer;
-    private readonly clients: ClientHandler[];
+    private readonly clients: Map<string, ClientHandler>;
     private readonly loginQueue: ClientOnQueue[];
     private loginSlowDown: boolean;
 
     constructor() {
         this.loginSlowDown = false;
-        this.clients = [];
+        this.clients = new Map;
         this.loginQueue = [];
         this.tcpServer = createServer((socket) => {
-            this.clients.push(new ClientHandler(socket, this));
+            try {
+                const clienthandler = new ClientHandler(socket, this);
+                clienthandler.once("close", () => {
+                    this.clients.delete(clienthandler.address);
+                });
+                this.clients.set(clienthandler.address, clienthandler);
+            } catch (error) {
+                console.error(error);
+            }
         });
 
         setInterval(() => {

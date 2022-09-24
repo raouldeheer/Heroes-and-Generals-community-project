@@ -40,6 +40,7 @@ export class Socket extends EventEmitter {
 
         this.con.on("close", err => {
             this.connected = false;
+            this.close();
             console.log(`closed and ${err ? "had" : "no"} errors`);
             if (err) console.error(err);
             this.emit("close");

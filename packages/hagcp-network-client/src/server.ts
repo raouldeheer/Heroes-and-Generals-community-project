@@ -88,8 +88,9 @@ export class ClientHandler extends EventEmitter {
                     Buffer.from(salt, "base64")
                 ), sessionid);
 
-                const correctResult = createHmac("sha1", Buffer.from(encryptedSessionkey, "base64")
-                    .map((value, i) => value ^ loginkeyhash[i % loginkeyhash.length]))
+                const encryptedSessionkeyWithLoginHash = Buffer.from(encryptedSessionkey, "base64")
+                    .map((value, i) => value ^ loginkeyhash[i % loginkeyhash.length]);
+                const correctResult = createHmac("sha1", encryptedSessionkeyWithLoginHash)
                     .update(sessionid)
                     .digest("base64");
 

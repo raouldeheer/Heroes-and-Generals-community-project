@@ -1,6 +1,6 @@
 /* eslint-disable no-prototype-builtins */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { CanvasRenderingContext2D, createCanvas, loadImage } from "canvas";
+import { CanvasRenderingContext2D, createCanvas, Image, loadImage } from "canvas";
 import fs from "fs";
 import mylas from "mylas";
 import { join } from "path";
@@ -23,6 +23,7 @@ export async function toCanvasColored(dataStore: DataStore, dataStore2: DataStor
 }
 
 const multiplier = 2;
+let cachedImage: Image | null = null;
 
 export async function drawToCanvas(dataStore: DataStore, dataStore2: DataStore, factionColorLookup: (id: string) => string, factions?: Map<string, any>) {
     const canvas = createCanvas(2048 * multiplier, 1440 * multiplier);
@@ -35,8 +36,8 @@ export async function drawToCanvas(dataStore: DataStore, dataStore2: DataStore, 
         return fs.existsSync(result) ? result : null;
     }, null);
     if (fileLocation) {
-        const image = await loadImage(fileLocation);
-        context.drawImage(image, 0, 0, image.width * multiplier, image.height * multiplier);
+        if (!cachedImage) cachedImage = await loadImage(fileLocation);
+        context.drawImage(cachedImage, 0, 0, cachedImage.width * multiplier, cachedImage.height * multiplier);
     }
 
     // Draw capitals

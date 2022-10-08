@@ -4,6 +4,7 @@ import { createHash, createHmac, randomBytes } from "crypto";
 import { ClassKeys, ResponseType } from "./protolinking/classKeys";
 import { Socket } from "./socket";
 import { PacketClass, packetClassParser } from "./protolinking/linking";
+import Long from "long";
 
 export class ClientHandler extends EventEmitter {
     public address: string;
@@ -61,7 +62,13 @@ export class ClientHandler extends EventEmitter {
             }, id);
         });
         this.con.on(ClassKeys.StartLogin, () => {
-            this.server.addToLoginQueue(this);
+            // this.server.addToLoginQueue(this);
+            this.sendClass(PacketClass.LoginQueueUpdate, {
+                positionInQueue: 1,
+                mayProceed: true,
+                originalId: 3,
+                result: ResponseType.ok,
+            });
         });
         this.con.on(ClassKeys.login2_begin, (result, id) => {
             //! THIS IS FOR TESTING ONLY, DO NOT USE IN PRODUCTION
@@ -103,8 +110,59 @@ export class ClientHandler extends EventEmitter {
                         ? ResponseType.login_success
                         : ResponseType.wrong_password,
                     username,
+                    currentplayer: {
+                        id: Long.fromString("6571270141543519155"),
+                        gamertag: "mflyztktdjazboaksh",
+                        invertmouse: 0,
+                        invertmouseairplane: 0,
+                        mousesensitivity: 0.4000000059604645,
+                        administrator: "0",
+                        mousecontrolledcars: 0,
+                        showcrosshair: 1,
+                        showcrosshairVehicles: 1,
+                        war: Long.fromString("3378919346139646444"),
+                        factionid: Long.fromString("9127365240673321396"),
+                        subscribedupto: "0",
+                        goldBought: Long.fromString("0"),
+                        goldEarned: Long.fromString("0"),
+                        goldUsed: Long.fromString("0"),
+                        creditsBought: Long.fromString("0"),
+                        creditsEarned: Long.fromString("0"),
+                        creditsUsed: Long.fromString("0"),
+                        firstActionGameDate: "19691231230000Z",
+                        numloginsFlash: 0,
+                        numloginsMobile: 0,
+                        language: "en",
+                        warfundsBought: Long.fromString("0"),
+                        warfundsEarned: Long.fromString("0"),
+                        warfundsUsed: Long.fromString("0"),
+                        metricsUid: "4a7026a7-8008-4cc3-b132-2948216ef774",
+                        yellowGriefPoints: 0,
+                        redGriefPoints: 0,
+                        latestRedGriefPointTimestamp: "",
+                        tier: 0,
+                        lastLogin: "20220622195146Z",
+                        tutorialsCompleted: 0,
+                        goldBoughtSteam: Long.fromString("0"),
+                        skillLevel: 0,
+                        invertmouseturret: 0,
+                        totalScore: Long.fromString("0"),
+                        level: 0,
+                        isDeleted: false,
+                        currencyCode: "",
+                        currencyRegion: "",
+                        achievementsBits: [],
+                        unlockBits: [],
+                    }
                 }, id);
             });
+        });
+        this.con.on("message", (type, result) => {
+            if (type.startsWith("subscribe") || type.startsWith("Subscribe")) {
+                setTimeout(() => {
+                    this.sendClass(PacketClass.subscriberesponse, {});
+                }, 50);
+            }
         });
         // TODO handle messages.
     }
@@ -148,7 +206,7 @@ export class Server {
                     item.client.sendClass(PacketClass.LoginQueueUpdate, {
                         positionInQueue: 1,
                         mayProceed: true,
-                        originalId: item.originalId,
+                        originalId: 3,
                         result: ResponseType.ok,
                     });
                 }
@@ -159,7 +217,7 @@ export class Server {
                 item.client.sendClass(PacketClass.LoginQueueUpdate, {
                     positionInQueue: index + 1,
                     mayProceed: false,
-                    originalId: item.originalId,
+                    originalId: 3,
                     result: ResponseType.ok,
                 });
             });

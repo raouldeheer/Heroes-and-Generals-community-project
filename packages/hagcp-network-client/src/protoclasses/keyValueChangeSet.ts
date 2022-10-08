@@ -2,8 +2,9 @@ import { IKeyValueChangeSetResult, BufferCursor, bytesToString, splitInGroups, p
 import { bufFromDecodedProto, BufToDecodedProto, Protos } from "./proto";
 import { KeyValueOp } from "../protolinking/keyValueSet";
 
-export class KeyValueChangeSet {
-    static parse(buf: BufferCursor) {
+export const KeyValueChangeSet = {
+    name: "KeyValueChangeSet",
+    parse(buf: BufferCursor) {
         const returnObj: IKeyValueChangeSetResult = {};
         const groups = splitInGroups(buf);
         groups.forEach(group => {
@@ -52,8 +53,8 @@ export class KeyValueChangeSet {
             }
         });
         return returnObj;
-    }
-    static toBuffer(payload: IKeyValueChangeSetResult): Buffer {
+    },
+    toBuffer(payload: IKeyValueChangeSetResult): Buffer {
         if (!payload.set) return Buffer.alloc(0);
         return prefixJoin([
             prefixJoin([
@@ -70,5 +71,5 @@ export class KeyValueChangeSet {
                 })
             ])
         ]);
-    }
+    },
 }

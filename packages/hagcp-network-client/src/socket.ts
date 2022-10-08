@@ -39,7 +39,7 @@ export class Socket extends EventEmitter {
         this.idNumber = 0;
 
         this.con.on("close", err => {
-            this.connected = false;
+            this.close();
             console.log(`closed and ${err ? "had" : "no"} errors`);
             if (err) console.error(err);
             this.emit("close");
@@ -94,6 +94,7 @@ export class Socket extends EventEmitter {
         packetClass: T,
         payload?: Parameters<T["toBuffer"]>[0],
         callback?: (result: RType) => void,
+        id?: number,
     ): boolean {
         // If class doesn't exist, return failed.
         if (!packetClass) return false;
@@ -104,11 +105,12 @@ export class Socket extends EventEmitter {
         // Construct BufferCursor.
         const result = new BufferCursor(Buffer.allocUnsafe(20 + totalLength));
         result.writeUInt32LE(20 + totalLength);             // Write TotalLen.
-        result.writeUInt32LE(8);                            // Write IDLen. //! Id is limited to UInt32 here
-        result.writeUInt32LE(++this.idNumber);              // Write ID.
+        result.writeUInt32LE(8);                            // Write IDLen.
+        const packetId = id ? id : ++this.idNumber;
+        result.writeUInt32LE(packetId);                     // Write ID.
         // Set listener for callback.
-        // @ts-expect-error id${this.idNumber} is not an exported type of the EventEmitter
-        if (callback) this.once(`id${this.idNumber}`, callback);
+        // @ts-expect-error id${packetId} is not an exported type of the EventEmitter
+        if (callback) this.once(`id${packetId}`, callback);
         result.writeUInt32LE(8 + totalLength);              // Write Size.
         result.writeUInt32LE(4 + packetClass.name.length);         // Write HLen.
         result.write(packetClass.name, packetClass.name.length, "ascii"); // Write Header.
@@ -188,23 +190,28 @@ export class Socket extends EventEmitter {
         if (Reflect.has(PacketClass, typeText)) {
             // Find class to parse packet with.
             const klas = Reflect.get(PacketClass, typeText);
-            result = klas.parse(DataBuf);
+            try {
+                result = klas.parse(DataBuf);
+            } catch (error) {
+                console.error(error);
+                return;
+            }
             if (typeText === ClassKeys.zipchunk) {
                 gunzip(result.data, (err, data) => {
                     if (err) console.error(err);
                     else this.handleMessage(data);
                 });
             } else {
-                this.emit("message", typeText, result);
-                this.emit(typeText, result);
+                this.emit("message", typeText, result, id);
+                this.emit(typeText, result, id);
                 this.emit(`id${id}`, result);
             }
-            if (typeof result == "object") result = ProtoToString(result);
         } else {
             console.log(`unsupported message: ${typeText}`);
         }
 
         if (this.isDebug && typeText !== ClassKeys.zipchunk) {
+            if (typeof result == "object") result = ProtoToString(result);
             const startString = `${plen.toString().padEnd(5)} ${id.toString().padEnd(5)} ${typeText.padEnd(35)}`;
             const midString = `${DataLen.toString().padEnd(5)}`;
             const outputStr = `${startString} ${result ? result : midString}`;

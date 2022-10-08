@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-empty-interface */
+import Long from "long";
 
 export interface GetHandlerTypes {
     dummy?: number;

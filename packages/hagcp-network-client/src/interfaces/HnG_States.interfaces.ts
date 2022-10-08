@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-empty-interface */
+import Long from "long";
 import { MissionStatus, ResponseType, VirtualCurrencyType } from "../protolinking/classKeys";
 
 export interface AbandonMissionRequest {

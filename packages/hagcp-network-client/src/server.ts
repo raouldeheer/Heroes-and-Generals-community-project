@@ -182,11 +182,13 @@ export class Server {
     private readonly clients: Map<string, ClientHandler>;
     private readonly loginQueue: ClientOnQueue[];
     private loginSlowDown: boolean;
+    private intervals: NodeJS.Timer[];
 
     constructor() {
         this.loginSlowDown = false;
         this.clients = new Map;
         this.loginQueue = [];
+        this.intervals = [];
         this.tcpServer = createServer((socket) => {
             try {
                 const clienthandler = new ClientHandler(socket, this);
@@ -199,7 +201,7 @@ export class Server {
             }
         });
 
-        setInterval(() => {
+        this.intervals.push(setInterval(() => {
             if (this.loginQueue.length >= 1 && !this.loginSlowDown) {
                 const item = this.loginQueue.shift();
                 if (item) {
@@ -211,8 +213,8 @@ export class Server {
                     });
                 }
             }
-        }, 5000);
-        setInterval(() => {
+        }, 5000));
+        this.intervals.push(setInterval(() => {
             this.loginQueue.forEach((item, index) => {
                 item.client.sendClass(PacketClass.LoginQueueUpdate, {
                     positionInQueue: index + 1,
@@ -221,7 +223,7 @@ export class Server {
                     result: ResponseType.ok,
                 });
             });
-        }, 2000);
+        }, 2000));
     }
 
     public addToLoginQueue(client: ClientHandler) {
@@ -231,11 +233,9 @@ export class Server {
     public listen(port: number, host: string) {
         this.tcpServer.listen(port, host);
     }
+
+    public close() {
+        this.intervals.forEach(clearInterval);
+        this.tcpServer.close();
+    }
 }
-
-(() => {
-    const server = new Server;
-    server.listen(6969, "127.69.69.69");
-    console.log("Running on port");
-
-})();

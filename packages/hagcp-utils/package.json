@@ -1,6 +1,6 @@
 {
   "name": "hagcp-utils",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "This package is made for hagcp, the Hero and Generals Community Project. This package contains utils like a buffercursor, datastore and some byte functions. It also has some canvas utils",
   "main": "dist/index.js",
   "typings": "dist/index",

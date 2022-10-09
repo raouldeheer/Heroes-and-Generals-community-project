@@ -1,6 +1,6 @@
 import { BufferCursor } from "hagcp-utils";
 import Long from "long";
-import { PacketClass, packetClassParser } from "../dist/index";
+import { PacketClass, packetClassParser, VirtualCurrencyType } from "../dist/index";
 
 type TestType = {
     packet: packetClassParser;
@@ -23,55 +23,53 @@ function mapLongToString<T>(obj: specialObject<T>) {
 }
 
 describe('Test packet parsing', () => {
+    const tests: TestType[] = [];
 
-    const tests: TestType[] = [
-        {
-            packet: PacketClass.unsubscriberesponse,
-            data: { reply: "ok" },
-        },
-        {
-            packet: PacketClass.query_war_catalogue_request,
-            data: {
-                includeWarId: Long.ZERO,
-            },
-        },
-    ];
-
-    const addDummyClass = (packet: packetClassParser) => {
-        tests.push({
-            packet,
-            data: {
-                dummy: 0,
-            }
-        });
+    const addTestClass = <T extends packetClassParser>(packet: T, data: ReturnType<T["parse"]>) => {
+        tests.push({ packet, data });
     };
 
-    addDummyClass(PacketClass.StartLogin);
-    addDummyClass(PacketClass.QueryServerInfo);
-    addDummyClass(PacketClass.subscribeplayerview);
-    addDummyClass(PacketClass.unsubscribeplayerview);
-    addDummyClass(PacketClass.subscribecommandnodeview);
-    addDummyClass(PacketClass.SubscribeHostingCenterInfoView);
-    addDummyClass(PacketClass.subscribefriendview);
-    addDummyClass(PacketClass.SubscribeShopView);
-    addDummyClass(PacketClass.subscribeignoredplayerview);
-    addDummyClass(PacketClass.SubscribeMessageView);
-    addDummyClass(PacketClass.subscribewarmaplightview);
-    addDummyClass(PacketClass.subscribebattlesview);
-    addDummyClass(PacketClass.subscriberesourceview);
-    addDummyClass(PacketClass.QueryShopWarBondItemsRequest);
-    addDummyClass(PacketClass.GetChatChannelsSubscribedRequest);
-    addDummyClass(PacketClass.subscriberesponse);
-    addDummyClass(PacketClass.SubscribePlayerMissionViewRequest);
-    addDummyClass(PacketClass.subscribesoldierview);
-    addDummyClass(PacketClass.unsubscribecommandnodeview);
-    addDummyClass(PacketClass.unsubscribewarmapview);
-    addDummyClass(PacketClass.unsubscriberesourceview);
-    addDummyClass(PacketClass.UnsubscribePlayerMissionViewRequest);
-    addDummyClass(PacketClass.unsubscribebattlesview);
-    addDummyClass(PacketClass.unsubscribewarmaplightview);
-    addDummyClass(PacketClass.subscribewarmapview);
-    addDummyClass(PacketClass.ChangeTierRequest);
+    [
+        PacketClass.StartLogin,
+        PacketClass.QueryServerInfo,
+        PacketClass.subscribeplayerview,
+        PacketClass.unsubscribeplayerview,
+        PacketClass.subscribecommandnodeview,
+        PacketClass.SubscribeHostingCenterInfoView,
+        PacketClass.subscribefriendview,
+        PacketClass.SubscribeShopView,
+        PacketClass.subscribeignoredplayerview,
+        PacketClass.SubscribeMessageView,
+        PacketClass.subscribewarmaplightview,
+        PacketClass.subscribebattlesview,
+        PacketClass.subscriberesourceview,
+        PacketClass.QueryShopWarBondItemsRequest,
+        PacketClass.GetChatChannelsSubscribedRequest,
+        PacketClass.subscriberesponse,
+        PacketClass.SubscribePlayerMissionViewRequest,
+        PacketClass.subscribesoldierview,
+        PacketClass.unsubscribecommandnodeview,
+        PacketClass.unsubscribewarmapview,
+        PacketClass.unsubscriberesourceview,
+        PacketClass.UnsubscribePlayerMissionViewRequest,
+        PacketClass.unsubscribebattlesview,
+        PacketClass.unsubscribewarmaplightview,
+        PacketClass.subscribewarmapview,
+        PacketClass.ChangeTierRequest,
+    ].forEach(packet => {
+        addTestClass(packet, { dummy: 0 });
+    });
+
+    addTestClass(PacketClass.AddMembershipRequest, {
+        discountId: Long.ZERO,
+        membershipTemplateId: Long.ZERO,
+        paymentCurrency: VirtualCurrencyType.Credits,
+        pricingId: Long.ZERO,
+    });
+    addTestClass(PacketClass.query_war_catalogue_request, {
+        includeWarId: Long.ZERO,
+    });
+    addTestClass(PacketClass.unsubscriberesponse, { reply: "ok" });
 
     tests.forEach(item => {
         it(`Parse ${item.packet.name}`, () => {

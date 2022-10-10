@@ -147,7 +147,7 @@ export class Client extends EventEmitter {
      */
     public sendClass<
         T extends packetClassParser,
-        RType
+        RType,
     >(
         packetClass: T,
         payload?: Parameters<T["toBuffer"]>[0],
@@ -164,10 +164,10 @@ export class Client extends EventEmitter {
      */
     public sendClassAsync<
         T extends packetClassParser,
-        RType
+        RType,
     >(
         packetClass: T,
-        payload?: Parameters<T["toBuffer"]>[0]
+        payload?: Parameters<T["toBuffer"]>[0],
     ): Promise<RType> {
         return this.con.sendClassAsync<T, RType>(packetClass, payload);
     }
@@ -183,7 +183,7 @@ export class Client extends EventEmitter {
         ClassType extends PacketClassKeys,
         IType = Parameters<(typeof PacketClass)[ClassType]["toBuffer"]>[0],
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        RType = any
+        RType = any,
     >(
         className: ClassType,
         payload?: IType,

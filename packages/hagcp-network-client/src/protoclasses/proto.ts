@@ -22,10 +22,10 @@ export const BufToDecodedProto = <T>(proto: Type, buf: Buffer): T =>
         bytes: Buffer,
     }) as T;
 
-export const bufFromDecodedProto = <T>(proto: Type, value: T): Buffer =>
+export const bufFromDecodedProto = <T extends Record<string, any>>(proto: Type, value: T): Buffer =>
     Buffer.from(proto.encode(proto.fromObject(value)).finish());
 
-export function ProtoToBuf<T>(proto: Type, payload: T): Buffer {
+export function ProtoToBuf<T extends Record<string, any>>(proto: Type, payload: T): Buffer {
     const errMsg = proto.verify(payload);
     if (errMsg) throw new Error(errMsg);
     const encoded = bufFromDecodedProto(proto, payload);
@@ -36,7 +36,7 @@ export function ProtoToBuf<T>(proto: Type, payload: T): Buffer {
     return result.buffer;
 }
 
-export const getDefaultClass = <T>(protoName: string, defaults: T = {} as T, name = protoName.match(/\w+$/g)?.pop() || "") => ({
+export const getDefaultClass = <T extends Record<string, any>>(protoName: string, defaults: T = {} as T, name = protoName.match(/\w+$/g)?.pop() || "") => ({
     name,
     parse: (buf: BufferCursor): T => BufToDecodedProto(Protos.lookupType(protoName), buf.buffer.slice(8)),
     toBuffer: (payload = defaults): Buffer => ProtoToBuf(Protos.lookupType(protoName), payload),

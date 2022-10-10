@@ -16,7 +16,7 @@
   },
   "scripts": {
     "test": "jest --config='./tests/jest.config.ts'",
-    "build": "tsup && cp -r ./src/protos/ ./dist/",
+    "build": "tsup && tsup --config tsup.server.config.ts && cp -r ./src/protos/ ./dist/",
     "dev:build": "tsup --watch"
   },
   "repository": {

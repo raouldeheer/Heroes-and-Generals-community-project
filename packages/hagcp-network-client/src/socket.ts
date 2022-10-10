@@ -68,8 +68,8 @@ export class Socket extends EventEmitter {
             while (this.rest && this.rest.length > 4) {
                 const len = this.rest.readUInt32LE(0);
                 if (this.rest.length >= len) {
-                    this.handleMessage(this.rest.slice(0, len));
-                    this.rest = this.rest.slice(len);
+                    this.handleMessage(this.rest.subarray(0, len));
+                    this.rest = this.rest.subarray(len);
                 } else break;
             }
         });
@@ -120,6 +120,29 @@ export class Socket extends EventEmitter {
     }
 
     /**
+     * sendClassAsync sends a packet to the server and return a promise with the data of the response packet
+     * @param packetClass class to send
+     * @param payload payload to send
+     * @returns data of response packet
+     */
+    public sendClassAsync<
+        T extends packetClassParser,
+        RType
+    >(
+        packetClass: T,
+        payload?: Parameters<T["toBuffer"]>[0]
+    ): Promise<RType> {
+        return new Promise((resolve, reject) => {
+            try {
+                if (!this.sendClass(packetClass, payload, resolve))
+                    throw new Error("Packet not send, class was probably not found");
+            } catch (error) {
+                reject(error);
+            }
+        });
+    }
+
+    /**
      * sendPacket sends a packet to the server
      * @param className name of class to send
      * @param payload payload to send
@@ -144,7 +167,7 @@ export class Socket extends EventEmitter {
     }
 
     /**
-     * sendAsync sends a packet to the server and return a promise with the data of the response packet
+     * sendPacketAsync sends a packet to the server and return a promise with the data of the response packet
      * @param className name of class to send
      * @param payload payload to send
      * @returns data of response packet

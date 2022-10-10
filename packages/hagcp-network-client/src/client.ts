@@ -157,6 +157,22 @@ export class Client extends EventEmitter {
     }
 
     /**
+     * sendClassAsync sends a packet to the server and return a promise with the data of the response packet
+     * @param packetClass class to send
+     * @param payload payload to send
+     * @returns data of response packet
+     */
+    public sendClassAsync<
+        T extends packetClassParser,
+        RType
+    >(
+        packetClass: T,
+        payload?: Parameters<T["toBuffer"]>[0]
+    ): Promise<RType> {
+        return this.con.sendClassAsync<T, RType>(packetClass, payload);
+    }
+
+    /**
      * sendPacket sends a packet to the server
      * @param className name of class to send
      * @param payload payload to send

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-empty-interface */
-import Long from "long";
+import { Long } from "protobufjs";
 
 export interface GetHandlerTypes {
     dummy?: number;

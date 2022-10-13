@@ -3,76 +3,85 @@
 /* eslint-disable no-prototype-builtins */
 import { createCanvas, loadImage } from "canvas";
 import mylas from "mylas";
-import { BufferCursor, DataStore } from "hagcp-utils";
-import { drawToCanvas, toCanvasColored } from "hagcp-canvas";
+import { DataStore } from "hagcp-utils";
 import { existsSync, createWriteStream } from "fs";
+import { join } from "path";
 import { loadTemplate } from "hagcp-assets";
 import { pipeline } from "stream/promises";
-import { gunzipSync } from "zlib";
-import { PacketClass } from "hagcp-network-client";
 import globby from "globby";
+import cp from "node:child_process";
+import { pLimit } from "plimit-lit";
 
-async function jsonToMap(filename: string, imageName: string, dataStore: DataStore) {
-    const { factions, ...data } = await mylas.json.load(filename);
-    const dataStore2 = new DataStore;
+const processes: (cp.ChildProcess & { busy: boolean; })[] = [];
+const MAX_THREADS = 16;
+const threadLimit = pLimit(MAX_THREADS);
 
-    if (existsSync(filename.replace(".jsonc", ".protodata"))) {
-        const buf = gunzipSync(await mylas.buf.load(filename.replace(".jsonc", ".protodata")));
-        dataStore2.SaveData(PacketClass.KeyValueChangeSet.parse(new BufferCursor(buf)));
-    } else {
-        for (const key in data) if (data.hasOwnProperty(key))
-            for (const key2 in data[key]) if (data[key].hasOwnProperty(key2))
-                dataStore2.SaveData({ set: [{ key, value: data[key][key2] }] });
-    }
-
-    if (factions) {
-        const lookupFactions = new Map<string, any>();
-        factions.forEach((element: any) => {
-            lookupFactions.set(element.factionId, element);
-        });
-        const canvas = await drawToCanvas(dataStore, dataStore2, id => lookupFactions.get(id).color, lookupFactions);
-        await pipeline(canvas.createJPEGStream(), createWriteStream(imageName));
-    } else {
-        await toCanvasColored(dataStore, dataStore2, imageName);
-    }
+for (let i = 0; i < MAX_THREADS; i++) {
+    const n = cp.fork(`${__dirname}/convertSaves.js`) as cp.ChildProcess & { busy: boolean; };
+    n.busy = false;
+    processes.push(n);
 }
+
+const jsonToMap = (filename: string, imageName: string) => threadLimit(() => {
+    const n = processes.find(e => !e.busy);
+    if (!n) throw new Error("Thread busy!");
+    n.busy = true;
+    return new Promise<void>((resolve) => {
+        n.once("message", () => {
+            n.busy = false;
+            resolve();
+        });
+        n.send({ file: filename, image: imageName });
+    });
+});
 
 (async () => {
     const dataStore = new DataStore;
 
     await loadTemplate(dataStore, "battlefield");
-    await loadTemplate(dataStore, "supplyline");
-    await loadTemplate(dataStore, "accesspoint");
-    await loadTemplate(dataStore, "capital");
     await loadTemplate(dataStore, "factiontemplate");
     console.log("Loaded template");
 
     const warId = process.argv[2];
     console.log(`Loading ${warId}`);
     if (!warId) return;
-    if (!existsSync(`./saves/${warId}`)) mylas.dir.mkS(`./saves/${warId}`);
-    if (!existsSync(`./savesMap/${warId}`)) mylas.dir.mkS(`./savesMap/${warId}`);
 
-    const files = await globby(`./saves/${warId}/*.jsonc`);
+    const savesDir = "./saves";
+    const savesMapDir = "./savesMap";
+    if (!existsSync(join(savesDir, warId))) mylas.dir.mkS(join(savesDir, warId));
+    if (!existsSync(join(savesMapDir, warId))) mylas.dir.mkS(join(savesMapDir, warId));
+
+    const files = await globby(`${savesDir}/${warId}/*.jsonc`);
     const latestTimes: number[] = [];
-    for (let i = 0; i < files.length; i++) {
-        const startTime = Date.now();
-        const imageName = `./savesMap/${warId}/image_${(i + 1).toString().padStart(5, "0")}.jpg`;
-        try {
-            if (!existsSync(imageName))
-                await jsonToMap(files[i], imageName, dataStore);
-        } catch (error) {
-            console.log(error);
-            console.log(`Error in file: ${files[i]}`);
-        }
-        const timeDiff = Date.now() - startTime;
-        if (latestTimes.length > 5) latestTimes.shift();
-        latestTimes.push(timeDiff);
+    let [lastDone, done] = [0, 0];
+    let [lastTime, time] = [Date.now(), Date.now()];
+
+    const inter = setInterval(() => {
+        if (latestTimes.length > 15) latestTimes.shift();
+        latestTimes.push((time - lastTime) / ((done - lastDone) || 1));
+
         const diff = latestTimes.reduce((prev, curr) => (prev + curr) / 2);
-        console.log(`saved: ${imageName} (${i + 1}/${files.length}) ` +
-            `${Math.floor(((files.length - i) * diff) / 60000).toString().padStart(2, "0")}m ` +
-            `${(Math.floor(((files.length - i) * diff) / 1000) % 60).toString().padStart(2, "0")}s`);
-    }
+        const remainingTime = (files.length - done) * diff;
+        console.log(`(${done}/${files.length}) ` +
+            `${Math.floor(remainingTime / 60000).toString().padStart(2, "0")}m ` +
+            `${(Math.floor(remainingTime / 1000) % 60).toString().padStart(2, "0")}s`);
+
+        lastDone = done;
+        lastTime = time;
+        time = Date.now();
+    }, 1000);
+
+    await Promise.all(
+        files.map((file, i) => {
+            const imageName = join(savesMapDir, warId, `image_${(i + 1).toString().padStart(5, "0")}.jpg`);
+            if (!existsSync(imageName)) {
+                return jsonToMap(file, imageName).then(() => { done++; });
+            } else done++;
+        })
+    );
+    clearInterval(inter);
+    processes.forEach(e => e.kill());
+
     if (files) {
         let total = "00:00:00 War start\n";
         const first = mylas.json.loadS(files[0]);
@@ -135,7 +144,7 @@ async function jsonToMap(filename: string, imageName: string, dataStore: DataSto
                 context.beginPath();
                 context.fillStyle = "#000";
                 context.font = "200px sans-serif, segoe-ui-emoji";
-                context.fillText(`#${data.warName.slice(data.warName.length-4) || "0000"}`, 1300, 200);
+                context.fillText(`#${data.warName.slice(data.warName.length - 4) || "0000"}`, 1300, 200);
                 context.stroke();
 
                 // Draw winner image

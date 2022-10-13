@@ -14,6 +14,7 @@
     "wiresharkDecode": "nodemon dist/wiresharkDecode.js",
     "testcon": "node dist/testCon.js",
     "jsonToMap": "node dist/jsonToMap.js",
+    "convertSaves": "node dist/convertSaves.js",
     "jsonToCSV": "node dist/jsonToCSV.js"
   },
   "repository": {

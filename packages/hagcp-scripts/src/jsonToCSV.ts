@@ -1,6 +1,7 @@
 import mylas from "mylas";
 import { existsSync } from "fs";
 import globby from "globby";
+// @ts-expect-error fake ts(1471) error
 import { pLimit } from 'plimit-lit';
 
 const fileLimit = pLimit(100);

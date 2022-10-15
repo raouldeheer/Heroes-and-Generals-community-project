@@ -10,6 +10,7 @@ import { loadTemplate } from "hagcp-assets";
 import { pipeline } from "stream/promises";
 import globby from "globby";
 import cp from "node:child_process";
+// @ts-expect-error fake ts(1471) error
 import { pLimit } from "plimit-lit";
 
 const processes: (cp.ChildProcess & { busy: boolean; })[] = [];

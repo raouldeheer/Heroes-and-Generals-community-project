@@ -1,4 +1,4 @@
-import "mylas";
+import "mylas/register";
 const accesspoint = JSON.loadS("./json/accesspoint.json");
 const battlefield = JSON.loadS("./json/battlefield.json");
 const supplyline = JSON.loadS("./json/supplyline.json");

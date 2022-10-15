@@ -1,4 +1,4 @@
-import { Server } from "hagcp-network-client/dist/server";
+import { Server } from "hagcp-network-client/server";
 
 (() => {
     const server = new Server;

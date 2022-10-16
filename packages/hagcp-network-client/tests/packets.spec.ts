@@ -70,6 +70,17 @@ describe('Test packet parsing', () => {
         includeWarId: Long.ZERO,
     });
     addTestClass(PacketClass.unsubscriberesponse, { reply: "ok" });
+    addTestClass(PacketClass.KeyValueChangeSet, {
+        set: [{
+            key: "accesspoint",
+            value: {
+                id: Long.ZERO,
+                mapid: Long.ZERO,
+                template: Long.ZERO,
+                battlefield: Long.ZERO,
+            },
+        }],
+    });
 
     tests.forEach(item => {
         it(`Parse ${item.packet.name}`, () => {

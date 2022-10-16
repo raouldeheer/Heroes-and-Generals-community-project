@@ -43,7 +43,7 @@ export const KeyValueChangeSet = {
                         valueBuf.seek(4);
                         returnObj.delete.push({
                             key: bytesToString(keyBuf),
-                            value: valueBuf.readBigUint64LE().toString(),
+                            value: valueBuf.readBigUInt64LE().toString(),
                         });
                     }
                     break;
@@ -55,13 +55,12 @@ export const KeyValueChangeSet = {
         return returnObj;
     },
     toBuffer(payload: IKeyValueChangeSetResult): Buffer {
-        if (!payload.set) return Buffer.alloc(0);
         return prefixJoin([
-            prefixJoin([
+            payload.set ? prefixJoin([
                 Buffer.from(KeyValueOp.set, "utf8"),
                 ...payload.set.map(({ key, value }) => {
                     const encoded = bufFromDecodedProto(Protos.lookupType(`HnG_States.${key}`), value);
-                    const result = new BufferCursor(Buffer.allocUnsafe(encoded.byteLength + key.length + 12));
+                    const result = new BufferCursor(Buffer.allocUnsafe(4 + key.length + 4 + 4 + encoded.byteLength));
                     result.writeUInt32LE(key.length + 4);
                     result.write(key, key.length);
                     result.writeUInt32LE(encoded.byteLength + 8);
@@ -69,7 +68,19 @@ export const KeyValueChangeSet = {
                     result.writeBuff(encoded, encoded.length);
                     return result.buffer;
                 })
-            ])
-        ]);
+            ]) : null,
+            payload.delete ? prefixJoin([
+                Buffer.from(KeyValueOp.delete, "utf8"),
+                ...payload.delete.map(({ key, value }) => {
+                    const result = new BufferCursor(Buffer.allocUnsafe(4 + key.length + 4 + 4 + 8));
+                    result.writeUInt32LE(key.length + 4);
+                    result.write(key, key.length);
+                    result.writeUInt32LE(8 + 4 + 4);
+                    result.writeUInt32LE(8 + 4);
+                    result.writeBigUInt64LE(BigInt(value.toString()));
+                    return result.buffer;
+                })
+            ]) : null,
+        ].filter(<T>(e: T): e is NonNullable<T> => !!e));
     },
-}
+};

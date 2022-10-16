@@ -80,6 +80,31 @@ describe('Test packet parsing', () => {
                 battlefield: Long.ZERO,
             },
         }],
+        delete: [
+            {
+                key: "accesspoint",
+                value: Long.ZERO,
+            }
+        ],
+    });
+    addTestClass(PacketClass.KeyValueChangeSet, {
+        delete: [
+            {
+                key: "accesspoint",
+                value: Long.ZERO,
+            }
+        ],
+    });
+    addTestClass(PacketClass.KeyValueChangeSet, {
+        set: [{
+            key: "accesspoint",
+            value: {
+                id: Long.ZERO,
+                mapid: Long.ZERO,
+                template: Long.ZERO,
+                battlefield: Long.ZERO,
+            },
+        }],
     });
 
     tests.forEach(item => {

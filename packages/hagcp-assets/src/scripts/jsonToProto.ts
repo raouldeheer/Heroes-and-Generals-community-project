@@ -1,9 +1,9 @@
-import { PacketClass } from "hagcp-network-client";
-import { BufferCursor, IKeyValueChangeSetResult } from "hagcp-utils";
+import { KeyValueChangeKey, PacketClass, IKeyValueChangeSetResult } from "hagcp-network-client";
+import { BufferCursor } from "hagcp-utils";
 import { Json, Buf } from "mylas";
 
 (async () => {
-    const assetType = "capital";
+    const assetType = KeyValueChangeKey.capital;
 
     const assets = await Json.load(`./json/${assetType}.json`);
 

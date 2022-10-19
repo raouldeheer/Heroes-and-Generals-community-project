@@ -80,6 +80,33 @@ export class Socket extends EventEmitter {
         });
     }
 
+    public sendBuffer<RType>(
+        name: string,
+        buffer: Buffer,
+        callback?: (result: RType) => void,
+        id?: number,
+    ) {
+        if (!name || !buffer) return false;
+        if (this.isDebug) console.log(`sending: ${name}`);
+        // Get total length of packet.
+        const totalLength = buffer.byteLength + name.length;
+        // Construct BufferCursor.
+        const result = new BufferCursor(Buffer.allocUnsafe(20 + totalLength));
+        result.writeUInt32LE(20 + totalLength);             // Write TotalLen.
+        result.writeUInt32LE(8);                            // Write IDLen.
+        const packetId = id ? id : ++this.idNumber;
+        result.writeUInt32LE(packetId);                     // Write ID.
+        // Set listener for callback.
+        // @ts-expect-error id${packetId} is not an exported type of the EventEmitter
+        if (callback) this.once(`id${packetId}`, callback);
+        result.writeUInt32LE(8 + totalLength);              // Write Size.
+        result.writeUInt32LE(4 + name.length);         // Write HLen.
+        result.write(name, name.length, "ascii"); // Write Header.
+        result.writeBuff(buffer, buffer.byteLength);        // Write Data.
+        this.con.write(result.buffer);  // Write packet to tcp.
+        return true;                    // Return success.
+    }
+
     /**
      * sendClass sends a packet to the server
      * @param packetClass class to send
@@ -98,25 +125,9 @@ export class Socket extends EventEmitter {
     ): boolean {
         // If class doesn't exist, return failed.
         if (!packetClass) return false;
-        if (this.isDebug) console.log(`sending: ${packetClass.name}`);
         const buffer = packetClass.toBuffer(payload);
-        // Get total length of packet.
-        const totalLength = buffer.byteLength + packetClass.name.length;
-        // Construct BufferCursor.
-        const result = new BufferCursor(Buffer.allocUnsafe(20 + totalLength));
-        result.writeUInt32LE(20 + totalLength);             // Write TotalLen.
-        result.writeUInt32LE(8);                            // Write IDLen.
-        const packetId = id ? id : ++this.idNumber;
-        result.writeUInt32LE(packetId);                     // Write ID.
-        // Set listener for callback.
-        // @ts-expect-error id${packetId} is not an exported type of the EventEmitter
-        if (callback) this.once(`id${packetId}`, callback);
-        result.writeUInt32LE(8 + totalLength);              // Write Size.
-        result.writeUInt32LE(4 + packetClass.name.length);         // Write HLen.
-        result.write(packetClass.name, packetClass.name.length, "ascii"); // Write Header.
-        result.writeBuff(buffer, buffer.byteLength);        // Write Data.
-        this.con.write(result.buffer);  // Write packet to tcp.
-        return true;                    // Return success.
+        // Send the buffer
+        return this.sendBuffer(packetClass.name, buffer, callback, id);
     }
 
     /**

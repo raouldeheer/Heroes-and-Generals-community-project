@@ -15,11 +15,11 @@ export class ClientHandler extends EventEmitter {
     constructor(socket: NetSocket, parent: Server) {
         super();
         console.log("New socket opened");
-        if (!socket.remoteAddress) throw new Error("remoteAddress undefined!");
-        this.address = socket.remoteAddress;
+        if (!socket.remoteAddress || !socket.remotePort) throw new Error("remoteAddress undefined!");
+        this.address = socket.remoteAddress + ":" + socket.remotePort;
         this.auth = false;
         this.server = parent;
-        this.con = new Socket(socket, true);
+        this.con = new Socket(socket, false);
 
         this.con.on("close", () => {
             this.emit("close");
@@ -30,6 +30,14 @@ export class ClientHandler extends EventEmitter {
         this.addHandlers();
     }
 
+    public sendBuffer<RType>(
+        name: string,
+        buffer: Buffer,
+        callback?: (result: RType) => void,
+        id = 0,
+    ) {
+        this.con.sendBuffer(name, buffer, callback, id);
+    }
 
     /**
      * sendClass sends a packet to the server
@@ -51,7 +59,7 @@ export class ClientHandler extends EventEmitter {
             this.sendClass(PacketClass.QueryServerInfoResponse, {
                 servertime: new Date().getTime().toString(),
                 playersInWar: 420,
-                onlineplayers: 6969,
+                onlineplayers: this.server.onlinePlayers,
                 version: "QQ 170947",
             }, id);
         });
@@ -172,15 +180,10 @@ export class ClientHandler extends EventEmitter {
     }
 }
 
-interface ClientOnQueue {
-    client: ClientHandler;
-    originalId: number;
-}
-
 export class Server {
     private readonly tcpServer: NetServer;
     private readonly clients: Map<string, ClientHandler>;
-    private readonly loginQueue: ClientOnQueue[];
+    private readonly loginQueue: ClientHandler[];
     private loginSlowDown: boolean;
     private intervals: NodeJS.Timer[];
 
@@ -205,7 +208,7 @@ export class Server {
             if (this.loginQueue.length >= 1 && !this.loginSlowDown) {
                 const item = this.loginQueue.shift();
                 if (item) {
-                    item.client.sendClass(PacketClass.LoginQueueUpdate, {
+                    item.sendClass(PacketClass.LoginQueueUpdate, {
                         positionInQueue: 1,
                         mayProceed: true,
                         originalId: 3,
@@ -216,7 +219,7 @@ export class Server {
         }, 5000));
         this.intervals.push(setInterval(() => {
             this.loginQueue.forEach((item, index) => {
-                item.client.sendClass(PacketClass.LoginQueueUpdate, {
+                item.sendClass(PacketClass.LoginQueueUpdate, {
                     positionInQueue: index + 1,
                     mayProceed: false,
                     originalId: 3,
@@ -226,8 +229,12 @@ export class Server {
         }, 2000));
     }
 
+    public get onlinePlayers(): number {
+        return this.clients.size;
+    }
+
     public addToLoginQueue(client: ClientHandler) {
-        this.loginQueue.push({ client, originalId: this.loginQueue.length + 1 });
+        this.loginQueue.push(client);
     }
 
     public listen(port: number, host: string) {

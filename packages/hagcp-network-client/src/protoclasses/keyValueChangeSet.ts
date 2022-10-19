@@ -1,6 +1,6 @@
-import { IKeyValueChangeSetResult, BufferCursor, bytesToString, splitInGroups, prefixJoin } from "hagcp-utils";
+import { BufferCursor, bytesToString, splitInGroups, prefixJoin } from "hagcp-utils";
 import { bufFromDecodedProto, BufToDecodedProto, Protos } from "./proto";
-import { KeyValueOp } from "../protolinking/keyValueSet";
+import { IKeyValueChangeSetResult, KeyValueChangeKey, KeyValueOp } from "../protolinking/keyValueSet";
 
 export const KeyValueChangeSet = {
     name: "KeyValueChangeSet",
@@ -9,13 +9,15 @@ export const KeyValueChangeSet = {
         const groups = splitInGroups(buf);
         groups.forEach(group => {
             const sections = splitInGroups(group);
-            switch (bytesToString(sections[0])) {
+            const opBuf = sections.shift();
+            if (!opBuf) throw new Error("keyValueOp undefined in KeyValueChangeSet");
+            const keyValueOp = bytesToString(opBuf);
+            switch (keyValueOp) {
                 case KeyValueOp.set:
                     if (!returnObj.set) returnObj.set = [];
-                    sections.shift();
                     for (let i = 0; i < sections.length; i++) {
                         const [keyBuf, valueBuf] = splitInGroups(sections[i]);
-                        const key = bytesToString(keyBuf);
+                        const key = bytesToString(keyBuf) as KeyValueChangeKey;
                         valueBuf.seek(4);
                         try {
                             returnObj.set.push({
@@ -26,29 +28,24 @@ export const KeyValueChangeSet = {
                                 ),
                             });
                         } catch (error) {
-                            console.log(error);
-                            console.log(`New set key: ${key}`);
-                            returnObj.set.push({
-                                key,
-                                value: "New set key",
-                            });
+                            console.error(error);
+                            console.error(`Unknown set key: ${key}`);
                         }
                     }
                     break;
                 case KeyValueOp.delete:
                     if (!returnObj.delete) returnObj.delete = [];
-                    sections.shift();
                     for (let i = 0; i < sections.length; i++) {
                         const [keyBuf, valueBuf] = splitInGroups(sections[i]);
                         valueBuf.seek(4);
                         returnObj.delete.push({
-                            key: bytesToString(keyBuf),
+                            key: bytesToString(keyBuf) as KeyValueChangeKey,
                             value: valueBuf.readBigUInt64LE().toString(),
                         });
                     }
                     break;
                 default:
-                    console.log(bytesToString(sections[0]));
+                    console.log(keyValueOp);
                     break;
             }
         });

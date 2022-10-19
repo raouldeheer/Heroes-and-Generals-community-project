@@ -1,3 +1,9 @@
+export type KeyValue = { key: KeyValueChangeKey, value: any; };
+export interface IKeyValueChangeSetResult {
+    set?: KeyValue[],
+    delete?: KeyValue[],
+}
+
 export const enum KeyValueOp {
     set = "set",
     delete = "delete"

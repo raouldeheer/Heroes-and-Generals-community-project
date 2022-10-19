@@ -1,6 +1,6 @@
 import { BufferCursor } from "hagcp-utils";
 import Long from "long";
-import { PacketClass, packetClassParser, VirtualCurrencyType } from "../dist/index";
+import { KeyValueChangeKey, PacketClass, packetClassParser, VirtualCurrencyType } from "../dist/index";
 
 type TestType = {
     packet: packetClassParser;
@@ -72,7 +72,7 @@ describe('Test packet parsing', () => {
     addTestClass(PacketClass.unsubscriberesponse, { reply: "ok" });
     addTestClass(PacketClass.KeyValueChangeSet, {
         set: [{
-            key: "accesspoint",
+            key: KeyValueChangeKey.accesspoint,
             value: {
                 id: Long.ZERO,
                 mapid: Long.ZERO,
@@ -82,7 +82,7 @@ describe('Test packet parsing', () => {
         }],
         delete: [
             {
-                key: "accesspoint",
+                key: KeyValueChangeKey.accesspoint,
                 value: Long.ZERO,
             }
         ],
@@ -90,14 +90,14 @@ describe('Test packet parsing', () => {
     addTestClass(PacketClass.KeyValueChangeSet, {
         delete: [
             {
-                key: "accesspoint",
+                key: KeyValueChangeKey.accesspoint,
                 value: Long.ZERO,
             }
         ],
     });
     addTestClass(PacketClass.KeyValueChangeSet, {
         set: [{
-            key: "accesspoint",
+            key: KeyValueChangeKey.accesspoint,
             value: {
                 id: Long.ZERO,
                 mapid: Long.ZERO,

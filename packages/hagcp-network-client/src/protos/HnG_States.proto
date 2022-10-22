@@ -780,6 +780,36 @@ required int32 posy = 7;
 required string name = 8;
 }
 
+message CareerOrder {
+required int64 id = 1;
+required int64 playerId = 2;
+required string progress = 3;
+repeated bool rewardReceivedBits = 4;
+}
+
+message CareerOrderRequest {
+required Common.Response type = 1;
+required int64 playerId = 2;
+}
+
+message CareerOrderResponse {
+required Common.Response response = 1;
+}
+
+message CareerOrderTemplate {
+required int64 id = 1;
+required int32 type = 2;
+required string name = 3;
+required int32 requiredCount = 4;
+required int32 minPlayerLevel = 5;
+optional int64 tutorialTemplateId = 6;
+required string rewards = 7;
+required string localizedTitle = 8;
+required string localizedDescription = 9;
+required int32 sortOrder = 10;
+required string localizedReward = 11;
+}
+
 message ChangeCharacterTemplateRequest {
 required int64 characterId = 1;
 required int64 pricingId = 2;
@@ -915,6 +945,15 @@ message ClaimBattleReportVeteranBonusRequest {
 
 message ClaimBattleReportVeteranBonusResponse {
 required Common.Response result = 1;
+}
+
+message ClaimCareerOrderRewardRequest {
+required int64 careerOrderTemplateId = 1;
+required int64 playerId = 2;
+}
+
+message ClaimCareerOrderRewardResponse {
+required Common.Response response = 1;
 }
 
 message ClientBattleReport {
@@ -1712,6 +1751,10 @@ message EBoosterType {
 
 }
 
+message ECareerOrderType {
+
+}
+
 message EDiscountItemCategory {
 
 }
@@ -1835,6 +1878,10 @@ message ETicketType {
 
 }
 
+message ETutorialCategory {
+
+}
+
 message EUniformPartType {
 
 }
@@ -1931,7 +1978,8 @@ message FactionWinningWarStreak {
 required int64 id = 1;
 required int64 factionTemplateId = 2;
 required int32 winningStreak = 3;
-required int32 aTDeployCostPercentageIncrease = 4;
+required float aTDeployCostPercentageIncrease = 4;
+required string updatedWarIds = 5;
 }
 
 message friendinfo {
@@ -2369,6 +2417,15 @@ required Common.Response response = 1;
 required int32 mailRUResponseCode = 2;
 required string mailRUErrorMessage = 3;
 required string url = 4;
+}
+
+message MarkTutorialTriggeredRequest {
+required int64 tutoriaTemplateId = 1;
+required int64 playerId = 2;
+}
+
+message MarkTutorialTriggeredResponse {
+required Common.Response response = 1;
 }
 
 message MatchmakerWaitingTimeInfo {
@@ -4059,6 +4116,8 @@ required int64 playerSessionId = 15;
 required int32 playerTier = 16;
 required int32 squadCustomizationPoints = 17;
 required bool wasInvited = 18;
+required int64 uniformPartTemplateId = 19;
+required int64 characterFactionTemplateId = 20;
 }
 
 message SquadMemberSessionStatus {
@@ -4490,6 +4549,21 @@ required string begintime = 6;
 required string endtime = 7;
 required int64 warid = 8;
 optional int32 approachingSkirmish = 9;
+}
+
+message Tutorial {
+required int64 id = 1;
+required int64 playerId = 2;
+required string triggeredTutorialTemplateIds = 3;
+}
+
+message TutorialTemplate {
+required int64 id = 1;
+required int32 category = 2;
+required int32 pages = 3;
+required string name = 4;
+required int32 sortOrder = 5;
+optional string trigger = 6;
 }
 
 message UniformPart {
@@ -4993,7 +5067,7 @@ message WarBonusTemplate {
 required int64 id = 1;
 required int32 warfundBonus = 2;
 required int32 xpBonusPercent = 3;
-required int32 aTDeployCostPercent = 4;
+required float aTDeployCostPercent = 4;
 required bool isActive = 5;
 }
 

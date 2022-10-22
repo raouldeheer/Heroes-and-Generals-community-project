@@ -1,5 +1,5 @@
-import { KeyValueChangeKey, PacketClass, IKeyValueChangeSetResult } from "hagcp-network-client";
-import { BufferCursor } from "hagcp-utils";
+import { KeyValueChangeKey, PacketClass, ClassKeys } from "hagcp-network-client";
+import { BufferCursor } from "buffercursor.ts";
 import { Json, Buf } from "mylas";
 
 (async () => {
@@ -10,15 +10,13 @@ import { Json, Buf } from "mylas";
     const klas = PacketClass.KeyValueChangeSet;
     if (!klas) return;
 
-    const returnObj: IKeyValueChangeSetResult = {
-        set: assets.map((item: any) => ({
+    const data = klas.toBuffer({
+        set: assets.map((item: unknown) => ({
             key: assetType,
             value: item,
         })),
-    };
-
-    const data = klas.toBuffer(returnObj);
-    const typeText = "KeyValueChangeSet";
+    });
+    const typeText = ClassKeys.KeyValueChangeSet;
 
     const final = new BufferCursor(Buffer.alloc(data.length + 4 + 4 + typeText.length));
     final.writeUInt32LE(data.length + 4 + 4 + typeText.length);

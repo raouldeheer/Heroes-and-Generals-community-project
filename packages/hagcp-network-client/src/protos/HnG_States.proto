@@ -127,8 +127,8 @@ required bool inTransit = 8;
 required int64 supplylineId = 9;
 required int64 fromAccessPoint = 10;
 required int64 toAccessPoint = 11;
-required string travelBeginTime = 12;
-required string travelEndTime = 13;
+optional string travelBeginTime = 12;
+optional string travelEndTime = 13;
 required bool inActiveMission = 14;
 required int64 accesspointTemplateId = 15;
 }

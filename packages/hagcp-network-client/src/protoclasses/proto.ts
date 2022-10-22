@@ -1,4 +1,4 @@
-import { BufferCursor } from "hagcp-utils";
+import { BufferCursor } from "buffercursor.ts";
 import { Type, loadSync } from "protobufjs";
 import { join } from "path";
 

@@ -1,4 +1,4 @@
-import { BufferCursor } from "hagcp-utils";
+import { BufferCursor } from "buffercursor.ts";
 import Long from "long";
 import * as interfaces from "../interfaces";
 import { KeyValueChangeSet } from "../protoclasses/keyValueChangeSet";

@@ -1,5 +1,5 @@
 import { EventEmitter } from "events";
-import { BufferCursor } from "hagcp-utils";
+import { BufferCursor } from "buffercursor.ts";
 import { Socket as NetSocket } from "net";
 import { gunzip } from "zlib";
 import { ProtoToString } from "./protoclasses/proto";
@@ -174,7 +174,7 @@ export class Socket extends EventEmitter {
         // Get packetClass from list
         const packetClass = Reflect.get(PacketClass, className);
         // Send packet with packetClass
-        return this.sendClass(packetClass, payload, callback, id);
+        return this.sendClass(packetClass, payload || {}, callback, id);
     }
 
     /**

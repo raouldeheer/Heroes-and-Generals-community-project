@@ -1,4 +1,5 @@
-import { BufferCursor, bytesToString, splitInGroups, prefixJoin } from "hagcp-utils";
+import { bytesToString, splitInGroups, prefixJoin } from "hagcp-utils";
+import { BufferCursor } from "buffercursor.ts";
 import { bufFromDecodedProto, BufToDecodedProto, Protos } from "./proto";
 import { IKeyValueChangeSetResult, KeyValueChangeKey, KeyValueOp } from "../protolinking/keyValueSet";
 

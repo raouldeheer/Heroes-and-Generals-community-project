@@ -9,20 +9,25 @@ dotenv.config();
 const dataStore = new DataStore;
 let saveMapTimer: NodeJS.Timer;
 let warId: string | null = null;
-const cl = new Client(
-    "127.69.69.69",
-    6969,
+// const cl = new Client(
+//     "127.69.69.69",
+//     6969,
+//     String(process.env.HAG_USERAGENT),
+//     String(process.env.HAG_USERNAME),
+//     String(process.env.HAG_PASSWORD),
+//     true);
+Client.connectToHQ(
     String(process.env.HAG_USERAGENT),
     String(process.env.HAG_USERNAME),
     String(process.env.HAG_PASSWORD),
-    true);
-// )).then(cl => {
-    // if (!cl) return;
+    true,
+).then(cl => {
+    if (!cl) return;
     const startTime = Date.now();
     cl.once("loggedin", async () => {
         // cl.sendClass(PacketClass.subscribesoldierview);
         // cl.sendClass(PacketClass.subscribecommandnodeview);
-        // cl.sendClass(PacketClass.query_war_catalogue_request);
+        cl.sendClass(PacketClass.query_war_catalogue_request);
         await setTimeout(2000);
 
         saveMapTimer = setInterval(saveMapNow, 30000);
@@ -66,7 +71,7 @@ const cl = new Client(
         clearInterval(saveMapTimer);
         process.exit(1);
     });
-// });
+});
 
 function saveMapNow() {
     const date = (new Date).toISOString().replace(/[-:.]/g, "");

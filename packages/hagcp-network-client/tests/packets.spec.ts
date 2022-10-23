@@ -83,7 +83,7 @@ describe('Test packet parsing', () => {
         delete: [
             {
                 key: KeyValueChangeKey.accesspoint,
-                value: Long.ZERO,
+                value: "0",
             }
         ],
     });

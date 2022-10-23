@@ -76,7 +76,7 @@ export const KeyValueChangeSet = {
                     result.write(key, key.length);
                     result.writeUInt32LE(8 + 4 + 4);
                     result.writeUInt32LE(8 + 4);
-                    result.writeBigUInt64LE(BigInt(value));
+                    result.writeBigUInt64LE(BigInt(value.toString()));
                     return result.buffer;
                 })
             ]) : null,

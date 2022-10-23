@@ -39,5 +39,5 @@ export function ProtoToBuf<T extends Record<string, any>>(proto: Type, payload: 
 export const getDefaultClass = <T extends Record<string, any>>(protoName: string, defaults: T = {} as T, name = protoName.match(/\w+$/g)?.pop() || "") => ({
     name,
     parse: (buf: BufferCursor): T => BufToDecodedProto(Protos.lookupType(protoName), buf.buffer.slice(8)),
-    toBuffer: (payload = defaults): Buffer => ProtoToBuf(Protos.lookupType(protoName), payload),
+    toBuffer: (payload: T): Buffer => ProtoToBuf(Protos.lookupType(protoName), {...defaults, ...payload}),
 });

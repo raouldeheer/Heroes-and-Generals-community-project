@@ -1,7 +1,7 @@
 import { BufferCursor } from "buffercursor.ts";
 
 export function bytesToString(source: Buffer | BufferCursor): string {
-    const buf = source instanceof BufferCursor ? source.buffer : source;
+    const buf = BufferCursor.isBufferCursor(source) ? source.buffer : source;
     const bytes = Array.from(buf.values()).map(value => (value >= 33 && value <= 126) ? value : 46);
     return Buffer.from(bytes).toString("ascii");
 }

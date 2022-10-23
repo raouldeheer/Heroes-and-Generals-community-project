@@ -8,7 +8,7 @@ dotenv.config();
 
 const dataStore = new DataStore;
 let saveMapTimer: NodeJS.Timer;
-let warId: string | null = null;
+let warId: Long | null = null;
 // const cl = new Client(
 //     "127.69.69.69",
 //     6969,
@@ -50,8 +50,8 @@ Client.connectToHQ(
             for (const iterator of data.set) {
                 if (iterator.key == "war") {
                     const value = iterator.value;
-                    warId = value.id.toString();
-                    if (value.sequelwarid.toString() !== "0") {
+                    warId = value.id;
+                    if (value.sequelwarid.equals(0)) {
                         saveMapNow();
                         saveMapTimer.refresh();
                         console.log(`${value.id} ended, switching to: ${value.sequelwarid}`);

@@ -1,6 +1,7 @@
 import { BufferCursor } from "buffercursor.ts";
 import { Type, loadSync } from "protobufjs";
 import { join } from "path";
+import Long from "long";
 
 export const Protos = loadSync(join(__filename, "../protos/All.proto"));
 
@@ -10,7 +11,9 @@ export function ProtoToString(result: object, prefix = `${" ".repeat(16)}`): str
             .reduce((prev, curr, i, { length }) =>
                 prev + prefix + curr[0] + ": " +
                 ((typeof curr[1] == "object")
-                    ? ProtoToString(curr[1], prefix + "    ")
+                    ? Long.isLong(curr[1])
+                        ? curr[1].toString()
+                        : ProtoToString(curr[1], prefix + "    ")
                     : String(curr[1])) +
                 ((i == length - 1) ? "" : "\n"), "");
 }
@@ -38,5 +41,5 @@ export function ProtoToBuf<T extends Record<string, any>>(proto: Type, payload: 
 export const getDefaultClass = <T extends Record<string, any>>(protoName: string, defaults: T = {} as T, name = protoName.match(/\w+$/g)?.pop() || "") => ({
     name,
     parse: (buf: BufferCursor): T => BufToDecodedProto(Protos.lookupType(protoName), buf.buffer.slice(8)),
-    toBuffer: (payload: T): Buffer => ProtoToBuf(Protos.lookupType(protoName), {...defaults, ...payload}),
+    toBuffer: (payload: T): Buffer => ProtoToBuf(Protos.lookupType(protoName), { ...defaults, ...payload }),
 } as const);

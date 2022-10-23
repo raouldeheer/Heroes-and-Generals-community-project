@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-empty-interface */
-import { Long } from "protobufjs";
+import Long from "long";
 import { ResponseType } from "../protolinking/classKeys";
 
 export interface AddAssaultTeamStats {

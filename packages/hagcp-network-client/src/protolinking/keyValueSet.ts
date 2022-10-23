@@ -1,10 +1,9 @@
-import Long from "long";
 import * as interfaces from "../interfaces";
 
 export type KeyValueSet = (typeof KeyValueClass)[KeyValueClassKeys];
 export type KeyValueDelete = {
     key: KeyValueClassKeys,
-    value: string | Long,
+    value: string,
 };
 
 export interface IKeyValueChangeSetResult {

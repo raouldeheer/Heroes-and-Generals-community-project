@@ -15,7 +15,7 @@ function mapLongToString<T>(obj: specialObject<T>) {
     for (const key in obj) {
         if (Object.prototype.hasOwnProperty.call(obj, key)) {
             const element = obj[key];
-            if (element instanceof Long) obj[key] = element.toString();
+            if (Long.isLong(element)) obj[key] = element.toString();
             else if (typeof element === "object") obj[key] = mapLongToString(element);
         }
     }
@@ -111,7 +111,7 @@ describe('Test packet parsing', () => {
         it(`Parse ${item.packet.name}`, () => {
             const data = item.packet.toBuffer(item.data);
             const parsed = item.packet.parse(new BufferCursor(data));
-            expect(parsed).toStrictEqual(mapLongToString(item.data));
+            expect(mapLongToString(parsed)).toStrictEqual(mapLongToString(item.data));
         });
     });
 });

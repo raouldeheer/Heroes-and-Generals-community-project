@@ -1,10 +1,11 @@
 import { bytesToString, splitInGroups, prefixJoin } from "hagcp-utils";
 import { BufferCursor } from "buffercursor.ts";
 import { bufFromDecodedProto, BufToDecodedProto, Protos } from "./proto";
-import { IKeyValueChangeSetResult, KeyValueChangeKey, KeyValueOp } from "../protolinking/keyValueSet";
+import { IKeyValueChangeSetResult, KeyValueChangeKey, KeyValueOp, KeyValueSet } from "../protolinking/keyValueSet";
+import { ClassKeys } from "../index";
 
 export const KeyValueChangeSet = {
-    name: "KeyValueChangeSet",
+    name: ClassKeys.KeyValueChangeSet,
     parse(buf: BufferCursor) {
         const returnObj: IKeyValueChangeSetResult = {};
         const groups = splitInGroups(buf);
@@ -27,7 +28,7 @@ export const KeyValueChangeSet = {
                                     Protos.lookupType(`HnG_States.${key}`),
                                     valueBuf.slice().buffer
                                 ),
-                            });
+                            } as KeyValueSet);
                         } catch (error) {
                             console.error(error);
                             console.error(`Unknown set key: ${key}`);
@@ -75,7 +76,7 @@ export const KeyValueChangeSet = {
                     result.write(key, key.length);
                     result.writeUInt32LE(8 + 4 + 4);
                     result.writeUInt32LE(8 + 4);
-                    result.writeBigUInt64LE(BigInt(value.toString()));
+                    result.writeBigUInt64LE(BigInt(value));
                     return result.buffer;
                 })
             ]) : null,

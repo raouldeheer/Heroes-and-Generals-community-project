@@ -2,7 +2,7 @@
 export type KeyValue = { key: string, value: any; };
 export interface IKeyValueChangeSetResult {
     set?: KeyValue[],
-    delete?: KeyValue[],
+    delete?: { key: string, value: string; }[],
 }
 
 export class DataStore {
@@ -27,11 +27,11 @@ export class DataStore {
     }
 
     public ResetData(itemStoreName: string) {
-        this.mainStore.set(itemStoreName, new Map);
+        this.mainStore.get(itemStoreName)?.clear();
     }
 
     public GetData = <T = any>(itemStoreName: string, id: string): T =>
-        this.mainStore.get(itemStoreName)?.get?.(id);
+        this.mainStore.get(itemStoreName)?.get(id);
 
     public HasData = (itemStoreName: string, id: string) =>
         this.mainStore.get(itemStoreName)?.has(id);

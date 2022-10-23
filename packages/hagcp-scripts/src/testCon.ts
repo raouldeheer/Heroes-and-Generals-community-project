@@ -50,14 +50,14 @@ Client.connectToHQ(
             for (const iterator of data.set) {
                 if (iterator.key == "war") {
                     const value = iterator.value;
-                    warId = value.id;
-                    if (value.sequelwarid !== "0") {
+                    warId = value.id.toString();
+                    if (value.sequelwarid.toString() !== "0") {
                         saveMapNow();
                         saveMapTimer.refresh();
                         console.log(`${value.id} ended, switching to: ${value.sequelwarid}`);
                         dataStore.ResetData("battlefieldstatus");
                         cl.sendClass(PacketClass.join_war_request, {
-                            warid: Long.fromString(value.sequelwarid),
+                            warid: value.sequelwarid,
                             factionid: Long.ZERO,
                             playedFirstBlood: 0,
                         });

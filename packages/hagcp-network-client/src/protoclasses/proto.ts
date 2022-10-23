@@ -17,7 +17,6 @@ export function ProtoToString(result: object, prefix = `${" ".repeat(16)}`): str
 
 export const BufToDecodedProto = <T>(proto: Type, buf: Buffer): T =>
     proto.toObject(proto.decode(buf), {
-        longs: String,
         enums: Number,
         bytes: Buffer,
     }) as T;
@@ -40,4 +39,4 @@ export const getDefaultClass = <T extends Record<string, any>>(protoName: string
     name,
     parse: (buf: BufferCursor): T => BufToDecodedProto(Protos.lookupType(protoName), buf.buffer.slice(8)),
     toBuffer: (payload: T): Buffer => ProtoToBuf(Protos.lookupType(protoName), {...defaults, ...payload}),
-});
+} as const);

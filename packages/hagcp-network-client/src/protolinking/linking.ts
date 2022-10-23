@@ -146,4 +146,4 @@ export const PacketClass = {
     [ClassKeys.unsubscribewarmaplightview]: dummyClass(ClassKeys.unsubscribewarmaplightview),
     [ClassKeys.subscribewarmapview]: dummyClass(ClassKeys.subscribewarmapview),
     [ClassKeys.ChangeTierRequest]: dummyClass(ClassKeys.ChangeTierRequest),
-};
+} as const;

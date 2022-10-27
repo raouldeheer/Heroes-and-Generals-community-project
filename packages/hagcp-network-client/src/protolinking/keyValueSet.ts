@@ -1,5 +1,13 @@
 import * as interfaces from "../interfaces";
 
+export type LongToString<T> = {
+    [P in keyof T]: T[P] extends Array<infer AT>
+    ? Array<LongToString<AT>>
+    : T[P] extends Long ? string
+    : T[P] extends (string | number | boolean) ? T[P]
+    : LongToString<T[P]>
+};
+
 export type KeyValueSet = (typeof KeyValueClass)[KeyValueClassKeys];
 export type KeyValueDelete = {
     key: KeyValueClassKeys,
@@ -78,7 +86,7 @@ export const enum KeyValueChangeKey {
     capital = "capital",
 }
 
-const getDefaultKeyValue = <K extends string, V extends Record<string, any>>() => ({
+const getDefaultKeyValue = <K extends KeyValueChangeKey, V extends Record<string, any>>() => ({
     key: null as unknown as K,
     value: null as unknown as V,
 } as const);

@@ -1,13 +1,13 @@
 import { bytesToString, splitInGroups, prefixJoin } from "hagcp-utils";
 import { BufferCursor } from "buffercursor.ts";
 import { bufFromDecodedProto, BufToDecodedProto, Protos } from "./proto";
-import { IKeyValueChangeSetResult, KeyValueChangeKey, KeyValueOp, KeyValueSet } from "../protolinking/keyValueSet";
+import { IKeyValueChangeSetResult, KeyValueClassKeys, KeyValueOp, KeyValueSet, LongToString } from "../protolinking/keyValueSet";
 import { ClassKeys } from "../index";
 
 export const KeyValueChangeSet = {
     name: ClassKeys.KeyValueChangeSet,
     parse(buf: BufferCursor) {
-        const returnObj: IKeyValueChangeSetResult = {};
+        const returnObj: LongToString<IKeyValueChangeSetResult> = {};
         const groups = splitInGroups(buf);
         groups.forEach(group => {
             const sections = splitInGroups(group);
@@ -19,7 +19,7 @@ export const KeyValueChangeSet = {
                     if (!returnObj.set) returnObj.set = [];
                     for (let i = 0; i < sections.length; i++) {
                         const [keyBuf, valueBuf] = splitInGroups(sections[i]);
-                        const key = bytesToString(keyBuf) as KeyValueChangeKey;
+                        const key = bytesToString(keyBuf);
                         valueBuf.seek(4);
                         try {
                             returnObj.set.push({
@@ -28,7 +28,7 @@ export const KeyValueChangeSet = {
                                     Protos.lookupType(`HnG_States.${key}`),
                                     valueBuf.slice().buffer
                                 ),
-                            } as KeyValueSet);
+                            } as LongToString<KeyValueSet>);
                         } catch (error) {
                             console.error(error);
                             console.error(`Unknown set key: ${key}`);
@@ -41,7 +41,7 @@ export const KeyValueChangeSet = {
                         const [keyBuf, valueBuf] = splitInGroups(sections[i]);
                         valueBuf.seek(4);
                         returnObj.delete.push({
-                            key: bytesToString(keyBuf) as KeyValueChangeKey,
+                            key: bytesToString(keyBuf) as KeyValueClassKeys,
                             value: valueBuf.readBigUInt64LE().toString(),
                         });
                     }

@@ -7,4 +7,5 @@ export default defineConfig(options => ({
     dts: true,
     format: ["esm", "cjs"],
     minify: !options.watch,
+    sourcemap: true,
 }));

@@ -2,6 +2,7 @@ import { BufferCursor } from "buffercursor.ts";
 import { Type, loadSync } from "protobufjs";
 import { join } from "path";
 import Long from "long";
+import { LongToString } from "../protolinking/keyValueSet";
 
 export const Protos = loadSync(join(__filename, "../protos/All.proto"));
 
@@ -20,13 +21,16 @@ export function ProtoToString(result: object, prefix = `${" ".repeat(16)}`): str
 
 export const BufToDecodedProto = <T>(proto: Type, buf: Buffer): T =>
     proto.toObject(proto.decode(buf), {
+        longs: String,
         enums: Number,
         bytes: Buffer,
     }) as T;
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const bufFromDecodedProto = <T extends Record<string, any>>(proto: Type, value: T): Buffer =>
     Buffer.from(proto.encode(proto.fromObject(value)).finish());
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function ProtoToBuf<T extends Record<string, any>>(proto: Type, payload: T): Buffer {
     const errMsg = proto.verify(payload);
     if (errMsg) throw new Error(errMsg);
@@ -38,8 +42,9 @@ export function ProtoToBuf<T extends Record<string, any>>(proto: Type, payload: 
     return result.buffer;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const getDefaultClass = <T extends Record<string, any>>(protoName: string, defaults: T = {} as T, name = protoName.match(/\w+$/g)?.pop() || "") => ({
     name,
-    parse: (buf: BufferCursor): T => BufToDecodedProto(Protos.lookupType(protoName), buf.buffer.slice(8)),
-    toBuffer: (payload: T): Buffer => ProtoToBuf(Protos.lookupType(protoName), { ...defaults, ...payload }),
+    parse: (buf: BufferCursor): LongToString<T> => BufToDecodedProto(Protos.lookupType(protoName), buf.buffer.subarray(8)),
+    toBuffer: (payload: T): Buffer => ProtoToBuf(Protos.lookupType(protoName), Object.assign(defaults, payload)),
 } as const);

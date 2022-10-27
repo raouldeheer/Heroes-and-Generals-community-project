@@ -25,7 +25,7 @@ function mapLongToString<T>(obj: specialObject<T>) {
 describe('Test packet parsing', () => {
     const tests: TestType[] = [];
 
-    const addTestClass = <T extends packetClassParser>(packet: T, data: ReturnType<T["parse"]>) => {
+    const addTestClass = <T extends packetClassParser>(packet: T, data: Parameters<T["toBuffer"]>[0]) => {
         tests.push({ packet, data });
     };
 

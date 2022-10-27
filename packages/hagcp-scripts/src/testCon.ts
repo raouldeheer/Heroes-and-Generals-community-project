@@ -8,7 +8,7 @@ dotenv.config();
 
 const dataStore = new DataStore;
 let saveMapTimer: NodeJS.Timer;
-let warId: Long | null = null;
+let warId: string | null = null;
 // const cl = new Client(
 //     "127.69.69.69",
 //     6969,
@@ -51,13 +51,13 @@ Client.connectToHQ(
                 if (iterator.key == "war") {
                     const value = iterator.value;
                     warId = value.id;
-                    if (value.sequelwarid.equals(0)) {
+                    if (value.sequelwarid === "0") {
                         saveMapNow();
                         saveMapTimer.refresh();
                         console.log(`${value.id} ended, switching to: ${value.sequelwarid}`);
                         dataStore.ResetData("battlefieldstatus");
                         cl.sendClass(PacketClass.join_war_request, {
-                            warid: value.sequelwarid,
+                            warid: Long.fromString(value.sequelwarid),
                             factionid: Long.ZERO,
                             playedFirstBlood: 0,
                         });

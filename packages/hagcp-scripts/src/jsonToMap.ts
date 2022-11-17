@@ -37,6 +37,7 @@ const jsonToMap = (filename: string, imageName: string) => threadLimit(() => {
 });
 
 (async () => {
+    // * Init
     const dataStore = new DataStore;
 
     await loadTemplate(dataStore, "battlefield");
@@ -52,13 +53,29 @@ const jsonToMap = (filename: string, imageName: string) => threadLimit(() => {
     if (!existsSync(join(savesDir, warId))) mylas.dir.mkS(join(savesDir, warId));
     if (!existsSync(join(savesMapDir, warId))) mylas.dir.mkS(join(savesMapDir, warId));
 
+    // * Setup data
     const files = await globby(`${savesDir}/${warId}/*.jsonc`);
+    await ProcessAllImageFiles(files, savesMapDir, warId);
+
+    if (files) {
+        // * Find capital captures
+        const total = await FindCapitalCaptures(files, dataStore, warId);
+        
+        // * Last frame stats
+        await LastFrameStats(files, dataStore, warId);
+        console.log(total);
+    }
+    console.log("Done");
+})();
+
+async function ProcessAllImageFiles(files: string[], savesMapDir: string, warId: string) {
     const latestTimes: number[] = [];
     let [lastDone, done] = [0, 0];
     let [lastTime, time] = [Date.now(), Date.now()];
 
     const inter = setInterval(() => {
-        if (latestTimes.length > 15) latestTimes.shift();
+        if (latestTimes.length > 15)
+            latestTimes.shift();
         latestTimes.push((time - lastTime) / ((done - lastDone) || 1));
 
         const diff = latestTimes.reduce((prev, curr) => (prev + curr) / 2);
@@ -72,95 +89,103 @@ const jsonToMap = (filename: string, imageName: string) => threadLimit(() => {
         time = Date.now();
     }, 1000);
 
+    // * Process warmap images
     await Promise.all(
         files.map((file, i) => {
             const imageName = join(savesMapDir, warId, `image_${(i + 1).toString().padStart(5, "0")}.jpg`);
             if (!existsSync(imageName)) {
                 return jsonToMap(file, imageName).then(() => { done++; });
-            } else done++;
+            } else
+                done++;
         })
     );
     clearInterval(inter);
     processes.forEach(e => e.kill());
+}
 
-    if (files) {
-        let total = "00:00:00 War start\n";
-        const first = mylas.json.loadS(files[0]);
+async function FindCapitalCaptures(files: string[], dataStore: DataStore, warId: string) {
+    let total = "00:00:00 War start\n";
+    const first = await mylas.json.load(files[0]);
+    const lookupFactions = new Map<string, Faction>();
+    first.factions.forEach((element: Faction) => {
+        lookupFactions.set(element.factionId, element);
+    });
+
+    files.reduce((prev: Map<string, Faction>, element: string, i: number) => {
+        const data: SaveData = mylas.json.loadS(element);
+        if (!data?.factions)
+            return prev;
+
         const lookupFactions = new Map<string, Faction>();
-        first.factions.forEach((element: Faction) => {
-            lookupFactions.set(element.factionId, element);
+        data.factions.forEach((element: Faction, i) => {
+            if (i < 3)
+                lookupFactions.set(element.factionId, element);
         });
 
-        files.reduce((prev: Map<string, Faction>, element: string, i: number) => {
-            const data: SaveData = mylas.json.loadS(element);
-            if (!data?.factions) return prev;
-
-            const lookupFactions = new Map<string, Faction>();
-            data.factions.forEach((element: Faction, i) => {
-                if (i < 3) lookupFactions.set(element.factionId, element);
-            });
-
-            lookupFactions.forEach(faction => {
-                if (faction.ownedMajorCities.length > (prev.get(faction.factionId)?.ownedMajorCities.length || Infinity)) {
-                    const diff = faction.ownedMajorCities.filter(city => !prev.get(faction.factionId)!.ownedMajorCities.includes(city));
-                    if (diff.length > 0) {
-                        diff.forEach(newCity => {
-                            const factionAbbr = dataStore.GetData("factiontemplate", faction.factionTemplateId).abbreviation;
-                            if (i > 150) total += `${frameToTime(i)} ${factionAbbr} - ${dataStore.GetData("battlefield", newCity).bftitle}\n`;
-                        });
-                    }
+        lookupFactions.forEach(faction => {
+            if (faction.ownedMajorCities.length > (prev.get(faction.factionId)?.ownedMajorCities.length || Infinity)) {
+                const diff = faction.ownedMajorCities.filter(city => !prev.get(faction.factionId)!.ownedMajorCities.includes(city));
+                if (diff.length > 0) {
+                    diff.forEach(newCity => {
+                        const factionAbbr = dataStore.GetData("factiontemplate", faction.factionTemplateId).abbreviation;
+                        if (i > 150)
+                            total += `${frameToTime(i)} ${factionAbbr} - ${dataStore.GetData("battlefield", newCity).bftitle}\n`;
+                    });
                 }
-            });
-            return lookupFactions;
-        }, lookupFactions);
-        const last = files.pop();
-        if (last) {
-            const data: SaveData = await mylas.json.load(last);
-            const winner = data.factions.reduce((prev, curr) => prev.factionVictoryPoints > curr.factionVictoryPoints ? prev : curr);
-
-            const factionMap = new Map<string, Faction>();
-            data.factions.forEach(element => {
-                if (data.factions.length !== 3 && element.battlesWon <= 10) return;
-                factionMap.set(element.factionTemplateId, element);
-            });
-
-            const factionToAbbr = (faction: Faction) => dataStore.GetData("factiontemplate", faction.factionTemplateId).abbreviation;
-            const factionToString = (faction: Faction) => `${factionToAbbr(faction)}: ${faction.infantryLost} Inf, ${faction.vehiclesLost} Vehicles, ${faction.tanksLost} Tanks, ${faction.planesLost} Planes`;
-
-            const totalEnding = `${factionToAbbr(winner)} won the war\n\nLosses:\n${factionToString(factionMap.get("1")!)}\n${factionToString(factionMap.get("2")!)}\n${factionToString(factionMap.get("3")!)}`;
-
-            console.log(totalEnding);
-
-            {
-                // Create canvas
-                const [x, y] = [1920, 1080];
-                const canvas = createCanvas(x, y);
-                const context = canvas.getContext("2d");
-
-                // Draw background
-                const image = await loadImage("./images/thumbnail.png");
-                context.drawImage(image, 0, 0, image.width, image.height);
-
-                // Draw war number
-                context.beginPath();
-                context.fillStyle = "#000";
-                context.font = "200px sans-serif, segoe-ui-emoji";
-                context.fillText(`#${data.warName.slice(data.warName.length - 4) || "0000"}`, 1300, 200);
-                context.stroke();
-
-                // Draw winner image
-                const winnerImage = await loadImage(`./images/${factionToAbbr(winner)}.png`);
-                context.drawImage(winnerImage, (x / 2) - ((winnerImage.width * 2) / 2), (y / 2) - ((winnerImage.height * 2) / 2), winnerImage.width * 2, winnerImage.height * 2);
-
-                // Save thumbnail
-                await pipeline(canvas.createJPEGStream(), createWriteStream(`./savesMap/${warId}/thumbnail.jpg`));
             }
+        });
+        return lookupFactions;
+    }, lookupFactions);
+    await mylas.save(`./savesMap/${warId}/timestamps.txt`, total);
+    return total;
+}
+
+async function LastFrameStats(files: string[], dataStore: DataStore, warId: string) {
+    const last = files.pop();
+    if (last) {
+        const data: SaveData = await mylas.json.load(last);
+        const winner = data.factions.reduce((prev, curr) => prev.factionVictoryPoints > curr.factionVictoryPoints ? prev : curr);
+
+        const factionMap = new Map<string, Faction>();
+        data.factions.forEach(element => {
+            if (data.factions.length !== 3 && element.battlesWon <= 10)
+                return;
+            factionMap.set(element.factionTemplateId, element);
+        });
+
+        const factionToAbbr = (faction: Faction) => dataStore.GetData("factiontemplate", faction.factionTemplateId).abbreviation;
+        const factionToString = (faction: Faction) => `${factionToAbbr(faction)}: ${faction.infantryLost} Inf, ${faction.vehiclesLost} Vehicles, ${faction.tanksLost} Tanks, ${faction.planesLost} Planes`;
+
+        const totalEnding = `${factionToAbbr(winner)} won the war\n\nLosses:\n${factionToString(factionMap.get("1")!)}\n${factionToString(factionMap.get("2")!)}\n${factionToString(factionMap.get("3")!)}`;
+
+        console.log(totalEnding);
+
+        {
+            // Create canvas
+            const [x, y] = [1920, 1080];
+            const canvas = createCanvas(x, y);
+            const context = canvas.getContext("2d");
+
+            // Draw background
+            const image = await loadImage("./images/thumbnail.png");
+            context.drawImage(image, 0, 0, image.width, image.height);
+
+            // Draw war number
+            context.beginPath();
+            context.fillStyle = "#000";
+            context.font = "200px sans-serif, segoe-ui-emoji";
+            context.fillText(`#${data.warName.slice(data.warName.length - 4) || "0000"}`, 1300, 200);
+            context.stroke();
+
+            // Draw winner image
+            const winnerImage = await loadImage(`./images/${factionToAbbr(winner)}.png`);
+            context.drawImage(winnerImage, (x / 2) - ((winnerImage.width * 2) / 2), (y / 2) - ((winnerImage.height * 2) / 2), winnerImage.width * 2, winnerImage.height * 2);
+
+            // Save thumbnail
+            await pipeline(canvas.createJPEGStream(), createWriteStream(`./savesMap/${warId}/thumbnail.jpg`));
         }
-        mylas.saveS(`./savesMap/${warId}/timestamps.txt`, total);
-        console.log(total);
     }
-    console.log("Done");
-})();
+}
 
 function frameToTime(frame: number) {
     const sec = Math.floor(frame / 30);

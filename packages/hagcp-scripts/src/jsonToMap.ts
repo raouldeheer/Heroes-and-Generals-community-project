@@ -12,6 +12,8 @@ import globby from "globby";
 import cp from "node:child_process";
 // @ts-expect-error fake ts(1471) error
 import { pLimit } from "plimit-lit";
+import { gunzipSync } from "zlib";
+import { parseHGMap } from "./hgmap";
 
 const processes: (cp.ChildProcess & { busy: boolean; })[] = [];
 const MAX_THREADS = 16;
@@ -54,13 +56,13 @@ const jsonToMap = (filename: string, imageName: string) => threadLimit(() => {
     if (!existsSync(join(savesMapDir, warId))) mylas.dir.mkS(join(savesMapDir, warId));
 
     // * Setup data
-    const files = await globby(`${savesDir}/${warId}/*.jsonc`);
+    const files = await globby(`${savesDir}/${warId}/*.{hgmap,jsonc}`);
     await ProcessAllImageFiles(files, savesMapDir, warId);
 
     if (files) {
         // * Find capital captures
         const total = await FindCapitalCaptures(files, dataStore, warId);
-        
+
         // * Last frame stats
         await LastFrameStats(files, dataStore, warId);
         console.log(total);
@@ -104,20 +106,29 @@ async function ProcessAllImageFiles(files: string[], savesMapDir: string, warId:
 }
 
 async function FindCapitalCaptures(files: string[], dataStore: DataStore, warId: string) {
+    const loadFactions = async (file: string): Promise<Faction[] | undefined> => {
+        if (file.endsWith(".jsonc")) {
+            return (await mylas.json.load(file))?.factions;
+        } else if (file.endsWith(".hgmap")) {
+            const data = parseHGMap(gunzipSync(await mylas.buf.load(file)));
+            if (data && data.version == 1) return data.factions as unknown as Faction[];
+        }
+    };
     let total = "00:00:00 War start\n";
-    const first = await mylas.json.load(files[0]);
-    const lookupFactions = new Map<string, Faction>();
-    first.factions.forEach((element: Faction) => {
-        lookupFactions.set(element.factionId, element);
+    const first = await loadFactions(files[0]);
+    if (!first) return;
+    let prev = new Map<string, Faction>();
+    first.forEach((element) => {
+        prev.set(element.factionId, element);
     });
 
-    files.reduce((prev: Map<string, Faction>, element: string, i: number) => {
-        const data: SaveData = mylas.json.loadS(element);
-        if (!data?.factions)
-            return prev;
+    for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        const data = await loadFactions(file);
+        if (!data) continue;
 
         const lookupFactions = new Map<string, Faction>();
-        data.factions.forEach((element: Faction, i) => {
+        data.forEach((element, i) => {
             if (i < 3)
                 lookupFactions.set(element.factionId, element);
         });
@@ -134,8 +145,8 @@ async function FindCapitalCaptures(files: string[], dataStore: DataStore, warId:
                 }
             }
         });
-        return lookupFactions;
-    }, lookupFactions);
+        prev = lookupFactions;
+    }
     await mylas.save(`./savesMap/${warId}/timestamps.txt`, total);
     return total;
 }
@@ -143,7 +154,16 @@ async function FindCapitalCaptures(files: string[], dataStore: DataStore, warId:
 async function LastFrameStats(files: string[], dataStore: DataStore, warId: string) {
     const last = files.pop();
     if (last) {
-        const data: SaveData = await mylas.json.load(last);
+        const loadFile = async (file: string) => {
+            if (file.endsWith(".jsonc")) {
+                return mylas.json.load(file);
+            } else if (file.endsWith(".hgmap")) {
+                const data = parseHGMap(gunzipSync(await mylas.buf.load(file)));
+                if (data && data.version == 1) return data;
+            }
+        };
+        const data: SaveData = await loadFile(last);
+        if (!data) return;
         const winner = data.factions.reduce((prev, curr) => prev.factionVictoryPoints > curr.factionVictoryPoints ? prev : curr);
 
         const factionMap = new Map<string, Faction>();

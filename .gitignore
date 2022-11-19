@@ -97,6 +97,7 @@ warmap.png
 
 game/
 saves/
+savesHGMap/
 savesMap/
 savesCSV/
 jsondb/

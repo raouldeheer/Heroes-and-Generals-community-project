@@ -3,14 +3,54 @@
 /* eslint-disable no-prototype-builtins */
 import mylas from "mylas";
 import { BufferCursor, DataStore } from "hagcp-utils";
-import { drawToCanvas, toCanvasColored } from "hagcp-canvas";
+import { drawToCanvas, toCanvasColored, drawToCanvasWithMaps } from "hagcp-canvas";
 import { existsSync, createWriteStream } from "fs";
 import { pipeline } from "stream/promises";
 import { gunzipSync } from "zlib";
 import { PacketClass } from "hagcp-network-client";
 import { loadTemplate } from "hagcp-assets";
+import { parseHGMap } from "./hgmap";
+
+const factionTemplateIdToColor = {
+    "1": "#0f0",
+    "2": "#00f",
+    "3": "#f00",
+};
+
+async function hgmapToMap(filename: string, imageName: string, dataStore: DataStore) {
+    const buf = await mylas.buf.load(filename);
+    const data = parseHGMap(gunzipSync(buf));
+
+    if (!data) return;
+    switch (data.version) {
+        case 1: {
+            const lookupFactions = new Map<string, any>();
+            data.factions.forEach(element => {
+                // @ts-expect-error color doesn't exist
+                element.color = factionTemplateIdToColor[element.factionTemplateId];
+                lookupFactions.set(element.factionId, element);
+            });
+            const canvas = await drawToCanvasWithMaps(
+                dataStore,
+                data.supplylines,
+                data.battlefields,
+                id => lookupFactions.get(id).color,
+                lookupFactions
+            );
+            await pipeline(canvas.createJPEGStream(), createWriteStream(imageName));
+            break;
+        }
+        default:
+            console.log("Unknown hgmap version");
+            break;
+    }
+}
 
 async function jsonToMap(filename: string, imageName: string, dataStore: DataStore) {
+    if (filename.endsWith(".hgmap")) {
+        await hgmapToMap(filename, imageName, dataStore);
+        return;
+    }
     const { factions, ...data } = await mylas.json.load(filename);
     const dataStore2 = new DataStore;
 

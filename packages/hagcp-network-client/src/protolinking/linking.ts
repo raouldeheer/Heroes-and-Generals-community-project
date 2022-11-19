@@ -117,6 +117,7 @@ export const PacketClass = {
     [ClassKeys.GetMissionListResponse]: getDefaultClass<interfaces.GetMissionListResponse>("HnG_States.GetMissionListResponse"),
     [ClassKeys.GreenlightMissionRequest]: getDefaultClass<interfaces.GreenlightMissionRequest>("HnG_States.GreenlightMissionRequest"),
     [ClassKeys.GreenlightMissionResponse]: getDefaultClass<interfaces.GreenlightMissionResponse>("HnG_States.GreenlightMissionResponse"),
+    [ClassKeys.war_catalogue_faction]: getDefaultClass<interfaces.war_catalogue_faction>("HnG_States.war_catalogue_faction"),
     /*
      * Dummy classes 
      */

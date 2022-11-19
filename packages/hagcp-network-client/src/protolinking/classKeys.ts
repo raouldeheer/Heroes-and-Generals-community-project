@@ -112,6 +112,7 @@ export const enum ClassKeys {
     GreenlightMissionResponse = "GreenlightMissionResponse",
     RedeemVoucherRequest = "RedeemVoucherRequest",
     RedeemVoucherResponse = "RedeemVoucherResponse",
+    war_catalogue_faction = "war_catalogue_faction",
 }
 
 export const enum ResponseType {

@@ -30,7 +30,7 @@
   "dependencies": {
     "buffercursor.ts": "^1.0.3",
     "hagcp-network-client": "^1.1.12",
-    "hagcp-utils": "^1.0.10",
+    "hagcp-utils": "^1.1.0",
     "tslib": "^2.4.0"
   },
   "devDependencies": {

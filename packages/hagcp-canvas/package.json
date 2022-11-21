@@ -31,7 +31,7 @@
   "homepage": "https://github.com/raouldeheer/Heroes-and-Generals-community-project#readme",
   "dependencies": {
     "canvas": "^2.10.2",
-    "hagcp-utils": "^1.0.10",
+    "hagcp-utils": "^1.1.0",
     "mylas": "^2.1.13"
   },
   "devDependencies": {

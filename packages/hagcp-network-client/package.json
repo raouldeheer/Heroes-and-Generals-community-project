@@ -55,7 +55,7 @@
   },
   "dependencies": {
     "buffercursor.ts": "^1.0.3",
-    "hagcp-utils": "^1.0.10",
+    "hagcp-utils": "^1.1.0",
     "long": "^5.2.0",
     "node-fetch": "2.6.7",
     "protobufjs": "^7.1.2"

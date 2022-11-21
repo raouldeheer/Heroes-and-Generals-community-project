@@ -7,7 +7,7 @@ import { drawToCanvas, toCanvasColored, drawToCanvasWithMaps } from "hagcp-canva
 import { existsSync, createWriteStream } from "fs";
 import { pipeline } from "stream/promises";
 import { gunzipSync } from "zlib";
-import { PacketClass } from "hagcp-network-client";
+import { LongToString, PacketClass, Packets } from "hagcp-network-client";
 import { loadTemplate } from "hagcp-assets";
 import { parseHGMap } from "./hgmap";
 
@@ -16,6 +16,7 @@ const factionTemplateIdToColor = {
     "2": "#00f",
     "3": "#f00",
 };
+type Faction = LongToString<Packets.war_catalogue_faction> & { color: string; };
 
 async function hgmapToMap(filename: string, imageName: string, dataStore: DataStore) {
     const buf = await mylas.buf.load(filename);
@@ -24,17 +25,16 @@ async function hgmapToMap(filename: string, imageName: string, dataStore: DataSt
     if (!data) return;
     switch (data.version) {
         case 1: {
-            const lookupFactions = new Map<string, any>();
-            data.factions.forEach(element => {
-                // @ts-expect-error color doesn't exist
-                element.color = factionTemplateIdToColor[element.factionTemplateId];
-                lookupFactions.set(element.factionId, element);
-            });
+            const lookupFactions = new Map<string, Faction>(
+                (data.factions as Faction[]).map(element => {
+                    element.color = factionTemplateIdToColor[element.factionTemplateId as keyof typeof factionTemplateIdToColor];
+                    return [element.factionId, element];
+                }));
             const canvas = await drawToCanvasWithMaps(
                 dataStore,
                 data.supplylines,
                 data.battlefields,
-                id => lookupFactions.get(id).color,
+                id => lookupFactions.get(id)?.color || "#888",
                 lookupFactions
             );
             await pipeline(canvas.createJPEGStream(), createWriteStream(imageName));

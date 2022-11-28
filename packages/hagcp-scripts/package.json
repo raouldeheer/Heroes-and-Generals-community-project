@@ -38,7 +38,7 @@
     "hagcp-utils": "^1.1.0",
     "long": "^5.2.0",
     "mylas": "^2.1.13",
-    "plimit-lit": "^1.4.1",
+    "plimit-lit": "^1.5.0",
     "tslib": "^2.4.0"
   },
   "devDependencies": {

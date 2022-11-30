@@ -31,7 +31,7 @@
     "buffercursor.ts": "^1.0.3",
     "hagcp-network-client": "^1.1.12",
     "hagcp-utils": "^1.1.0",
-    "tslib": "^2.4.0"
+    "tslib": "^2.4.1"
   },
   "devDependencies": {
     "tsup": "^6.5.0",

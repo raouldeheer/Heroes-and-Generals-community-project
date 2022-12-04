@@ -1,6 +1,6 @@
 import { createCanvas } from "canvas";
 import { DataStore } from "hagcp-utils";
-import { multiplier } from "../settings";
+import { height, width } from "../settings";
 import {
     drawSupplylines,
     drawBattlefields,
@@ -36,7 +36,7 @@ export async function drawToCanvas(dataStore: DataStore, dataStore2: DataStore, 
 }
 
 export async function drawToCanvasWithMaps(dataStore: DataStore, supMap: Map<string, Set<string>>, bfsMap: Map<string, Set<string>>, factionColorLookup: (id: string) => string, factions?: Map<string, any>) {
-    const canvas = createCanvas(2048 * multiplier, 1440 * multiplier);
+    const canvas = createCanvas(width, height);
     const context = canvas.getContext("2d");
 
     // Draw background

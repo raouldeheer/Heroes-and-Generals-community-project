@@ -163,7 +163,7 @@ async function LastFrameStats(files: string[], dataStore: DataStore, warId: stri
             }
         };
         const data: SaveData = await loadFile(last);
-        if (!data) return;
+        if (!data || !data.factions || data.factions.length === 0) return;
         const winner = data.factions.reduce((prev, curr) => prev.factionVictoryPoints > curr.factionVictoryPoints ? prev : curr);
 
         const factionMap = new Map<string, Faction>();

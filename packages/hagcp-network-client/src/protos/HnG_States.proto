@@ -285,7 +285,7 @@ message AddWarBondRequest {
 required int64 warBondTemplateId = 1;
 required int64 pricingId = 2;
 required int64 discountId = 3;
-required Common.Response paymentCurrency = 4;
+required VirtualCurrencyType paymentCurrency = 4;
 }
 
 message AddWarBondResponse {

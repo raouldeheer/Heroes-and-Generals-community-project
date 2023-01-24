@@ -91,6 +91,15 @@ export interface ActionGameSquadSlotDefinition {
     index: number;
 }
 
+export interface ActivateBattlePassSeasonRequest {
+    battlePassSeasonTemplateId: Long;
+    playerId: Long;
+}
+
+export interface ActivateBattlePassSeasonResponse {
+    response: ResponseType;
+}
+
 export interface ActivateBoosterRequest {
     boosterId: Long;
 }
@@ -282,6 +291,18 @@ export interface AddWarBondRequest {
 
 export interface AddWarBondResponse {
     result: ResponseType;
+}
+
+export interface add_ban {
+    mUuid: string;
+    mId: string;
+    tId: string;
+    duration: string;
+    reason: string;
+}
+
+export interface add_ban_response {
+    response: ResponseType;
 }
 
 export interface add_chatchannel_request {
@@ -666,6 +687,8 @@ export interface battle_pass {
     isPurchased: boolean;
     pendingRewardBattlePassTemplateIds: string;
     receivedRewardBattlePassTemplateIds: string;
+    isActive: boolean;
+    unlockDateTime: string;
 }
 
 export interface battle_pass_season_template {
@@ -883,6 +906,15 @@ export interface CharacterUnlockTemplate {
     characterTemplateId: Long;
     factionTemplateId: Long;
     unlockSequence: string;
+}
+
+export interface ChatBan {
+    id: Long;
+    bannedPlayerId: Long;
+    moderatorPlayerId: Long;
+    bannedFromDateTime: string;
+    bannedToDateTime: string;
+    banReason: string;
 }
 
 export interface chatchannel {
@@ -2308,6 +2340,7 @@ export interface login2_service_login {
     sessionid: string;
     servicename: string;
     digest: string;
+    uuid: string;
 }
 
 export interface login2_service_login_result {
@@ -2317,6 +2350,7 @@ export interface login2_service_login_result {
     factionTemplate: Long;
     metricsUid: string;
     offerGoldAdded: number;
+    hngPrivilegeName: string;
 }
 
 export interface LoginQueueUpdate {
@@ -3067,6 +3101,9 @@ export interface PurchaseBattlePassSeasonRequest {
     pricingId: Long;
     discountId: Long;
     paymentCurrency: VirtualCurrencyType;
+    unlockPricingId: Long;
+    unlockDiscountId: Long;
+    unlockPaymentCurrency: VirtualCurrencyType;
 }
 
 export interface PurchaseBattlePassSeasonResponse {
@@ -4258,6 +4295,7 @@ export interface StoreCampaign {
     iconType: string;
     activeFromTime: string;
     activeToTime: string;
+    countdownHours: number;
 }
 
 export enum StoreCampaignType {

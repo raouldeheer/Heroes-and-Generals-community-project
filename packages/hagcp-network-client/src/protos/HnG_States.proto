@@ -90,6 +90,15 @@ required int64 slotTemplateId = 1;
 required int32 index = 2;
 }
 
+message ActivateBattlePassSeasonRequest {
+required int64 battlePassSeasonTemplateId = 1;
+required int64 playerId = 2;
+}
+
+message ActivateBattlePassSeasonResponse {
+required Common.Response response = 1;
+}
+
 message ActivateBoosterRequest {
 required int64 boosterId = 1;
 }
@@ -276,11 +285,23 @@ message AddWarBondRequest {
 required int64 warBondTemplateId = 1;
 required int64 pricingId = 2;
 required int64 discountId = 3;
-required VirtualCurrencyType paymentCurrency = 4;
+required Common.Response paymentCurrency = 4;
 }
 
 message AddWarBondResponse {
 required Common.Response result = 1;
+}
+
+message add_ban {
+required string mUuid = 1;
+required string mId = 2;
+required string tId = 3;
+required string duration = 4;
+required string reason = 5;
+}
+
+message add_ban_response {
+required Common.Response response = 1;
 }
 
 message add_chatchannel_request {
@@ -665,6 +686,8 @@ required int32 score = 6;
 required bool isPurchased = 7;
 required string pendingRewardBattlePassTemplateIds = 8;
 required string receivedRewardBattlePassTemplateIds = 9;
+required bool isActive = 10;
+required string unlockDateTime = 11;
 }
 
 message battle_pass_season_template {
@@ -912,6 +935,15 @@ required int64 id = 1;
 required int64 characterTemplateId = 2;
 required int64 factionTemplateId = 3;
 required string unlockSequence = 4;
+}
+
+message ChatBan {
+required int64 id = 1;
+required int64 bannedPlayerId = 2;
+required int64 moderatorPlayerId = 3;
+required string bannedFromDateTime = 4;
+required string bannedToDateTime = 5;
+required string banReason = 6;
 }
 
 message chatchannel {
@@ -2355,6 +2387,7 @@ message login2_service_login {
 required string sessionid = 1;
 required string servicename = 2;
 required string digest = 3;
+required string uuid = 4;
 }
 
 message login2_service_login_result {
@@ -2364,6 +2397,7 @@ required int64 playerid = 3;
 required int64 factionTemplate = 4;
 required string metricsUid = 5;
 required int32 offerGoldAdded = 6;
+required string hngPrivilegeName = 7;
 }
 
 message LoginQueueUpdate {
@@ -3127,6 +3161,9 @@ required int64 playerId = 2;
 required int64 pricingId = 3;
 required int64 discountId = 4;
 required VirtualCurrencyType paymentCurrency = 5;
+required int64 unlockPricingId = 6;
+required int64 unlockDiscountId = 7;
+required VirtualCurrencyType unlockPaymentCurrency = 8;
 }
 
 message PurchaseBattlePassSeasonResponse {
@@ -4325,6 +4362,7 @@ required string iconType = 5;
 required string activeFromTime = 6;
 required string activeToTime = 7;
 optional string name = 8;
+optional int32 countdownHours = 9;
 }
 
 message StoreCampaignType {

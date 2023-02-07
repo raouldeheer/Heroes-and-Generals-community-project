@@ -57,7 +57,7 @@
     "buffercursor.ts": "^1.0.3",
     "hagcp-utils": "^1.1.0",
     "long": "^5.2.0",
-    "node-fetch": "2.6.8",
+    "node-fetch": "2.6.9",
     "protobufjs": "^7.2.1"
   }
 }

@@ -58,6 +58,6 @@
     "hagcp-utils": "^1.1.0",
     "long": "^5.2.0",
     "node-fetch": "2.6.9",
-    "protobufjs": "^7.2.3"
+    "protobufjs": "^7.2.4"
   }
 }

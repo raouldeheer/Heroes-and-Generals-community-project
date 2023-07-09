@@ -36,7 +36,7 @@
     "hagcp-canvas": "^1.0.2",
     "hagcp-network-client": "^1.1.9",
     "hagcp-utils": "^1.1.0",
-    "long": "^5.2.0",
+    "long": "^5.2.3",
     "mylas": "^2.1.13",
     "plimit-lit": "^1.5.0",
     "tslib": "^2.5.0"

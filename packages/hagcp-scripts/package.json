@@ -39,7 +39,7 @@
     "long": "^5.2.3",
     "mylas": "^2.1.13",
     "plimit-lit": "^1.5.0",
-    "tslib": "^2.5.0"
+    "tslib": "^2.6.0"
   },
   "devDependencies": {
     "tsup": "^7.1.0",

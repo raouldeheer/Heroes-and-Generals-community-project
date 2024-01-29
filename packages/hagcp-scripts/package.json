@@ -30,7 +30,7 @@
   "dependencies": {
     "buffercursor.ts": "^1.0.3",
     "canvas": "^2.11.0",
-    "dotenv": "^16.0.3",
+    "dotenv": "^16.4.1",
     "globby": "^11.0.4",
     "hagcp-assets": "^1.1.2",
     "hagcp-canvas": "^1.0.2",
